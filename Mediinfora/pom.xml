@@ -13,29 +13,17 @@
         <org.springframework-version>5.3.22</org.springframework-version>  
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
-		<!-- ===== #9. Spring 프레임워크 버전 4.x 이상시  tiles 관련 추가하기 ===== -->
 		<org.apache.tiles-version>3.0.7</org.apache.tiles-version>
   	</properties>
   	
-  	<!-- ===== #1. 네이버 스마트 에디터에서 사진첨부 관련하여 이미지의 크기를 구하기위한 라이브러리 다운받는곳 =====  -->
-   <repositories> 
-       <repository>
-          <id>osgeo</id>
-          <name>OSGeo Release Repository</name>
-          <url>https://repo.osgeo.org/repository/release/</url>
-          <snapshots><enabled>false</enabled></snapshots>
-          <releases><enabled>true</enabled></releases>
-        </repository>
-   </repositories>
+  	<!-- ===== #1. 동혁오빠가 이쁜거 찾아준데요~~(네이버 스마트 에디터) =====  -->
    
 	<dependencies>
-		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
 			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
@@ -48,14 +36,12 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
-		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>	
 		
-		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -98,14 +84,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
 				
-		<!-- Servlet -->
 		<dependency>
 	 		<groupId>javax.servlet</groupId>
 	 		<artifactId>javax.servlet-api</artifactId>
@@ -124,7 +108,6 @@
 			<version>1.2</version>
 		</dependency>
 	
-		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -362,19 +345,6 @@
           	<artifactId>commons-codec</artifactId>
           	<version>1.16.0</version>
       	</dependency>
-      
-      <!-- ===== 네이버 스마트 에디터에서 사진첨부 관련하여 이미지의 크기를 구하기위한 라이브러리 ===== -->
-       	<dependency>
-           	<groupId>javax.media</groupId>
-           	<artifactId>jai_core</artifactId>
-           	<version>1.1.3</version>
-       	</dependency>
-   
-       	<dependency>
-           	<groupId>javax.media</groupId>
-           	<artifactId>jai_codec</artifactId>
-           	<version>1.1.3</version>
-       	</dependency>
        
       <!-- Lombok(롬복)은 Domain(Entity)클래스(VO 클래스, DTO 클래스) 생성시 
                반복되는 getter, setter, toString 등의 메소드 작성 코드를 줄여주는 라이브러리 이다. -->       
