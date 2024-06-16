@@ -1,8 +1,9 @@
-# Mediinfora
+# Mediinfora Project Team
+- 양혜정, 서동혁, 허성심, 강지훈, 김승혜
 
 ---
 
-## Git
+# Git
 
 ### Commit message
 - 제목과 본문을 한 줄 띄어 구분
