@@ -26,7 +26,7 @@
 		
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<!--    <url-pattern>/</url-pattern>  -->
+		<url-pattern>/</url-pattern>
         <!-- URL 패턴 아무거나 다 받아줌 -->
         
         <!-- === #13. URL 패턴이 끝나는 글자가 .action 인 것으로 요청을 했을때 appServlet 서블릿이 받아서 처리를 해준다. === --> 
