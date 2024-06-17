@@ -20,7 +20,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- ======= #20. 실행시 모든 페이지에 기본틀이 되어지는 틀을 배치하기 위한 템플릿 프레임워크인 TilesViewResolver 를 사용하기 위해 빈으로 등록한다. ======= -->
-   	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+   	<!--  <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
         <beans:property name="definitions">
             <beans:list>
                  <beans:value>/WEB-INF/tiles/tiles-layout.xml</beans:value>
@@ -31,13 +31,12 @@
     <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
         <beans:property name="order" value="1"/>
-    </beans:bean>
+    </beans:bean>-->
     
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
-		<beans:property name="order" value="2"/>
 	</beans:bean>
 	
 	<context:component-scan base-package="com.spring.app" />
@@ -55,4 +54,5 @@
    	<aop:config proxy-target-class="true">
    		<aop:pointcut id="controllerOperation" expression="execution(public * com.spring.app..*Controller.*(..))" />
    	</aop:config>
+   	
 </beans:beans>
