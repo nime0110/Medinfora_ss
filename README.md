@@ -1,8 +1,8 @@
-# Mediinfora Project Team
+# Medinfora Project Team
 - 양혜정, 서동혁, 허성심, 강지훈, 김승혜
 <br>
 
-# 💡 Mediinfora 의미
+# 💡 Medinfora 의미
 - Medical: 사이트가 의료 관련 정보를 제공
 - Information: 사이트의 핵심 기능이 정보 제공
 - Aura: 사이트가 제공하는 정보가 신뢰성과 전문성을 가지고 있으며, 사용자에게 긍정적인 느낌
