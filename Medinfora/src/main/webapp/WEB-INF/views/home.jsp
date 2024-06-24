@@ -1,15 +1,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<!DOCTYPE html>
 <% String ctxPath = request.getContextPath(); %>
-<html>
+<!DOCTYPE html>
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Home</title>
 </head>
 <body>
 	<h1>
-		Hello world!  
+		MYPATH : <%=ctxPath %>
 	</h1>
-	<img src="<%= ctxPath%>/resources/images/advertisement_02.png">
+	<img src="<%= ctxPath%>/resources/advertisement_01.png">
 </body>
 </html>
