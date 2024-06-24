@@ -11,6 +11,6 @@
 	<h1>
 		MYPATH : <%=ctxPath %>
 	</h1>
-	<img src="<%= ctxPath%>/resources/advertisement_01.png">
+	<img src="<%= ctxPath%>/resources/images/advertisement_01.png">
 </body>
 </html>
