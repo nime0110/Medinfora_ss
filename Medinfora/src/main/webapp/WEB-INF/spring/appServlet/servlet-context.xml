@@ -31,7 +31,11 @@
     <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
         <beans:property name="order" value="1"/>
+<<<<<<< Updated upstream
     </beans:bean>
+=======
+    </beans:bean> -->
+>>>>>>> Stashed changes
     
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -44,7 +48,7 @@
 	<!-- === #44. 양방향 암호화 알고리즘인 AES256 를 사용하여 복호화 하기 위한 클래스(파라미터가 있는 생성자) 의존객체 bean 생성하기 === --> 
    	<beans:bean id="aES256" class="com.spring.app.common.AES256">
       	<beans:constructor-arg>
-         	<beans:value>abcd0070#gclass$</beans:value> <!-- SecretMyKey 에 있는 key -->   
+         	<beans:value>pipomedinfora03$</beans:value> <!-- SecretMyKey 에 있는 key -->   
       	</beans:constructor-arg>
    	</beans:bean>
 	
