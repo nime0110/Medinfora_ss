@@ -8,9 +8,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class MainController {
 
 	@GetMapping("/")
+	public ModelAndView commom(ModelAndView mav) {
+		
+		mav.setViewName("redirect:index.tiles");
+		
+		return mav;
+	}
+	
+	@GetMapping("/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
-		mav.setViewName("home");
+		mav.setViewName("index.tiles");
 		
 		return mav;
 	}
