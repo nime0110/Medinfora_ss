@@ -3,7 +3,6 @@
 
 <%String ctxPath = request.getContextPath();%>
 
-<main>
   <section class="sim_promo_section">
     <div class="sim_promo_section_banner">
       <div class="sim_promo_section_banner_image">
@@ -39,7 +38,6 @@
       </div>
     </div>
   </section> 
-</main>
 <!-- 성심 작업 영역 끝 -->
  
 <!-- 승혜 작업 영역 시작 --> 

@@ -13,14 +13,14 @@
 <title>MEINFORA</title>
 
 <%-- Jquery --%>
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="<%= ctxPath%>/resources/node_modules/jquery/dist/jquery.min.js"></script>
 
 <%-- JS --%>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/index.js"></script>
 
 <%-- BootStrap --%>
-<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+<script src="<%= ctxPath%>/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="<%= ctxPath%>/resources/node_modules/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <%-- stylesheet --%>
@@ -31,26 +31,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/fontcss.css">
+<link rel="stylesheet" href="<%= ctxPath%>/resources/css/fontcss.css">
 
 <%-- Font Awesome 6 Icons --%>
 <script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 </head>
+
 <body>
-   <div id="mycontainer">
-      <div id="myheader">
-         <tiles:insertAttribute name="header" />
-      </div>
-      
-      <div id="mycontent">
-         <tiles:insertAttribute name="content" />
-      </div>
-      
-      <div id="myfooter">
-         <tiles:insertAttribute name="footer" />
-      </div>
-   </div>
+	<tiles:insertAttribute name="header" />
+	
+	<tiles:insertAttribute name="content" />
+	
+	<tiles:insertAttribute name="footer" />
 </body>
 </html>
