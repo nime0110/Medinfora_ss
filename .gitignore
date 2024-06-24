@@ -1,7 +1,11 @@
 
+# Write by Seo Dong Hyeok
+
 Medinfora/target/m2e-wtp/web-resources/META-INF/maven/com.spring/app/pom.properties
 Medinfora/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
 *.MF
 *.component
-/Medinfora
-/Medinfora
+*.classpath
+
+#.settings
+Medinfora\.settings\org.eclipse.m2e.core.prefs
