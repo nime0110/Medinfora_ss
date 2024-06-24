@@ -1,13 +1,19 @@
 package com.spring.app.main.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.app.main.service.MainService;
 
 @Controller
 public class MainController {
 
-	@GetMapping("/")
+	@Autowired
+	private MainService service;
+	
+	@RequestMapping(value="/")
 	public ModelAndView commom(ModelAndView mav) {
 		
 		mav.setViewName("redirect:index.tiles");
@@ -15,7 +21,7 @@ public class MainController {
 		return mav;
 	}
 	
-	@GetMapping("/index.bibo")
+	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
 		mav.setViewName("index.tiles");
