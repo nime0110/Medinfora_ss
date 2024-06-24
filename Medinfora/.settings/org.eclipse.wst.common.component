@@ -18,7 +18,7 @@
                         
         
         <property name="java-output-path" value="/Mediinfora/target/classes"/>
-        <property name="context-root" value="Medinfora"/>
+        <property name="context-root" value="app"/>
                     
     
     </wb-module>
