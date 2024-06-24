@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%String ctxPath = request.getContextPath();%>
+
 <header>
   <div class="header-container">
     <div class="logo">
-      <img src="img/logo-main.png" alt="LOGO">
+      <img src="<%= ctxPath%>/resources/img/logo-main.png" alt="LOGO">
     </div>
     <button class="navbar-toggler" type="button" onclick="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
@@ -61,3 +63,12 @@
     </li>
   </ul>
 </aside>
+
+<!-- 로그인 모달 추가 시작 -->
+<div id="loginModalArr" class="jh_login_modal">
+  <div class="jh_modal_content rounded-5">
+    <span class="jh_login_close">&times;</span>
+    <iframe id="loginPage" src="login_form.html" frameborder="0"></iframe>
+  </div>
+</div>
+<!-- 로그인 모달 추가 끝 -->
