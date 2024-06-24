@@ -16,7 +16,7 @@
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
 <%-- JS --%>
-<script src="js/index.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/resources/js/index.js"></script>
 
 <%-- BootStrap --%>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
