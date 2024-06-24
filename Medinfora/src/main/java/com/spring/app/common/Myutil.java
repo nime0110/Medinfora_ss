@@ -25,5 +25,6 @@ public class Myutil {
 		currentURL = currentURL.substring(beginIndex);
 
 		return currentURL;
-	}	// end of public static String getCurrentURL(HttpServletRequest request) {----
+	}	// end of public static String getCurrentURL(HttpServletRequest request)
+	
 }
