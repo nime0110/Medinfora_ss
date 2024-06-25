@@ -171,7 +171,7 @@
 </div>
 <!-- 승혜 작업 영역 끝 -->
  
-<!-- 지훈 작업 영역 시작 -->
+<!-- 동혁 작업 영역 시작 -->
 <div id="FAQ" class="mb-5 sizearr">
   <h2 class="nanum-eb size-n mb-4">FAQ & 묻고 답하기</h2>
     <div class="accordion" id="accordionExample">
@@ -222,7 +222,8 @@
     <h3 class="nanum-n nanum-b lookupfnq">더보기</h3>
   </div>
 </div>
-<!-- 지훈 작업 영역 끝 -->
+<!-- 동혁 작업 영역 끝 -->
+
 <!-- 혜정 작업 영역 시작 -->
 <session class="hj_section row my-5 py-3 justify-content-center sizearr">
   <div class="hj_section_notice col-lg-2 mb-3">

@@ -5,6 +5,4 @@
 
 <mapper namespace="mediinfora">
 
-	<!-- sql 작성  -->
-
 </mapper>

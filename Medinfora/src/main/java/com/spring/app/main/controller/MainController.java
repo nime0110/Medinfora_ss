@@ -16,7 +16,7 @@ public class MainController {
 	@RequestMapping(value="/")
 	public ModelAndView commom(ModelAndView mav) {
 		
-		mav.setViewName("redirect:index.tiles");
+		mav.setViewName("redirect:index.bibo");
 		
 		return mav;
 	}
