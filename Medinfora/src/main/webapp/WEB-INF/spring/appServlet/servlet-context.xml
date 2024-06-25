@@ -49,6 +49,10 @@
    	</beans:bean>
 	
 	<!-- ===== #22. AOP 관련 어노테이션 동작이 가능하게 설정   -->   
-   	<aop:aspectj-autoproxy />   
+   	<aop:aspectj-autoproxy />
+   	
+   	<aop:config proxy-target-class="true">
+		<aop:pointcut id="controllerOperation" expression="execution(public * com.spring.app..*Controller.*(..))" />
+    </aop:config>
     
 </beans:beans>
