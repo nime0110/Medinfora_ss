@@ -41,14 +41,14 @@
 <!-- 성심 작업 영역 끝 -->
  
 <!-- 승혜 작업 영역 시작 --> 
-<!-- 승혜 작업 영역 시작 --> 
 <div class="sh_section section_container_info" >
-  <div class="subpage">
+  <div class="sh_subpage">
     <h1 class="title nanum-b size-b">Infora</h1>
+
     <div class="card-inner first">
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_hospital.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
           <h4>병원찾기</h4>
         </div>
         <div class="sh_card-text">
@@ -57,13 +57,13 @@
             주변 또는 찾고싶은 지역으로 병원을 검색할 수 있습니다.
           </p>
           <div class="img-content">
-            <img src="<%= ctxPath%>/resources/img/sh_hospital.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_medi.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
           <h4>약국 찾기</h4>
         </div>
         <div class="sh_card-text">
@@ -74,13 +74,13 @@
           </p>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_medi.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_emer.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
           <h4>응급실 찾기</h4>
         </div>
         <div class="sh_card-text">
@@ -91,13 +91,13 @@
           </p>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_emer.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_findcl.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
           <h4>검진기관 찾기</h4>
         </div>
         <div class="sh_card-text">
@@ -108,7 +108,7 @@
           </p>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_findcl.png" alt="#">
+            <img src="/img/sh_findcl.png" alt="#">
           </div>
         </div>
       </a>
@@ -116,61 +116,115 @@
     <div class="card-inner first">
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_salemed.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
           <h4>구입 가능한 의약품</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
-
-            <img src="<%= ctxPath%>/resources/img/sh_salemed.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_eatmed.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" alt="#">
           <h4>의약품 복용법</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_eatmed.png" style= "border-radius: 30px" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" style= "border-radius: 30px" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_usemedi.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
           <h4>의약품 사용법</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_usemedi.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
           </div>
         </div>
       </a>
       <a href="#" class="sh-card">
         <div class="sh_card-front">
-          <img src="<%= ctxPath%>/resources/img/sh_tongae.png" alt="#">
+          <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
           <h4>통계 자료</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
-            <img src="<%= ctxPath%>/resources/img/sh_tongae.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
           </div> 
         </div>
       </a>
     </div>  
     </div>
+    <div id="carouselExampleIndicators" class="sh_car carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7" aria-label="Slide 8"></button>
+      </div>
+      <div class="carousel-inner">
+          <div class="plz carousel-item active">
+              <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+              <p style="text-align: center; font-weight:bold;">병원 찾기</p>
+          </div>
+          <div class="carousel-item">
+              <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+              <p style="text-align: center; font-weight:bold;">약국 찾기</p>
+            </div>
+          <div class="carousel-item">
+              <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+              <p style="text-align: center; font-weight:bold;">응급실 찾기</p>
+            </div>
+          <div class="carousel-item">
+            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+            <p style="text-align: center; font-weight:bold;">검진기관 찾기</p>
+          </div>
+        <div class="carousel-item">
+          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+          <p style="text-align: center; font-weight:bold;">구입가능한 의약품</p>
+        </div>
+      <div class="carousel-item">
+        <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+        <p style="text-align: center; font-weight:bold;">의약품복용법</p>
+      </div>
+      <div class="carousel-item">
+        <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+        <p style="text-align: center; font-weight:bold;">의약품 사용법</p>
+      </div>
+    <div class="carousel-item">
+      <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+      <p style="text-align: center; font-weight:bold;">통계자료</p>
+  </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+      </button>
+  </div>
+
+    </div>
 </div>
-<!-- 승혜 작업 영역 끝 -->
- 
+<!--  승혜 작업 영역 끝 --> 
 <!-- 동혁 작업 영역 시작 -->
 <div id="FAQ" class="mb-5 sizearr">
   <h2 class="nanum-eb size-n mb-4">FAQ & 묻고 답하기</h2>

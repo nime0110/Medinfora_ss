@@ -164,8 +164,13 @@
     div.hj_cardMb{
         margin-bottom: 10px;
     }
-
-
+ /* 승혜 작업 영역 START */
+ div.sh_subpage{
+        display: none;
+    }
+    div.sh_car{
+        display: block;
+    }
 
     /* 지훈 작업 영역 START */
     .jh_modal_content {
