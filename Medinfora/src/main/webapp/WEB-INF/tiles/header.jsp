@@ -98,7 +98,7 @@
 <div id="loginModalArr" class="jh_login_modal">
   <div class="jh_modal_content rounded-5">
     <span class="jh_login_close">&times;</span>
-    <iframe id="loginPage" src="login_form.html" frameborder="0"></iframe>
+    <iframe id="loginPage" src="<%=ctxPath %>/login.bibo" frameborder="0"></iframe>
   </div>
 </div>
 <!-- 로그인 모달 추가 끝 -->
