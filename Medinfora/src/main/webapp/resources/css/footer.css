@@ -5,6 +5,7 @@
 	display:flex;
 	justify-content:center;
 	padding: 12px 0;
+	height: 120px;
 }
 
 .footerimg {
@@ -12,7 +13,7 @@
 }
 
 .footerimgsrc {
-	padding-top: 12px;
+	padding-top: 20px;
 	width: 12rem;
 }
 
