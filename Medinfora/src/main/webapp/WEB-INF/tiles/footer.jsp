@@ -4,7 +4,7 @@
 <footer>
   <div class="footer-inner">
     <div class="img-inner">
-      <img src="" />
+      <img id="footer_img" src="" />
     </div>
     <div class="info-inner">
       <p>서울특별시 마포구 서교동 447-5 풍성빌딩 2,3,4층</p>
