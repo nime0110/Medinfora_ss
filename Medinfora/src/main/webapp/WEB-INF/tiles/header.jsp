@@ -33,8 +33,6 @@
 
 <div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
-</script>
-
 <header>
   <div class="header-container">
     <div class="logo" id="logoimport">
