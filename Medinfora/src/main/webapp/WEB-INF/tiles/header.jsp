@@ -3,6 +3,34 @@
 
 <%String ctxPath = request.getContextPath();%>
 
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		// 로그인창 열기
+		$("a#loginModal").click(function(){
+			$("div#loginModalArr").fadeIn();
+		 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login.bibo');
+		});
+		
+		// 로그인창 닫기
+		$("span.jh_login_close").click(function(){
+			$("div#loginModalArr").fadeOut();
+		});
+		
+		// 창 외부 클릭 시 로그인창 닫기
+	 	$(window).click(function(e) {
+       		if (e.target.id == "loginModalArr") {
+            	$("div#loginModalArr").fadeOut();
+	        }
+    	});
+		
+	});
+
+</script>
+
+<link rel="stylesheet" href="<%=ctxPath %>/resources/css/header.css">
+
 <div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
 <header>
