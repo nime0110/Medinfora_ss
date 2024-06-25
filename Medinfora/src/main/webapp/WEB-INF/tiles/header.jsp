@@ -3,9 +3,40 @@
 
 <%String ctxPath = request.getContextPath();%>
 
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		// 로그인창 열기
+		$("a#loginModal").click(function(){
+			$("div#loginModalArr").fadeIn();
+		 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login.bibo');
+		});
+		
+		// 로그인창 닫기
+		$("span.jh_login_close").click(function(){
+			$("div#loginModalArr").fadeOut();
+		});
+		
+		// 창 외부 클릭 시 로그인창 닫기
+	 	$(window).click(function(e) {
+       		if (e.target.id == "loginModalArr") {
+            	$("div#loginModalArr").fadeOut();
+	        }
+    	});
+		
+		
+		
+		
+		
+	});
+<div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
+
+</script>
+
 <header>
   <div class="header-container">
-    <div class="logo">
+    <div class="logo" id="logoimport">
       <img src="<%= ctxPath%>/resources/img/logo-main.png" alt="LOGO">
     </div>
     <button class="navbar-toggler" type="button" onclick="toggleMenu()">
@@ -15,7 +46,7 @@
       <ul id="navbarNav">
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">의료 통계 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">진료 예약하기</a></li>
+        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>
     </nav>
     <div class="input_text">
@@ -68,7 +99,7 @@
 <div id="loginModalArr" class="jh_login_modal">
   <div class="jh_modal_content rounded-5">
     <span class="jh_login_close">&times;</span>
-    <iframe id="loginPage" src="login_form.html" frameborder="0"></iframe>
+    <iframe id="loginPage" src="<%=ctxPath %>/login.bibo" frameborder="0"></iframe>
   </div>
 </div>
 <!-- 로그인 모달 추가 끝 -->

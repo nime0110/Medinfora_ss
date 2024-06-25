@@ -21,7 +21,7 @@
           <div class="icon"><img src=""></div>
           <span class="nanum-b size-s">의원예약하기</span>
         </a>
-        <a href="#">
+        <a href="<%=ctxPath %>/mypage/myinfo.bibo">
           <div class="icon"><img src=""></div>
           <span class="nanum-b size-s">마이페이지</span>
         </a>

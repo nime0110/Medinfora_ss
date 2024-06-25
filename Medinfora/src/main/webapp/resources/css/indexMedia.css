@@ -80,6 +80,14 @@
         display: none;
     }
 
+    .accordion-button[aria-expanded="true"] span {
+        font-size: 14pt !important;
+    }
+
+    #footer_img{
+        display: none;
+    }
+
     /* 동혁 END */
 
   /* 성심 start */

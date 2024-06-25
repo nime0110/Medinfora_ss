@@ -1,7 +1,6 @@
 window.onload = () => {
 
-
-
+    const ctxPath = $("#getCtxPath").text();
 
     // 혜정 START
 
@@ -64,35 +63,15 @@ window.onload = () => {
         hover.removeClass("ahover");
 
     })
+
+    $("#logoimport").on("click",function(){
+
+        location.href = `${ctxPath}/index.bibo`;
+
+    });
     
     // 동혁 END
 
-
-
-    // 지훈 START
-    // 모달 열기
-    $("a#loginModal").click(function() {
-        $("div#loginModalArr").fadeIn();
-        $("iframe#loginPage").attr('src', "login_form.html");
-    });
-
-    // 모달 닫기
-        $("span.jh_login_close").click(function() {
-        $("div#loginModalArr").fadeOut();
-
-    });
-
-    // 모달 외부 클릭 시 닫기
-    $(window).click(function(e) {
-        if (e.target.id == "loginModalArr") {
-            $("div#loginModalArr").fadeOut();
-        }
-    });
-
-
-
-
-    // 지훈 START
     
 };
 
