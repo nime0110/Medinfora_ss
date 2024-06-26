@@ -43,16 +43,16 @@
 <!-- 승혜 작업 영역 시작 --> 
 <div class="sh_section section_container_info" >
   <div class="sh_subpage">
-    <h1 class="title nanum-b size-b">Infora</h1>
+    <h1 class="sh_title nanum-b size-b">Infora</h1>
 
-    <div class="card-inner first">
+    <div class="sh_card-inner card-inner first">
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-          <h4>병원찾기</h4>
+         <h4 class="nanum-n sh_font">병원찾기</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
           <p>
             주변 또는 찾고싶은 지역으로 병원을 검색할 수 있습니다.
           </p>
@@ -64,10 +64,10 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
-          <h4>약국 찾기</h4>
+         <h4 class="nanum-n sh_font">약국 찾기</h4>
         </div>
         <div class="sh_card-text">
-          <h4  class="card-title">약국 찾기 <i class="bi bi-arrow-right"></i></h4>
+          <h4  class="sh_card-title">약국 찾기 <i class="bi bi-arrow-right"></i></h4>
           <p>
 
             주변 또는 찾고 싶은 지역으로 약국을 검색할 수 있습니다
@@ -81,10 +81,10 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
-          <h4>응급실 찾기</h4>
+          <h4 class="nanum-n sh_font">응급실 찾기</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
           <p>
 
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
@@ -98,29 +98,29 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
-          <h4>검진기관 찾기</h4>
+          <h4 class="nanum-n sh_font">검진기관 찾기</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">검진기관 찾기 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">검진기관 찾기 <i class="bi bi-arrow-right"></i></h4>
           <p>
 
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
           <div class="img-content">
 
-            <img src="/img/sh_findcl.png" alt="#">
+            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
           </div>
         </div>
       </a>
     </div>
-    <div class="card-inner first">
+    <div class="sh_card-inner card-inner first">
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-          <h4>구입 가능한 의약품</h4>
+         <h4 class="nanum-s sh_font ">구입 가능한 의약품</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
           <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
           </div>
@@ -129,10 +129,10 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" alt="#">
-          <h4>의약품 복용법</h4>
+          <h4 class="nanum-n sh_font">의약품 복용법</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
             <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" style= "border-radius: 30px" alt="#">
@@ -142,7 +142,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-          <h4>의약품 사용법</h4>
+        <h4 class="nanum-n sh_font">의약품 사용법</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
@@ -155,7 +155,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-          <h4>통계 자료</h4>
+         <h4 class="nanum-n sh_font">통계 자료</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
@@ -181,35 +181,35 @@
       <div class="carousel-inner">
           <div class="plz carousel-item active">
               <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-              <p style="text-align: center; font-weight:bold;">병원 찾기</p>
+             
           </div>
           <div class="carousel-item">
               <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-              <p style="text-align: center; font-weight:bold;">약국 찾기</p>
+              
             </div>
           <div class="carousel-item">
               <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-              <p style="text-align: center; font-weight:bold;">응급실 찾기</p>
+          
             </div>
           <div class="carousel-item">
             <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-            <p style="text-align: center; font-weight:bold;">검진기관 찾기</p>
+         
           </div>
         <div class="carousel-item">
           <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-          <p style="text-align: center; font-weight:bold;">구입가능한 의약품</p>
+     
         </div>
       <div class="carousel-item">
         <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-        <p style="text-align: center; font-weight:bold;">의약품복용법</p>
+       
       </div>
       <div class="carousel-item">
         <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-        <p style="text-align: center; font-weight:bold;">의약품 사용법</p>
+     
       </div>
     <div class="carousel-item">
       <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-      <p style="text-align: center; font-weight:bold;">통계자료</p>
+     
   </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

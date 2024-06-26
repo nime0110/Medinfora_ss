@@ -194,7 +194,26 @@
     nav ul {
         width: 480px;
     }
+ /* 승혜 작업 영역 START */
 
+    .sh_card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px; 
+        padding-right: 50px; 
+    }
+
+    .sh_card-inner {
+        width: calc(90% - 10px); 
+        box-sizing: border-box;
+    }
+
+    .sh-card {
+        height: 198px; 
+    }
+   
+    /* 승혜 작업 영역 END */
 }
 
 
