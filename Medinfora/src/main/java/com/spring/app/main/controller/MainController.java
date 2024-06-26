@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.main.domain.MemberDTO;
 import com.spring.app.main.service.MainService;
 
 @Controller
@@ -47,34 +49,33 @@ public class MainController {
 		return mav;
 	}
 	
-	@ResponseBody
+	
 	@PostMapping("/loginEnd.bibo")
-	public String loginEnd(HttpServletRequest request) {
+	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
 		
-		int n = 0;
-		JSONObject jsonObj = new JSONObject();
 		try {
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
 			
-			System.out.println(userid);
+			String clientip = request.getRemoteAddr();	// 클라이언트 IP 주소 알아옴
+			
+			// System.out.println(userid);
 			
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);
 			paraMap.put("pwd", pwd);
+			paraMap.put("clientip", clientip);
+
+			mav = service.loginEnd(paraMap, mav, request);
 			
-			
-			n = service.loginEnd(paraMap);
-			System.out.println("확인용 "+n);
-			
-			jsonObj.put("n", n);
-		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return jsonObj.toString();
+		
+		
+		return mav;
 	}
 	
 	@GetMapping("/notice.bibo")

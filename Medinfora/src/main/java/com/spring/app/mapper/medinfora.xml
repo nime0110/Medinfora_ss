@@ -5,13 +5,39 @@
 
 <mapper namespace="mediinfora">
 	
-	<!-- 로그인 처리 -->
-	<select id="loginEnd" parameterType="HashMap">
-		select count(*)
-		from member
+	<!-- 로그인 유저 정보 가져오기 -->
+	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx
+		       , pwdUpdategap
+		       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
+		FROM
+		(
+		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
+		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
+		    from member
+		    where (midx between 0 and 2) and userid = #{userid} and pwd = #{pwd}
+		)M
+		CROSS JOIN
+		(
+		    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+		    from loginlog
+		    where userid = #{userid}
+		) L
 	</select>
 	
 	
+	<!-- 회원코드 변경 (휴먼처리) -->
+	<update id="updatemIdx" parameterType="HashMap">
+		update member set mIdx = to_number(#{idx})
+		where userid = #{userid}
+	</update>
+	
+	
+	<!-- 로그인 유저 ip 기록 -->
+	<insert id="insert_log" parameterType="HashMap">
+		insert into loginlog(userid, ip, registerday)
+		values(#{userid}, #{clientip}, sysdate)
+	</insert>
 	
 	
 </mapper>
