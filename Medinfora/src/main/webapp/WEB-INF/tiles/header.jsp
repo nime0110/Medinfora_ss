@@ -25,14 +25,13 @@
 	        }
     	});
 		
-		
-		
-		
-		
 	});
-<div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
 </script>
+
+<link rel="stylesheet" href="<%=ctxPath %>/resources/css/header.css">
+
+<div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
 <header>
   <div class="header-container">

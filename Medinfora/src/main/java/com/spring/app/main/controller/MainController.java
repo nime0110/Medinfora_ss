@@ -47,7 +47,6 @@ public class MainController {
 		return mav;
 	}
 	
-	
 	@ResponseBody
 	@PostMapping("/loginEnd.bibo")
 	public String loginEnd(HttpServletRequest request) {
@@ -74,8 +73,6 @@ public class MainController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		
 		return jsonObj.toString();
 	}
