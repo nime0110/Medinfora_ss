@@ -8,7 +8,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>MEINFORA</title>
+	<title>MEDINFORA</title>
 	
 	<%-- Jquery --%>
 	<script src="<%= ctxPath%>/resources/node_modules/jquery/dist/jquery.min.js"></script>
@@ -38,6 +38,7 @@
 
 <body>
 	<tiles:insertAttribute name="header" />
+	<div style="margin-top: 75px;"></div>
 	<tiles:insertAttribute name="content" />
 	<tiles:insertAttribute name="footer" />
 </body>

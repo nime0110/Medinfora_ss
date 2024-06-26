@@ -25,21 +25,17 @@
 	        }
     	});
 		
-		
-		
-		
-		
 	});
-	
-	
-
-
 
 </script>
 
+<link rel="stylesheet" href="<%=ctxPath %>/resources/css/header.css">
+
+<div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
+
 <header>
   <div class="header-container">
-    <div class="logo">
+    <div class="logo" id="logoimport">
       <img src="<%= ctxPath%>/resources/img/logo-main.png" alt="LOGO">
     </div>
     <button class="navbar-toggler" type="button" onclick="toggleMenu()">
@@ -49,7 +45,7 @@
       <ul id="navbarNav">
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">의료 통계 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">진료 예약하기</a></li>
+        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>
     </nav>
     <div class="input_text">

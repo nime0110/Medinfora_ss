@@ -1,5 +1,7 @@
 window.onload = () => {
 
+    const ctxPath = $("#getCtxPath").text();
+
     // 혜정 START
 
     //noticeContentSubstr();
@@ -61,6 +63,12 @@ window.onload = () => {
         hover.removeClass("ahover");
 
     })
+
+    $("#logoimport").on("click",function(){
+
+        location.href = `${ctxPath}/index.bibo`;
+
+    });
     
     // 동혁 END
 
