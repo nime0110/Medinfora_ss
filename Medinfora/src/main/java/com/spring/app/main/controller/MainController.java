@@ -77,10 +77,6 @@ public class MainController {
 		return jsonObj.toString();
 	}
 	
-	@GetMapping("/notice.bibo")
-	public String notice() {
-		
-		return "notice";
-	}
+	
 	
 }

@@ -293,7 +293,7 @@
         <span>전해드립니다.</span>
       </p>
     </div>
-    <a href= "" class="hj_notice_plus nanum-n size-s">더 많은 소식 보기
+    <a href= "<%=ctxPath%>/notice/notice.bibo" class="hj_notice_plus nanum-n size-s">더 많은 소식 보기
         <i class="fa-solid fa-plus hj_plusicon"></i>
     </a>
   </div>
