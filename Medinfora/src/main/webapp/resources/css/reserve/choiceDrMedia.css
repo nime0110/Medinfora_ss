@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+@media (max-width: 768px) {
+
+    .hj_custom-checkbox-label{
+        display: none;
+    }
+
+    .reserve_licontent{
+        font-size: 1.42rem !important;
+    }
+
+}
