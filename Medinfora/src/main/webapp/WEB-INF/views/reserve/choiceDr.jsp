@@ -4,7 +4,7 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources//css/reserve/choiceDr.css" />
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources//css/reserve/choiceDrMedia.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDrMedia.css" />
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
 
@@ -152,8 +152,8 @@
 	        </ul>
 	    </div>
 	    <div class="div_proc text-center mb-5">
-	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="">취소</button>
-	        <button type="button" class="btn_proc btn btn-lg" onclick="">다음</button>
+	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">취소</button>
+	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:location.href='<%= ctxPath%>/reserve/choiceDay.bibo'">다음</button>
 	    </div>
 	</div>
 </div>

@@ -15,4 +15,12 @@ public class ReserveController {
 		return mav;
 	}
 	
+	@GetMapping("/reserve/choiceDay.bibo")	// 나중에 POST 로 변경할 예정
+	public ModelAndView choiceDay(ModelAndView mav) {
+		
+		mav.setViewName("reserve/choiceDay.tiles");
+		
+		return mav;
+	}
+	
 }
