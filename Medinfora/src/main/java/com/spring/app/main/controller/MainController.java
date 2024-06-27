@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.common.KakaoApi;
 import com.spring.app.main.domain.MemberDTO;
 //import com.spring.app.common.Myutil;
 //import com.spring.app.main.domain.HospitalDTO;
@@ -24,6 +25,10 @@ public class MainController {
 
 	@Autowired
 	private MainService service;
+	
+	@Autowired
+	private KakaoApi KakaoApi;
+	
 	
 	@RequestMapping(value="/")
 	public ModelAndView commom(ModelAndView mav) {
@@ -69,45 +74,22 @@ public class MainController {
 	}
 	
 	// 로그인 창 띄우기
-	@RequestMapping(value="/login.bibo")
+	@RequestMapping(value="/login/login.bibo")
 	public ModelAndView login(ModelAndView mav) {
 		
-		mav.setViewName("login");
+		mav.addObject("kakaoApiKey", KakaoApi.getKakaoApiKey());
+		mav.addObject("RedirectUri", KakaoApi.getRedirectUri());
+		
+		mav.setViewName("/login/login");
 		
 		return mav;
 	}
 	
 	
-/*
-	@PostMapping("/loginEnd.bibo")
-	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
-		
-		try {
-			String userid = request.getParameter("userid");
-			String pwd = request.getParameter("pwd");
-			
-			String clientip = request.getRemoteAddr();	// 클라이언트 IP 주소 알아옴
-			
-			// System.out.println(userid);
-			
-			
-			Map<String, String> paraMap = new HashMap<>();
-			paraMap.put("userid", userid);
-			paraMap.put("pwd", pwd);
-			paraMap.put("clientip", clientip);
-
-			mav = service.loginEnd(paraMap, mav, request);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return mav;
-	}
-*/	
 	
+	// 로그인
 	@ResponseBody
-	@PostMapping("/loginEnd.bibo")
+	@PostMapping("/login/loginEnd.bibo")
 	public String loginEnd(HttpServletRequest request) {
 		
 		JSONObject jsonObj = new JSONObject();
@@ -157,6 +139,40 @@ public class MainController {
 		}
 		
 		return jsonObj.toString();
+	}
+	
+	// 로그아웃
+	@GetMapping("/login/logout.bibo")
+	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+		
+		mav = service.logout(mav, request);
+		return mav;
+	}
+	
+	
+	// 카카오 로그인
+	@RequestMapping(value="/login/kakaoLogin.bibo")
+	public String kakaoLogin(HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		// System.out.println(code);
+		
+		String accessToken = KakaoApi.getAccessToken(code);
+		// System.out.println("확인용 accessToken"+accessToken);
+		
+		Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
+		
+		return "/login/login";
+	}
+	
+	
+	
+	
+
+	@GetMapping("/notice.bibo")
+	public String notice() {
+		
+		return "notice";
 	}
 	
 }

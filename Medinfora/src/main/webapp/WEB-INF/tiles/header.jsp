@@ -11,7 +11,7 @@
 		// 로그인창 열기
 		$("a#loginModal").click(function(){
 			$("div#loginModalArr").fadeIn();
-		 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login.bibo');
+		 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login/login.bibo');
 		});
 		
 		// 로그인창 닫기
@@ -39,7 +39,7 @@
 			 if(userid != null && pwd != null ){
 				 
 				 $.ajax({
-					url:"<%=ctxPath%>/loginEnd.bibo",
+					url:"<%=ctxPath%>/login/loginEnd.bibo",
 					type:"post",
 					data:{"userid":userid
 						 ,"pwd":pwd},
@@ -48,10 +48,11 @@
 						
 						if(json.isExistUser == "true"){
 							if(Number(json.pwdchangegap) >= 3){
-								alert(json.message);
+								alert("비밀번호를 변경하신지 3개월이 지났습니다.");
 								// 변경하는 페이지로 이동 만들어야 함
 							}
 							else{
+								alert(json.message);
 								location.href="javascript:location.reload(true)";
 							}
 							
@@ -69,13 +70,11 @@
 					},
 					error: function(request, status, error){
 			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			     	}	
+			     	}
 					
 				 });
 				 
 			 }
-			 
-			 
 			 
 			 
 		});
@@ -98,7 +97,7 @@
     </button>
     <nav>
       <ul id="navbarNav">
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">의료 통계 보기</a></li>
+        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/statistics/medistatistic.bibo">의료 통계 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>
@@ -122,7 +121,7 @@
     <%-- 로그아웃 추가해야함 --%>
     <c:if test="${not empty sessionScope.loginuser}">
 	    <div class="login">
-	      <a id="loginModal" class="nanum-b size-s intarget">로그아웃</a>
+	      <a href="<%=ctxPath%>/login/logout.bibo" class="nanum-b size-s intarget">로그아웃</a>
 	    </div>
     </c:if>
     
@@ -160,11 +159,14 @@
   </ul>
 </aside>
 
-<!-- 로그인 모달 추가 시작 -->
-<div id="loginModalArr" class="jh_login_modal">
-  <div class="jh_modal_content rounded-5">
-    <span class="jh_login_close">&times;</span>
-    <iframe id="loginPage" src="<%=ctxPath %>/login.bibo" frameborder="0"></iframe>
-  </div>
-</div>
-<!-- 로그인 모달 추가 끝 -->
+
+<%-- 로그인 모달 추가 시작 --%>
+<c:if test="${empty sessionScope.loginuser}">
+	<div id="loginModalArr" class="jh_login_modal">
+	  <div class="jh_modal_content rounded-5">
+	    <span class="jh_login_close">&times;</span>
+	    <iframe id="loginPage" src="<%=ctxPath %>/login/login.bibo" frameborder="0"></iframe>
+	  </div>
+	</div>
+</c:if>
+<%-- 로그인 모달 추가 끝 --%>

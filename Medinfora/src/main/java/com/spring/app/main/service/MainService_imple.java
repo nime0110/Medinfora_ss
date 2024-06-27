@@ -92,6 +92,25 @@ public class MainService_imple implements MainService {
 
 		return dao.hpApiInputer(hospitalDTO);
 	}
+
+	
+	// 로그아웃 처리
+	@Override
+	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		String message = "로그아웃 되었습니다.";
+		String loc = request.getContextPath()+"/index.bibo";
+		
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		
+		return mav;
+	}
 	
 	
 	

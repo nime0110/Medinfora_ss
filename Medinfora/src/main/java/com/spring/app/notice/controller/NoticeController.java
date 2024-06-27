@@ -10,6 +10,7 @@ public class NoticeController {
 	public ModelAndView notice(ModelAndView mav) {
 		
 		mav.setViewName("notice/noticeList.tiles");
+		 //mav.setViewName("notice/noticeWrite.tiles");
 		//mav.setViewName("notice/noticeView.tiles");
 		// /WEB-INF/views/notice/notice.jsp
 		return mav;
