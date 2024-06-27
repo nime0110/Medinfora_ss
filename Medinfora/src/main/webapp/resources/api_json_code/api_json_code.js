@@ -1,6 +1,4 @@
 
-// 현재 spring tool suite 3에서 사용이 불가능한 문법이라 vs코드로 실행해야 합니다
-
 function xmlToJson(xml) {
    
     var obj = {};
