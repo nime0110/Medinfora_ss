@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,6 +77,7 @@ public class MainController {
 	}
 	
 	
+/*
 	@PostMapping("/loginEnd.bibo")
 	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
 		
@@ -98,11 +101,68 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return mav;
 	}
+*/	
 	
+	@ResponseBody
+	@PostMapping("/loginEnd.bibo")
+	public String loginEnd(HttpServletRequest request) {
+		
+		JSONObject jsonObj = new JSONObject();
+		String isExistUser = "";
+		String message = "로그인을 실패하였습니다.";
+		
+		try {
+			
+			String userid = request.getParameter("userid");
+			String pwd = request.getParameter("pwd");
+			
+			String clientip = request.getRemoteAddr();
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("userid", userid);
+			paraMap.put("pwd", pwd);
+			paraMap.put("clientip", clientip);
+			
+			MemberDTO loginuser = service.loginEnd(paraMap, request);
+			
+			if(loginuser != null) {
+				
+				// 휴면 회원인 경우
+				if(loginuser.getmIdx() == 3 || loginuser.getmIdx() == 4) {
+					message = "로그인을 한지 1년이 경과하여 휴면 처리되었습니다. \\n휴면해제 페이지로 이동합니다.";
+					isExistUser = "freeze";
+				}
+				// 정지 회원인 경우
+				else if(loginuser.getmIdx() == 8) {
+					message = "이용 정지된 회원입니다. \\n관리자에게 문의 바랍니다.";
+					isExistUser = "suspended";
+					
+				}
+				else {
+					message = "로그인 성공하였습니다.";
+					isExistUser = "true";
+					jsonObj.put("pwdchangegap", loginuser.getPwdchangegap());
+				}
+				
+			}
+			
+			jsonObj.put("message", message);
+			jsonObj.put("isExistUser", isExistUser);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return jsonObj.toString();
+	}
+	
+	
+	
+	
+	
+
 	@GetMapping("/notice.bibo")
 	public String notice() {
 		

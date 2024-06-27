@@ -11,7 +11,7 @@ public class MemberDTO {
 	private String birthday;		// 생년월일
 	private String mobile;			// 연락처(양방향 암호화)
 	private int gender;				// 성별
-	private int mIdx;				// 회원코드
+	private int mIdx;				// 회원코드 초기값 0(관리자 이므로) 무조건 유효성 해야함
 	private String registerday;		// 가입일자
 	// private String pwdUpdateday;	// 비밀번호 업데이트 날짜
 	
