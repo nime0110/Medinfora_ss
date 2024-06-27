@@ -145,35 +145,37 @@
 
 function goLogin(){
 	
-	const userid = $("input:text[name='userid']").val();
-	const pwd = $("input:password[name='pwd']").val();
-	console.log(userid);
-	console.log(pwd);
+	const userid = $("input:text[name='userid']").val().trim();
+	const pwd = $("input:password[name='pwd']").val().trim();
 	
-	$.ajax({
-		url:"<%= ctxPath%>/loginEnd.bibo",
-		type:"post",
-		data:{"userid": userid,
-			  "pwd": pwd},
-		dataType:"json",
-		success:function(json){
-			
-			if(json.n == 1){
-				alert("로그인 성공");
-			}
-			else{
-				alert("로그인 실패");
-			}
-		},
-		error: function(request, status, error){
-            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-     	}
+	if(userid == ""){
+		alert("아이디를 입력하세요.");
+		$("input:text[name='userid']").focus();
+		return;
+	}
+	
+	if(pwd == ""){
+		alert("비밀번호를 입력하세요.");
+		$("input:password[name='pwd']").focus();
+		return;
+	}
+	
+	if(userid != "" && pwd != ""){
+		
+		<%-- 
+		const frm = document.loginFrm;
+		
+		frm.method = "post";
+		frm.action = "<%=ctxPath%>/loginEnd.bibo";
+		frm.submit();
+		--%>
+		
+		const loginData = {"userid":userid, "pwd":pwd};
+		
+		window.parent.postMessage(loginData, "http://localhost:9099");
 		
 		
-		
-		
-		
-	});
+	}
 	
 	
 }
@@ -187,14 +189,13 @@ function goLogin(){
 
 <div class="loginContainer">
     
-  <form class="loginFrm">
+  <form name="loginFrm">
     <h2 class="nanum-eb size-n my-4">Log in</h2>
     <div class="magin_info">
-      <input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요." />
-
+      <input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요."  maxlength="20"/>
     </div>
     <div class="magin_info">
-      <input class="form-control nanum-b size-s rounded-pill login_insert" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." />
+      <input class="form-control nanum-b size-s rounded-pill login_insert" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." maxlength="18"/>
     </div>
     <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
     <div class="login_idpw_register">
