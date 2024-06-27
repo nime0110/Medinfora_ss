@@ -49,7 +49,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-         <h4 class="nanum-n sh_font">병원찾기</h4>
+         <h4 class="nanum-n sh_font" style="font-weight: bold;">병원찾기</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
@@ -64,7 +64,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
-         <h4 class="nanum-n sh_font">약국 찾기</h4>
+         <h4 class="nanum-n sh_font" style="font-weight: bold;">약국 찾기</h4>
         </div>
         <div class="sh_card-text">
           <h4  class="sh_card-title">약국 찾기 <i class="bi bi-arrow-right"></i></h4>
@@ -81,7 +81,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
-          <h4 class="nanum-n sh_font">응급실 찾기</h4>
+          <h4 class="nanum-n sh_font" style="font-weight: bold;">응급실 찾기</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
@@ -98,7 +98,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
-          <h4 class="nanum-n sh_font">검진기관 찾기</h4>
+          <h4 class="nanum-n sh_font" style="font-weight: bold;">검진기관 찾기</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">검진기관 찾기 <i class="bi bi-arrow-right"></i></h4>
@@ -117,7 +117,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-         <h4 class="nanum-s sh_font ">구입 가능한 의약품</h4>
+         <h4 class="nanum-s sh_font " style="font-weight: bold;">구입 가능한 의약품</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
@@ -129,7 +129,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" alt="#">
-          <h4 class="nanum-n sh_font">의약품 복용법</h4>
+          <h4 class="nanum-n sh_font" style="font-weight: bold;">의약품 복용법</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
@@ -142,10 +142,10 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-        <h4 class="nanum-n sh_font">의약품 사용법</h4>
+        <h4 class="nanum-n sh_font"style="font-weight: bold;">의약품 사용법</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
             <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
@@ -155,10 +155,10 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-         <h4 class="nanum-n sh_font">통계 자료</h4>
+         <h4 class="nanum-n sh_font" style="font-weight: bold;">통계 자료</h4>
         </div>
         <div class="sh_card-text">
-          <h4 class="card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
+          <h4 class="sh_card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
           <div class="img-content">
 
             <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
@@ -293,7 +293,7 @@
         <span>전해드립니다.</span>
       </p>
     </div>
-    <a href= "" class="hj_notice_plus nanum-n size-s">더 많은 소식 보기
+    <a href= "<%=ctxPath%>/notice/noticeList.bibo" class="hj_notice_plus nanum-n size-s">더 많은 소식 보기
         <i class="fa-solid fa-plus hj_plusicon"></i>
     </a>
   </div>

@@ -162,13 +162,4 @@ public class MainController {
 	
 	
 	
-	
-	
-
-	@GetMapping("/notice.bibo")
-	public String notice() {
-		
-		return "notice";
-	}
-	
 }
