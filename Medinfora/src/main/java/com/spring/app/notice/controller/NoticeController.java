@@ -6,10 +6,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class NoticeController {
 	
-	@GetMapping(value = "/notice/notice.bibo")
+	@GetMapping(value = "/notice/noticeList.bibo")
 	public ModelAndView notice(ModelAndView mav) {
 		
-		mav.setViewName("notice/notice.tiles");
+		mav.setViewName("notice/noticeList.tiles");
+		//mav.setViewName("notice/noticeView.tiles");
 		// /WEB-INF/views/notice/notice.jsp
 		return mav;
 	
