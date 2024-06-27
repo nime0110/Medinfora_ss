@@ -68,7 +68,7 @@ public class MainController {
 		return mav;
 	}
 	
-	// 로그인 창 띄우기
+	// 濡쒓렇�씤 李� �쓣�슦湲�
 	@RequestMapping(value="/login.bibo")
 	public ModelAndView login(ModelAndView mav) {
 		

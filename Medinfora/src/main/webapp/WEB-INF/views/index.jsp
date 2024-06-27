@@ -107,7 +107,6 @@
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
           <div class="img-content">
-
             <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
           </div>
         </div>
