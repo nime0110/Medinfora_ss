@@ -188,7 +188,7 @@ function goLogin(){
 
 function loginWithKakao(){
 	
-	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/${requestScope.RedirectUri}";
+	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}";
 	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=400";
 	
 	window.open(url, 'url', setting);

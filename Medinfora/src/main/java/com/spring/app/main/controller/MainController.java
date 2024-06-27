@@ -122,16 +122,18 @@ public class MainController {
 	
 	
 	// 카카오 로그인
-	@GetMapping("/login/kakaoLogin.bibo")
-	public ModelAndView kakaoLogin(ModelAndView mav, HttpServletRequest request) {
+	@RequestMapping(value="/login/kakaoLogin.bibo")
+	public String kakaoLogin(HttpServletRequest request) {
 		
 		String code = request.getParameter("code");
+		// System.out.println(code);
 		
+		String accessToken = KakaoApi.getAccessToken(code);
+		// System.out.println("확인용 accessToken"+accessToken);
 		
+		Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
 		
-		
-		
-		return mav;
+		return "/login/login";
 	}
 	
 	
