@@ -52,6 +52,7 @@
 								// 변경하는 페이지로 이동 만들어야 함
 							}
 							else{
+								$("div#loginModalArr").fadeOut();
 								location.href="javascript:location.reload(true)";
 							}
 							
@@ -69,14 +70,11 @@
 					},
 					error: function(request, status, error){
 			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			     	}	
+			     	}
 					
 				 });
 				 
 			 }
-			 
-			 
-			 
 			 
 		});
 		
@@ -122,7 +120,7 @@
     <%-- 로그아웃 추가해야함 --%>
     <c:if test="${not empty sessionScope.loginuser}">
 	    <div class="login">
-	      <a id="loginModal" class="nanum-b size-s intarget">로그아웃</a>
+	      <a href="<%=ctxPath%>/logout.bibo" class="nanum-b size-s intarget">로그아웃</a>
 	    </div>
     </c:if>
     

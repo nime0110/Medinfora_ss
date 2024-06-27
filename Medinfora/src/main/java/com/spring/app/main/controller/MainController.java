@@ -77,6 +77,7 @@ public class MainController {
 	}
 */	
 	
+	// 로그인
 	@ResponseBody
 	@PostMapping("/loginEnd.bibo")
 	public String loginEnd(HttpServletRequest request) {
@@ -130,7 +131,13 @@ public class MainController {
 		return jsonObj.toString();
 	}
 	
-	
+	// 로그아웃
+	@GetMapping("/logout.bibo")
+	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+		
+		mav = service.logout(mav, request);
+		return mav;
+	}
 	
 	
 	
