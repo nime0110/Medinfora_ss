@@ -1,16 +1,15 @@
 package com.spring.app.main.service;
 
-import java.security.GeneralSecurityException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.MemberDTO;
 import com.spring.app.main.model.MainDAO;
 
@@ -115,6 +114,15 @@ public class MainService_imple implements MainService {
 		
 		return mav;
 		
+	}
+
+
+	@Override
+	public int hpApiInputer(HospitalDTO hospitalDTO) {
+		
+		System.out.println(hospitalDTO.getHpname());
+		
+		return 1;
 	}
 	
 	
