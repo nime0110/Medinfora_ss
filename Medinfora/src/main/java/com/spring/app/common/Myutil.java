@@ -75,8 +75,8 @@ public class Myutil {
 				hpdto.setHptel((String)jsonObj.get("hptel"));
 				hpdto.setClasscode((String)jsonObj.get("classcode"));
 				hpdto.setAgency((String)jsonObj.get("agency"));
-				hpdto.setWgs84lon((String)jsonObj.get("wgs84lon"));
-				hpdto.setWgs84lat((String)jsonObj.get("wgs84lat"));
+				hpdto.setWgs84lon((String)jsonObj.get("wgs84Lon"));
+				hpdto.setWgs84lat((String)jsonObj.get("wgs84Lat"));
 				hpdto.setStarttime1((String)jsonObj.get("starttime1"));
 				hpdto.setStarttime2((String)jsonObj.get("starttime2"));
 				hpdto.setStarttime3((String)jsonObj.get("starttime3"));

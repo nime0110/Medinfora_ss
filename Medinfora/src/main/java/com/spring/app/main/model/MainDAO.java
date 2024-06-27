@@ -2,12 +2,16 @@ package com.spring.app.main.model;
 
 import java.util.Map;
 
+import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.MemberDTO;
 
 public interface MainDAO {
 
 	// DAO 테스트용 메소드
 	public String daotest();
+	
+	// 병원정보 API 입력용 메소드 
+	public int hpApiInputer(HospitalDTO hospitalDTO);
 
 
 	// 로그인 유저 정보 가져오기
@@ -18,5 +22,7 @@ public interface MainDAO {
 
 	// 로그인 유저 ip 기록
 	public void insert_log(Map<String, String> paraMap);
+
+	
 	
 }

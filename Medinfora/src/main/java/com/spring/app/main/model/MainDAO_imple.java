@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.MemberDTO;
 
 @Repository
@@ -47,6 +48,12 @@ public class MainDAO_imple implements MainDAO{
 	public void insert_log(Map<String, String> paraMap) {
 		sqlsession.insert("mediinfora.insert_log", paraMap);
 		
+	}
+
+	// 병원정보 API 입력용 메소드
+	@Override
+	public int hpApiInputer(HospitalDTO hospitalDTO) {
+		return sqlsession.insert("hpApiInputer",hospitalDTO);
 	}
 	
 	

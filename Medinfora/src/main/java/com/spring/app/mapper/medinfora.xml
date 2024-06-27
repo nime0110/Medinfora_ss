@@ -25,13 +25,11 @@
 		) L
 	</select>
 	
-	
 	<!-- 회원코드 변경 (휴먼처리) -->
 	<update id="updatemIdx" parameterType="HashMap">
 		update member set mIdx = to_number(#{idx})
 		where userid = #{userid}
 	</update>
-	
 	
 	<!-- 로그인 유저 ip 기록 -->
 	<insert id="insert_log" parameterType="HashMap">
@@ -39,5 +37,14 @@
 		values(#{userid}, #{clientip}, sysdate)
 	</insert>
 	
+	<!-- 병원정보 입력 API -->
+	<insert id="hpApiInputer" parameterType="HospitalDTO">
+		INSERT INTO HOSPITAL (HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY, WGS84LON, WGS84LAT,
+		STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6, STARTTIME7, STARTTIME8,
+        ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8)
+		VALUES (seq_hidx.nextval, #{hpname}, #{hpaddr}, #{hptel}, #{classcode}, #{agency}, #{wgs84lon}, #{wgs84lat}, 
+		#{starttime1}, #{starttime2}, #{starttime3}, #{starttime4}, #{starttime5}, #{starttime6}, #{starttime7}, #{starttime8},
+		#{endtime1}, #{endtime2}, #{endtime3}, #{endtime4}, #{endtime5}, #{endtime6}, #{endtime7}, #{endtime8})
+	</insert>
 	
 </mapper>

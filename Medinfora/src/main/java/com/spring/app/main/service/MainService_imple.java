@@ -120,9 +120,9 @@ public class MainService_imple implements MainService {
 	@Override
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 		
-		System.out.println(hospitalDTO.getHpname());
+		System.out.print(" "+hospitalDTO.getHpname());
 		
-		return 1;
+		return dao.hpApiInputer(hospitalDTO);
 	}
 	
 	

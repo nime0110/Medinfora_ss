@@ -1,7 +1,7 @@
 package com.spring.app.main.controller;
 
 import java.util.HashMap;
-import java.util.List;
+//import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.app.common.Myutil;
-import com.spring.app.main.domain.HospitalDTO;
+//import com.spring.app.common.Myutil;
+//import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.service.MainService;
 
 @Controller
@@ -25,7 +25,7 @@ public class MainController {
 	@RequestMapping(value="/")
 	public ModelAndView commom(ModelAndView mav) {
 		
-		// API 입력 영역
+		/* API 입력 영역
 		if(true) {
 			try {
 				
@@ -37,7 +37,7 @@ public class MainController {
 				int totalSize = hpdtoList.size();
 				for(int i=0;i<hpdtoList.size();i++) {
 					
-					System.out.print("진행상황 ["+i+"/"+totalSize+"]");
+					System.out.print("진행상황 ["+(i+1)+"/"+totalSize+"]");
 					if(service.hpApiInputer(hpdtoList.get(i))==1) {
 						System.out.println("...성공");
 					}else {
@@ -50,7 +50,7 @@ public class MainController {
 				e.printStackTrace();
 			}
 		}
-		//
+		*/
 		
 		mav.setViewName("redirect:index.bibo");
 		
