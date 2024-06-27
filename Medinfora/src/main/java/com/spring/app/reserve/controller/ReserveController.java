@@ -1,5 +1,8 @@
 package com.spring.app.reserve.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ReserveController {
 
 	@GetMapping("/reserve/choiceDr.bibo")
-	public ModelAndView choiceDr(ModelAndView mav) {
+	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		

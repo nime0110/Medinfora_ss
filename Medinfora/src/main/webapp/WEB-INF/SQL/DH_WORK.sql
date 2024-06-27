@@ -12,4 +12,5 @@ nominvalue
 nocycle
 nocache;
 
-select * from HOSPITAL where starttime8 is not null;
+select * from HOSPITAL where HPTEL like '070'||'%';
+
