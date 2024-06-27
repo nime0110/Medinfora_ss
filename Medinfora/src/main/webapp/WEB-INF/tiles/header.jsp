@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%String ctxPath = request.getContextPath();%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
 
@@ -24,6 +25,60 @@
             	$("div#loginModalArr").fadeOut();
 	        }
     	});
+		
+		
+		$(window).on("message", function(e){
+			 const loginData = e.originalEvent.data;
+			 
+			 const userid = loginData.userid;
+			 const pwd = loginData.pwd;
+			 
+			 // console.log(userid);
+			 // console.log(pwd);
+			 
+			 if(userid != null && pwd != null ){
+				 
+				 $.ajax({
+					url:"<%=ctxPath%>/loginEnd.bibo",
+					type:"post",
+					data:{"userid":userid
+						 ,"pwd":pwd},
+					dataType:"json",
+					success:function(json){
+						
+						if(json.isExistUser == "true"){
+							if(Number(json.pwdchangegap) >= 3){
+								alert(json.message);
+								// 변경하는 페이지로 이동 만들어야 함
+							}
+							else{
+								location.href="javascript:location.reload(true)";
+							}
+							
+						}
+						else if(json.isExistUser == "freeze"){
+							alert(json.message);
+							// 휴면 해제하는 페이지로 이동 만들어야함
+						}
+						else if(json.isExistUser == "suspended"){
+							alert(json.message);
+						}
+						else{ // 로그인 실패
+							alert(json.message);
+						}
+					},
+					error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			     	}	
+					
+				 });
+				 
+			 }
+			 
+			 
+			 
+			 
+		});
 		
 	});
 
@@ -57,9 +112,20 @@
       <span class="DH-section-searchBtn" id="btnSearch"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i>
       </span>
     </div>
-    <div class="login">
-      <a id="loginModal" class="nanum-b size-s intarget">로그인</a>
-    </div>
+    
+    <%-- 로그인 여부에 따라 버튼 내용 달라짐 --%>
+    <c:if test="${empty sessionScope.loginuser}">
+	    <div class="login">
+	      <a id="loginModal" class="nanum-b size-s intarget">로그인</a>
+	    </div>
+    </c:if>
+    <%-- 로그아웃 추가해야함 --%>
+    <c:if test="${not empty sessionScope.loginuser}">
+	    <div class="login">
+	      <a id="loginModal" class="nanum-b size-s intarget">로그아웃</a>
+	    </div>
+    </c:if>
+    
   </div>
   <div class="pop_search fadeout">
     <div class="pop_title nanum-n">인기검색어</div>
