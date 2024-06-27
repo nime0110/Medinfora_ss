@@ -83,6 +83,15 @@ public class MainService_imple implements MainService {
 		}
 		return loginuser;
 	}
+
+
+	@Override
+	public int hpApiInputer(HospitalDTO hospitalDTO) {
+
+		System.out.print(" "+hospitalDTO.getHpname());
+
+		return dao.hpApiInputer(hospitalDTO);
+	}
 	
 	
 	
