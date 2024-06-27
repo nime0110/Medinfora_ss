@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
 
 <div class="hj_container">
-	<div class="reserveContent">
+	<div class="reserveContent pt-5">
 	    <div class="reserveTitlediv mt-5 pb-3">
 	        <span class="reserve_title nanum-b size-b">온라인 진료예약</span>
 	    </div>
