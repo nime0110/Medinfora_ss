@@ -21,9 +21,56 @@ public class MainService_imple implements MainService {
 	
 	// 로그인 처리
 	@Override
-	public int loginEnd(Map<String, String> paraMap) {
-		int n = dao.loginEnd(paraMap);
-		return n;
+	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
+		
+		MemberDTO loginuser = dao.getLoginuser(paraMap);
+		// == 로그인 경우의수  == //
+		/*
+			-- 기본 전제 휴먼, 정지 또는 탈퇴 회원이 아님  회원코드 0~2 까지만 불러옴 --
+			1. 로그인12x 비번3 x
+			2. 로그인12x 비번3 o
+			3. 로그인12o 휴먼 x
+		*/
+		try {
+			// 관리자 및  회원만(활동중으로 표시는 되어있지만 휴먼처리 안되있는 유저 포함)
+			if(loginuser != null && loginuser.getmIdx() <= 2) {
+				// 로그인한지 1년 이상되었는데 휴먼처리 안됨
+				if(loginuser.getLastlogingap() >= 12 && (loginuser.getmIdx() == 1 || loginuser.getmIdx() == 2)) {
+					String idx = "0";
+					if(loginuser.getmIdx() == 1) {	// 일반
+						idx = "3";
+						loginuser.setmIdx(3);
+						dao.updatemIdx(paraMap.get("userid"), idx);
+					}
+					else if(loginuser.getmIdx() == 2) {	// 의료
+						idx = "4";
+						loginuser.setmIdx(4);
+						dao.updatemIdx(paraMap.get("userid"), idx);
+					}
+				}
+				else { // 정상 활동중인 회원
+					// 비밀번호 변경 3개월 지남  >> 비밀번호 알림은 프론트에서 해줌
+					dao.insert_log(paraMap);
+					/*
+					나중에 회원가입 후 다시 품 ------------수정사항
+					// 로그인 정상 유저
+					if(loginuser.getmIdx()==0 || loginuser.getmIdx()==1 || loginuser.getmIdx()==2) {
+						String email = aES256.decrypt(loginuser.getEmail());
+						String mobile = aES256.decrypt(loginuser.getMobile());
+						
+						loginuser.setEmail(email);
+						loginuser.setMobile(mobile);
+					}
+					*/
+					HttpSession sesstion =  request.getSession();
+					sesstion.setAttribute("loginuser", loginuser);
+				}
+			}
+			// 휴먼 회원 및 정지 회원은 프론트에서 처리할 거임
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return loginuser;
 	}
 	
 	
