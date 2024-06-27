@@ -83,7 +83,12 @@
  /* 승혜 작업 영역 START */
  div.sh_subpage{
         display: none;
+      
     }
+ h4.sh_font{
+	font-size: 0.6rem;
+}
+    
     div.sh_car{
         display: block;
     }
@@ -123,7 +128,10 @@
     .sh-card {
         height: 198px; 
     }
-   
+    h4.sh_font{
+	font-size: 0.6rem;
+}
+
     /* 승혜 작업 영역 END */
 }
 

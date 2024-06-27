@@ -1,11 +1,15 @@
 package com.spring.app.main.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.MemberDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -20,11 +24,39 @@ public class MainDAO_imple implements MainDAO{
 	}
 	
 	
-	// 로그인 처리
+	// 로그인 유저 정보
 	@Override
-	public int loginEnd(Map<String, String> paraMap) {
-		int n = sqlsession.selectOne("mediinfora.loginEnd", paraMap);
-		return n;
+	public MemberDTO getLoginuser(Map<String, String> paraMap) {
+		MemberDTO loginuser = sqlsession.selectOne("mediinfora.getLoginuser", paraMap);
+		return loginuser;
 	}
+	
+	
+	// 회원코드 변경 (휴먼처리)
+	@Override
+	public void updatemIdx(String userid, String idx) {
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("userid", userid);
+		paraMap.put("idx", idx);
+		
+		sqlsession.update("mediinfora.updatemIdx", paraMap);
+	}
+
+	// 로그인 유저 ip 기록
+	@Override
+	public void insert_log(Map<String, String> paraMap) {
+		sqlsession.insert("mediinfora.insert_log", paraMap);
+		
+	}
+
+	// 병원정보 API 입력용 메소드
+	@Override
+	public int hpApiInputer(HospitalDTO hospitalDTO) {
+		return sqlsession.insert("hpApiInputer",hospitalDTO);
+	}
+	
+	
+	
 
 }
