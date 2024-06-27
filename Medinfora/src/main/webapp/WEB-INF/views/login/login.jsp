@@ -143,6 +143,25 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	
+	$("input:text[name='userid']").bind("keyup", function(e){
+		if(e.keyCode == 13){ // 엔터를 했을 경우
+			goLogin();
+		}
+	});
+	
+	$("input:password[name='pwd']").bind("keyup", function(e){
+		if(e.keyCode == 13){ // 엔터를 했을 경우
+			goLogin();
+		}
+	});
+	
+	
+});
+
+
+
 function goLogin(){
 	
 	const userid = $("input:text[name='userid']").val().trim();
@@ -161,24 +180,21 @@ function goLogin(){
 	}
 	
 	if(userid != "" && pwd != ""){
-		
-		<%-- 
-		const frm = document.loginFrm;
-		
-		frm.method = "post";
-		frm.action = "<%=ctxPath%>/loginEnd.bibo";
-		frm.submit();
-		--%>
-		
 		const loginData = {"userid":userid, "pwd":pwd};
 		
 		window.parent.postMessage(loginData, "http://localhost:9099");
-		
-		
 	}
+}// end of function goLogin()--
+
+function loginWithKakao(){
+	
+	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}";
+	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=400";
+	
+	window.open(url, 'url', setting);
 	
 	
-}
+}// end of function loginWithKakao()--
 
 
   
@@ -189,31 +205,42 @@ function goLogin(){
 
 <div class="loginContainer">
     
-  <form name="loginFrm">
-    <h2 class="nanum-eb size-n my-4">Log in</h2>
-    <div class="magin_info">
-      <input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요."  maxlength="20"/>
-    </div>
-    <div class="magin_info">
-      <input class="form-control nanum-b size-s rounded-pill login_insert" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." maxlength="18"/>
-    </div>
-    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
-    <div class="login_idpw_register">
-      <button class="nanum-n" type="button">회원가입</button><span class="lineG">
-      </span><button class="nanum-n" type="button">아이디 찾기</button><span class="lineG">
-      </span><button class="nanum-n" type="button">비밀번호 찾기</button>
-    </div>
-  </form>
+	<form name="loginFrm">
+	    <h2 class="nanum-eb size-n my-4">Log in</h2>
+	    <div class="magin_info">
+     		<input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요."  maxlength="20"/>
+	    </div>
+	    <div class="magin_info">
+      		<input class="form-control nanum-b size-s rounded-pill login_insert" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." maxlength="18"/>
+	    </div>
+	    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
+	    <div class="login_idpw_register mb-4">
+      		<button class="nanum-n" type="button">회원가입</button><span class="lineG">
+	      	</span><button class="nanum-n" type="button">아이디 찾기</button><span class="lineG">
+	      	</span><button class="nanum-n" type="button">비밀번호 찾기</button>
+	    </div>
+	</form>
 
-  <button class="rounded-pill" id="kakao_login_btn" type="button" onclick="loginWithKakao()">
-    <svg fill="none" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg">
-        <title>kakao 로고</title>
-        <path clip-rule="evenodd" d="M15 7C10.029 7 6 10.129 6 13.989C6 16.389 7.559 18.505 9.932 19.764L8.933 23.431C8.845 23.754 9.213 24.013 9.497 23.826L13.874 20.921C14.243 20.958 14.618 20.978 15 20.978C19.971 20.978 24 17.849 24 13.989C24 10.129 19.971 7 15 7Z" fill="black" fill-rule="evenodd"></path>
-    </svg>
-    <span class="size nanum-b">카카오 간편 로그인</span>
-  </button>
-  
-
+  	<button class="rounded-pill" id="kakao_login_btn" type="button" onclick="loginWithKakao()">
+	    <svg fill="none" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg">
+	        <title>kakao 로고</title>
+	        <path clip-rule="evenodd" d="M15 7C10.029 7 6 10.129 6 13.989C6 16.389 7.559 18.505 9.932 19.764L8.933 23.431C8.845 23.754 9.213 24.013 9.497 23.826L13.874 20.921C14.243 20.958 14.618 20.978 15 20.978C19.971 20.978 24 17.849 24 13.989C24 10.129 19.971 7 15 7Z" fill="black" fill-rule="evenodd"></path>
+	    </svg>
+	    <span class="size nanum-b">카카오 간편 로그인</span>
+  	</button>
+  	
+  	
+  	<%-- 
+  	<div>
+  		<a type="button" id="kakao_login_btn" href="https://kauth.kakao.com/oauth/authorize">
+	        <svg fill="none" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg">
+		        <title>kakao 로고</title>
+		        <path clip-rule="evenodd" d="M15 7C10.029 7 6 10.129 6 13.989C6 16.389 7.559 18.505 9.932 19.764L8.933 23.431C8.845 23.754 9.213 24.013 9.497 23.826L13.874 20.921C14.243 20.958 14.618 20.978 15 20.978C19.971 20.978 24 17.849 24 13.989C24 10.129 19.971 7 15 7Z" fill="black" fill-rule="evenodd"></path>
+		    </svg>
+		    <span class="size nanum-b">카카오 간편 로그인</span>
+    	</a>
+  	</div>
+	 --%>
 
 </div>
 
