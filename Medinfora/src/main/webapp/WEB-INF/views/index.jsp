@@ -3,6 +3,10 @@
 
 <%String ctxPath = request.getContextPath();%>
 
+	<%-- stylesheet --%>
+	<link rel="stylesheet" href="<%= ctxPath%>/resources/css/index.css"> <%-- 기본 --%>
+	<link rel="stylesheet" href="<%= ctxPath%>/resources/css/indexMedia.css"> <%-- 반응형 --%>
+
   <section class="sim_promo_section">
     <div class="sim_promo_section_banner">
       <div class="sim_promo_section_banner_image">

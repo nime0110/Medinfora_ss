@@ -93,14 +93,7 @@
         display: block;
     }
 
-    /* 지훈 작업 영역 START */
-    .jh_modal_content {
-        /* 모달 영역 */
-        width: 70% !important;
-        margin: 10% auto !important;
-    }
-
-    /* 지훈 작업 영역 END */
+    
 
 }
 
