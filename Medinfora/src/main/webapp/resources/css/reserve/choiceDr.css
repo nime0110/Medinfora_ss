@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 :root {
     --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
     --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
@@ -31,7 +29,7 @@
 }
 
 .reserveTitlediv{
-    border-bottom: 1px solid #bbb;
+    border-bottom: 2px solid var(--text-gray-color);
 }
 
 .reserve_title{
@@ -61,6 +59,20 @@
 .reserve_pagebar{
     border: none;
     list-style: none;
+}
+
+.searchhp{
+	border: solid 1px #636161;
+}
+
+.selectbox{
+    border: solid 1px var(--text-gray-color);
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.smsearchbtn{
+    display: none;
 }
 
 .choicedr{
@@ -122,11 +134,13 @@
     font-weight: bold;
 }
 
-.btn_proc{
+.searchhpbtn
+, .btn_proc{
     border: solid 1px gray;
 }
 
-.btn_proc:hover{
+.searchhpbtn:hover
+, .btn_proc:hover{
     border: solid 1px black;
     background-color: var(--object-lightpurple-color);
 }
