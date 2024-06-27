@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 :root {
     --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
     --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
@@ -31,7 +29,7 @@
 }
 
 .reserveTitlediv{
-    border-bottom: 1px solid #bbb;
+    border-bottom: 2px solid var(--text-gray-color);
 }
 
 .reserve_title{
@@ -63,7 +61,7 @@
     list-style: none;
 }
 
-.search{
+.searchhp{
 	border: solid 1px #636161;
 }
 
@@ -126,8 +124,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-/*=========================================================*/
-/* 페이징바 */
+
 .page-link {
     border: none !important;
     color: black;
@@ -136,16 +133,14 @@
 .nowPage{
     font-weight: bold;
 }
-/*=========================================================*/
 
-.searchbtn
+.searchhpbtn
 , .btn_proc{
     border: solid 1px gray;
 }
 
-.searchbtn:hover
+.searchhpbtn:hover
 , .btn_proc:hover{
     border: solid 1px black;
     background-color: var(--object-lightpurple-color);
 }
-

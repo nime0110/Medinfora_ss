@@ -23,7 +23,7 @@
 	            </li>
 	        </ul>
 	    </div>
-	    <div class="search px-5 my-2">
+	    <div class="searchhp px-5 my-2">
 	        <div class="py-3">
 	            <span class="nanum-b tagloc">병원위치</span>
 	            <select name="city" id="city" class="selectbox">
@@ -48,11 +48,11 @@
 	        <div class="searchHospital py-3 row justify-content-center">
 	            <div class="col-xl-6 row justify-content-around">
 	                <input text="type" class="col-md-8" placeholder="병원명을 입력하세요."/>
-	                <button type="button" class="searchbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
+	                <button type="button" class="searchhpbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
 	            </div>
 	        </div>
 	        <div class="row justify-content-center">
-	            <button type="button" class="col-4 searchbtn smsearchbtn btn btn-sm mb-2">검색</button>
+	            <button type="button" class="col-4 searchhpbtn smsearchbtn btn btn-sm mb-2">검색</button>
 	        </div>
 	    </div>
 	    <div class="choiceDr">
