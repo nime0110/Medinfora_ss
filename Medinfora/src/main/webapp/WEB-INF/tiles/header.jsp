@@ -43,7 +43,7 @@
     </button>
     <nav>
       <ul id="navbarNav">
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">의료 통계 보기</a></li>
+        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/statistics/medistatistic.bibo">의료 통계 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
         <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>

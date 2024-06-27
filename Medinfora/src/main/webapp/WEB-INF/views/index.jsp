@@ -107,7 +107,6 @@
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
           <div class="img-content">
-
             <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
           </div>
         </div>
@@ -117,7 +116,7 @@
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-         <h4 class="nanum-s sh_font ">구입 가능한 의약품</h4>
+          <h4 class="nanum-s sh_font ">구입 가능한 의약품</h4>
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>

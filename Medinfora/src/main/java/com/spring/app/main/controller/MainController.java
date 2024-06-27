@@ -38,7 +38,7 @@ public class MainController {
 		return mav;
 	}
 	
-	// 로그인 창 띄우기
+	// 濡쒓렇�씤 李� �쓣�슦湲�
 	@RequestMapping(value="/login.bibo")
 	public ModelAndView login(ModelAndView mav) {
 		
@@ -66,7 +66,7 @@ public class MainController {
 			
 			
 			n = service.loginEnd(paraMap);
-			System.out.println("확인용 "+n);
+			System.out.println("�솗�씤�슜 "+n);
 			
 			jsonObj.put("n", n);
 		
