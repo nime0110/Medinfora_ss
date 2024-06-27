@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
 
 <div class="hj_container">
-	<div class="reserveContent pt-5">
+	<div class="reserveContent pt-3">
 	    <div class="reserveTitlediv mt-5 pb-3">
 	        <span class="reserve_title nanum-b size-b">온라인 진료예약</span>
 	    </div>
@@ -23,8 +23,37 @@
 	            </li>
 	        </ul>
 	    </div>
-	    <div>
-	    	조회 들어올예정
+	    <div class="search px-5 my-2">
+	        <div class="py-3">
+	            <span class="nanum-b tagloc">병원위치</span>
+	            <select name="city" id="city" class="selectbox">
+	                <option>시/도 선택</option>
+	                <option value="seoul">서울특별시</option>
+	                <option value="busan">부산광역시</option>
+	            </select>
+	            <select name="loc" id="lod" class="selectbox">
+	                <option>시/군구 선택</option>
+	                <option value="seoul">서울</option>
+	                <option value="gungi">경기</option>
+	            </select>
+	        </div>
+	        <div>
+	            <span class="nanum-b">진료과목</span>
+	            <select name="dept" id="dept" class="selectbox">
+	                <option>진료과목 선택</option>
+	                <option value="internal">내과</option>
+	                <option value="surgery">외과</option>
+	            </select>
+	        </div>
+	        <div class="searchHospital py-3 row justify-content-center">
+	            <div class="col-xl-6 row justify-content-around">
+	                <input text="type" class="col-md-8" placeholder="병원명을 입력하세요."/>
+	                <button type="button" class="searchbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
+	            </div>
+	        </div>
+	        <div class="row justify-content-center">
+	            <button type="button" class="col-4 searchbtn smsearchbtn btn btn-sm mb-2">검색</button>
+	        </div>
 	    </div>
 	    <div class="choiceDr">
 	        <span class="nanum-b size-n">병원선택</span>

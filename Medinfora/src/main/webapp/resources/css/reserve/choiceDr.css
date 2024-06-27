@@ -63,6 +63,20 @@
     list-style: none;
 }
 
+.search{
+	border: solid 1px #636161;
+}
+
+.selectbox{
+    border: solid 1px var(--text-gray-color);
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.smsearchbtn{
+    display: none;
+}
+
 .choicedr{
     background-color: var(--object-skyblue-color);
     border: 2px solid var(--text-gray-color);
@@ -123,11 +137,14 @@
     font-weight: bold;
 }
 /*=========================================================*/
-.btn_proc{
+
+.searchbtn
+, .btn_proc{
     border: solid 1px gray;
 }
 
-.btn_proc:hover{
+.searchbtn:hover
+, .btn_proc:hover{
     border: solid 1px black;
     background-color: var(--object-lightpurple-color);
 }
