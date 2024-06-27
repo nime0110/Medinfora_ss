@@ -23,6 +23,9 @@
 	            </li>
 	        </ul>
 	    </div>
+	    <div>
+	    	조회 들어올예정
+	    </div>
 	    <div class="choiceDr">
 	        <span class="nanum-b size-n">병원선택</span>
 	        <hr style="border: solid 3px black">
@@ -34,7 +37,7 @@
 	                <input type="checkbox" class="hj_custom-checkbox">
 	                <label class="hj_custom-checkbox-label"></label>
 	                <p class="hospital_addr">
-	                    경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+	                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
 	                </p>
 	            </button>
 	            <button class="card col-6 col-sm-3 btn_card" type="button">
@@ -128,6 +131,8 @@
 	                <p class="hospital_addr">대략 16개 보여줄 예정</p>
 	            </button>
 	    </div>
+	    <%-- ================================================================================================== --%>
+	    <%-- == 페이징바 === --%>
 	    <div class="w-100 d-flex justify-content-center pt-3">
 	        <ul class="pagination reserve_pagebar nanum-n size-s">
 	            <li class="page-item">
@@ -151,6 +156,7 @@
 	            </li>
 	        </ul>
 	    </div>
+	    <%-- ================================================================================================== --%>	    
 	    <div class="div_proc text-center mb-5">
 	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">취소</button>
 	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:location.href='<%= ctxPath%>/reserve/choiceDay.bibo'">다음</button>
