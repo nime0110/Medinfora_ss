@@ -160,43 +160,23 @@ function goLogin(){
 		return;
 	}
 	
-	if(userid =! "" && pwd != ""){
+	if(userid != "" && pwd != ""){
 		
+		<%-- 
 		const frm = document.loginFrm;
 		
 		frm.method = "post";
 		frm.action = "<%=ctxPath%>/loginEnd.bibo";
 		frm.submit();
+		--%>
+		
+		const loginData = {"userid":userid, "pwd":pwd};
+		
+		window.parent.postMessage(loginData, "http://localhost:9099");
+		
+		
 	}
 	
-	
-	
-	<%--
-	$.ajax({
-		url:"<%= ctxPath%>/loginEnd.bibo",
-		type:"post",
-		data:{"userid": userid,
-			  "pwd": pwd},
-		dataType:"json",
-		success:function(json){
-			
-			if(json.n == 1){
-				alert("로그인 성공");
-			}
-			else{
-				alert("로그인 실패");
-			}
-		},
-		error: function(request, status, error){
-            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-     	}
-		
-		
-		
-		
-		
-	});
-	--%>
 	
 }
 
@@ -209,7 +189,7 @@ function goLogin(){
 
 <div class="loginContainer">
     
-  <form class="loginFrm">
+  <form name="loginFrm">
     <h2 class="nanum-eb size-n my-4">Log in</h2>
     <div class="magin_info">
       <input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요."  maxlength="20"/>

@@ -36,7 +36,7 @@ FROM
     select userid, email, name, address, detailaddress, birthday, mobile, gender, registerday, midx
            , trunc( months_between(sysdate, pwdupdateday) ) as pwdupdategap
     from member
-    where (midx between 0 and 2) and userid = 'test001' and pwd = 'qwer1234$'
+    where (midx between 0 and 8) and userid = 'test001' and pwd = 'qwer1234$'
 )M
 CROSS JOIN
 (

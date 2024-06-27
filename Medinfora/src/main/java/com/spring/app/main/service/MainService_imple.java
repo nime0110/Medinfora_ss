@@ -31,7 +31,7 @@ public class MainService_imple implements MainService {
 	
 	// 로그인 처리
 	@Override
-	public ModelAndView loginEnd(Map<String, String> paraMap, ModelAndView mav, HttpServletRequest request) {
+	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
 		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
 		
@@ -45,16 +45,13 @@ public class MainService_imple implements MainService {
 			
 		*/
 		try {
-			
-			if(loginuser != null) {
+			// 관리자 및  회원만(활동중으로 표시는 되어있지만 휴먼처리 안되있는 유저 포함)
+			if(loginuser != null && loginuser.getmIdx() <= 2) {
 				
-				// 비밀번호 변경 3개월 지남
-				if(loginuser.getPwdchangegap() >=3 ) {
-					loginuser.setRequirePwdChange(true);
-				}
 				
+
 				// 로그인한지 1년 이상되었는데 휴먼처리 안됨
-				if(loginuser.getLastlogingap() >= 12) {
+				if(loginuser.getLastlogingap() >= 12 && (loginuser.getmIdx() == 1 || loginuser.getmIdx() == 2)) {
 					String idx = "0";
 					
 					if(loginuser.getmIdx() == 1) {	// 일반
@@ -71,55 +68,52 @@ public class MainService_imple implements MainService {
 					}
 
 				}
-				
-				// 로그인 정상 유저
-				if(loginuser.getmIdx()==0 || loginuser.getmIdx()==1 || loginuser.getmIdx()==2) {
-					String email = aES256.decrypt(loginuser.getEmail());
-					String mobile = aES256.decrypt(loginuser.getMobile());
+				else { // 정상 활동중인 회원
 					
-					loginuser.setEmail(email);
-					loginuser.setMobile(mobile);
+					// 비밀번호 변경 3개월 지남  >> 비밀번호 알림은 프론트에서 해줌
+					
+					dao.insert_log(paraMap);
+					
+					/*
+					나중에 회원가입 후 다시 품 ------------수정사항
+					// 로그인 정상 유저
+					if(loginuser.getmIdx()==0 || loginuser.getmIdx()==1 || loginuser.getmIdx()==2) {
+						String email = aES256.decrypt(loginuser.getEmail());
+						String mobile = aES256.decrypt(loginuser.getMobile());
+						
+						loginuser.setEmail(email);
+						loginuser.setMobile(mobile);
+					}
+					*/
+					
+					
+					HttpSession sesstion =  request.getSession();
+					sesstion.setAttribute("loginuser", loginuser);
+					
 				}
-				
-				// 로그인유저  ip 저장
-				dao.insert_log(paraMap);
-	
+
 			}
 			
-			
-			// 로그인 실패(휴면, 정지 포함)
-			if(loginuser == null) {
-				
-				String message = "아이디 또는 비밀번호가 틀립니다.";
-				
-				
-				
-				
-			}
-			
-			
-			
-			
-			
+			// 휴먼 회원 및 정지 회원은 프론트에서 처리할 거임
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		// 로그인한지 1년 이상 됨
-		
-		
-		
-		
-		return mav;
+		return loginuser;
 		
 	}
 	
 	
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
