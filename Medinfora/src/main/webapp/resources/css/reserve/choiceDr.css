@@ -230,8 +230,7 @@
     font-weight: bold;
 }
 
-.searchhpbtn
-, .btn_proc{
+.searchhpbtn{
     border: none;
     border-radius: 0;
     background-color: var(--grey700);
@@ -240,7 +239,18 @@
     transition: all 0.5s;
     font-family: 'Nanum Gothic', sans-serif !important;
     font-size: 1rem;
-    padding: auto;
+    width: 27%;
+}
+
+.btn_proc{
+	border: none;
+    border-radius: 0;
+    background-color: var(--grey700);
+    color:var(--grey50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
 }
 
 .searchhpbtn:hover

@@ -27,7 +27,6 @@
     	<form name="#" method="get">
 	    	<div class="searchhp">
 	    
-	    
 	    		<div class="location_select">
 	    		
 		    		<span class="searchoicename">병원위치</span>
@@ -61,7 +60,7 @@
 	           		
 	           		<span class="searchoicename">병원명</span>
 	               	<input text="type" class="inputbox" name="" placeholder="병원명을 입력하세요."/>
-	               	<button type="button" class="searchhpbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
+	               	<button type="button" class="searchhpbtn">검색</button>
 	           	</div>
            	
         	</div>
