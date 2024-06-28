@@ -102,6 +102,9 @@
 
     /* 지훈 작업 영역 END */
 
+.sh_text {
+	font-size: 10px;
+}
 }
 
 /* 예외 처리 영역 */
@@ -131,6 +134,7 @@
     h4.sh_font{
 	font-size: 0.6rem;
 }
+
 
     /* 승혜 작업 영역 END */
 }
