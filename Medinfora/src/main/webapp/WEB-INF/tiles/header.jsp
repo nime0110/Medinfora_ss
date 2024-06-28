@@ -104,7 +104,7 @@
     </nav>
     <div class="input_text">
       <label class="my-auto">
-        <form class="dh-section-form" name="serachFrm">
+        <form class="dh-section-form" name="searchFrm">
           <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="store_search" id="store_search" placeholder='검색어를 입력하세요' required="required">
         </form>
       </label>
