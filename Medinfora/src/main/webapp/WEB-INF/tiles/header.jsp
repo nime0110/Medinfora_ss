@@ -37,6 +37,14 @@
 	        }
     	});
 		
+		// 로그아웃 처림
+		$("#btn_logout").on("click",function(){
+			alert("check");
+			const frm = document.passFrm;
+			frm.action = "<%=ctxPath%>/login/logout.bibo";
+			frm.submit();
+		})
+		
 		
 		$(window).on("message", function(e){
 			 const loginData = e.originalEvent.data;
@@ -131,8 +139,8 @@
     </c:if>
     <%-- 로그아웃 추가해야함 --%>
     <c:if test="${not empty sessionScope.loginuser}">
-	    <div class="login">
-	      <a href="<%=ctxPath%>/login/logout.bibo" class="nanum-b size-s intarget">로그아웃</a>
+	    <div id="btn_logout" class="login">
+	      <a class="nanum-b size-s intarget">로그아웃</a>
 	    </div>
     </c:if>
     
@@ -181,3 +189,9 @@
 	</div>
 </c:if>
 <%-- 로그인 모달 추가 끝 --%>
+
+<%-- 현 주소 기록 --%>
+<form method="post" name="passFrm" style="display: none;">
+	<input type="text" value="<%= ctxPath%>" name="ctxPath">
+   	<input type="text" value="<%= url %>" name="url">
+</form>

@@ -32,8 +32,6 @@ public class CommonAop {
 			String message = "로그인 후 이용가능합니다";
 	 		String loc = request.getContextPath()+"/index.bibo";
 	 		
-	 		System.out.println(loc);
-	 		
 	 		request.setAttribute("message", message);
 	 		request.setAttribute("loc", loc);
 	 		
