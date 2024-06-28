@@ -39,7 +39,6 @@
 		
 		// 로그아웃 처림
 		$("#btn_logout").on("click",function(){
-			alert("check");
 			const frm = document.passFrm;
 			frm.action = "<%=ctxPath%>/login/logout.bibo";
 			frm.submit();

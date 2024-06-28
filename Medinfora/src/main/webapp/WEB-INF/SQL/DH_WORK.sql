@@ -12,5 +12,5 @@ nominvalue
 nocycle
 nocache;
 
-select * from HOSPITAL where HPTEL like '070'||'%';
+select * from HOSPITAL where HPADDR like '%'||'자치도'||'%';
 
