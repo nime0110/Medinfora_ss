@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -152,7 +153,7 @@ public class MainController {
 	
 	// 카카오 로그인
 	@RequestMapping(value="/login/kakaoLogin.bibo")
-	public String kakaoLogin(HttpServletRequest request) {
+	public void kakaoLogin(HttpServletRequest request) {
 		
 		String code = request.getParameter("code");
 		// System.out.println(code);
@@ -162,7 +163,30 @@ public class MainController {
 		
 		Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
 		
-		return "/login/login";
+		String name = (String)userInfo.get("name");
+		String email = (String)userInfo.get("email");
+		String birthyear = (String)userInfo.get("birthyear");
+		String birthday = (String)userInfo.get("birthday");
+		String phone_number = (String)userInfo.get("phone_number");
+
+		System.out.println("확인용 카카오 연락처 정보 : "+phone_number);
+		// +82 10-xxxx-xxxx
+		
+		phone_number = "0"+phone_number.substring(8);
+		
+		
+		
+		// 유저가 가입되어 잇는지 있는지 확인한다.
+		// service.login_kakao();
+		
+		
+		
+		
+		
+		
+		
+		// 이제 넘겨주기만 하면 됨
+		return;
 	}
 	
 	

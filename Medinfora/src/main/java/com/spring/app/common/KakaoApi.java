@@ -129,31 +129,41 @@ public class KakaoApi {
 	        JsonParser parser = new JsonParser();
 	        JsonElement element = parser.parse(result);
 	        
-	        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+	        // JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
 	        JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 	        
-	        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+	        // String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+	        String name = kakaoAccount.getAsJsonObject().get("name").getAsString();
 	        String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
-
-	        userInfo.put("nickname", nickname);
+	        String birthyear = kakaoAccount.getAsJsonObject().get("birthyear").getAsString();
+	        // YYYY 형식
+	        
+	        String birthday = kakaoAccount.getAsJsonObject().get("birthday").getAsString();
+	        // MMDD 형식
+	        
+	        String gender = kakaoAccount.getAsJsonObject().get("gender").getAsString();
+	        // male, female 둘만 나옴
+	        
+	        String phone_number = kakaoAccount.getAsJsonObject().get("phone_number").getAsString();
+	        // 국내 번호인 경우 +82 00-0000-0000 형식
+	        // 해외 번호인 경우 자릿수, 붙임표(-) 유무나 위치가 >> 해외번호 안할꺼임
+	       
+	        
+	        // 계정 정보중 회원가입에 필요한 것만 가져온다.
+	        
+	        userInfo.put("name", name);
 	        userInfo.put("email", email);
-			
+	        userInfo.put("birthyear", birthyear);
+	        userInfo.put("birthday", birthday);
+	        userInfo.put("gender", gender);
+	        userInfo.put("phone_number", phone_number);
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;
+		return userInfo;
 	}
 	
 	

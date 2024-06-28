@@ -76,7 +76,8 @@ from member
 insert into member(userid, ip, registerday)
 values()
 
-
+select *
+from loginlog;
 
 
 
