@@ -140,76 +140,56 @@
     padding: 20px 15px;
     border-bottom: 1px dashed #ddd;
     font-size: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .board_view .info {
-    padding: 30px;
-    border-bottom: 1px solid #999;
-    font-size: 0;
+    display: flex;
+    gap: 20px;
 }
 
-.board_view .info dl {
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
+.board_view dl {
+    display: flex;
+    align-items: center;
+    margin: 0;
 }
 
-.board_view .info dl:first-child {
-    padding-left: 0;
+.board_view dl dt {
+    margin-right: 5px;
+    font-weight: bold;
 }
 
-.board_view .info dl::before {
-    content: "";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    display: block;
-    width: 1px;
-    height: 13px;
-    background: #ddd;
-}
-
-.board_view .info dl:first-child::before {
-    display: none;
-}
-
-.board_view .info dl dt,
-.board_view .info dl dd {
-    display: inline-block;
-    font-size: 1.4rem;
-}
-
-.board_view .info dl dt {
-
-}
-
-.board_view .info dl dd {
-    margin-left: 10px;
+.board_view dl dd {
+    margin: 0;
     color: #777;
 }
 
 .board_view .cont {
     padding: 15px;
-    border-bottom: 1px solid #000;
     line-height: 160%;
     font-size: 1.4rem;
 }
-.bt_wrap_view{
-	font-size: 0;
-            text-align: center;
-            margin-top: 4rem;
+
+.bt_wrap_view {
+    font-size: 0;
+    text-align: center;
+    margin-top: 4rem;
 }
-.bt_wrap_view a{
-	display: inline-block;
-            min-width: 80px;
-            padding: 10px;
-            border: 1px solid #000;
-            border-radius: 2px;
-            font-size: 1.4rem;
-            background: #000;
-            color: #fff;
-            margin-right: 10px;
+
+.bt_wrap_view a {
+    display: inline-block;
+    min-width: 80px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    background: #000;
+    color: #fff;
+    margin-right: 10px;
 }
+
 
    /*  noticeView.jsp css 끝*/
   

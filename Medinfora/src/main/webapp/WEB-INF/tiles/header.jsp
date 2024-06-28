@@ -1,7 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%String ctxPath = request.getContextPath();%>
+<%
+	String ctxPath = request.getContextPath();
+	
+	String url = "";
+	url += request.getAttribute("javax.servlet.forward.request_uri");
+	if(request.getQueryString() != null){
+		url = url + "?" + request.getQueryString();
+	}
+	
+   String uri = request.getRequestURI();
+   
+%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
@@ -25,6 +36,13 @@
             	$("div#loginModalArr").fadeOut();
 	        }
     	});
+		
+		// 로그아웃 처림
+		$("#btn_logout").on("click",function(){
+			const frm = document.passFrm;
+			frm.action = "<%=ctxPath%>/login/logout.bibo";
+			frm.submit();
+		})
 		
 		
 		$(window).on("message", function(e){
@@ -104,7 +122,7 @@
     </nav>
     <div class="input_text">
       <label class="my-auto">
-        <form class="dh-section-form" name="serachFrm">
+        <form class="dh-section-form" name="searchFrm">
           <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="store_search" id="store_search" placeholder='검색어를 입력하세요' required="required">
         </form>
       </label>
@@ -120,8 +138,8 @@
     </c:if>
     <%-- 로그아웃 추가해야함 --%>
     <c:if test="${not empty sessionScope.loginuser}">
-	    <div class="login">
-	      <a href="<%=ctxPath%>/login/logout.bibo" class="nanum-b size-s intarget">로그아웃</a>
+	    <div id="btn_logout" class="login">
+	      <a class="nanum-b size-s intarget">로그아웃</a>
 	    </div>
     </c:if>
     
@@ -170,3 +188,9 @@
 	</div>
 </c:if>
 <%-- 로그인 모달 추가 끝 --%>
+
+<%-- 현 주소 기록 --%>
+<form method="post" name="passFrm" style="display: none;">
+	<input type="text" value="<%= ctxPath%>" name="ctxPath">
+   	<input type="text" value="<%= url %>" name="url">
+</form>

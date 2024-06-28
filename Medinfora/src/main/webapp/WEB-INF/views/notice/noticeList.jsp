@@ -30,35 +30,35 @@
                     <tr>
                         <td class="num">5</td>
                         <td class="title"><a href="<%= ctxPath %>/WEB-INF/views/notice/noticeView.jsp">글 제목이 들어갑니다.</a></td>
-                        <td class="writer">김이름</td>
+            
                         <td class="date">2021.1.15</td>
                         <td class="count">33</td>
                     </tr>
                     <tr>
                         <td class="num">4</td>
                         <td class="title"><a href="<%= ctxPath %>/view.html">글 제목이 들어갑니다.</a></td>
-                        <td class="writer">김이름</td>
+                 
                         <td class="date">2021.1.15</td>
                         <td class="count">33</td>
                     </tr>
                     <tr>
                         <td class="num">3</td>
                         <td class="title"><a href="<%= ctxPath %>/view.html">글 제목이 들어갑니다.</a></td>
-                        <td class="writer">김이름</td>
+               
                         <td class="date">2021.1.15</td>
                         <td class="count">33</td>
                     </tr>
                     <tr>
                         <td class="num">2</td>
                         <td class="title"><a href="<%= ctxPath %>/view.html">글 제목이 들어갑니다.</a></td>
-                        <td class="writer">김이름</td>
+             
                         <td class="date">2021.1.15</td>
                         <td class="count">33</td>
                     </tr>
                     <tr>
                         <td class="num">1</td>
                         <td class="title"><a href="<%= ctxPath %>/view.html">글 제목이 들어갑니다.</a></td>
-                        <td class="writer">김이름</td>
+      
                         <td class="date">2021.1.15</td>
                         <td class="count">33</td>
                     </tr>

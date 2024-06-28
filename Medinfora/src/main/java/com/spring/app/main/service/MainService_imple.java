@@ -96,32 +96,17 @@ public class MainService_imple implements MainService {
 	
 	// 로그아웃 처리
 	@Override
-	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView logout(ModelAndView mav, HttpServletRequest request, String url) {
 		
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		String message = "로그아웃 되었습니다.";
-		String loc = request.getContextPath()+"/index.bibo";
+		String renameurl = url.substring(1);
+		renameurl = url.substring(renameurl.indexOf("/")+1);
 		
-		mav.addObject("message", message);
-		mav.addObject("loc", loc);
-		
-		mav.setViewName("msg");
+		mav.setViewName("redirect:"+renameurl);
 		
 		return mav;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

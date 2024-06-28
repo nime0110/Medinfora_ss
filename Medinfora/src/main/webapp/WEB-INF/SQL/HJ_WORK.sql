@@ -26,6 +26,6 @@ from user_tab_comments;
 select column_name, comments
 from user_col_comments
 where table_name = '테이블명';
--- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, DR, MEMBER, MEMBERIDX
+-- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE
 
 ----------------------------------------------------------------------------------------

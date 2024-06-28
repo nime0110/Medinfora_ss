@@ -461,16 +461,7 @@ box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 background-color: #e1e1e1;
 }
 
-/* 데스크탑용 기본 스타일 유지 */
-.navbar-toggler {
-display: none;
-}
 
-span#btnSearch{
-  width: 5%;
-  cursor: pointer;
-  
-}
 
 /* 성심css */
 .header-container {
@@ -689,52 +680,3 @@ div.hj_noticeitem{
 .sh_font{
 	font-size: 0.9rem;
 }
-
-
-/* 지훈 css 내용 */
-.jh_login_modal {
-    display: none; /* 기본적으로 모달을 숨깁니다 */
-    position: fixed; /* 화면에 고정 */
-    z-index: 2000; /* 다른 요소들보다 위에 쌓이도록 설정 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    background-color: rgb(0,0,0); /* 배경 색상 */
-    background-color: rgba(0,0,0,0.4); /* 배경 색상의 투명도 조절 */
-}
-
-.jh_modal_content {
-    position: relative;
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: none;
-    width: 30%;
-}
-
-
-.jh_login_close {
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-
-.jh_login_close:hover,
-.jh_login_close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-iframe#loginPage {
-    width: 100%;
-    height: 700px;
-}
-

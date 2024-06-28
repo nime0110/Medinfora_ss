@@ -21,6 +21,6 @@ public interface MainService {
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
 
 	// 로그아웃 처리
-	public ModelAndView logout(ModelAndView mav, HttpServletRequest request);
+	public ModelAndView logout(ModelAndView mav, HttpServletRequest request, String url);
 	
 }

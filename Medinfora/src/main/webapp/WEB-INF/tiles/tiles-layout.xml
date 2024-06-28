@@ -20,4 +20,19 @@
 	   	<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"/>
 	</definition>
 	
+	<definition name="info-tiles" template="/WEB-INF/tiles/info-tiles.jsp">
+		<put-attribute name="header"  value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="sidebar"  value="/WEB-INF/tiles/sidebar.jsp" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer"  value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
+	
+	<definition name="*.info" extends="info-tiles">
+		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="*/*.info" extends="info-tiles">
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	</definition>
+	
 </tiles-definitions>

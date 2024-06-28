@@ -47,18 +47,23 @@ public class Myutil {
 	 * Local Json File Insert into My DB
 	 * Json File Type must be JSONArray
 	 * @param {String} Loacl JsonFile Address
-	 * @return {List<HospitalDTO>} Parsering List DATA
+	 * @return {List<HospitalDTO>} Parsing List DATA
 	 * @throws FileNotFoundException
 	 * @throws ParseException
 	 * @throws IOException
 	 */
 	public static List<HospitalDTO> hpApiInputer(String localaddr) throws FileNotFoundException, IOException, ParseException {
 		
+		// Declare for return type
 		List<HospitalDTO> hpdtoList = null;
 		
+		// Declaration of Objects for Parsing
 		JSONParser parser = new JSONParser();
 		
+		// Declaration of objects that read parameters
 		Reader reader = new FileReader(localaddr);
+		
+		// Parsing to JSONArray
 		JSONArray jsonArr = (JSONArray) parser.parse(reader);
 		
 		if(jsonArr.size()>0) {
@@ -66,6 +71,8 @@ public class Myutil {
 			hpdtoList = new ArrayList<HospitalDTO>();
 			
 			for(int i=0;i<jsonArr.size();i++) {
+				
+				//for parsing to DTO
 				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
 				
 				HospitalDTO hpdto = new HospitalDTO();
