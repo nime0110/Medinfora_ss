@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="<%= ctxPath%>/resources/node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	
+	<link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfo.css">
 	
 	<%-- Google Font --%>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,8 +32,7 @@
 	<%-- Font Awesome 6 Icons --%>
 	<script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<style>
+	<style>
 :root {
     --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
     --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
@@ -75,11 +75,17 @@
 	    color: black;
 	}
 </style>
-
+</head>
 <body>
 	<tiles:insertAttribute name="header" />
 	<div style="margin-top: 75px;"></div>
-	<tiles:insertAttribute name="content" />
+	<div id="info_container">
+		<tiles:insertAttribute name="sidebar" />
+		<div id="info_content">
+			<tiles:insertAttribute name="content" />
+        </div>
+    </div>
 	<tiles:insertAttribute name="footer" />
 </body>
+
 </html>

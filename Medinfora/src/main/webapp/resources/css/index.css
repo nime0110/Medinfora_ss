@@ -1,47 +1,5 @@
 @charset "UTF-8";
 
-:root {
-    --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
-    --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
-
-     /* div background 색상 등 object 컬럼 색상입니다 */
-    --object-lightpurple-color : #e5e2ff;
-    --object-lightyello-color : #fff6d8;
-    --object-lightgreen-color : #DFF9F2;
-    --object-clearblue-color : #f2f4f8;
-    --object-skyblue-color : #d8eaff;
-
-    /* object 컬럼 색상별 text 진한 컬러 - 오브젝트색상 계열의 진한 fontcolor 로 매칭시켜서 사용하시면됨 */
-    --object-lightgreen-font-color: #23C197;
-    --object-lightyello-font-color: #f46d19;
-    --object-lightpurple-font-color: #2614F3;
-
-    /* 포인트 컬러 */
-    
-    /* 기본 텍스트 컬러 */
-    --text-black-color: #0e0e0e; 
-    --text-white-color: #fff; 
-    --text-gray-color: #222; 
-
-}
-
-/* 스타일 clear 공통 코드 start */
-
-body {
-    font-family: 'Nanum Gothic', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-li {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-}
-
 .sizearr {
     width: 85%;
     margin: 0 auto;
@@ -423,16 +381,7 @@ box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 background-color: #e1e1e1;
 }
 
-/* 데스크탑용 기본 스타일 유지 */
-.navbar-toggler {
-display: none;
-}
 
-span#btnSearch{
-  width: 5%;
-  cursor: pointer;
-  
-}
 
 /* 성심css */
 .header-container {
@@ -651,52 +600,3 @@ div.hj_noticeitem{
 .sh_font{
 	font-size: 0.9rem;
 }
-
-
-/* 지훈 css 내용 */
-.jh_login_modal {
-    display: none; /* 기본적으로 모달을 숨깁니다 */
-    position: fixed; /* 화면에 고정 */
-    z-index: 2000; /* 다른 요소들보다 위에 쌓이도록 설정 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    background-color: rgb(0,0,0); /* 배경 색상 */
-    background-color: rgba(0,0,0,0.4); /* 배경 색상의 투명도 조절 */
-}
-
-.jh_modal_content {
-    position: relative;
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: none;
-    width: 30%;
-}
-
-
-.jh_login_close {
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-
-.jh_login_close:hover,
-.jh_login_close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-iframe#loginPage {
-    width: 100%;
-    height: 700px;
-}
-

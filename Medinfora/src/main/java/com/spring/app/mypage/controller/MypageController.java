@@ -10,7 +10,7 @@ public class MypageController {
 	@GetMapping("/mypage/myinfo.bibo")
 	public ModelAndView myinfo(ModelAndView mav) {
 		
-		mav.setViewName("mypage/myinfo.tiles");
+		mav.setViewName("mypage/myinfo.info");
 		
 		return mav;
 	}

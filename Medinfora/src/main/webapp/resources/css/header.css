@@ -1,6 +1,17 @@
 @charset "UTF-8";
 
 
+/* 데스크탑용 기본 스타일 유지 */
+.navbar-toggler {
+display: none;
+}
+
+span#btnSearch{
+  width: 5%;
+  cursor: pointer;
+  
+}
+
 /* header STRAT */
 
 .input_text{
@@ -247,6 +258,53 @@ nav ul li a {
 
 /* fixed-nav END */
 
+/* 지훈 css 내용 */
+.jh_login_modal {
+    display: none; /* 기본적으로 모달을 숨깁니다 */
+    position: fixed; /* 화면에 고정 */
+    z-index: 2000; /* 다른 요소들보다 위에 쌓이도록 설정 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background-color: rgb(0,0,0); /* 배경 색상 */
+    background-color: rgba(0,0,0,0.4); /* 배경 색상의 투명도 조절 */
+}
+
+.jh_modal_content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: none;
+    width: 30%;
+}
+
+
+.jh_login_close {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+
+.jh_login_close:hover,
+.jh_login_close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+iframe#loginPage {
+    width: 100%;
+    height: 700px;
+}
+
 @media (max-width: 768px) {
 
     /* 동혁 START */
@@ -330,8 +388,18 @@ nav ul li a {
     .accordion-button[aria-expanded="true"] span {
         font-size: 14pt !important;
     }
+    
+    /* 지훈 작업 영역 START */
+    .jh_modal_content {
+        /* 모달 영역 */
+        width: 70% !important;
+        margin: 10% auto !important;
+    }
+
+    /* 지훈 작업 영역 END */
 
 }
+
 
 @media (max-width: 1024px) {
 
