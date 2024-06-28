@@ -14,45 +14,45 @@
 	        <span class="reserve_title nanum-b size-b">온라인 진료예약</span>
 	    </div>
 	    <div class="mediseq">
-	        <ul class="reserve_seq mt-5">
-	            <li class="reserve_li choicedr">
-	                <span class="reserve_licontent nanum-n size-n">병원 선택</span>
+	        <ul class="reserve_seq my-5">
+	            <li class="reserve_li choicedr py-3">
+	                <span class="reserve_licontent nanum-b">병원 선택</span>
 	            </li>
-	            <li class="reserve_li">
-	                <span class="reserve_licontent nanum-n size-n">진료일시 선택</span>
+	            <li class="reserve_li py-3 choiceday">
+	                <span class="reserve_licontent nanum-n">진료일시 선택</span>
 	            </li>
 	        </ul>
 	    </div>
-	    <div class="searchhp px-5 my-2">
-	        <div class="py-3">
-	            <span class="nanum-b tagloc">병원위치</span>
-	            <select name="city" id="city" class="selectbox">
-	                <option>시/도 선택</option>
-	                <option value="seoul">서울특별시</option>
-	                <option value="busan">부산광역시</option>
-	            </select>
-	            <select name="loc" id="lod" class="selectbox">
-	                <option>시/군구 선택</option>
-	                <option value="seoul">서울</option>
-	                <option value="gungi">경기</option>
-	            </select>
-	        </div>
-	        <div>
-	            <span class="nanum-b">진료과목</span>
-	            <select name="dept" id="dept" class="selectbox">
-	                <option>진료과목 선택</option>
-	                <option value="internal">내과</option>
-	                <option value="surgery">외과</option>
-	            </select>
+	    <div class="searchhp px-5 py-2">
+	    	<div class="py-3"> 
+		        <div class="chex mr-5">
+		            <span class="searchoicename nanum-b tagloc">병원위치</span>
+		            <select name="city" id="city" class="selectbox">
+		                <option>시/도 선택</option>
+		                <option value="seoul">서울특별시</option>
+		                <option value="busan">부산광역시</option>
+		            </select>
+		            <select name="loc" id="lod" class="selectbox">
+		                <option>시/군구 선택</option>
+		                <option value="seoul">서울</option>
+		                <option value="gungi">경기</option>
+		            </select>
+		        </div>
+		        &nbsp;&nbsp;
+		        <div class="chex">
+		            <span class="searchoicename inlinesearch nanum-b">진료과목</span>
+		            <select name="dept" id="dept" class="selectbox inlinesearch">
+		                <option>진료과목 선택</option>
+		                <option value="internal">내과</option>
+		                <option value="surgery">외과</option>
+		            </select>
+		        </div>
 	        </div>
 	        <div class="searchHospital py-3 row justify-content-center">
 	            <div class="col-xl-6 row justify-content-around">
 	                <input text="type" class="col-md-8" placeholder="병원명을 입력하세요."/>
 	                <button type="button" class="searchhpbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
 	            </div>
-	        </div>
-	        <div class="row justify-content-center">
-	            <button type="button" class="col-4 searchhpbtn smsearchbtn btn btn-sm mb-2">검색</button>
 	        </div>
 	    </div>
 	    <div class="choiceDr">

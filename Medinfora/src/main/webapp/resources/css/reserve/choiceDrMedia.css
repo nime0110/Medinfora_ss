@@ -10,6 +10,10 @@
         font-size: 2.5rem !important;
     }
 
+	.reserve_seq{
+		padding: 0;
+	}
+
     .reserve_licontent{
         font-size: 1.7rem !important;
         padding: 5px;
@@ -18,17 +22,13 @@
     .hj_custom-checkbox-label{
         display: none;
     }
-
-    .reserve_licontent{
-        font-size: 1.42rem !important;
+    
+    .choiceday{
+    	display: none;
     }
-
-    .colsearchbtn{
-        display: none;
-    }
-
-    .smsearchbtn{
-        display: block;
+    
+    .choicedr{
+    	width: 100%;
     }
 
 }
