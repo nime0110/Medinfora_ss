@@ -103,11 +103,13 @@ public class MainController {
 			String pwd = request.getParameter("pwd");
 			
 			String clientip = request.getRemoteAddr();
+			String loginmethod = "0";
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);
 			paraMap.put("pwd", pwd);
 			paraMap.put("clientip", clientip);
+			paraMap.put("loginmethod", loginmethod);
 			
 			MemberDTO loginuser = service.loginEnd(paraMap, request);
 			
@@ -165,24 +167,69 @@ public class MainController {
 		
 		String name = (String)userInfo.get("name");
 		String email = (String)userInfo.get("email");
-		String birthyear = (String)userInfo.get("birthyear");
-		String birthday = (String)userInfo.get("birthday");
+		String is_email_verified = (String)userInfo.get("is_email_verified");
+		String birth_year = (String)userInfo.get("birthyear");
+		String birth_day = (String)userInfo.get("birthday");
 		String phone_number = (String)userInfo.get("phone_number");
+		
+		String userid = email.substring(0, email.indexOf("@"))+"_kakao";
+		
+		// System.out.println(userid);
+	
+		
+		// 가정은 다음과 같다
+		/*
+			카카오로 로그인 시 카카오계정(이메일형식)에서 @ 기준으로 id 추출해서 _kakao 추가해서 아이디를 인서트한다.으로 가입한 적이 있는지 확인(loginmethod로 select 조건 추가) 검증한다음
+			없으면, 회원가입 폼으로 넘긴다.
+		*/
+		
+		String birthday = birth_year+birth_day;
+		// System.out.println("확인용 birthday : "+birthday);
+		// 확인용 birthday : 19950406
+		
 
-		System.out.println("확인용 카카오 연락처 정보 : "+phone_number);
+		// System.out.println("확인용 카카오 연락처 정보 : "+phone_number);
 		// +82 10-xxxx-xxxx
 		
-		phone_number = "0"+phone_number.substring(8);
+		phone_number = phone_number.substring(4);
+		
+		StringBuilder sb = new StringBuilder();
+		
+		String[] mobile_arr = phone_number.split("");
+		
+		for(int i=0; i<mobile_arr.length; i++) {
+			
+			if(!"-".equals(mobile_arr[i])) {
+				sb.append(mobile_arr[i]);
+			}
+			
+		}// end of for -----
+		
+		String mobile = "0"+sb.toString();
+		
+		// System.out.println("확인용 mobile: "+mobile);
+		// 확인용 mobile: 010xxxxxxxx
 		
 		
+		// service 에 넘겨줄 데이터 loginEnd에 mapper 에서 where 문 사용
+		String clientip = request.getRemoteAddr();
+		String loginmethod = "1";
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("userid", userid);
+		paraMap.put("clientip", clientip);
+		paraMap.put("loginmethod", loginmethod);
+
 		
 		// 유저가 가입되어 잇는지 있는지 확인한다.
-		// service.login_kakao();
+		MemberDTO loginuser = service.loginEnd(paraMap, request);
 		
 		
-		
-		
-		
+		if(loginuser != null) {
+			// 가입된 적이 있는 경우 로그인 처리를 해줘야한다.
+		}
+		else {
+			// 가입된 적이 없으므로 회원가입 폼으로 넘겨준다.
+		}
 		
 		
 		// 이제 넘겨주기만 하면 됨

@@ -135,6 +135,10 @@ public class KakaoApi {
 	        // String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 	        String name = kakaoAccount.getAsJsonObject().get("name").getAsString();
 	        String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+	        
+	        // 이메일 유효한지 확인 값 fales 면 유효하지 않음
+	        String is_email_verified = kakaoAccount.getAsJsonObject().get("is_email_verified").getAsString();
+	        
 	        String birthyear = kakaoAccount.getAsJsonObject().get("birthyear").getAsString();
 	        // YYYY 형식
 	        
@@ -153,6 +157,7 @@ public class KakaoApi {
 	        
 	        userInfo.put("name", name);
 	        userInfo.put("email", email);
+	        userInfo.put("is_email_verified", is_email_verified);
 	        userInfo.put("birthyear", birthyear);
 	        userInfo.put("birthday", birthday);
 	        userInfo.put("gender", gender);
