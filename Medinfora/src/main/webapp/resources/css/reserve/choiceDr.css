@@ -21,21 +21,58 @@
     --text-white-color: #fff; 
     --text-gray-color: #222; 
 
+    /* blue 관련 색상 이 색상 위주로 작업해주세요. 너무 밋밋할 경우에 object 칼럼색상 사용 */
+	--blue50: #e8f3ff;
+    --blue100: #c9e2ff;
+    --blue200: #90c2ff;
+    --blue300: #64a8ff;
+    --blue400: #4593fc;
+    --blue500: #2272eb;
+    --blue600: #1b64da;
+    --blue700: #1957c2;
+    --blue800: #194aa6;
+    
+    
+    /* 흑백 그라데이션*/
+    --grey50: #f9fafb;
+    --grey100: #f2f4f6;
+    --grey200: #e5e8eb;
+    --grey300: #d1d6db;
+    --grey400: #b0b8c1;
+    --grey500: #8b95a1;
+    --grey600: #6b7684;
+    --grey700: #4e5968;
+    --grey800: #333d4b;
+    --grey900: #191f28;
+
+	/* 투명도 그라데이션 */
+	--greyOpacity50: rgba(0,23,51,0.02);
+    --greyOpacity100: rgba(2,32,71,0.05);
+    --greyOpacity200: rgba(0,27,55,0.1);
+    --greyOpacity300: rgba(0,29,58,0.18);
+    --greyOpacity400: rgba(0,25,54,0.31);
+    --greyOpacity500: rgba(3,24,50,0.46);
+    --greyOpacity600: rgba(0,19,43,0.58);
+    --greyOpacity700: rgba(3,18,40,0.7);
+    --greyOpacity800: rgba(0,12,30,0.8);
+    --greyOpacity900: rgba(2,9,19,0.91);
+
 }
 
 .reserveContent{
     width: 80%;
-    margin: auto;
+    margin: 0 auto;
 }
 
 .reserveTitlediv{
-    border-bottom: 2px solid var(--text-gray-color);
+    border-bottom: 1px solid var(--grey500);
 }
 
 .reserve_title{
     display: block;
     line-height: 5rem;
-    text-align: center;
+    text-align: left;
+    color: var(--grey800);
 }
 
 .reserve_seq{
@@ -48,9 +85,11 @@
     list-style: none;
     text-align: center;
     justify-content: center;
-    border-radius: 50px 0 50px 50px;
-    width: 33%;
-    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.18);
+    border-radius: 10px 0 10px 10px;
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.35);
+    background-color: var(--grey600);
+    color : var(--text-white-color);
+    width: 40%;
 }
 
 .reserve_licontent{
@@ -64,22 +103,73 @@
 }
 
 .searchhp{
-	border: solid 1px #636161;
+    display: flex;
+    justify-content: center;
+    background-color: var(--blue300);
+    margin: 0;
+    padding: 24pt 24pt;
+    margin-bottom: 50px;
+}
+
+.location_select{
+    width: 35%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.class_select{
+    width: 25%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.name_input{
+    width: 40%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .selectbox{
-    border: solid 1px var(--text-gray-color);
-    border-radius: 5px;
-    padding: 0 5px;
+    border: none;
+    background-color: var(--grey100);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 38px;
+    margin-left: 2px;
+    margin-right: 2px;
+	font-size: 1rem;
+}
+
+.loc_sel{
+    width: 45%;
+}
+
+.inlinesearch{
+    width: 90%;
 }
 
 .searchoicename{
+    width: 100%;
 	font-size: 1.2rem;
+    padding-bottom: 12px;
+    font-weight: bold;
+    color : var(--text-white-color);
+}
+
+.inputbox{
+    border: none;
+    width: 70%;
+    background-color: var(--grey100);
+    height: 38px;
+	font-size: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 4px;
 }
 
 .choicedr{
-    background-color: var(--object-skyblue-color);
-    border: none;
+    background-color: var(--grey800) !important;
+    color : var(--text-white-color) !important;
 }
 
 .chex{
@@ -142,12 +232,19 @@
 
 .searchhpbtn
 , .btn_proc{
-    border: solid 1px gray;
+    border: none;
+    border-radius: 0;
+    background-color: var(--grey700);
+    color:var(--grey50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    padding: auto;
 }
 
 .searchhpbtn:hover
 , .btn_proc:hover{
-    border: solid 1px black;
-    background-color: var(--primary-background-color);
-    color: white;
+    background-color: var(--grey900);
+    color:var(--grey50);
 }
