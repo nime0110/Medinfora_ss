@@ -305,6 +305,20 @@ iframe#loginPage {
     height: 700px;
 }
 
+
+.jh_btn_design{
+  /* width: 200px;  >>>> 넓이는 각자 수정하세요*/ 
+  height: 40px;
+  background-color: var(--object-lightpurple-font-color);
+  border: none;
+  color: var(--text-white-color);
+  font-size: 1rem;
+  margin-left: 5%;
+  border-radius: 0.5rem;;
+}
+
+
+
 @media (max-width: 768px) {
 
     /* 동혁 START */
