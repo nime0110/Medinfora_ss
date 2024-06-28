@@ -23,4 +23,6 @@ public interface MainService {
 	// 로그아웃 처리
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request, String url);
 	
+
+	
 }

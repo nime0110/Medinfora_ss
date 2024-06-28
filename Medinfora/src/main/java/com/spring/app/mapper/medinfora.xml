@@ -7,15 +7,23 @@
 	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
-		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx,
 		       , pwdUpdategap
 		       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
 		FROM
 		(
-		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
+		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx
 		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
 		    from member
-		    where (midx between 0 and 8) and userid = #{userid} and pwd = #{pwd}
+		    where (midx between 0 and 8)
+		    <choose>
+		    	<when test="loginmethod =='0'">	<!-- 일반로그인 -->
+		    		and userid = #{userid} and pwd = #{pwd}
+		    	</when>
+		    	<when test="loginmethod =='1'"> <!-- 카카오 로그인  -->
+		    		and userid = #{userid}
+		    	</when>
+		    </choose>
 		)M
 		CROSS JOIN
 		(
