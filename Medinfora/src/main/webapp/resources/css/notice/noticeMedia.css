@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+        @media (max-width: 768px) {
+            .board_wrap {
+                width: 90%;
+            }
+            .board_list th, .board_list td {
+                padding: 10px 5px;
+            }
+            .board_title p {
+                font-size: 1.0rem;
+            }
+            .bt_wrap a {
+                padding: 7px;
+                font-size: 1.0rem;
+            }
+            .board_list th, .board_list td {
+                font-size: 1.2rem;
+            }
+            .board_view .info dl {
+        width: 40%;
+        padding: 0;
+    }
+
+    .board_view .info dl:nth-child(-n+2) {
+        margin-bottom: 5px;
+    }
+
+    .board_view .info dl::before {
+        display: none;
+    }
+
+    .board_view .info dl dt,
+    .board_view .info dl dd {
+        font-size: 1.0rem;
+    }
+
+            
+        }
+
+        @media (max-width: 480px) {
+            .board_title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .bt_wrap {
+                margin-top: 10px;
+                font-size: 1.2rem;
+            }
+            .board_title p {
+                font-size: 0.8rem;
+            }
+            .bt_wrap a {
+                padding: 6px;
+                font-size: 1rem;
+            }
+            .board_list th, .board_list td {
+                font-size: 1rem;
+                padding: 8px 2px;
+            }
+        }
