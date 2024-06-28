@@ -2,7 +2,7 @@
 
         @media (max-width: 768px) {
             .board_wrap {
-                width: 95%;
+                width: 90%;
             }
             .board_list th, .board_list td {
                 padding: 10px 5px;
@@ -11,14 +11,14 @@
                 font-size: 1.0rem;
             }
             .bt_wrap a {
-                padding: 8px;
-                font-size: 1.2rem;
+                padding: 7px;
+                font-size: 1.0rem;
             }
             .board_list th, .board_list td {
                 font-size: 1.2rem;
             }
             .board_view .info dl {
-        width: 50%;
+        width: 40%;
         padding: 0;
     }
 
@@ -32,7 +32,7 @@
 
     .board_view .info dl dt,
     .board_view .info dl dd {
-        font-size: 1.2rem;
+        font-size: 1.0rem;
     }
 
             
@@ -48,7 +48,7 @@
                 font-size: 1.2rem;
             }
             .board_title p {
-                font-size: 1rem;
+                font-size: 0.8rem;
             }
             .bt_wrap a {
                 padding: 6px;
