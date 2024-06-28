@@ -147,13 +147,14 @@ public class MainController {
 	}
 	
 	// 로그아웃
-	@GetMapping("/login/logout.bibo")
+	@PostMapping("/login/logout.bibo")
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 		
-		mav = service.logout(mav, request);
+		String url = request.getParameter("url");
+		
+		mav = service.logout(mav, request,url);
 		return mav;
 	}
-	
 	
 	// 카카오 로그인
 	@RequestMapping(value="/login/kakaoLogin.bibo")
@@ -254,10 +255,6 @@ public class MainController {
 		return;
 	}
 	
-	
-	
-	
-
 	@GetMapping("/notice.bibo")
 	public String notice() {
 		

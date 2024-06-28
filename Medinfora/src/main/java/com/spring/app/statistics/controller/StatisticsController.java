@@ -6,10 +6,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class StatisticsController {
 	
-	@GetMapping("/statistics/medistatistic.bibo")
+	@GetMapping("/hospitalSearch/hospitalSearch.bibo")
 	public ModelAndView medistatistic(ModelAndView mav) {
-		
-		mav.setViewName("statistics/medistatistic.tiles");
+		mav.setViewName("hospitalSearch/hospitalSearch.tiles");
 		return mav;
 	}
 	
