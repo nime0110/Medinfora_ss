@@ -57,7 +57,7 @@
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p>
+          <p class="sh_text">
             주변 또는 찾고싶은 지역으로 병원을 검색할 수 있습니다.
           </p>
           <div class="img-content">
@@ -72,7 +72,7 @@
         </div>
         <div class="sh_card-text">
           <h4  class="sh_card-title">약국 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p>
+          <p class="sh_text">
 
             주변 또는 찾고 싶은 지역으로 약국을 검색할 수 있습니다
           </p>
@@ -89,7 +89,7 @@
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p>
+          <p class="sh_text">
 
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
@@ -106,7 +106,7 @@
         </div>
         <div class="sh_card-text">
           <h4 class="sh_card-title">검진기관 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p>
+          <p class="sh_text">
 
             주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
