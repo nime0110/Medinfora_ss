@@ -1,7 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%String ctxPath = request.getContextPath();%>
+<%
+	String ctxPath = request.getContextPath();
+	
+	String url = "";
+	url += request.getAttribute("javax.servlet.forward.request_uri");
+	if(request.getQueryString() != null){
+		url = url + "?" + request.getQueryString();
+	}
+	
+   String uri = request.getRequestURI();
+   
+%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">

@@ -14,8 +14,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import com.spring.app.common.Myutil;
-
 @Aspect
 @Component
 public class CommonAop {
@@ -28,16 +26,16 @@ public class CommonAop {
 		HttpServletResponse response = (HttpServletResponse)joinpoint.getArgs()[2];
 		
 		HttpSession session = request.getSession();
+		
 		if(session.getAttribute("loginuser")==null) {
+			
 			String message = "로그인 후 이용가능합니다";
-	 		String loc = request.getContextPath()+Myutil.getCurrentURL(request);
+	 		String loc = request.getContextPath()+"/index.bibo";
+	 		
+	 		System.out.println(loc);
 	 		
 	 		request.setAttribute("message", message);
 	 		request.setAttribute("loc", loc);
-	 		
-	 		String url = request.getContextPath()+Myutil.getCurrentURL(request);
-	 		
-	 		session.setAttribute("goBackURL", url);
 	 		
 	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 	 		
@@ -46,6 +44,7 @@ public class CommonAop {
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();
 			}
+	 		
 		}
 		
 	}
