@@ -35,3 +35,9 @@
     <div style="font-size: 20pt; margin-bottom: 20px;">우리동네 근처 병원 찾기</div>
     <div id="map" style="width:95%; height:600px;"></div>
 </div> 
+
+    <div id="map"></div>
+    <div id="searchBox">
+        <input type="text" id="manualLocation" placeholder="위치를 입력하세요 (예: 서울시 강남구)">
+        <button onclick="searchManualLocation()">검색</button>
+    </div>
