@@ -90,16 +90,13 @@
     background-color: var(--grey600);
     color : var(--text-white-color);
     width: 40%;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .reserve_licontent{
     padding: 30px;
     font-size: 1.3rem;
-}
-
-.reserve_pagebar{
-    border: none;
-    list-style: none;
 }
 
 .searchhp{
@@ -172,30 +169,50 @@
     color : var(--text-white-color) !important;
 }
 
-.chex{
-	display: inline;
+/* 카드 섹션 부분 */
+
+.exam_choiceDr{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 24px 24px;
+    background-color: var(--blue50);
+    border-radius: 10px;
+    justify-content: space-between;
+    gap : 14px;
 }
 
 .btn_card{
-    margin-bottom: 5px;
+    background-color: var(--blue400);
+    width: 31%;
+    display: flex;
+    flex-wrap: wrap;
+    transition: all 0.3s;
 }
 
 .hj_custom-checkbox{
-    position: absolute;
-    top: 10px;
-    right: 10px;
     display: none;
 }
 
+.card_top{
+    width: 100%;
+    padding: 12px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hospital_name{
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    color:var(--blue50);
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
 .hj_custom-checkbox-label{
-    position: absolute;
-    top: 10px;
-    right: 10px;
     display: block;
     width: 24px;
     height: 24px;
     background-color: #fff;
-    border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -206,11 +223,11 @@
     text-align: center;
     line-height: 0px;
     color: #007BFF;
-
+    padding-left: 4px;
 }
 
 .choiceHospital{
-    background-color: var(--sub-background-color);
+    background-color: var(--blue700);
 }
 
 .hospital_addr{
@@ -219,6 +236,24 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    padding: 0 12px;
+    color : var(--blue50);
+}
+
+.btn_card:hover{
+    background-color: var(--blue300);
+    cursor: pointer;
+}
+
+.hospital_name_hover{
+    color: var(--grey900) !important;
+}
+
+/* 카드 섹션 부분 끝*/
+
+.reserve_pagebar{
+    border: none;
+    list-style: none;
 }
 
 .page-link {
@@ -258,3 +293,4 @@
     background-color: var(--grey900);
     color:var(--grey50);
 }
+

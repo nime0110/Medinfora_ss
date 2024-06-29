@@ -482,5 +482,9 @@ iframe#loginPage {
     .input_text{
         display: none;
     }
+
+    nav ul {
+        width: 480px;
+    }
     
 }

@@ -1,36 +1,67 @@
 $(function(){
     
-    $("label.hj_custom-checkbox-label").on("click",(e) => {
-        e.stopPropagation();
-        $("input.hj_custom-checkbox").prop("checked",false);
-        $(e.target).prev().prop("checked", true);
-        $("button.btn_card").removeClass("choiceHospital");
-        $(e.target).parent("button.btn_card").addClass("choiceHospital");
-    })  
+    $(".btn_card").on("click",(e) => {
 
-    $("button.btn_card").on("click",(e) => {
-        e.stopPropagation();
-        $("input.hj_custom-checkbox").prop("checked",false);
-        $(e.target).children("input.hj_custom-checkbox").prop("checked", true);
-        $("button.btn_card").removeClass("choiceHospital");
-        $(e.target).addClass("choiceHospital");
-    })
+        const closeset = $(e.target).closest(".btn_card");
+        // 부모 엘리먼트 btn_card로 고정하기위해 작성
 
-    $("h4.hospital_name").on("click",(e) => {
-        e.stopPropagation();
-        $("input.hj_custom-checkbox").prop("checked",false);
-        $(e.target).next().prop("checked", true); 
-        $("button.btn_card").removeClass("choiceHospital");
-        $(e.target).parent("button.btn_card").addClass("choiceHospital");
+        // 각각의 채크박스와 커스텀 박스를 선언
+        const ckeckeditem = closeset.find(".hj_custom-checkbox");
+        const customitem = closeset.find(".hj_custom-checkbox-label");
 
-    })
+        if(!ckeckeditem.is(':checked')){ //채크 하지 않았던 경우
+            checkOnlyOne(ckeckeditem,customitem,closeset);
+            $(".btn_card").removeClass("choiceHospital");
+            closeset.addClass("choiceHospital");
 
-    $("p.hospital_addr").on("click",(e) => {
-        e.stopPropagation();
-        $("input.hj_custom-checkbox").prop("checked",false);
-        $(e.target).prev().prev().prop("checked", true);
-        $("button.btn_card").removeClass("choiceHospital");
-        $(e.target).parent("button.btn_card").addClass("choiceHospital");
-    })
+        }else{ //이미 채크 한 경우
+            ckeckeditem.prop("checked",false);
+            customitem.prop("checked",false);
+            closeset.removeClass("choiceHospital");
+        }
+
+    })// end of on(click) event
+
+    $(".btn_card").on("mouseover",(e)=>{
+        
+        const closeset = $(e.target).closest(".btn_card");
+
+        const title = closeset.find(".hospital_name");
+
+        title.addClass("hospital_name_hover");
+
+    },).on("mouseout",(e)=>{
+
+        const closeset = $(e.target).closest(".btn_card");
+        
+        const title = closeset.find(".hospital_name");
+
+        title.removeClass("hospital_name_hover");
+
+    }); // end of on(hover) event
 
 })
+
+/**
+ * 체크박스 하나만 선택 가능하게 하는 함수
+ * @param {object} ckeckeditem orgin checkBox
+ * @param {object} customitem custom checkbox
+ * @param {object} closeset super parent
+ */
+function checkOnlyOne(ckeckeditem,customitem,closeset) {
+  
+    const checkboxes1 = document.querySelectorAll(".hj_custom-checkbox");
+    const checkboxes2 = document.querySelectorAll(".hj_custom-checkbox-label");
+  
+    checkboxes1.forEach((cb) => {
+        cb.checked = false;
+    })
+
+    checkboxes2.forEach((cb) => {
+        cb.checked = false;
+    })
+
+    ckeckeditem.prop("checked",true);
+    customitem.prop("checked",true);
+
+}
