@@ -57,4 +57,10 @@
 		#{endtime1}, #{endtime2}, #{endtime3}, #{endtime4}, #{endtime5}, #{endtime6}, #{endtime7}, #{endtime8})
 	</insert>
 	
+	<!-- 행정구역 입력 -->
+	<insert id="areaInputer" parameterType="KoreaAreaVO">
+		INSERT INTO KOREAAREA (LOCAL, AREA)
+		VALUES (#{local}, #{area})
+	</insert>
+	
 </mapper>

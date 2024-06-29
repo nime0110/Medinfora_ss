@@ -14,3 +14,6 @@ nocache;
 
 select * from HOSPITAL where HPADDR like '%'||'세종'||'%';
 
+select area from KOREAAREA group by area;
+
+select * from KOREAAREA where KOREAAREA.AREA = '서울특별시' order by 1;

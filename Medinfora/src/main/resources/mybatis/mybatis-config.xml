@@ -10,6 +10,7 @@
 	<typeAliases>
 		<typeAlias type="com.spring.app.main.domain.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.spring.app.main.domain.HospitalDTO" alias="HospitalDTO"/>
+		<typeAlias type="com.spring.app.main.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
 		
 	</typeAliases>
 	

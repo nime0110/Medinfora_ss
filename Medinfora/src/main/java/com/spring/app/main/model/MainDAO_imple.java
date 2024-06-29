@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
 
 @Repository
@@ -54,6 +55,12 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 		return sqlsession.insert("hpApiInputer",hospitalDTO);
+	}
+
+	// 대한민국 행정구역정보 입력용
+	@Override
+	public int areaInputer(KoreaAreaVO koreaAreaVO) {
+		return sqlsession.insert("areaInputer",koreaAreaVO);
 	}
 	
 	
