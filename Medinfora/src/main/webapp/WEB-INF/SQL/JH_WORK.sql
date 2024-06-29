@@ -81,3 +81,80 @@ from loginlog;
 
 
 
+-- 로그인 sql 문 수정
+
+SELECT userid, email, name, address, detailaddress, birthday, mobile, gender, M.registerday, midx
+       , pwdupdategap
+       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
+FROM
+(
+    select userid, email, name, address, detailaddress, birthday, mobile, gender, registerday, midx
+           , trunc( months_between(sysdate, pwdupdateday) ) as pwdupdategap
+    from member
+    where (midx between 0 and 8) and userid = 'test001' and pwd = 'qwer1234$'
+)M
+CROSS JOIN
+(
+    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+    from loginlog
+    where userid = 'test001'
+) L;
+
+
+SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx, loginmethod
+       , pwdUpdategap
+       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
+FROM
+(
+    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx, loginmethod
+           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
+    from member
+    where (midx between 0 and 8)
+   -- <choose>
+        --<when test="loginmethod =='0'">
+           -- and userid = 'test001' and pwd = 'qwer1234$'
+        --</when>
+        --<when test="loginmethod =='1'"> 
+            and userid = 'ramen001_kakao'
+        --</when>
+    --</choose>
+)M
+CROSS JOIN
+(
+    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+    from loginlog
+    where userid = 'ramen001_kakao'
+) L;
+
+
+select *
+from member;
+
+
+
+
+SELECT count(*)
+FROM
+(
+    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx, loginmethod
+           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
+    from member
+    where (midx between 0 and 8)
+   -- <choose>
+        --<when test="loginmethod =='0'">
+           -- and userid = 'test001' and pwd = 'qwer1234$'
+        --</when>
+        --<when test="loginmethod =='1'"> 
+            and loginmethod ='1' and userid = 'ramen001_kakao'
+        --</when>
+    --</choose>
+)M
+CROSS JOIN
+(
+    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+    from loginlog
+    where userid = 'ramen001_kakao'
+) L;
+
+
+

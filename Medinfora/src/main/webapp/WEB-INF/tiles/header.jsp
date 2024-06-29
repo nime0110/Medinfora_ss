@@ -51,8 +51,17 @@
 			 const userid = loginData.userid;
 			 const pwd = loginData.pwd;
 			 
+			 const iskakao = loginData.iskakao;
+			 
+			 // 카카오 
+			 
 			 // console.log(userid);
 			 // console.log(pwd);
+			 
+			 if(iskakao == "false"){
+				 location.href="javascript:location.reload(true)";
+
+			 }
 			 
 			 if(userid != null && pwd != null ){
 				 
