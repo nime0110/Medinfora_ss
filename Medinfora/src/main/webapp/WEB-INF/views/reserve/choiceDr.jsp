@@ -68,6 +68,7 @@
      	</form>
 	    
 	    <div class="exam_choiceDr">
+	    
             <div class="btn_card">
             	<div class="card_top">
             		<h4 class="hospital_name">1등병원</h4>
@@ -111,6 +112,29 @@
                     	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
                 </p>
             </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">5등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">6등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>

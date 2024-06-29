@@ -28,6 +28,22 @@
     --grey800: #333d4b;
     --grey900: #191f28;
 
+    /* 네이비 그라데이션 */
+    --navy50: #c3e7f4;
+    --navy100: #aad0e8;
+    --navy200: #99c1dd;
+    --navy250: #8aafce;
+    --navy300: #7c9ebf; 
+    --navy350: #728fb2;
+    --navy400: #667fa3;
+    --navy450: #576f93;
+    --navy500: #506587;
+    --navy550: #445977;
+    --navy600: #384b5e;
+    --navy700: #2d3e4c;
+    --navy800: #22303a;
+    --navy900: #19242b;
+
 	/* 투명도 그라데이션 */
 	--greyOpacity50: rgba(0,23,51,0.02);
     --greyOpacity100: rgba(2,32,71,0.05);

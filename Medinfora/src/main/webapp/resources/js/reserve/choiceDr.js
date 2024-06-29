@@ -5,19 +5,25 @@ $(function(){
         const closeset = $(e.target).closest(".btn_card");
         // 부모 엘리먼트 btn_card로 고정하기위해 작성
 
-        // 각각의 채크박스와 커스텀 박스를 선언
+        // 각각의 체크박스와 커스텀 박스를 선언
         const ckeckeditem = closeset.find(".hj_custom-checkbox");
         const customitem = closeset.find(".hj_custom-checkbox-label");
 
-        if(!ckeckeditem.is(':checked')){ //채크 하지 않았던 경우
-            checkOnlyOne(ckeckeditem,customitem,closeset);
+        if(!ckeckeditem.is(':checked')){ //체크 하지 않았던 경우
+            checkOnlyOne(ckeckeditem,customitem);
             $(".btn_card").removeClass("choiceHospital");
+            $(".hospital_name").removeClass("choicefontcolor");
+            $(".hospital_addr").removeClass("choicefontcolor");
             closeset.addClass("choiceHospital");
+            closeset.find(".hospital_name").addClass("choicefontcolor");
+            closeset.find(".hospital_addr").addClass("choicefontcolor");
 
-        }else{ //이미 채크 한 경우
+        }else{ //이미 체크 한 경우
             ckeckeditem.prop("checked",false);
             customitem.prop("checked",false);
             closeset.removeClass("choiceHospital");
+            closeset.find(".hospital_name").removeClass("choicefontcolor");
+            closeset.find(".hospital_addr").removeClass("choicefontcolor");
         }
 
     })// end of on(click) event
@@ -46,13 +52,12 @@ $(function(){
  * 체크박스 하나만 선택 가능하게 하는 함수
  * @param {object} ckeckeditem orgin checkBox
  * @param {object} customitem custom checkbox
- * @param {object} closeset super parent
  */
-function checkOnlyOne(ckeckeditem,customitem,closeset) {
+function checkOnlyOne(ckeckeditem,customitem) {
   
-    const checkboxes1 = document.querySelectorAll(".hj_custom-checkbox");
-    const checkboxes2 = document.querySelectorAll(".hj_custom-checkbox-label");
-  
+    const checkboxes1 = document.querySelectorAll(".hj_custom-checkbox"); // 체크박스
+    const checkboxes2 = document.querySelectorAll(".hj_custom-checkbox-label"); // 커스텀
+    
     checkboxes1.forEach((cb) => {
         cb.checked = false;
     })
