@@ -1,5 +1,6 @@
 package com.spring.app.main.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,6 +118,20 @@ public class MainService_imple implements MainService {
 		System.out.println(" "+koreaAreaVO.getLocal());
 		
 		return dao.areaInputer(koreaAreaVO);
+	}
+
+
+	// 행정구역 리스트 추출
+	@Override
+	public List<String> getareainfo() {
+		return dao.getareainfo();
+	}
+
+
+	// 시/군/구 리스트 추출
+	@Override
+	public List<String> getlocalinfo(String area) {
+		return dao.getlocalinfo(area);
 	}
 	
 }

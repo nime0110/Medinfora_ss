@@ -1,6 +1,7 @@
 package com.spring.app.main.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -61,6 +62,24 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public int areaInputer(KoreaAreaVO koreaAreaVO) {
 		return sqlsession.insert("areaInputer",koreaAreaVO);
+	}
+
+	// 행정구역 리스트 추출
+	@Override
+	public List<String> getareainfo() {
+		
+		List<String> getareainfo = sqlsession.selectList("getareainfo");
+		
+		return getareainfo;
+	}
+
+	// 시/군/구 리스트 추출
+	@Override
+	public List<String> getlocalinfo(String area) {
+		
+		List<String> getlocalinfo = sqlsession.selectList("getlocalinfo",area);
+		
+		return getlocalinfo;
 	}
 	
 	

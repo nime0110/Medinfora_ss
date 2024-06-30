@@ -1,5 +1,6 @@
 package com.spring.app.main.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.spring.app.main.domain.HospitalDTO;
@@ -25,6 +26,12 @@ public interface MainDAO {
 
 	// 로그인 유저 ip 기록
 	public void insert_log(Map<String, String> paraMap);
+
+	// 행정구역 리스트 추출
+	public List<String> getareainfo();
+
+	// 시/군/구 리스트 추출
+	public List<String> getlocalinfo(String area);
 
 	
 
