@@ -1,5 +1,6 @@
 package com.spring.app.main.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
 import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
 import com.spring.app.main.model.MainDAO;
 
@@ -84,7 +86,7 @@ public class MainService_imple implements MainService {
 		return loginuser;
 	}
 
-
+	// 병원API 입력용
 	@Override
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 
@@ -107,6 +109,29 @@ public class MainService_imple implements MainService {
 		mav.setViewName("redirect:"+renameurl);
 		
 		return mav;
+	}
+
+	// 대한민국 행정구역정보 입력용
+	@Override
+	public int areaInputer(KoreaAreaVO koreaAreaVO) {
+		
+		System.out.println(" "+koreaAreaVO.getLocal());
+		
+		return dao.areaInputer(koreaAreaVO);
+	}
+
+
+	// 행정구역 리스트 추출
+	@Override
+	public List<String> getareainfo() {
+		return dao.getareainfo();
+	}
+
+
+	// 시/군/구 리스트 추출
+	@Override
+	public List<String> getlocalinfo(String area) {
+		return dao.getlocalinfo(area);
 	}
 	
 }

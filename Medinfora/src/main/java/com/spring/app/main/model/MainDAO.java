@@ -1,8 +1,10 @@
 package com.spring.app.main.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
 
 public interface MainDAO {
@@ -13,6 +15,8 @@ public interface MainDAO {
 	// 병원정보 API 입력용 메소드 
 	public int hpApiInputer(HospitalDTO hospitalDTO);
 
+	// 대한민국 행정구역정보 입력용
+	public int areaInputer(KoreaAreaVO koreaAreaVO);
 
 	// 로그인 유저 정보 가져오기
 	public MemberDTO getLoginuser(Map<String, String> paraMap);
@@ -22,6 +26,14 @@ public interface MainDAO {
 
 	// 로그인 유저 ip 기록
 	public void insert_log(Map<String, String> paraMap);
+
+	// 행정구역 리스트 추출
+	public List<String> getareainfo();
+
+	// 시/군/구 리스트 추출
+	public List<String> getlocalinfo(String area);
+
+	
 
 	
 	

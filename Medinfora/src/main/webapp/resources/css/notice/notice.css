@@ -87,7 +87,8 @@
             font-size: 1.4rem;
         }
         .bt_wrap {
-            font-size: 0;
+        
+         /*    font-size: 0; */
              text-align: center; 
             margin-top: 4rem;
         }
@@ -97,9 +98,10 @@
             padding: 10px;
             border: 1px solid #000;
             border-radius: 8px;
-            font-size: 1.4rem;
-            background: #000;
-            color: #fff;
+            font-size: 1.1rem;
+    background: #ffffff;
+            color: #000040;
+            
              text-align: center;
         }
            /*  noticeList.jsp css */
@@ -108,6 +110,7 @@
             border-top: 2px solid #000;
             border-collapse: collapse;
         }
+     
         .board_list th, .board_list td {
             border-bottom: 1px solid #ddd;
             padding: 15px;
@@ -116,8 +119,10 @@
         }
         .board_list th {
             font-weight: 600;
-            background: #f5f5f5;
+            background: #e3eee9;
         }
+        
+      
         .page-link {
     border: none !important;
     color: black;
@@ -126,6 +131,26 @@
 .nowPage{
     font-weight: bold;
 }
+.num {
+	text-align: left;
+	width: 5rem;
+	display:none;
+	
+}
+.board_list_wrap {
+	  margin-top: 10px;   
+	margin-bottom: 10px;
+}
+.board_list th, .board_list td {
+    padding: 10px; 
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.title{
+	width: 50%
+}
+
 
   /*  noticeList.jsp css 끝 */
   
@@ -135,6 +160,7 @@
     width: 100%;
     border-top: 2px solid #000;
 }
+
 
 .board_view .title {
     padding: 20px 15px;
@@ -185,10 +211,12 @@
     border: 1px solid #000;
     border-radius: 2px;
     font-size: 1.4rem;
-    background: #000;
+    background: var( --object-lightpurple-font-color);
     color: #fff;
     margin-right: 10px;
 }
+
+
 
 
    /*  noticeView.jsp css 끝*/
@@ -200,7 +228,7 @@
 
 .board_write .title,
 .board_write .info {
-    padding: 15px;
+    padding: 1px;
 }
 
 .board_write .info {

@@ -5,11 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -107,5 +109,64 @@ public class Myutil {
 		}
 		
 		return hpdtoList;
-	}
+		
+	}// end of public static List<HospitalDTO> hpApiInputer(String localaddr)
+	
+	/**
+	 * KoreaArea Information API Inputer (MADE BY SEO DONGHYEOK)
+	 * Local Json File Insert into My DB
+	 * Json File Type must be JSONArray("key:JSONArray")
+	 * @param {String} Loacl JsonFile Address
+	 * @return {List<KoreaAreaVO>} Parsing List DATA
+	 * @throws FileNotFoundException
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public static List<KoreaAreaVO> areaInputer(String localaddr) throws FileNotFoundException, IOException, ParseException{
+		
+		List<KoreaAreaVO> areavoList = null;
+		
+		JSONParser parser = new JSONParser();
+		
+		Reader reader = new FileReader(localaddr);
+		
+		JSONArray jsonArr = (JSONArray) parser.parse(reader);
+		
+		if(jsonArr.size()>0) {
+			
+			areavoList = new ArrayList<KoreaAreaVO>();
+			
+			for(int i=0;i<jsonArr.size();i++) {
+				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
+				
+				@SuppressWarnings("unchecked")
+				Iterator<String> iter = jsonObj.keySet().iterator();
+				
+				String key = "";
+				String value = "";
+				
+				while(iter.hasNext()){
+	                key = iter.next();
+	            }
+				
+				JSONArray itemarr = (JSONArray) jsonObj.get(key);
+				
+				if(itemarr.size()==0) {
+					KoreaAreaVO areavo = new KoreaAreaVO(value, key);
+					areavoList.add(areavo);
+				}
+				
+				for(int j=0;j<itemarr.size();j++) {
+					value = (String)itemarr.get(j);
+					KoreaAreaVO areavo = new KoreaAreaVO(value, key);
+					areavoList.add(areavo);
+				}
+				
+			}
+			
+		}
+		
+		return areavoList;
+		
+	}// end of public static List<KoreaAreaVO> areaInputer(String localaddr)
 }

@@ -196,6 +196,20 @@ function loginWithKakao(){
 	
 }// end of function loginWithKakao()--
 
+function loginWithKakaoEnd(iskakao){
+	
+	// alert(iskakao);
+	// javascript:location.reload(true)
+	// 또는 회원가입 url
+	
+	if(iskakao != null){
+		const kakaoLogin = {"iskakao":iskakao};
+		
+		window.parent.postMessage(kakaoLogin, "http://localhost:9099");
+	}
+	
+}
+
 
   
 </script>

@@ -10,6 +10,10 @@
         font-size: 2.5rem !important;
     }
 
+	.reserve_seq{
+		padding: 0;
+	}
+
     .reserve_licontent{
         font-size: 1.7rem !important;
         padding: 5px;
@@ -18,17 +22,42 @@
     .hj_custom-checkbox-label{
         display: none;
     }
-
-    .reserve_licontent{
-        font-size: 1.42rem !important;
+    
+    .choiceday{
+    	display: none;
+    }
+    
+    .choicedr{
+    	width: 100%;
     }
 
-    .colsearchbtn{
-        display: none;
+    .searchhp{
+        padding: 24pt 8pt;
+        flex-wrap: wrap;
     }
 
-    .smsearchbtn{
-        display: block;
+    .location_select{
+        width: 60%;
+    }
+    
+    .class_select{
+        width: 40%;
+    }
+    
+    .name_input{
+        margin-top: 8px;
+        width: 100%;
+    }
+    .btn_card{
+        width: 100%;
+    }
+
+}
+
+@media (max-width:1280px){
+
+    .reserveContent{
+        width: 85%;
     }
 
 }

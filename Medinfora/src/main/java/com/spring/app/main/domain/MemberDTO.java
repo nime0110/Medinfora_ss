@@ -16,6 +16,11 @@ public class MemberDTO {
 	// private String pwdUpdateday;	// 비밀번호 업데이트 날짜
 	
 	
+	// 추가 컬럼
+	private int hidx;	// 병원인덱스
+	private int loginmethod;	// 로그인방법 ( 0 : 일반, 1 : 카카오)
+	
+	
 	// select 용
 	private int lastlogingap;	// 로그인한지 12개월 넘었는지 확인하는 용도
 	private int pwdchangegap;	// 비밀번호 변경한지 얼마나 되었는지 확인용
@@ -136,6 +141,22 @@ public class MemberDTO {
 	}
 	public void setRequirePwdChange(boolean requirePwdChange) {
 		this.requirePwdChange = requirePwdChange;
+	}
+	
+	
+	public int getHidx() {
+		return hidx;
+	}
+	public void setHidx(int hidx) {
+		this.hidx = hidx;
+	}
+	
+	
+	public int getLoginmethod() {
+		return loginmethod;
+	}
+	public void setLoginmethod(int loginmethod) {
+		this.loginmethod = loginmethod;
 	}
 	
 	

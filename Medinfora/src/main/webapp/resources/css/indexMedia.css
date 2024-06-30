@@ -2,9 +2,6 @@
 
 @media (max-width: 768px) {
 
-    #footer_img{
-        display: none;
-    }
 
   /* 성심 start */
     .sim_promo_section {
@@ -86,7 +83,7 @@
       
     }
  h4.sh_font{
-	font-size: 0.6rem;
+	font-size: 0.5rem;
 }
     
     div.sh_car{
@@ -95,17 +92,14 @@
 
     
 
-.sh_text {
-	font-size: 10px;
-}
+    .sh_text {
+        font-size: 10px;
+    }
 }
 
 /* 예외 처리 영역 */
 @media (max-width: 1024px) {
     
-    nav ul {
-        width: 480px;
-    }
  /* 승혜 작업 영역 START */
 
     .sh_card-container {
