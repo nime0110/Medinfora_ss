@@ -11,6 +11,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	searchHP();		<%-- 결과창 변경 --%>
+	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getareainfo.bibo",
@@ -49,14 +51,29 @@ $(document).ready(function(){
 					}
 				}	// end of for---------
 				$("select#lod").html(v_html);
-				
 			},
 			error:function(request){
 				alert("code : " + request.status);
 			}
 		})	// end of $.ajax({-------------
+	})	// end of $("select#city").on("change", function(e) {------------
 		
-	})
+	<%-- 진료과목 데이터 가져오기  --%>
+	$.ajax({
+		url:"<%= ctxPath%>/getclasscode.bibo",
+		async:false,
+		dataType:"json",
+		success:function(json){
+			let v_html = `<option>진료과목 선택</option>`;
+			for(let i=0; i<json.length; i++){
+				v_html +=`<option value="\${json[i].classcode}">\${json[i].classname}</option>`;
+			}	// end of for---------
+			$("select#dept").html(v_html);
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	})	// end of $.ajax({-------------
 	
 })	// end of $(document).ready(function(){--------------
 </script>
@@ -99,9 +116,9 @@ $(document).ready(function(){
 	            
 	            	<span class="searchoicename">진료과목</span>
 		            <select name="dept" id="dept" class="selectbox inlinesearch">
-		                <option>진료과목 선택</option>
+<!-- 		                
 		                <option value="internal">내과</option>
-		                <option value="surgery">외과</option>
+		                <option value="surgery">외과</option> -->
 		            </select>
 	            
 	            </div>
