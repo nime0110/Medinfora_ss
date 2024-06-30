@@ -3,7 +3,7 @@
     
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources//css/reserve/choiceDr.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDr.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDrMedia.css" />
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
@@ -139,7 +139,7 @@
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
 	    <div class="w-100 d-flex justify-content-center pt-3">
-	        <ul class="pagination reserve_pagebar nanum-n size-s">
+	        <ul class="pagination hj_pagebar nanum-n size-s">
 	            <li class="page-item">
 	                <a class="page-link" href="#" aria-label="Previous">
 	                    <span aria-hidden="true">&laquo;</span>
