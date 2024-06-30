@@ -395,6 +395,24 @@ iframe#loginPage {
   border-radius: 0.5rem;;
 }
 
+/*
+	 === 페이징바 ===
+	크기 : choiceDr.jsp 페이징바 참고
+*/
+
+.hj_pagebar{
+    border: none;
+    list-style: none;
+}
+
+.page-link {
+    border: none !important;
+    color: black;
+}
+
+.nowPage{
+    font-weight: bold;
+}
 
 
 @media (max-width: 768px) {
