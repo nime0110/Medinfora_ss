@@ -1,0 +1,39 @@
+@charset "UTF-8";
+#map {
+    width: 95%;
+    height: 600px;
+    margin: 20px auto;
+}
+#searchBox {
+    text-align: center;
+    margin-bottom: 20px;
+}
+#searchBox select, 
+#searchBox input[type="text"], 
+#searchBox button { 
+    margin: 10px; 
+    padding: 10px; 
+    font-size: 14px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+#searchBox button { 
+    background-color: #4CAF50; 
+    color: white; 
+    cursor: pointer; 
+}
+#searchBox button:hover { 
+    background-color: #45a049; 
+}
+
+.dropdown_hpsearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.dropdown_hpsearch select {
+    width: 150px;
+    margin-right: 10px;
+}
+

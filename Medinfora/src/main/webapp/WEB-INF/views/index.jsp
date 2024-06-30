@@ -17,7 +17,7 @@
     <div class="sim_promo_section_services">
       <h3 class="nanum-b size-n">Quick Menu</h3>
       <div class="sim_promo_section_service_links">
-        <a href="<%=ctxPath%>/hospitalSearch/hospitalSearch.bibo">
+        <a href="<%=ctxPath%>/hpsearch/hospitalSearch.bibo">
           <div class="icon"><img src=""></div>
           <span class="nanum-b size-s">병원찾기</span>
         </a>
