@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
@@ -132,6 +133,12 @@ public class MainService_imple implements MainService {
 	@Override
 	public List<String> getlocalinfo(String area) {
 		return dao.getlocalinfo(area);
+	}
+
+	// 병원 진료과 리스트 추출
+	@Override
+	public List<ClasscodeDTO> getclasscode() {
+		return dao.getclasscode();
 	}
 	
 }

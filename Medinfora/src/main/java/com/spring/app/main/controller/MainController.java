@@ -10,8 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.KakaoApi;
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.MemberDTO;
 //import com.spring.app.common.Myutil;
 //import com.spring.app.main.domain.HospitalDTO;
@@ -323,4 +324,26 @@ public class MainController {
 		return jsonarr.toString();
 		
 	}// end of public String getlocalinfo(HttpServletRequest request)
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
+	public String getclasscode() {
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
+		
+		for(ClasscodeDTO clsscodeDTO : clsscodeDTOList) {
+			JSONObject jsonObj = new JSONObject();
+			
+			jsonObj.put("classname",clsscodeDTO.getClassname());
+			jsonObj.put("classcode",clsscodeDTO.getClasscode());
+			
+			jsonarr.add(jsonObj);
+		}
+		
+		return jsonarr.toString();
+	}
+	
 }

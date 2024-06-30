@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
@@ -77,12 +78,13 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public List<String> getlocalinfo(String area) {
 		
-		List<String> getlocalinfo = sqlsession.selectList("getlocalinfo",area);
-		
-		return getlocalinfo;
+		return sqlsession.selectList("getlocalinfo",area);
+	}
+
+	// 병원 진료과 리스트 추출
+	@Override
+	public List<ClasscodeDTO> getclasscode() {
+		return sqlsession.selectList("getclasscode");
 	}
 	
-	
-	
-
 }
