@@ -374,5 +374,5 @@ public class MainController {
 		
 		return jsonarr.toString();
 		
-	}// enf of public String getlocalinfo(HttpServletRequest request)
+	}// end of public String getlocalinfo(HttpServletRequest request)
 }
