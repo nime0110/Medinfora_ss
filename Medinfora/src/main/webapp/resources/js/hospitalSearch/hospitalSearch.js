@@ -5,7 +5,7 @@ const contextPath = window.location.pathname.substring(0, window.location.pathna
 $(function() {
   
     // 지도 컨테이너와 옵션 설정
-    let mapContainer = document.getElementById('map'),
+    var mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(37.566535, 126.9779692), // 초기 중심 좌표 (서울 시청)
             level: 3 // 초기 확대 레벨
@@ -13,6 +13,18 @@ $(function() {
 
     // 지도 생성
     map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
+    var mapTypeControl = new kakao.maps.MapTypeControl();
+    // 지도 타입 컨트롤을 지도에 표시함.
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT); 
+
+    // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 생성함.   
+    var zoomControl = new kakao.maps.ZoomControl();
+    // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	
+
 
     // HTML5의 geolocation으로 사용자 위치 가져오기
     if (navigator.geolocation) {
@@ -123,11 +135,20 @@ $(function() {
     });
     */
     
-    
-
-
-    
 });
+
+// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수
+window.zoomIn = function() {
+    map.setLevel(map.getLevel() - 1);
+}
+
+// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 축소하는 함수
+window.zoomOut = function() {
+    map.setLevel(map.getLevel() + 1);
+}
+
+
+
 
 // 지도에 마커 추가하는 함수
 function addMarker(position, message) {
@@ -186,50 +207,29 @@ function updateSigunGu() {
 
 
 
-// 시 도 선택시 업데이트 되는 함수   end
-
-// 시/군/구 선택 시 동(읍/면/동) 목록 업데이트 함수 start
-function updateDong() {
-    let selectedSigungu = $('#si-gun-gu').val(); // 시/군/구 선택
-    let dongList = { // 동 목록 (예시)
-        '강남구': ['삼성동', '역삼동', '논현동'],
-        '서초구': ['서초동', '반포동', '잠원동'],
-        '송파구': ['잠실동', '문정동', '가락동'],
-        '수원시': ['팔달구', '권선구', '영통구'],
-        '성남시': ['분당구', '수정구', '중원구'],
-        '용인시': ['수지구', '기흥구', '처인구']
-    };
-
-    $('#dong').empty();
-    $('#dong').append('<option value="">동 선택</option>');
-
-    if (selectedSigungu && dongList[selectedSigungu]) {
-        let selectedDongList = dongList[selectedSigungu];
-        for (let i = 0; i < selectedDongList.length; i++) {
-            $('#dong').append('<option value="' + selectedDongList[i] + '">' + selectedDongList[i] + '</option>');
-        }
-    }
-}
-// 시/군/구 선택 시 동(읍/면/동) 목록 업데이트 함수  end
-
-// 시/군/구를 기반으로 병원 검색 함수 
+// 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
 function searchHospitals() {
     let sido = $('#si-do').val();
     let sigungu = $('#si-gun-gu').val();
-    //let dong = $('#dong').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 
+	let addr = sido + sigungu;
 	console.log("sido:", sido);
 	console.log("si-gun-gu:", sigungu);
-	//console.log("dong:", dong);
+	console.log("~~addr:", addr);
 	console.log("classcode:", classcode);
 	console.log("agency:", agency);
 	
 	
-    if (!sigungu || !dong) {
+    if (!sido ) {
+        alert("시/도를 선택하세요");
         return;
-        alert("읍/면/동 선택ㄱㄱ");
+    }
+	
+    if (!sigungu ) {
+        alert("시/군/구를 선택하세요");
+        return;
     }
 	
     $.ajax({
@@ -245,7 +245,7 @@ function searchHospitals() {
             data.forEach(hospital => { // 병원의 위도, 경도를 위치 객체로 변환
                 let position = new kakao.maps.LatLng(hospital.wgs84Lat, hospital.wgs84Lon);
                 addMarker(position, hospital.hpname); // 지도에 병원 위치 마커 추가
-
+				
 
                 // 병원 리스트로 출력
                 let v_html = `<li>${hospital.hpname}</li>`;

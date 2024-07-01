@@ -44,8 +44,35 @@
 	<button onclick="searchHospitals()">검색</button>
 
 	</div>
-	<!-- 카카오맵 설정  -->
-    <div id="map" style="width:95%; height:600px;"></div>
+	<!-- 카카오맵 / 리스트설정  -->
+	<div id="flexbox_map">
+		<div class="map_wrap">
+		    <div id="map"></div>
+		</div>
+		<div id="hplist">
+		    <ul id="hospitalList">
+		        <!-- Sample List Items -->
+		        <li>
+		            <div class="hospital-item">
+		                <div class="hospital-label">A</div>
+		                <div class="hospital-details">
+		                    <h2 class="hospital-name">(의)열린의료재단 미아열린의원</h2>
+		                    <p class="hospital-type">내과들어올곳?</p>
+		                    <p class="hospital-contact">TEL: 02-945-2305 FAX: </p>
+		                    <p class="hospital-address">서울특별시 강북구 도봉로 213 하당빌딩 3,4층 (미아동)</p>
+		                </div>
+		                <button class="details-button">상세</button>
+		            </div>
+		        </li>
+		        <!-- More items can be added here -->
+		    </ul>
+		</div>
+	</div>
+    <div class="pagination">
+        <span class="page-link">1</span>
+        <span class="page-link">2</span>
+        <span class="page-link">3</span>
+    </div>
 </div>    
     
 <div id="hospitalList"></div>
