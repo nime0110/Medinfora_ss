@@ -144,6 +144,9 @@ public class MainController {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = null;
 		
+		String isExistUser = "false";
+		String message = "카카오로 회원가입된 계정이 없습니다.\\n회원가입 페이지로 이동하시겠습니까?";
+		
 		try {
 		
 			String code = request.getParameter("code");
@@ -212,8 +215,7 @@ public class MainController {
 			// 유저가 가입되어 잇는지 있는지 확인한다.
 			MemberDTO loginuser = service.loginEnd(paraMap, request);
 			
-			String isExistUser = "";
-			String message = "로그인을 실패하였습니다.";
+			
 			
 					
 			if(loginuser != null) {
@@ -236,7 +238,12 @@ public class MainController {
 				else {
 					message = "로그인 성공하였습니다.";
 					isExistUser = "true";
-					String pwdchangegap = String.valueOf(loginuser.getPwdchangegap());
+					
+					if(loginuser.getPwdchangegap() >= 3) {
+						isExistUser = "true_PNU";
+						message = "비밀번호를 변경하신지 3개월이 지났습니다. \\n 비밀번호 변경을 권유드립니다.";
+					}
+					
 				}
 				
 				out = response.getWriter();
@@ -245,23 +252,27 @@ public class MainController {
 				StringBuilder sb_script = new StringBuilder();
 				
 				sb_script.append("<script type='text/javascript'>");
-				sb_script.append("const kakaouser = {} ");
+				sb_script.append("const iskakao ='"+isExistUser+"';");
+				sb_script.append("const message ='"+message+"';");
+				// sb_script.append("alert("+message+");");
+				sb_script.append("window.opener.loginWithKakaoEnd(iskakao, message);");
+				sb_script.append("window.close();</script>");
 				
 				
-				String script = "";
+				String script = sb_script.toString();
 				
 				
-				out.println("<script type='text/javascript'> const iskakao = \"false\"; alert('로그인 성공하였습니다.'); window.opener.loginWithKakaoEnd(iskakao); window.close();</script>");
+				out.println(script);
 				
 			}
 			else {
 				// 가입된 적이 없으므로 
 				// 팝업창을 닫고, 회원가입 폼으로 넘겨준다.
-				System.out.println("로그인 실패");
+				System.out.println("가입한적 없음");
 				
 				out = response.getWriter();
 
-				out.println("<script type='text/javascript'>const iskakao = \"false\"; alert('로그인 실패하였습니다.'); window.opener.loginWithKakaoEnd(iskakao); window.close();</script>");
+				out.println("<script type='text/javascript'>const iskakao = '"+isExistUser+"'; const message ='nouser'; if(confirm('"+message+"')){window.opener.loginWithKakaoEnd(iskakao, message);}; window.close();</script>");
 			}
 		
 
@@ -269,7 +280,7 @@ public class MainController {
 			e.printStackTrace();
 			try {
 				out = response.getWriter();
-				out.println("<script type='text/javascript'>const iskakao = \"false\"; alert('로그인 실패하였습니다.'); window.opener.loginWithKakaoEnd(iskakao); window.close();</script>");
+				out.println("<script type='text/javascript'>alert('로그인 실패하였습니다.'); window.close();</script>");
 				return;
 			} catch (IOException e1) {
 				e1.printStackTrace();
