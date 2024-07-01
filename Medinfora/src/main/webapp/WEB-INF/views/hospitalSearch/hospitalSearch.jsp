@@ -15,17 +15,17 @@
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="si-do">
-		  <option value="">시/도 선택</option>
-		  <option value="서울특별시">서울특별시</option>
-		  <option value="경기도">경기도</option>
+		  <!-- 시/도 데이터 -->
 		</select>
 		
 		<select id="si-gun-gu">
 		  <option value="">시/군/구 선택</option>
+		  <!-- 시/군/구 데이터 -->
 		</select>
 		
 		<select id="dong">
 		  <option value="">읍/면/동 선택</option>
+		  <!-- 읍/면/동 데이터 -->
 		</select>
 	</div>
 	<div class="dropdown_hpsearch">
@@ -50,8 +50,8 @@
 		</select>
 
 	   
-	<input type="text" id="manualLocation" placeholder="병원명을 입력하세요">
-	<button onclick="searchManualLocation()">검색</button>
+	<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
+	<button onclick="searchHospitals()">검색</button>
 
 	</div>
 	<!-- 카카오맵 설정  -->
