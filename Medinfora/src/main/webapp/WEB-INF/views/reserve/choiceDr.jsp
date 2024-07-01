@@ -3,10 +3,63 @@
     
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources//css/reserve/choiceDr.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDr.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDrMedia.css" />
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	<%-- 시/도 데이터 가져오기 --%>
+	$.ajax({
+		url:"<%= ctxPath%>/getareainfo.bibo",
+		async:false,
+		dataType:"json",
+		success:function(json){
+			let v_html = `<option>시/도 선택</option>`;
+			for(let i=0; i<json.length; i++){
+				v_html +=`<option>\${json[i]}</option>`;
+			}	// end of for---------
+			$("select#city").html(v_html);
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	})	// end of $.ajax({-------------
+	
+	<%-- 시/도 가 선택되거나 바뀐 경우 --%>
+	$("select#city").on("change", function(e) {
+		<%-- console.log($(this).val());	// 선택한 값 확인하기  --%>
+		const area_val = $(this).val();
+		
+		<%-- 시/군구 데이터 가져오기 --%>
+		const area ={"area":area_val};
+		
+		$.ajax({
+			url:"<%= ctxPath%>/getlocalinfo.bibo",
+			async:false,
+			data:area,
+			dataType:"json",
+			success:function(json){
+				let v_html = `<option>시/군구 선택</option>`;
+				for(let i=0; i<json.length; i++){
+					if(json[i]!=null){	<%-- 세종과 다른 시도 구분 --%>
+						v_html +=`<option>\${json[i]}</option>`;
+					}
+				}	// end of for---------
+				$("select#lod").html(v_html);
+				
+			},
+			error:function(request){
+				alert("code : " + request.status);
+			}
+		})	// end of $.ajax({-------------
+		
+	})
+	
+})	// end of $(document).ready(function(){--------------
+</script>
 
 <div class="hj_container">
 	<div class="reserveContent pt-3">
@@ -15,155 +68,128 @@
 	    </div>
 	    <div class="mediseq">
 	        <ul class="reserve_seq my-5">
-	            <li class="reserve_li choicedr py-3">
-	                <span class="reserve_licontent nanum-b">병원 선택</span>
+	            <li class="reserve_li choicedr">
+	            	<span class="reserve_licontent nanum-b">병원 선택</span>
 	            </li>
-	            <li class="reserve_li py-3 choiceday">
-	                <span class="reserve_licontent nanum-n">진료일시 선택</span>
+	            <li class="reserve_li choiceday">
+	            	<span class="reserve_licontent nanum-n">진료일시 선택</span>
 	            </li>
 	        </ul>
 	    </div>
-	    <div class="searchhp px-5 py-2">
-	    	<div class="py-3"> 
-		        <div class="chex mr-5">
-		            <span class="searchoicename nanum-b tagloc">병원위치</span>
-		            <select name="city" id="city" class="selectbox">
-		                <option>시/도 선택</option>
-		                <option value="seoul">서울특별시</option>
-		                <option value="busan">부산광역시</option>
+	    
+    	<form name="#" method="get">
+	    	<div class="searchhp">
+	    
+	    		<div class="location_select">
+	    		
+		    		<span class="searchoicename">병원위치</span>
+		            
+		            <select name="city" id="city" class="selectbox loc_sel">
+		                <%-- 시/도 데이터 --%>
 		            </select>
-		            <select name="loc" id="lod" class="selectbox">
-		                <option>시/군구 선택</option>
-		                <option value="seoul">서울</option>
-		                <option value="gungi">경기</option>
+		            
+		            <select name="loc" id="lod" class="selectbox loc_sel">
+						<option>시/군구 선택</option>
+						<%-- 시/군구 데이터 --%>
 		            </select>
-		        </div>
-		        &nbsp;&nbsp;
-		        <div class="chex">
-		            <span class="searchoicename inlinesearch nanum-b">진료과목</span>
+		            
+	    		</div>
+	            
+	            <div class="class_select">
+	            
+	            	<span class="searchoicename">진료과목</span>
 		            <select name="dept" id="dept" class="selectbox inlinesearch">
 		                <option>진료과목 선택</option>
 		                <option value="internal">내과</option>
 		                <option value="surgery">외과</option>
 		            </select>
-		        </div>
-	        </div>
-	        <div class="searchHospital py-3 row justify-content-center">
-	            <div class="col-xl-6 row justify-content-around">
-	                <input text="type" class="col-md-8" placeholder="병원명을 입력하세요."/>
-	                <button type="button" class="searchhpbtn colsearchbtn col-md-3 btn btn-lg">검색</button>
+	            
 	            </div>
-	        </div>
-	    </div>
-	    <div class="choiceDr">
-	        <span class="nanum-b size-n">병원선택</span>
-	        <hr style="border: solid 3px black">
-	    </div>
+	            
+	           	<div class="name_input">
+	           		
+	           		<span class="searchoicename">병원명</span>
+	               	<input text="type" class="inputbox" name="" placeholder="병원명을 입력하세요."/>
+	               	<button type="button" class="searchhpbtn">검색</button>
+	           	</div>
+           	
+        	</div>
+        
+     	</form>
+	    
 	    <div class="exam_choiceDr">
-	        <div class="card-inner row">
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">1등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">
-	                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-	                </p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">2등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">3등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">4등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">5등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">6등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">7등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">8등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">1등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">2등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">3등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">4등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">5등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">6등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">7등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">서울특별시 서울~~</p>
-	            </button>
-	            <button class="card col-6 col-sm-3 btn_card" type="button">
-	                <h4 class="hospital_name nanum-n">8등병원</h4>
-	                <input type="checkbox" class="hj_custom-checkbox">
-	                <label class="hj_custom-checkbox-label"></label>
-	                <p class="hospital_addr">대략 16개 보여줄 예정</p>
-	            </button>
+	    
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">1등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">2등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">3등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">4등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">5등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
+            <div class="btn_card">
+            	<div class="card_top">
+            		<h4 class="hospital_name">6등병원</h4>
+                	<input type="checkbox" class="hj_custom-checkbox">
+                	<label class="hj_custom-checkbox-label"></label>
+            	</div>
+                <p class="hospital_addr">
+                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
+                </p>
+            </div>
+            
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
 	    <div class="w-100 d-flex justify-content-center pt-3">
-	        <ul class="pagination reserve_pagebar nanum-n size-s">
+	        <ul class="pagination hj_pagebar nanum-n size-s">
 	            <li class="page-item">
 	                <a class="page-link" href="#" aria-label="Previous">
 	                    <span aria-hidden="true">&laquo;</span>

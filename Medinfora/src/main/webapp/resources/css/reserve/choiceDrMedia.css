@@ -31,4 +31,33 @@
     	width: 100%;
     }
 
+    .searchhp{
+        padding: 24pt 8pt;
+        flex-wrap: wrap;
+    }
+
+    .location_select{
+        width: 60%;
+    }
+    
+    .class_select{
+        width: 40%;
+    }
+    
+    .name_input{
+        margin-top: 8px;
+        width: 100%;
+    }
+    .btn_card{
+        width: 100%;
+    }
+
+}
+
+@media (max-width:1280px){
+
+    .reserveContent{
+        width: 85%;
+    }
+
 }

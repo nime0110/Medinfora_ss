@@ -1,6 +1,7 @@
 package com.spring.app.main.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
 
 @Repository
@@ -55,8 +58,33 @@ public class MainDAO_imple implements MainDAO{
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 		return sqlsession.insert("hpApiInputer",hospitalDTO);
 	}
-	
-	
-	
 
+	// 대한민국 행정구역정보 입력용
+	@Override
+	public int areaInputer(KoreaAreaVO koreaAreaVO) {
+		return sqlsession.insert("areaInputer",koreaAreaVO);
+	}
+
+	// 행정구역 리스트 추출
+	@Override
+	public List<String> getareainfo() {
+		
+		List<String> getareainfo = sqlsession.selectList("getareainfo");
+		
+		return getareainfo;
+	}
+
+	// 시/군/구 리스트 추출
+	@Override
+	public List<String> getlocalinfo(String area) {
+		
+		return sqlsession.selectList("getlocalinfo",area);
+	}
+
+	// 병원 진료과 리스트 추출
+	@Override
+	public List<ClasscodeDTO> getclasscode() {
+		return sqlsession.selectList("getclasscode");
+	}
+	
 }
