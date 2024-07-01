@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ReserveController {
 
 	@GetMapping("/reserve/choiceDr.bibo")
-	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
