@@ -86,8 +86,8 @@
 	</select>
 	
 	<!-- (진료예약)회원가입된 병원 리스트 가져오기  -->
-	<select id="mbHospitalList" resultType="HospitalDTO">
-		SELECT H.hidx as hidx, hpname, hpaddr, hptel, classcode
+	<select id="mbHospitalList" resultType="HospitalDTO" parameterType="HashMap">
+		SELECT HC.hidx as hidx, hpname, hpaddr, hptel, classcode
 		FROM
 		(
 		    select hidx
@@ -96,9 +96,34 @@
 		) M
 		JOIN
 		(
-		    select *
-		    from hospital
-		) H
-		ON M.hidx = H.hidx
+		    SELECT hidx, hpname, hpaddr, hptel, H.classcode
+		    FROM
+		    (
+		        select hidx, hpname, hpaddr, hptel, classcode
+		        from hospital
+		        where 1=1
+		        <choose>
+			    	<when test='Area != "" '>
+			    		and hpaddr like '%' || #{Area} || '%'
+			    	</when>
+			    	<when test='local != "" '>
+			    		and hpaddr like '%' || #{Area} || '%' || #{local} || '%'
+			    	</when>
+			    	<when test='hpname != "" '>
+			    		and hpname like '%' || #{hpname} || '%'
+			    	</when>
+			    	<when test='classcode != "" '>
+			    		and classcode = #{classcode}
+			    	</when>
+		    	</choose>
+		    ) H
+		    JOIN
+		    (
+		        select classcode, classname
+		        from classcode
+		    ) C
+		    ON H.classcode = C.classcode
+		) HC
+		ON M.hidx = HC.hidx
 	</select>
 </mapper>
