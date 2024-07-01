@@ -78,7 +78,7 @@ $(document).ready(function(){
 	})	// end of $.ajax({-------------
 	
 })	// end of $(document).ready(function(){--------------
-function goSearch(){
+function HPSearch(){
 	const frm = document.searchHospitalFrm;
 	frm.submit();
 }
@@ -131,7 +131,7 @@ function goSearch(){
 	           		
 	           		<span class="searchoicename">병원명</span>
 	               	<input text="type" class="inputbox" name="hpname" placeholder="병원명을 입력하세요."/>
-	               	<button type="button" class="searchhpbtn">검색</button>
+	               	<button type="button" class="searchhpbtn" onclick="HPSearch()">검색</button>
 	           	</div>
            	
         	</div>
@@ -140,7 +140,7 @@ function goSearch(){
 	    
 	    <div class="exam_choiceDr">
 	    	<c:if test="${empty requestScope.mbHospitalList}">
-	    		회원가입한 병원 없음
+	    		검색결과에 맞는 결과가 없습니다.
 	    	</c:if>
 	    	<c:if test="${not empty requestScope.mbHospitalList}">
 	    		<c:forEach var="hospitalDTO" items="${requestScope.mbHospitalList}" varStatus="status">

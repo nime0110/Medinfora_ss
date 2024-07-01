@@ -1,6 +1,7 @@
 package com.spring.app.reserve.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class ReserveService_imple implements ReserveService {
 
 	// === 회원가입된 병원 리스트 가져오기 === //
 	@Override
-	public List<HospitalDTO> mbHospitalList() {
-		List<HospitalDTO> mbHospitalList = dao.mbHospitalList();
+	public List<HospitalDTO> mbHospitalList(Map<String, String> paraMap) {
+		List<HospitalDTO> mbHospitalList = dao.mbHospitalList(paraMap);
 		return mbHospitalList;
 	}
 
