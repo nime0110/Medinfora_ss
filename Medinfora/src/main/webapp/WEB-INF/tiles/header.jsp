@@ -52,17 +52,10 @@
 			 const pwd = loginData.pwd;
 			 
 			 const iskakao = loginData.iskakao;
+			 const message = loginData.message;
 			 
-			 // 카카오 
 			 
-			 // console.log(userid);
-			 // console.log(pwd);
-			 
-			 if(iskakao == "false"){
-				 location.href="javascript:location.reload(true)";
-
-			 }
-			 
+			 // 일반 로그인 
 			 if(userid != null && pwd != null ){
 				 
 				 $.ajax({
@@ -101,6 +94,44 @@
 					
 				 });
 				 
+			 }
+			 
+			 // 카카오  로그인
+			 else if(iskakao != null && message != null){
+				 
+				 switch (iskakao) {
+				 	case "freeze":
+				 		alert(message);
+					 	// 휴먼해제 페이지 이동
+					 	location.href="javascript:location.reload(true)";
+				 		break;
+				 		
+				 	case "suspended":
+				 		alert(message);
+					 	location.href="javascript:location.reload(true)";
+					 	break;
+					 	
+				 	case "true":
+				 		if(Number(${sessionScope.loginuser.pwdchangegap}) >= 3){
+				 			alert(message);
+				 			// 비밀번호 변경페이지로 이동
+						 	location.href="javascript:location.reload(true)";
+				 		}
+				 		else{
+				 			alert(message);
+						 	location.href="javascript:location.reload(true)";
+						 	
+				 		}
+				 		break;
+				 		
+				 	case "false":
+				 		// 회원가입 페이지로 이동
+				 		alert("회원가입 이동간다잉");
+					 	location.href="javascript:location.reload(true)";
+						break;
+				 	
+				 }// end of switch
+
 			 }
 			 
 			 
