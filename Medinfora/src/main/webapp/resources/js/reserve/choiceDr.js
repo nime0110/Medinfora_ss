@@ -46,7 +46,7 @@ $(function(){
 
     }); // end of on(hover) event
 
-})
+})  // end of $(function(){------------------
 
 /**
  * 체크박스 하나만 선택 가능하게 하는 함수
@@ -69,4 +69,4 @@ function checkOnlyOne(ckeckeditem,customitem) {
     ckeckeditem.prop("checked",true);
     customitem.prop("checked",true);
 
-}
+}   // end of function checkOnlyOne(ckeckeditem,customitem) {----------------------
