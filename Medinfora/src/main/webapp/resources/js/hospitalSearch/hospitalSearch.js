@@ -1,9 +1,9 @@
 let map;
 let markers = [];
-const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
 $(function() {
-  
+    const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
+ 
     // 지도 컨테이너와 옵션 설정
     let mapContainer = document.getElementById('map'),
         mapOption = {
@@ -61,29 +61,10 @@ $(function() {
         alert('GPS를 지원하지 않습니다');
     }
 
-	// ****************** 시/도, 시/군/구, 읍/면/동, 진료과목 데이터 가져오기 start ************* 
-	// 시/도 데이터 가져오기 ajax
-	$.ajax({
-		url:contextPath + "/getareainfo.bibo",
-		async:false,
-		dataType:"json",
-		success:function(json){
-			let v_html = `<option>시/도 선택</option>`;
-			for(let i=0; i<json.length; i++){
-				v_html +=`<option>${json[i]}</option>`;
-			}	// end of for---------
-			$("select#si-do").html(v_html);
-		},
-		error:function(request){
-			alert("code : " + request.status);
-		}
-	}) 
-
-
     // 검색부분 작성
-    $('#searchHpName').on('keydown', function(e) {
+    $('#manualLocation').on('keydown', function(e) {
         if (e.keyCode == 13) {
-           // searchHpName();
+            searchManualLocation();
         }
     });
     
@@ -97,14 +78,10 @@ $(function() {
         updateDong();
     });
     
-    /*
     //검색조건변경시 병원검색
     $('#si-gun-gu, #dong, #classcode, #agency').on('change', function() {
         searchHospitals();
     });
-    */
-    
-    
 
 
     
@@ -136,35 +113,23 @@ function removeMarkers() {
 
 // 시 도 선택시 업데이트 되는 함수   start
 function updateSigunGu() {
-    let area_val = $('#si-do').val(); // 서울특별시, 경기도
+	let selectedSido =  $('#si-do').val(); //서울특별시 , 경기도
+	let sigunGuList = { //추후 DB 내용대로
+        '서울특별시': ['강남구', '서초구', '송파구'],
+        '경기도': ['수원시', '성남시', '용인시']
+    };
+    
+    $('#si-gun-gu').empty();
+    $('#si-gun-gu').append('<option value="">시/군/구 선택</option>');
 
-    const area = { "area": area_val };
-    
-    console.log("area:", area);
-    
-    $.ajax({
-        url: contextPath + "/getlocalinfo.bibo",
-        async: false,
-        data: area, // 데이터 객체 전달
-        dataType: "json",
-        success: function(json) {
-            console.log(json);
-            let v_html = `<option value="">시/군구 선택</option>`;
-            for (let i = 0; i < json.length; i++) {
-                if (json[i] != null) {	
-                    v_html += `<option value="${json[i]}">${json[i]}</option>`;
-                }
-            }	// end of for---------
-            $("select#si-gun-gu").html(v_html);
-        },
-        error: function(request) {
-            alert("code : " + request.status + "\nmessage : " + request.responseText);
+    if (selectedSido) {
+        let guList = sigunGuList[selectedSido]; //'서울특별시' 선택 key => value 강남구,서초구,송파구
+        //console.log(guList); 
+        for (let i = 0; i < guList.length; i++) { 
+            $('#si-gun-gu').append('<option value="' + guList[i] + '">' + guList[i] + '</option>');
         }
-    });	// end of $.ajax({-------------
+    }
 }
-// 시 도 선택시 업데이트 되는 함수   end
-
-
 // 시 도 선택시 업데이트 되는 함수   end
 
 // 시/군/구 선택 시 동(읍/면/동) 목록 업데이트 함수 start
@@ -193,37 +158,27 @@ function updateDong() {
 
 // 시/군/구를 기반으로 병원 검색 함수 
 function searchHospitals() {
-    let sido = $('#si-do').val();
-    let sigungu = $('#si-gun-gu').val();
+    let region = $('#si-gun-gu').val();
     let dong = $('#dong').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 
-	console.log("sido:", sido);
-	console.log("si-gun-gu:", sigungu);
-	console.log("dong:", dong);
-	console.log("classcode:", classcode);
-	console.log("agency:", agency);
-	
-	
-    if (!sigungu || !dong) {
+    if (!region || !dong) {
         return;
-        alert("읍/면/동 선택ㄱㄱ");
     }
-	
+
     $.ajax({
         url: '/hospitalSearch/hpsearchAdd.bibo', 
-        data: { sigungu: sigungu, 
+        data: { region: region, 
         		classcode: classcode, 
         		agency: agency },
-        dataType: "json",
-        success: function(json) {
+        success: function(data) {
             removeMarkers();
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
             data.forEach(hospital => { // 병원의 위도, 경도를 위치 객체로 변환
                 let position = new kakao.maps.LatLng(hospital.wgs84Lat, hospital.wgs84Lon);
                 addMarker(position, hospital.hpname); // 지도에 병원 위치 마커 추가
-
+                
 
                 // 병원 리스트로 출력
                 let v_html = `<li>${hospital.hpname}</li>`;
@@ -231,6 +186,5 @@ function searchHospitals() {
             });
         }
     });
-    
 }
 
