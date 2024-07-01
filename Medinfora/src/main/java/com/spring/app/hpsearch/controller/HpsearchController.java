@@ -22,6 +22,9 @@ public class HpsearchController {
 		String region = request.getParameter("region"); //서초구
 		System.out.println("~~region:" + region);
 		
+		
+		
+		
 		return "";
 
 	}

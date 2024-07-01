@@ -3,10 +3,63 @@
     
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources//css/reserve/choiceDr.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDr.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDrMedia.css" />
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	<%-- 시/도 데이터 가져오기 --%>
+	$.ajax({
+		url:"<%= ctxPath%>/getareainfo.bibo",
+		async:false,
+		dataType:"json",
+		success:function(json){
+			let v_html = `<option>시/도 선택</option>`;
+			for(let i=0; i<json.length; i++){
+				v_html +=`<option>\${json[i]}</option>`;
+			}	// end of for---------
+			$("select#city").html(v_html);
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	})	// end of $.ajax({-------------
+	
+	<%-- 시/도 가 선택되거나 바뀐 경우 --%>
+	$("select#city").on("change", function(e) {
+		<%-- console.log($(this).val());	// 선택한 값 확인하기  --%>
+		const area_val = $(this).val();
+		
+		<%-- 시/군구 데이터 가져오기 --%>
+		const area ={"area":area_val};
+		
+		$.ajax({
+			url:"<%= ctxPath%>/getlocalinfo.bibo",
+			async:false,
+			data:area,
+			dataType:"json",
+			success:function(json){
+				let v_html = `<option>시/군구 선택</option>`;
+				for(let i=0; i<json.length; i++){
+					if(json[i]!=null){	<%-- 세종과 다른 시도 구분 --%>
+						v_html +=`<option>\${json[i]}</option>`;
+					}
+				}	// end of for---------
+				$("select#lod").html(v_html);
+				
+			},
+			error:function(request){
+				alert("code : " + request.status);
+			}
+		})	// end of $.ajax({-------------
+		
+	})
+	
+})	// end of $(document).ready(function(){--------------
+</script>
 
 <div class="hj_container">
 	<div class="reserveContent pt-3">
@@ -32,15 +85,12 @@
 		    		<span class="searchoicename">병원위치</span>
 		            
 		            <select name="city" id="city" class="selectbox loc_sel">
-		                <option>시/도 선택</option>
-		                <option value="seoul">서울특별시</option>
-		                <option value="busan">부산광역시</option>
+		                <%-- 시/도 데이터 --%>
 		            </select>
 		            
 		            <select name="loc" id="lod" class="selectbox loc_sel">
-		                <option>시/군구 선택</option>
-		                <option value="seoul">서울</option>
-		                <option value="gungi">경기</option>
+						<option>시/군구 선택</option>
+						<%-- 시/군구 데이터 --%>
 		            </select>
 		            
 	    		</div>
@@ -139,7 +189,7 @@
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
 	    <div class="w-100 d-flex justify-content-center pt-3">
-	        <ul class="pagination reserve_pagebar nanum-n size-s">
+	        <ul class="pagination hj_pagebar nanum-n size-s">
 	            <li class="page-item">
 	                <a class="page-link" href="#" aria-label="Previous">
 	                    <span aria-hidden="true">&laquo;</span>

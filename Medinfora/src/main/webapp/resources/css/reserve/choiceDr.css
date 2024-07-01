@@ -205,14 +205,16 @@
     list-style: none;
 }
 
-.page-link {
-    border: none !important;
-    color: black;
+.btn_card:hover{
+    background-color: var(--blue200);
+    cursor: pointer;
 }
 
-.nowPage{
-    font-weight: bold;
+.hospital_name_hover{
+    color: var(--grey900) !important;
 }
+
+/* 카드 섹션 부분 끝*/
 
 .searchhpbtn{
     border: none;
