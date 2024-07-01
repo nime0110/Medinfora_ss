@@ -39,6 +39,14 @@ window.onload = () => {
     $('.dh-section-serachbar').on("focus",function(){
 
         $('.pop_search').removeClass("fadeout");
+        tgremoveclass();
+
+    });
+
+    $('.dh-section-serachbar').on("click",function(){
+
+        $('.pop_search').removeClass("fadeout");
+        tgremoveclass();
 
     });
 
@@ -78,6 +86,7 @@ window.onload = () => {
 
     tg1m.on("mouseenter",function(){
 
+        $('.pop_search').addClass("fadeout");
         tg2.addClass("fadeout");
         tg1.removeClass("fadeout");
 
@@ -85,6 +94,7 @@ window.onload = () => {
 
     tg2m.on("mouseenter",function(){
 
+        $('.pop_search').addClass("fadeout");
         tg1.addClass("fadeout");
         tg2.removeClass("fadeout");
 
