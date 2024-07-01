@@ -69,6 +69,32 @@ window.onload = () => {
         location.href = `${ctxPath}/index.bibo`;
 
     });
+
+    const tg1m = $('.tg1m');
+    const tg1 = $('.tg1');
+
+    const tg2m = $('.tg2m');
+    const tg2 = $('.tg2');
+
+    tg1m.on("mouseenter",function(){
+
+        tg2.addClass("fadeout");
+        tg1.removeClass("fadeout");
+
+    });
+
+    tg2m.on("mouseenter",function(){
+
+        tg1.addClass("fadeout");
+        tg2.removeClass("fadeout");
+
+    });
+
+    const head_container = $(".mainheader");
+
+    head_container.on("mouseleave",function(){
+        tgremoveclass();
+    })
     
     // 동혁 END
 
@@ -91,10 +117,14 @@ function toggleMenu() {
 }
 
 // 누르면 사이트 이동
-$(document).ready(function () {
+jQuery(function() {
     $(".sh-card").on("click", function () {
-      var url = $(this).data("url");
-      window.location.href = url;
+        var url = $(this).data("url");
+        window.location.href = url;
     });
-  });
-  
+})
+
+function tgremoveclass(){
+    $('.tg1').addClass("fadeout");
+    $('.tg2').addClass("fadeout");
+}

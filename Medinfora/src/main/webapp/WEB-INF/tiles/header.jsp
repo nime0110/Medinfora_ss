@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%
+
 	String ctxPath = request.getContextPath();
 	
 	String url = "";
@@ -145,7 +146,7 @@
 
 <div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
-<header>
+<header class="mainheader">
   <div class="header-container">
     <div class="logo" id="logoimport">
       <img src="<%= ctxPath%>/resources/img/logo-main.png" alt="LOGO">
@@ -155,9 +156,9 @@
     </button>
     <nav>
       <ul id="navbarNav">
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="">의료 통계 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg1m">의료 기관</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg2m">의료 정보</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>
     </nav>
     <div class="input_text">
@@ -184,6 +185,25 @@
     </c:if>
     
   </div>
+  
+  <div class="tog_nav tg1 fadeout">
+  	<div class="tog_title">의료 기관</div>
+  	<ul class="tog_ul">
+  		<li class="tog_li">병원 찾기</li>
+  		<li class="tog_li">약국 찾기</li>
+  		<li class="tog_li">응급실 찾기</li>
+  	</ul>
+  </div>
+  
+  <div class="tog_nav tg2 fadeout">
+  	<div class="tog_title">의료 정보</div>
+  	<ul class="tog_ul">
+  		<li class="tog_li">의료 통계</li>
+  		<li class="tog_li">의약품 정보</li>
+  		<li class="tog_li">묻고 답하기</li>
+  	</ul>
+  </div>
+  
   <div class="pop_search fadeout">
     <div class="pop_title nanum-n">인기검색어</div>
     <ul class="pop_ul_dh">
