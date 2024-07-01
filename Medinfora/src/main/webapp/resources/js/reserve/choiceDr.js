@@ -70,3 +70,12 @@ function checkOnlyOne(ckeckeditem,customitem) {
     customitem.prop("checked",true);
 
 }   // end of function checkOnlyOne(ckeckeditem,customitem) {----------------------
+
+/*
+    첫페이지 및 검색결과에 따른 결과창 변경
+*/
+function searchHP(){
+    
+    
+
+}   // end of function searchHP(){-----------------------

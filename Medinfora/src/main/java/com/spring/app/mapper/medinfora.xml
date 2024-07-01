@@ -78,4 +78,27 @@
 		select CLASSCODE,CLASSNAME from CLASSCODE
 	</select>
 	
+	<!-- (진료예약)회원가입된 병원 개수  -->
+	<select id="getTotalCnt" resultType="int">
+		select count(*)
+		from member
+		where midx = 2
+	</select>
+	
+	<!-- (진료예약)회원가입된 병원 리스트 가져오기  -->
+	<select id="mbHospitalList" resultType="HospitalDTO">
+		SELECT H.hidx as hidx, hpname, hpaddr, hptel, classcode
+		FROM
+		(
+		    select hidx
+		    from member
+		    where midx = 2
+		) M
+		JOIN
+		(
+		    select *
+		    from hospital
+		) H
+		ON M.hidx = H.hidx
+	</select>
 </mapper>

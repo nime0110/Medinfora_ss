@@ -29,3 +29,27 @@ where table_name = '테이블명';
 -- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE
 
 ----------------------------------------------------------------------------------------
+-- === 활동중인 의료종사자인 회원의 수 === --
+select count(*)
+from member
+where midx = 2;
+
+-- === 회원가입된 병원 리스트 가져오기 === --
+SELECT H.hidx, hpname, hpaddr, hptel, classcode
+FROM
+(
+    select hidx
+    from member
+    where midx = 2
+) M
+JOIN
+(
+    select *
+    from hospital
+) H
+ON M.hidx = H.hidx;
+
+
+
+
+
