@@ -61,23 +61,42 @@ $(function() {
         alert('GPS를 지원하지 않습니다');
     }
 
-	// ****************** 시/도, 시/군/구, 읍/면/동, 진료과목 데이터 가져오기 start ************* 
+	// ****************** 시/도, 진료과목 데이터 가져오기 start ************* 
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
 		url:contextPath + "/getareainfo.bibo",
 		async:false,
 		dataType:"json",
 		success:function(json){
-			let v_html = `<option>시/도 선택</option>`;
+			let v_html = `<option value="">시/도 선택</option>`;
 			for(let i=0; i<json.length; i++){
-				v_html +=`<option>${json[i]}</option>`;
-			}	// end of for---------
+				v_html +=`<option value="${json[i]}">${json[i]}</option>`;
+			}	
 			$("select#si-do").html(v_html);
 		},
 		error:function(request){
 			alert("code : " + request.status);
 		}
 	}) 
+	
+	// 진료과목 데이터 가져오기 ajax
+	$.ajax({
+		url:contextPath + "/getclasscode.bibo",
+		async:false,
+		dataType:"json",
+		success:function(json){
+			let v_html = `<option value="">진료과목 선택</option>`;
+     		json.forEach(item => { 
+				v_html +=`<option value="${item.classcode}">${item.classname}</option>`;
+			});
+				
+			$("select#classcode").html(v_html);
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	}) 
+	
 
 
     // 검색부분 작성
@@ -165,6 +184,8 @@ function updateSigunGu() {
 // 시 도 선택시 업데이트 되는 함수   end
 
 
+
+
 // 시 도 선택시 업데이트 되는 함수   end
 
 // 시/군/구 선택 시 동(읍/면/동) 목록 업데이트 함수 start
@@ -195,13 +216,13 @@ function updateDong() {
 function searchHospitals() {
     let sido = $('#si-do').val();
     let sigungu = $('#si-gun-gu').val();
-    let dong = $('#dong').val();
+    //let dong = $('#dong').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 
 	console.log("sido:", sido);
 	console.log("si-gun-gu:", sigungu);
-	console.log("dong:", dong);
+	//console.log("dong:", dong);
 	console.log("classcode:", classcode);
 	console.log("agency:", agency);
 	
@@ -212,8 +233,9 @@ function searchHospitals() {
     }
 	
     $.ajax({
-        url: '/hospitalSearch/hpsearchAdd.bibo', 
-        data: { sigungu: sigungu, 
+        url: contextPath +'/hpsearch/hpsearchAdd.bibo', 
+        data: { sido: sido,
+        		sigungu: sigungu, 
         		classcode: classcode, 
         		agency: agency },
         dataType: "json",

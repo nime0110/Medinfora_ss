@@ -30,17 +30,7 @@
 	</div>
 	<div class="dropdown_hpsearch">
 		<select id="classcode">
-			<option value="">진료과목 선택</option>
-			<option value="D001">내과</option>
-			<option value="D002">소아청소년과</option>
-			<option value="D004">정신건강의학과</option>
-			<option value="D005">피부과</option>
-			<option value="D006">외과</option>
-			<option value="D008">정형외과</option>
-			<option value="D011">산부인과</option>
-			<option value="D012">안과</option>
-			<option value="D013">이비인후과</option>
-			<option value="D022">가정의학과</option>
+		  <!-- 진료과목 데이터 -->
 	    </select>
 		<select id="agency">
 			<option value="">병원 유형 선택</option>

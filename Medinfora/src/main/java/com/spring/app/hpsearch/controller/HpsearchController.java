@@ -19,8 +19,14 @@ public class HpsearchController {
 	@GetMapping(value="/hpsearch/hpsearchAdd.bibo", produces="text/plain;charset=UTF-8")
 	public String hpsearchAdd(HttpServletRequest request) {
 		
-		String region = request.getParameter("region"); //서초구
-		System.out.println("~~region:" + region);
+		String sido = request.getParameter("sido"); //경기도
+		String sigungu = request.getParameter("sigungu"); //광명시
+		String classcode = request.getParameter("classcode"); //D004
+		String agency = request.getParameter("agency"); //의원
+		System.out.println("~~sido:" + sido);
+		System.out.println("~~sigungu:" + sigungu);
+		System.out.println("~~classcode:" + classcode);
+		System.out.println("~~agency:" + agency);
 		
 		
 		
