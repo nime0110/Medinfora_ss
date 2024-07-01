@@ -89,12 +89,15 @@
     div.sh_car{
         display: block;
     }
-
+  .sh_card-text p{
+            font-size: 10px;
+        }
     
 
     .sh_text {
-        font-size: 10px;
+        font-size: 8px;
     }
+
 }
 
 /* 예외 처리 영역 */
@@ -122,6 +125,9 @@
 	font-size: 0.6rem;
 }
 
+.sh_text {
+	font-size: 8px;
+}
 
     /* 승혜 작업 영역 END */
 }

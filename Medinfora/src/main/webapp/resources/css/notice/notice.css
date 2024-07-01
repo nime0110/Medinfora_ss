@@ -54,238 +54,114 @@
 .size-b {
     font-size: 3rem;
 }
- * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
-      body {
-          font-family: Arial, sans-serif;
-      }
-      a {
-          text-decoration: none;
-          color: inherit;
-      }
-        
-    
-        .board_wrap {
-            width: 80%;
-            margin: 100px auto;
-            margin-top: 10%;
-        }
-        .board_title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        .board_title strong {
-            font-size: 2rem;
-        }
-        .board_title p {
-            margin-top: 15px; 
-            font-size: 1.4rem;
-        }
-        .bt_wrap {
-        
-         /*    font-size: 0; */
-             text-align: center; 
-            margin-top: 4rem;
-        }
-        .bt_wrap a {
-            display: inline-block;
-            min-width: 80px;
-            padding: 10px;
-            border: 1px solid #000;
-            border-radius: 8px;
-            font-size: 1.1rem;
-    background: #ffffff;
-            color: #000040;
-            
-             text-align: center;
-        }
-           /*  noticeList.jsp css */
-        .board_list {
-            width: 100%;
-            border-top: 2px solid #000;
-            border-collapse: collapse;
-        }
-     
-        .board_list th, .board_list td {
-            border-bottom: 1px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.4rem;
-        }
-        .board_list th {
-            font-weight: 600;
-            background: #e3eee9;
-        }
-        
-      
-        .page-link {
+
+
+
+/* noticeList.jsp css 시작 */
+
+.board_title {
+	 width: 80vw;
+      margin: auto;
+      height:20vh !important;
+      display: flex;
+      align-items: flex-end;
+      background-color: ( --text-black-color);
+	
+}
+
+
+.board-list {
+  /*   list-style: none;
+    display: flex;
+    flex-direction: column;*/
+    gap: 10px; 
+/*     border: solid 1px red; */
+    margin-top: 40px; 
+    width: 80vw;
+    margin: auto;
+}
+
+.board-item{
+	padding : 20px 20px;
+	transition: 0s;
+	 border-bottom: solid 1px #eee;
+	 border-radius: 25px;
+	 text-overflow:ellipsis;
+	 
+	 
+
+}
+.board-item:hover{
+        background-color: #f0f0f0;
+   opacity:0.6;
+   text-overflow:ellipsis;
+    }
+
+.board-item-title {
+	font-wight: bold;
+font-size: 20px;	
+color: rgb(78, 89, 104);
+display: block;
+text-overflow:ellipsis;
+}
+
+
+.h1 {
+	font-size : 44px;
+	
+}
+
+body > div.homebar {
+	margin-top: 20px;
+	text-align: center;
+	margin-bottom: 10px;
+	
+}
+
+.board-container {
+    padding: 20px;
+}
+
+.board-item-date{
+	
+	     display: inline-block;
+        padding-top: 10px;
+        font-size: 14px;
+        color:  rgb(139, 149, 161);
+}
+
+
+
+.board-item-title {
+    flex: 1;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-item-title a {
+    color: var(--text-black-color);
+    display: inline-block;
+    max-width: 120%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attachment-icon img {
+    vertical-align: middle;
+}
+
+
+.page-link {
     border: none !important;
     color: black;
 }
 
 .nowPage{
     font-weight: bold;
-}
-.num {
-	text-align: left;
-	width: 5rem;
-	display:none;
-	
-}
-.board_list_wrap {
-	  margin-top: 10px;   
-	margin-bottom: 10px;
-}
-.board_list th, .board_list td {
-    padding: 10px; 
-    text-align: center;
-    font-size: 1.4rem;
-}
-
-.title{
-	width: 50%
-}
-
-
-  /*  noticeList.jsp css 끝 */
-  
-  /*  noticeView.jsp css 시작*/
-  
-  .board_view {
-    width: 100%;
-    border-top: 2px solid #000;
-}
-
-
-.board_view .title {
-    padding: 20px 15px;
-    border-bottom: 1px dashed #ddd;
-    font-size: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.board_view .info {
-    display: flex;
-    gap: 20px;
-}
-
-.board_view dl {
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
-
-.board_view dl dt {
-    margin-right: 5px;
-    font-weight: bold;
-}
-
-.board_view dl dd {
-    margin: 0;
-    color: #777;
-}
-
-.board_view .cont {
-    padding: 15px;
-    line-height: 160%;
-    font-size: 1.4rem;
-}
-
-.bt_wrap_view {
-    font-size: 0;
-    text-align: center;
-    margin-top: 4rem;
-}
-
-.bt_wrap_view a {
-    display: inline-block;
-    min-width: 80px;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 1.4rem;
-    background: var( --object-lightpurple-font-color);
-    color: #fff;
-    margin-right: 10px;
-}
-
-
-
-
-   /*  noticeView.jsp css 끝*/
-  
-        
-.board_write {
-    border-top: 2px solid #000;
-}
-
-.board_write .title,
-.board_write .info {
-    padding: 1px;
-}
-
-.board_write .info {
-    border-top: 1px dashed #ddd;
-    border-bottom: 1px solid #000;
-    font-size: 0;
-}
-
-.board_write .title dl {
-    font-size: 0;
-}
-
-.board_write .info dl {
-    display: inline-block;
-    width: 50%;
-    vertical-align: middle;
-}
-
-.board_write .title dt,
-.board_write .title dd,
-.board_write .info dt,
-.board_write .info dd {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 1.4rem;
-}
-
-.board_write .title dt,
-.board_write .info dt {
-    width: 100px;
-}
-
-.board_write .title dd {
-    width: calc(100% - 100px);
-}
-
-.board_write .title input[type="text"],
-.board_write .info input[type="text"],
-.board_write .info input[type="password"] {
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.board_write .title input[type="text"] {
-    width: 80%;
-}
-
-.board_write .cont {
-    border-bottom: 1px solid #000;
-}
-
-.board_write .cont textarea {
-    display: block;
-    width: 100%;
-    height: 300px;
-    padding: 15px;
-    box-sizing: border-box;
-    border: 0;
-    resize: vertical;
 }
