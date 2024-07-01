@@ -138,7 +138,13 @@
 			 
 		});
 		
+		$('.href_reserve').on("click",function(){
+			location.href = "<%=ctxPath%>/reserve/choiceDr.bibo";
+		})
+		
 	});
+	
+	
 
 </script>
 
@@ -232,7 +238,7 @@
 		<li class="media_tog_li">묻고 답하기</li>
 	</ul>
 	
-  	<div class="media_tog_sub">진료 예약하기</div>
+  	<div class="media_tog_sub href_reserve">진료 예약하기</div>
   </div>
   
 </header>
