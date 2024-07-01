@@ -3,6 +3,7 @@ package com.spring.app.main.model;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
@@ -32,6 +33,9 @@ public interface MainDAO {
 
 	// 시/군/구 리스트 추출
 	public List<String> getlocalinfo(String area);
+
+	// 병원 진료과 리스트 추출
+	public List<ClasscodeDTO> getclasscode();
 
 	
 

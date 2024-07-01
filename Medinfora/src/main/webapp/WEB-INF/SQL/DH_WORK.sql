@@ -17,3 +17,5 @@ select * from HOSPITAL where HPADDR like '%'||'세종'||'%';
 select area from KOREAAREA group by area;
 
 select local from KOREAAREA where KOREAAREA.AREA = '세종특별자치시';
+
+select CLASSCODE,CLASSNAME from CLASSCODE;

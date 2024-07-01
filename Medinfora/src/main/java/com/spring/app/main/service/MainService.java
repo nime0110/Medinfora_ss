@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.main.domain.ClasscodeDTO;
 import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
@@ -37,6 +38,9 @@ public interface MainService {
 	 * @return {List<String>} 시/군/구 리스트 추출됨
 	 */
 	public List<String> getlocalinfo(String area);
+
+	// 병원 진료과 리스트 추출
+	public List<ClasscodeDTO> getclasscode();
 
 	
 	
