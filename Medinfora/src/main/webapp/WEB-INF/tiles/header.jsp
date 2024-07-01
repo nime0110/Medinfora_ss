@@ -214,6 +214,27 @@
       <li>5.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
     </ul>
   </div>
+  
+  <div class="media_tog fadeout">
+  	<div class="media_tog_title">메인메뉴</div>
+	
+  	<div class="media_tog_sub">의료 기관</div>
+  	<ul class="media_tog_ul">
+		<li class="media_tog_li">병원 찾기</li>
+		<li class="media_tog_li">약국 찾기</li>
+		<li class="media_tog_li">응급실 찾기</li>
+	</ul>
+	
+  	<div class="media_tog_sub">의료 정보</div>
+	<ul class="media_tog_ul">
+		<li class="media_tog_li">의료 통계</li>
+		<li class="media_tog_li">의약품 정보</li>
+		<li class="media_tog_li">묻고 답하기</li>
+	</ul>
+	
+  	<div class="media_tog_sub">진료 예약하기</div>
+  </div>
+  
 </header>
 
 <aside class="fixed-nav">

@@ -111,21 +111,6 @@ window.onload = () => {
     
 };
 
-/**
- * 반응형일때 네이게이션바 목록화 시켜주는 함수
- * @param {} 없음
- */
-function toggleMenu() {
-
-    var nav = document.getElementById('navbarNav');
-    
-    if (nav.classList.contains('show')) {
-        nav.classList.remove('show');
-    } else {
-        nav.classList.add('show');
-    }
-}
-
 // 누르면 사이트 이동
 jQuery(function() {
     $(".sh-card").on("click", function () {
@@ -137,4 +122,20 @@ jQuery(function() {
 function tgremoveclass(){
     $('.tg1').addClass("fadeout");
     $('.tg2').addClass("fadeout");
+}
+
+function toggleMenu(){
+
+    const media_tog = $('.media_tog');
+	
+    if(media_tog.hasClass('fadeout')){
+        
+        media_tog.removeClass('fadeout');
+
+    }else{
+
+        media_tog.addClass('fadeout');
+
+    }
+
 }

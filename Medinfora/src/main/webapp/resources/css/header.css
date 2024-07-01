@@ -77,6 +77,8 @@
     --text-white-color: #fff; 
     --text-gray-color: #222; 
 
+    --font : 'Nanum Gothic', sans-serif;
+
 }
 
 /* 데스크탑용 기본 스타일 유지 */
@@ -313,7 +315,7 @@ nav ul li a {
     display: flex;
     margin: 0;
     padding: 0;
-    width: 35%;
+    width: 30%;
     justify-content: space-around;
     background-color: var(--text-white-color);
     border-radius: 8px;
@@ -468,14 +470,87 @@ iframe#loginPage {
     font-weight: bold;
 }
 
+.media_tog{
+    display: none;
+}
+
 
 @media (max-width: 768px) {
 
     /* 동혁 START */
 
+    .fadeout{
+        margin: 0 !important;
+        border-top-width: 0px !important;
+        border-bottom-width: 0px !important;
+    }
+
     .header-container{
-        justify-content: space-between;
+        justify-content: space-between !important;
         padding: 0 24px;
+    }
+
+    .media_tog{
+        padding: 8px 24px;
+        display: block;
+        border-top: solid 5px var(--grey50);
+        border-bottom: solid 5px var(--grey50);
+        width: 100%;
+        margin-top: 12px;
+        transition: all 0.3s;
+    }
+
+    .media_tog_title{
+        margin: 0;
+        font-family: var(--font);
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--blue900);
+        padding-bottom: 24px;
+    }
+
+    .media_tog_sub{
+        margin:0;
+        font-family: var(--font);
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--blue50);
+        padding : 2px 8px;
+        width: 200px;
+        background-color: var(--grey800);
+        border-radius: 10px;
+        transition: all 0.3s;
+        box-shadow: 0px 0px 10px #0000000d;
+    }
+    
+    .media_tog_sub:hover{
+        background-color: var(--blue50);
+        color: var(--grey800);
+        cursor: pointer;
+    }
+
+    .media_tog_ul{
+        margin:0;
+        padding : 2px 8px;
+    }
+    
+    .media_tog_li{
+        font-family: var(--font);
+        font-size: 1rem;
+        background-color: var(--blue50);
+        width: 100px;
+        border-radius: 10px;
+        padding: 2px 4px;
+        text-align: center;
+        color: var(--gray700);
+        transition: all 0.3s;
+        box-shadow: 0px 0px 10px #0000000d;
+    }
+    
+    .media_tog_li:hover{
+    	cursor: pointer;
+    	background-color: var(--grey700) !important;
+        color: var(--blue50);
     }
 
     .login {
