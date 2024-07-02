@@ -59,18 +59,23 @@
 	
 	<!-- 행정구역 입력 -->
 	<insert id="areaInputer" parameterType="KoreaAreaVO">
-		INSERT INTO KOREAAREA (LOCAL, AREA)
-		VALUES (#{local}, #{area})
+		INSERT INTO KOREAAREA (CITY, LOCAL, COUNTRY)
+		VALUES (#{city}, #{local}, #{country})
 	</insert>
 	
 	<!-- 행정구역 리스트 -->
-	<select id="getareainfo" resultType="String">
-		select area from KOREAAREA group by area
+	<select id="getcityinfo" resultType="String">
+		select city from KOREAAREA group by city
 	</select>
 	
 	<!-- 시/군/구 리스트 -->
 	<select id="getlocalinfo" parameterType="String" resultType="String">
-		select local from KOREAAREA where AREA = #{area}
+		select local from KOREAAREA where city = #{city} group by local
+	</select>
+	
+	<!-- 읍/면/동 리스트 -->
+	<select id="getcountryinfo" parameterType="KoreaAreaVO" resultType="String">
+		select country from KOREAAREA where city = #{city} and local = #{local}
 	</select>
 	
 	<!-- 진료과목 리스트 -->

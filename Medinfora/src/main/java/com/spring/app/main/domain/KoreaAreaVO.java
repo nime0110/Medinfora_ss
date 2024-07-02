@@ -2,19 +2,29 @@ package com.spring.app.main.domain;
 
 public class KoreaAreaVO {
 
-	private String local, area;
+	private String city, local, country;
 
-	public KoreaAreaVO(String local, String area) {
+	public KoreaAreaVO(String city, String local) {
+		this.city = city;
 		this.local = local;
-		this.area = area;
+	}
+	
+	public KoreaAreaVO(String city, String local, String country) {
+		this.city = city;
+		this.local = local;
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
 	}
 
 	public String getLocal() {
 		return local;
 	}
 
-	public String getArea() {
-		return area;
+	public String getCountry() {
+		return country;
 	}
 	
 }

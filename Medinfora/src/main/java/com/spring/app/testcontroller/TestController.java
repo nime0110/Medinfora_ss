@@ -1,11 +1,17 @@
 package com.spring.app.testcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.common.Myutil;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.service.MainService;
 
+@Controller
 public class TestController {
 
 	@Autowired
@@ -39,11 +45,11 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		
+		*/
 		if(true) {
 			try {
 				
-				String localAddr = "C:\\NCS\\Mediinfora\\Medinfora\\src\\main\\webapp\\resources\\json\\korea.json";
+				String localAddr = "C:\\NCS\\Medinfora\\Medinfora\\src\\main\\webapp\\resources\\json\\koreaarea.json";
 				
 				List<KoreaAreaVO> areaList = Myutil.areaInputer(localAddr);
 				
@@ -64,7 +70,6 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		*/
 		
 		mav.setViewName("redirect:index.bibo");
 		

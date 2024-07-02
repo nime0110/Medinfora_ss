@@ -67,18 +67,24 @@ public class MainDAO_imple implements MainDAO{
 
 	// 행정구역 리스트 추출
 	@Override
-	public List<String> getareainfo() {
+	public List<String> getcityinfo() {
 		
-		List<String> getareainfo = sqlsession.selectList("getareainfo");
+		List<String> getcityinfo = sqlsession.selectList("getcityinfo");
 		
-		return getareainfo;
+		return getcityinfo;
 	}
 
 	// 시/군/구 리스트 추출
 	@Override
-	public List<String> getlocalinfo(String area) {
+	public List<String> getlocalinfo(String city) {
 		
-		return sqlsession.selectList("getlocalinfo",area);
+		return sqlsession.selectList("getlocalinfo",city);
+	}
+	
+	// 읍/면/동 리스트 추출
+	@Override
+	public List<String> getcountryinfo(KoreaAreaVO inputareavo) {
+		return sqlsession.selectList("getcountryinfo",inputareavo);
 	}
 
 	// 병원 진료과 리스트 추출
@@ -86,5 +92,8 @@ public class MainDAO_imple implements MainDAO{
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("getclasscode");
 	}
+
+
+	
 	
 }

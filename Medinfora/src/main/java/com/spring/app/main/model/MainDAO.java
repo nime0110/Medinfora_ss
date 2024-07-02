@@ -29,13 +29,17 @@ public interface MainDAO {
 	public void insert_log(Map<String, String> paraMap);
 
 	// 행정구역 리스트 추출
-	public List<String> getareainfo();
+	public List<String> getcityinfo();
 
 	// 시/군/구 리스트 추출
-	public List<String> getlocalinfo(String area);
+	public List<String> getlocalinfo(String city);
+
+	// 읍/면/동 리스트 추출
+	public List<String> getcountryinfo(KoreaAreaVO inputareavo);
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
 
 	
 
