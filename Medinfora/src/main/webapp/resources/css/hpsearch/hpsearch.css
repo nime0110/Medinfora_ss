@@ -79,8 +79,8 @@ ul#hospitalList {
 
 .hospital-item {
     display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
+    flex-direction: column;
+
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
@@ -95,6 +95,7 @@ ul#hospitalList {
 }
 
 .hospital-details {
+	border-bottom: 1px solid var(--grey200);
     flex: 1;
 	display: flex;
     flex-direction: column;

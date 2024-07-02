@@ -54,14 +54,23 @@
 		        <!-- Sample List Items -->
 		        <li>
 		            <div class="hospital-item">
-		                <div class="hospital-label">A</div>
 		                <div class="hospital-details">
+		                	<div class="hospital-label">A</div>
 		                    <h2 class="hospital-name">(의)열린의료재단 미아열린의원</h2>
 		                    <p class="hospital-type">내과들어올곳?</p>
 		                    <p class="hospital-contact">TEL: 02-945-2305 FAX: </p>
 		                    <p class="hospital-address">서울특별시 강북구 도봉로 213 하당빌딩 3,4층 (미아동)</p>
+		                	<button class="details-button">상세</button>
 		                </div>
-		                <button class="details-button">상세</button>
+		                <div class="hospital-details">
+		                	<div class="hospital-label">A</div>
+		                    <h2 class="hospital-name">(의)열린의료재단 미아열린의원</h2>
+		                    <p class="hospital-type">내과들어올곳?</p>
+		                    <p class="hospital-contact">TEL: 02-945-2305 FAX: </p>
+		                    <p class="hospital-address">서울특별시 강북구 도봉로 213 하당빌딩 3,4층 (미아동)</p>
+		                	<button class="details-button">상세</button>
+		                </div>
+		               
 		            </div>
 		        </li>
 		        <!-- More items can be added here -->

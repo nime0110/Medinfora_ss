@@ -122,18 +122,21 @@ $(function() {
     $('#si-do').on('change', function() {
     	updateSigunGu();
     });
-    
+    /*
     // 시/군/구 부분이 바뀌면 동 업데이트
     $('#si-gun-gu').on('change', function() {
         updateDong();
     });
-    
+    */
     /*
     //검색조건변경시 병원검색
     $('#si-gun-gu, #dong, #classcode, #agency').on('change', function() {
         searchHospitals();
     });
     */
+    
+    // 페이지네이션
+    loadReviewPage(1); //1페이지로 로드
     
 });
 
@@ -211,16 +214,20 @@ function updateSigunGu() {
 function searchHospitals() {
     let sido = $('#si-do').val();
     let sigungu = $('#si-gun-gu').val();
+    
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
-
-	let addr = sido + sigungu;
+	let hpname = $('#searchHpname').val();
+	
+	let addr = sido +" " + sigungu;
+	/*
+	console.log("hpname:", hpname);
 	console.log("sido:", sido);
 	console.log("si-gun-gu:", sigungu);
 	console.log("~~addr:", addr);
 	console.log("classcode:", classcode);
 	console.log("agency:", agency);
-	
+	*/
 	
     if (!sido ) {
         alert("시/도를 선택하세요");
@@ -234,21 +241,30 @@ function searchHospitals() {
 	
     $.ajax({
         url: contextPath +'/hpsearch/hpsearchAdd.bibo', 
-        data: { sido: sido,
-        		sigungu: sigungu, 
+        data: { 
+        		addr: addr, 
         		classcode: classcode, 
-        		agency: agency },
+        		agency: agency,
+        		hpname: hpname 
+        		},
         dataType: "json",
         success: function(json) {
             removeMarkers();
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
-            data.forEach(hospital => { // 병원의 위도, 경도를 위치 객체로 변환
-                let position = new kakao.maps.LatLng(hospital.wgs84Lat, hospital.wgs84Lon);
-                addMarker(position, hospital.hpname); // 지도에 병원 위치 마커 추가
-				
-
+            json.forEach(item => { // 병원의 위도, 경도를 위치 객체로 변환
+                //let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
+                //addMarker(position, item.hpname); // 지도에 병원 위치 마커 추가
+				//마커 렉걸림 추후해결
                 // 병원 리스트로 출력
-                let v_html = `<li>${hospital.hpname}</li>`;
+                let v_html = ` <div class="hospital-details">
+                			<input type="hidden" name="${item.hidx}"></input>
+		                	<div class="hospital-label"></div>
+		                    <h2 class="hospital-name">${item.hpname}</h2>
+		                    <p class="hospital-type">${item.classname}</p>
+		                    <p class="hospital-contact">TEL: ${item.hptel} </p>
+		                    <p class="hospital-address">${item.hpaddr}</p>
+		                	<button class="details-button">상세</button>
+		                </div>`;
                 $('#hospitalList').append(v_html);
             });
         }
