@@ -25,6 +25,13 @@ public class MainDAO_imple implements MainDAO{
 	public String daotest() {
 		return "pass";
 	}
+
+	// 회원가입(중복체크)
+	@Override
+	public MemberDTO isExistCheck(Map<String, String> paraMap) {
+		MemberDTO isExist = sqlsession.selectOne("mediinfora.isExistCheck", paraMap);
+		return isExist;
+	}
 	
 	
 	// 로그인 유저 정보
@@ -86,5 +93,6 @@ public class MainDAO_imple implements MainDAO{
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("getclasscode");
 	}
+
 	
 }

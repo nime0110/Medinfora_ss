@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+.jh_container {
+  margin: 80px auto;
+  border: solid 1px red;
+  
+}
+
+.registerArea{
+  
+  border: solid 1px blue;
+
+}
+
+
+#registerFrm{
+  border: solid 1px black;
+  width: 50%;
+  margin: 2% auto;
+  padding: 5% 7%;
+  
+
+}
+
+.nstar{
+  color: red;
+  font-weight: bold;
+
+}
+
+.idArea, .emailArea, .addressArea, .genderArea, .birthArea{
+  display: flex;
+}
+
+
+
+.isExistCheck{
+  width: 145px;
+  height: 40px;
+  background-color: var(--object-lightpurple-font-color);
+  border: none;
+  color: var(--text-white-color);
+  font-size: 1rem;
+  margin-left: auto;
+  border-radius: 0.5rem;;
+}
+
+.insert_w{
+	width: 67%;
+}
+
+.insert_email{
+	width: 60%;
+}
+
+.select_email{
+	/*width: 45%;*/
+}
+
+
+.lineG {
+  /* 회원가입 아이디찾기 비밀번호찾기 구문하는 | 이거 */
+    display: inline-block;
+    width: 1px;
+    height: 13px;
+    margin: 0 11px;
+    margin-right: 28px;
+    background: #989ea0;
+    border-top: 1px solid #cbcecf;
+    border-bottom: 1px solid #cbcecf;
+}
+
+label.gender:hover{
+	
+	cursor: pointer;
+}
+
+.inser_date{
+  /* border: solid 1px red; */
+  width: 40%;
+  margin-left: 5%;
+  text-align: center;
+}
+
+.fixed_size{
+	height: 30px;
+	resize: none;
+	/*display: none;*/
+	
+}
+
+#id_cmt, 
+#pwd_cmt, 
+#pwd_check_cmt, 
+#name_cmt, 
+#email_cmt, 
+#mobile_cmt, 
+#address_cmt{
+	color: red;
+	margin-left: 10px;
+	margin-top: 5px;
+}
+
+
+
+
+

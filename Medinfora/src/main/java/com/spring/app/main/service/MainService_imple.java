@@ -31,6 +31,13 @@ public class MainService_imple implements MainService {
 		return dao.daotest();
 	}
 	
+	// 회원가입(중복체크)
+	@Override
+	public MemberDTO isExistCheck(Map<String, String> paraMap) {
+		MemberDTO isExist = dao.isExistCheck(paraMap);
+		return isExist;
+	}
+		
 	
 	// 로그인 처리
 	@Override
@@ -140,5 +147,7 @@ public class MainService_imple implements MainService {
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
 	}
+
+	
 	
 }

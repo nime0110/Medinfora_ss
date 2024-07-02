@@ -23,6 +23,9 @@ public interface MainService {
 	// 대한민국 행정구역정보 입력용
 	public int areaInputer(KoreaAreaVO koreaAreaVO);
 	
+	// 회원가입(중복체크)
+	public MemberDTO isExistCheck(Map<String, String> paraMap);
+	
 	// 로그인 처리
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
 
@@ -41,6 +44,8 @@ public interface MainService {
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
+	
 
 	
 	

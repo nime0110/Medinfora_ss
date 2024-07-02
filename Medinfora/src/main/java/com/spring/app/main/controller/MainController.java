@@ -54,6 +54,53 @@ public class MainController {
 		return mav;
 	}
 	
+	
+	
+	// 회원가입 페이지 이동
+	@RequestMapping(value="/register/register.bibo")
+	public ModelAndView register(ModelAndView mav) {
+		
+		mav.setViewName("login/register.tiles");
+		
+		
+		return mav;
+	}
+	
+	
+	
+	// 아이디, 이메일  중복검사
+	@ResponseBody
+	@PostMapping("/register/isexistcheckjson.bibo")
+	public String isExistCheckJSON(HttpServletRequest request) {
+		
+		String result = "false";
+		JSONObject jsonObj = new JSONObject();
+		
+		try {
+			String value = request.getParameter("value");
+			String type = request.getParameter("type");
+			
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("value", value);
+			paraMap.put("type", type);
+			
+			MemberDTO isExist = service.isExistCheck(paraMap);
+			
+			if(isExist != null) {
+				result = "true";
+			}
+			
+			jsonObj.put("result", result);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return jsonObj.toString();
+	}
+	
+	
 	// 로그인 창 띄우기
 	@RequestMapping(value="/login/login.bibo")
 	public ModelAndView login(ModelAndView mav) {
@@ -240,7 +287,6 @@ public class MainController {
 					isExistUser = "true";
 					
 					if(loginuser.getPwdchangegap() >= 3) {
-						isExistUser = "true_PNU";
 						message = "비밀번호를 변경하신지 3개월이 지났습니다. \\n 비밀번호 변경을 권유드립니다.";
 					}
 					
