@@ -7,7 +7,7 @@ import com.spring.app.main.domain.HospitalDTO;
 
 public interface ReserveService {
 
-	int getmbHospitalCnt();	// 회원가입된 병원 개수
+	int getmbHospitalCnt(Map<String, String> paraMap);	// 회원가입된 병원 개수
 
 	List<HospitalDTO> mbHospitalList(Map<String, String> paraMap);	// 회원가입된 병원 리스트 가져오기
 

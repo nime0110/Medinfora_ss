@@ -13,8 +13,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	searchHP();		<%-- 결과창 변경 --%>
-	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getcityinfo.bibo",
@@ -77,10 +75,130 @@ $(document).ready(function(){
 		}
 	})	// end of $.ajax({-------------
 	
+	<%-- 검색 시 데이터 유지 --%>
+	if("${requestScope.paraMap.city}" == ""){
+		$("select[name='city']").val("시/도 선택");
+	}
+	else{
+		$("select[name='city']").val("${requestScope.paraMap.city}");
+	}
+	
+	if("${requestScope.paraMap.local}" == ""){
+		$("select[name='loc']").val("시/군구 선택");
+	}
+	else{
+		$("select[name='loc']").val("${requestScope.paraMap.local}");
+	}
+	
+	if("${requestScope.paraMap.classcode}" == ""){
+		$("select[name='dept']").val("진료과목 선택");
+	}
+	else{
+		$("select[name='dept']").val("${requestScope.paraMap.classcode}");
+	}
+	
+	if("${requestScope.paraMap.hpname}" == ""){
+		$("input[name='hpname']").val("");
+	}
+	else{
+		$("input[name='hpname']").val("${requestScope.paraMap.hpname}");
+	}
+
+	Page(1);
+	
 })	// end of $(document).ready(function(){--------------
 function HPSearch(){
 	const frm = document.searchHospitalFrm;
 	frm.submit();
+}
+
+function Page(currentShowPageNo){
+
+	const city = $("select[name='city']").val();
+	const local = $("select[name='loc']").val();
+	const classcode = $("select[name='dept']").val();
+	const hpname = $("input[name='hpname']").val();
+	
+	$.ajax({
+		url:"<%= ctxPath%>/reserve/choiceDrList.bibo",
+		data:{"city":city,
+			"local":local,
+			"classcode":classcode,
+			"hpname":hpname,
+			"currentShowPageNo":currentShowPageNo},
+		dataType:"json",
+		success:function(json){
+			console.log(json);
+			
+			if(json.length > 0){
+				
+				<%-- === 검색내용 === --%>
+				let v_html = ``;
+				
+
+				$.each(json,function(index,item){
+					v_html += `<div class="btn_card">
+		            				<div class="card_top">
+		            					<h4 class="hospital_name">\${item.hpname}</h4>
+		                				<input type="checkbox" class="hj_custom-checkbox">
+		                				<label class="hj_custom-checkbox-label"></label>
+		            				</div>
+		                			<p class="hospital_addr">
+		                				\${item.hpaddr}
+		                			</p>
+		            			</div>`;
+				})	// end of $.each(json,function(index,item){--------
+				
+				$("div.exam_choiceDr").html(v_html);
+					
+				<%-- === 페이지바 === --%>
+				const blockSize = 5;
+				let loop = 1;
+				let pageNo = Math.floor(((currentShowPageNo - 1)/blockSize)) * blockSize + 1;
+				let totalPage = json[0].totalPage;
+				
+				let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
+				
+				if(pageNo != 1) {
+					pageBar += "<li class='page-item'>" 
+							+ " 	<a class='page-link' href='javascript:goView("+(pageNo-1)+")>" 
+							+ "	    	<span aria-hidden='true'>&laquo;</span>" 
+							+ "	    </a>" 
+							+ "</li>";
+				}
+				
+				while(!(loop>blockSize || pageNo > totalPage)) {
+					if(pageNo == currentShowPageNo) {
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
+								+ "</li>";
+					}
+					else{
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link' href='javascript:goView("+pageNo+")>" +pageNo+"</a>" 
+								+ "</li>";
+					}
+					loop++;
+					pageNo++;
+				}
+				
+				if(pageNo <= totalPage) {
+					pageBar += "<li class='page-item'>"
+							+ "		<a class='page-link' href='javascript:goView("+pageNo+")>"
+							+ "	    	<span aria-hidden='true'>&raquo;</span>"
+							+ "	    </a>"
+							+ "</li>";
+				}
+				
+				pageBar += "</ul>";
+				
+				$("div#ReserveHP_PageBar").html(pageBar);
+			}
+		},
+		error:function(request,status,error){
+			alert("code: "+request.status);
+		}
+	})	// end of $.ajax({-----
 }
 </script>
 
@@ -159,28 +277,7 @@ function HPSearch(){
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
-	    <div class="w-100 d-flex justify-content-center pt-3">
-	        <ul class="pagination hj_pagebar nanum-n size-s">
-	            <li class="page-item">
-	                <a class="page-link" href="#" aria-label="Previous">
-	                    <span aria-hidden="true">&laquo;</span>
-	                </a>
-	            </li>
-	            <li class="page-item">
-	                <a class="page-link nowPage" href="#">1</a>
-	            </li>
-	            <li class="page-item">
-	                <a class="page-link" href="#">2</a>
-	            </li>
-	            <li class="page-item">
-	                <a class="page-link" href="#">3</a>
-	            </li>
-	            <li class="page-item">
-	                <a class="page-link" href="#" aria-label="Next">
-	                    <span aria-hidden="true">&raquo;</span>
-	                </a>
-	            </li>
-	        </ul>
+	    <div id="ReserveHP_PageBar" class="w-100 d-flex justify-content-center pt-3">
 	    </div>
 	    <%-- ================================================================================================== --%>	    
 	    <div class="div_proc text-center mb-5">
