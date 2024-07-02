@@ -11,7 +11,7 @@
 
 <!-- 중앙 div -->
 <div align="center">
-    <div style="font-size: 20pt; margin-bottom: 20px;">우리동네 근처 병원 찾기</div>
+    <h1 class="nanum-b size-b">우리동네 근처 병원 찾기</h1>
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="si-do">
@@ -53,25 +53,7 @@
 		    <ul id="hospitalList">
 		        <!-- Sample List Items -->
 		        <li>
-		            <div class="hospital-item">
-		                <div class="hospital-details">
-		                	<div class="hospital-label">A</div>
-		                    <h2 class="hospital-name">(의)열린의료재단 미아열린의원</h2>
-		                    <p class="hospital-type">내과들어올곳?</p>
-		                    <p class="hospital-contact">TEL: 02-945-2305 FAX: </p>
-		                    <p class="hospital-address">서울특별시 강북구 도봉로 213 하당빌딩 3,4층 (미아동)</p>
-		                	<button class="details-button">상세</button>
-		                </div>
-		                <div class="hospital-details">
-		                	<div class="hospital-label">A</div>
-		                    <h2 class="hospital-name">(의)열린의료재단 미아열린의원</h2>
-		                    <p class="hospital-type">내과들어올곳?</p>
-		                    <p class="hospital-contact">TEL: 02-945-2305 FAX: </p>
-		                    <p class="hospital-address">서울특별시 강북구 도봉로 213 하당빌딩 3,4층 (미아동)</p>
-		                	<button class="details-button">상세</button>
-		                </div>
-		               
-		            </div>
+		             <p>지역을 설정하고 검색버튼을 눌러주세요.</p>
 		        </li>
 		        <!-- More items can be added here -->
 		    </ul>

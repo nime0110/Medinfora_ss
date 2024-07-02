@@ -81,7 +81,8 @@
 	<select id="getHospitalList" parameterType="HashMap" resultType="HospitalDTO">
 		SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, B.CLASSNAME, A.AGENCY
 		FROM (
-		    SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY
+		    SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY,
+		     		row_number() over(order by HIDX desc) AS rno
 		    FROM hospital
 			where hpaddr like '%' || #{addr} || '%'
 			<choose>
@@ -97,6 +98,7 @@
 			</choose>
 		) A
 		JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
+		WHERE rno Between #{startRno} and #{endRno}
 	</select>
 	
 	<!-- (진료예약)회원가입된 병원 개수  -->
@@ -146,5 +148,21 @@
 		    ON H.classcode = C.classcode
 		) HC
 		ON M.hidx = HC.hidx
+	</select>
+	<select id="getHpListTotalCount"  parameterType="HashMap" resultType="int">
+		SELECT COUNT(*)
+		FROM hospital
+		WHERE hpaddr LIKE '%' || #{addr} || '%'
+		<choose>
+		    <when test='classcode != "" '>
+		        AND classcode = #{classcode}
+		    </when>
+		    <when test='agency != "" '>
+		        AND agency = #{agency}
+		    </when>
+		    <when test='hpname != "" '>
+		        AND hpname LIKE '%' || #{hpname} || '%'
+		    </when>
+		</choose>
 	</select>
 </mapper>

@@ -9,4 +9,6 @@ public interface HpsearchDAO {
 
 	List<HospitalDTO> getHospitalList(Map<String, String> paraMap);
 
+	int getHpListTotalCount(Map<String, String> paraMap);
+
 }

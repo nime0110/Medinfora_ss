@@ -19,10 +19,12 @@ public class HpsearchService_imple implements HpsearchService {
 
 	@Override
 	public List<HospitalDTO> getHospitalList(Map<String, String> paraMap) {
-		System.out.println("서비스단 시작 --- ");
-		System.out.println(paraMap.get("addr"));
-		
 		return hsdao.getHospitalList(paraMap);
+	}
+
+	@Override
+	public int getHpListTotalCount(Map<String, String> paraMap) {
+		return hsdao.getHpListTotalCount(paraMap);
 	}
 
 }

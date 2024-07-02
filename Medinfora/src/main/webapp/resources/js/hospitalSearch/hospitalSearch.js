@@ -131,12 +131,12 @@ $(function() {
     /*
     //검색조건변경시 병원검색
     $('#si-gun-gu, #dong, #classcode, #agency').on('change', function() {
-        searchHospitals();
+        searchHospitals(1);
     });
     */
     
     // 페이지네이션
-    loadReviewPage(1); //1페이지로 로드
+    loadHospitalPage(1); //1페이지로 로드
     
    
    
@@ -211,25 +211,17 @@ function updateSigunGu() {
 
 
 
-
+var currentPage = 1; // 현재 페이지를 추적
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
-function searchHospitals() {
+function searchHospitals(pageNo) {
     let sido = $('#si-do').val();
     let sigungu = $('#si-gun-gu').val();
     
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
-	
 	let addr = sido +" " + sigungu;
-	/*
-	console.log("hpname:", hpname);
-	console.log("sido:", sido);
-	console.log("si-gun-gu:", sigungu);
-	console.log("~~addr:", addr);
-	console.log("classcode:", classcode);
-	console.log("agency:", agency);
-	*/
+
 	
     if (!sido ) {
         alert("시/도를 선택하세요");
@@ -247,33 +239,38 @@ function searchHospitals() {
         		addr: addr, 
         		classcode: classcode, 
         		agency: agency,
-        		hpname: hpname 
-        		},
+        		hpname: hpname,
+        		currentShowPageNo: pageNo
+        	   },
         dataType: "json",
         success: function(json) {
             removeMarkers();
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
-            json.forEach(item => { // 병원의 위도, 경도를 위치 객체로 변환
-                //let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
-                //addMarker(position, item.hpname); // 지도에 병원 위치 마커 추가
-				//마커 렉걸림 추후해결
-
-				
-
-                // 병원 리스트로 출력
-                let v_html = ` <div class="hospital-details">
-                			<input type="hidden" name="${item.hidx}"></input>
-		                	<div class="hospital-label"></div>
-		                    <h2 class="hospital-name">${item.hpname}</h2>
-		                    <p class="hospital-type">${item.classname}</p>
-		                    <p class="hospital-contact">TEL: ${item.hptel} </p>
-		                    <p class="hospital-address">${item.hpaddr}</p>
-		                	<button class="details-button">상세</button>
-		                </div>`;
-                $('#hospitalList').append(v_html);
-            });
+			let v_html = "";
+			if(json.length > 0) {
+	            json.forEach(item => { // 병원의 위도, 경도를 위치 객체로 변환
+	                //let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
+	                //addMarker(position, item.hpname); // 지도에 병원 위치 마커 추가
+					//마커 렉걸림 추후해결
+	
+					
+	                // 병원 리스트로 출력
+	                v_html += `<div class="hospital-details">
+	                			<input type="hidden" name="${item.hidx}"></input>
+			                	<div class="hospital-label"></div>
+			                    <h2 class="hospital-name">${item.hpname}</h2>
+			                    <p class="hospital-type">${item.classname}</p>
+			                    <p class="hospital-contact">TEL: ${item.hptel} </p>
+			                    <p class="hospital-address">${item.hpaddr}</p>
+			                	<button class="details-button">상세</button>
+			               		</div>`;
+	            });
+             } else {
+             	v_html += `검색된 의료기관이 없습니다.`;
+             }
+             $('#hospitalList').append(v_html);
+          	 displayPagination(json.totalPage, pageNo);
         }
-    });
-    
+    });   
 }
 

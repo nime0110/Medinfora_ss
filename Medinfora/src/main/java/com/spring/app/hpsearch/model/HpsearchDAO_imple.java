@@ -23,4 +23,9 @@ public class HpsearchDAO_imple implements  HpsearchDAO {
 		return sqlsession.selectList("mediinfora.getHospitalList", paraMap);
 	}
 
+	@Override
+	public int getHpListTotalCount(Map<String, String> paraMap) {
+		return sqlsession.selectOne("mediinfora.getHpListTotalCount", paraMap);
+	}
+
 }
