@@ -18,8 +18,8 @@ public class ReserveService_imple implements ReserveService {
 	
 	// === 회원가입된 병원 개수 === //
 	@Override
-	public int getmbHospitalCnt() {
-		int totalCnt = dao.getTotalCnt();
+	public int getmbHospitalCnt(Map<String, String> paraMap) {
+		int totalCnt = dao.getTotalCnt(paraMap);
 		return totalCnt;
 	}
 

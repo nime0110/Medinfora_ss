@@ -77,6 +77,66 @@ JOIN
 ) HC
 ON M.hidx = HC.hidx;
 
+-- === 페이징 처리한 시/도, 시/군구, 진료과목, 병원명 으로 검색한 병원리스트 가져오기 === --
+SELECT hidx, hpname, hpaddr, hptel, classcode
+FROM
+(
+    SELECT row_number() over(order by HC.hidx desc) AS rno
+        , HC.hidx as hidx, hpname, hpaddr, hptel, classcode
+    FROM
+    (
+        select hidx
+        from member
+        where midx = 2
+    ) M
+    JOIN
+    (
+        SELECT hidx, hpname, hpaddr, hptel, H.classcode
+        FROM
+        (
+            select hidx, hpname, hpaddr, hptel, classcode
+            from hospital
+            where 1=1
+            and hpaddr like '%' || '인천광역시' || '%' || '서구' || '%'
+                and hpname like '%' || '의' || '%' and classcode = 'D001'
+        ) H
+        JOIN
+        (
+            select classcode, classname
+            from classcode
+        ) C
+        ON H.classcode = C.classcode
+    ) HC
+    ON M.hidx = HC.hidx
+    order by hidx
+)
+WHERE rno BETWEEN 1 AND 10;
 
-select * 
-from CLASSCODE
+-- === 검색결과를 포함한 병원 수 === --
+SELECT count(*) 
+FROM
+(
+    select hidx
+    from member
+    where midx = 2
+) M
+JOIN
+(
+    SELECT hidx, hpname, hpaddr, hptel, H.classcode
+    FROM
+    (
+        select hidx, hpname, hpaddr, hptel, classcode
+        from hospital
+        where 1=1
+        and hpaddr like '%' || '인천광역시' || '%' || '서구' || '%'
+            and hpname like '%' || '의' || '%' and classcode = 'D001'
+    ) H
+    JOIN
+    (
+        select classcode, classname
+        from classcode
+    ) C
+    ON H.classcode = C.classcode
+) HC
+ON M.hidx = HC.hidx;
+
