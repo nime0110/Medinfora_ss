@@ -138,6 +138,8 @@ $(function() {
     // 페이지네이션
     loadReviewPage(1); //1페이지로 로드
     
+   
+   
 });
 
 // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수
@@ -255,6 +257,9 @@ function searchHospitals() {
                 //let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
                 //addMarker(position, item.hpname); // 지도에 병원 위치 마커 추가
 				//마커 렉걸림 추후해결
+
+				
+
                 // 병원 리스트로 출력
                 let v_html = ` <div class="hospital-details">
                 			<input type="hidden" name="${item.hidx}"></input>
