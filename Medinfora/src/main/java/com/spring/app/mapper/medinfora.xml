@@ -129,11 +129,11 @@
 		        from hospital
 		        where 1=1
 		        <choose>
-			    	<when test='Area != "" '>
-			    		and hpaddr like '%' || #{Area} || '%'
+			    	<when test='city != "" '>
+			    		and hpaddr like '%' || #{city} || '%'
 			    	</when>
 			    	<when test='local != "" '>
-			    		and hpaddr like '%' || #{Area} || '%' || #{local} || '%'
+			    		and hpaddr like '%' || #{city} || '%' || #{local} || '%'
 			    	</when>
 			    	<when test='hpname != "" '>
 			    		and hpname like '%' || #{hpname} || '%'
