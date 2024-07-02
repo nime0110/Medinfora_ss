@@ -27,3 +27,5 @@ DELETE FROM FINAL_ORAUSER3.KOREAAREA where city like '%'||'강원도'||'%';
 select * from HOSPITAL where HPADDR like '%'||'금산군'||'%';
 
 select COUNTRY from KOREAAREA where CITY = '서울특별시' and LOCAL = '마포구'
+
+select hidx,HPADDR from HOSPITAL where HPADDR like '%'||'서울특별시 서대문구'||'%';
