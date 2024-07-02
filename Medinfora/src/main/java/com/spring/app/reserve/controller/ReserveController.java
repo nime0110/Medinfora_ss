@@ -25,13 +25,13 @@ public class ReserveController {
 	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		List<HospitalDTO> mbHospitalList = null;
 		
-		String Area = request.getParameter("city");
+		String city = request.getParameter("city");
 		String local = request.getParameter("loc");
 		String classcode = request.getParameter("dept");
 		String hpname = request.getParameter("hpname");
 		
-		if("시/도 선택".equals(Area)) {
-			Area = "";
+		if("시/도 선택".equals(city)) {
+			city = "";
 		}
 		if("시/군구 선택".equals(local)) {
 			local = "";
@@ -47,7 +47,7 @@ public class ReserveController {
 		}
 		
 		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("Area", Area);
+		paraMap.put("city", city);
 		paraMap.put("local", local);
 		paraMap.put("classcode", classcode);
 		paraMap.put("hpname", hpname);

@@ -17,7 +17,7 @@ $(document).ready(function(){
 	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
-		url:"<%= ctxPath%>/getareainfo.bibo",
+		url:"<%= ctxPath%>/getcityinfo.bibo",
 		async:false,
 		dataType:"json",
 		success:function(json){
@@ -35,15 +35,15 @@ $(document).ready(function(){
 	<%-- 시/도 가 선택되거나 바뀐 경우 --%>
 	$("select#city").on("change", function(e) {
 		<%-- console.log($(this).val());	// 선택한 값 확인하기  --%>
-		const area_val = $(this).val();
+		const city_val = $(this).val();
 		
 		<%-- 시/군구 데이터 가져오기 --%>
-		const area ={"area":area_val};
+		const city ={"city":city_val};
 		
 		$.ajax({
 			url:"<%= ctxPath%>/getlocalinfo.bibo",
 			async:false,
-			data:area,
+			data:city,
 			dataType:"json",
 			success:function(json){
 				let v_html = `<option>시/군구 선택</option>`;
@@ -52,7 +52,7 @@ $(document).ready(function(){
 						v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
 					}
 				}	// end of for---------
-				$("select#lod").html(v_html);
+				$("select#loc").html(v_html);
 			},
 			error:function(request){
 				alert("code : " + request.status);
@@ -111,7 +111,7 @@ function HPSearch(){
 		                <%-- 시/도 데이터 --%>
 		            </select>
 		            
-		            <select name="loc" id="lod" class="selectbox loc_sel">
+		            <select name="loc" id="loc" class="selectbox loc_sel">
 						<option>시/군구 선택</option>
 						<%-- 시/군구 데이터 --%>
 		            </select>
