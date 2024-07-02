@@ -77,5 +77,26 @@
 	<select id="getclasscode" resultType="ClasscodeDTO">
 		select CLASSCODE,CLASSNAME from CLASSCODE
 	</select>
+		
+	<select id="getHospitalList" parameterType="HashMap" resultType="HospitalDTO">
+		SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, B.CLASSNAME, A.AGENCY
+		FROM (
+		    SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY
+		    FROM hospital
+			where hpaddr like '%' || #{addr} || '%'
+			<choose>
+				<when test='classcode != "" '>
+				    and classcode = #{classcode}
+				</when>
+				<when test='agency != "" '>
+				    and agency = #{agency}
+				</when>
+				<when test='hpname != "" '>
+				    and hpname like '%' || #{hpname} || '%'
+				</when>
+			</choose>
+		) A
+		JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
+	</select>
 	
 </mapper>
