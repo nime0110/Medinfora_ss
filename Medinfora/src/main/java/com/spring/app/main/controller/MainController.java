@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.KakaoApi;
 import com.spring.app.main.domain.ClasscodeDTO;
+import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.domain.MemberDTO;
 //import com.spring.app.common.Myutil;
 //import com.spring.app.main.domain.HospitalDTO;
@@ -302,15 +303,15 @@ public class MainController {
 	
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@RequestMapping(value="/getareainfo.bibo", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/getcityinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getareainfo() {
 		
-		List<String> arealist = service.getareainfo();
+		List<String> citylist = service.getcityinfo();
 		
 		JSONArray jsonarr = new JSONArray();
 		
-		for(String area : arealist) {
-			jsonarr.add(area);
+		for(String city : citylist) {
+			jsonarr.add(city);
 		}
 		
 		return jsonarr.toString();
@@ -322,9 +323,9 @@ public class MainController {
 	@RequestMapping(value="/getlocalinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getlocalinfo(HttpServletRequest request) {
 		
-		String area = request.getParameter("area");
+		String city = request.getParameter("city");
 		
-		List<String> locallist = service.getlocalinfo(area);
+		List<String> locallist = service.getlocalinfo(city);
 		
 		JSONArray jsonarr = new JSONArray();
 		
@@ -335,6 +336,28 @@ public class MainController {
 		return jsonarr.toString();
 		
 	}// end of public String getlocalinfo(HttpServletRequest request)
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/getcountryinfo.bibo", produces = "text/plain;charset=UTF-8")
+	public String getcountryinfo(HttpServletRequest request) {
+		
+		String city = "서울특별시"; //request.getParameter("city");
+		String local = "마포구"; //request.getParameter("local");
+		
+		KoreaAreaVO inputareavo = new KoreaAreaVO(city, local);
+		
+		List<String> countryList = service.getcountryinfo(inputareavo);
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		for(String country : countryList) {
+			jsonarr.add(country);
+		}
+		
+		return jsonarr.toString();
+		
+	}// end of public String getcountryinfo(HttpServletRequest request)
 	
 	@SuppressWarnings("unchecked")
 	@ResponseBody

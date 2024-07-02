@@ -116,7 +116,7 @@ public class MainService_imple implements MainService {
 	@Override
 	public int areaInputer(KoreaAreaVO koreaAreaVO) {
 		
-		System.out.println(" "+koreaAreaVO.getLocal());
+		System.out.print(" "+koreaAreaVO.getLocal());
 		
 		return dao.areaInputer(koreaAreaVO);
 	}
@@ -124,15 +124,21 @@ public class MainService_imple implements MainService {
 
 	// 행정구역 리스트 추출
 	@Override
-	public List<String> getareainfo() {
-		return dao.getareainfo();
+	public List<String> getcityinfo() {
+		return dao.getcityinfo();
 	}
 
 
 	// 시/군/구 리스트 추출
 	@Override
-	public List<String> getlocalinfo(String area) {
-		return dao.getlocalinfo(area);
+	public List<String> getlocalinfo(String city) {
+		return dao.getlocalinfo(city);
+	}
+	
+	// 읍/면/동 리스트 추출
+	@Override
+	public List<String> getcountryinfo(KoreaAreaVO inputareavo) {
+		return dao.getcountryinfo(inputareavo);
 	}
 
 	// 병원 진료과 리스트 추출
@@ -140,5 +146,8 @@ public class MainService_imple implements MainService {
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
 	}
+
+
+	
 	
 }

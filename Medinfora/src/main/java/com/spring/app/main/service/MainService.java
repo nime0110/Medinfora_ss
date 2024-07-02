@@ -30,17 +30,25 @@ public interface MainService {
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request, String url);
 
 	// 행정구역 리스트 추출
-	public List<String> getareainfo();
+	public List<String> getcityinfo();
 
 	/**
 	 * 시/군/구 리스트 추출 Made By SDH
-	 * @param {String} 행정구역(area) 이름
+	 * @param {String} 행정구역(city) 이름
 	 * @return {List<String>} 시/군/구 리스트 추출됨
 	 */
-	public List<String> getlocalinfo(String area);
+	public List<String> getlocalinfo(String city);
 
+	/**
+	 * 읍/면/동 리스트 추출 Made By SDH
+	 * @param {KoreaAreaVO} (inputareavo) 행정구역 / 시/군/구 정보가 있는 KOREAAREAVO
+	 * @return {List<String>} 읍/면/동 리스트 추출됨
+	 */
+	public List<String> getcountryinfo(KoreaAreaVO inputareavo);
+	
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
 
 	
 	

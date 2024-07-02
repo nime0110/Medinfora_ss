@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,31 +136,13 @@ public class Myutil {
 			areavoList = new ArrayList<KoreaAreaVO>();
 			
 			for(int i=0;i<jsonArr.size();i++) {
-				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
 				
-				@SuppressWarnings("unchecked")
-				Iterator<String> iter = jsonObj.keySet().iterator();
+				JSONObject jsonObj = new JSONObject();
 				
-				String key = "";
-				String value = "";
+				jsonObj = (JSONObject) jsonArr.get(i);
+				KoreaAreaVO areavo = new KoreaAreaVO((String)jsonObj.get("city"), (String)jsonObj.get("local"), (String)jsonObj.get("country"));
 				
-				while(iter.hasNext()){
-	                key = iter.next();
-	            }
-				
-				JSONArray itemarr = (JSONArray) jsonObj.get(key);
-				
-				if(itemarr.size()==0) {
-					KoreaAreaVO areavo = new KoreaAreaVO(value, key);
-					areavoList.add(areavo);
-				}
-				
-				for(int j=0;j<itemarr.size();j++) {
-					value = (String)itemarr.get(j);
-					KoreaAreaVO areavo = new KoreaAreaVO(value, key);
-					areavoList.add(areavo);
-				}
-				
+				areavoList.add(areavo);
 			}
 			
 		}
@@ -169,4 +150,5 @@ public class Myutil {
 		return areavoList;
 		
 	}// end of public static List<KoreaAreaVO> areaInputer(String localaddr)
+	
 }
