@@ -19,6 +19,9 @@ public interface MainDAO {
 	// 대한민국 행정구역정보 입력용
 	public int areaInputer(KoreaAreaVO koreaAreaVO);
 
+	// 회원가입(중복체크)
+	public MemberDTO isExistCheck(Map<String, String> paraMap);
+
 	// 로그인 유저 정보 가져오기
 	public MemberDTO getLoginuser(Map<String, String> paraMap);
 
@@ -39,6 +42,7 @@ public interface MainDAO {
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+	
 
 
 	

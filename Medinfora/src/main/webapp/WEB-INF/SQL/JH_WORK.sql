@@ -158,4 +158,15 @@ CROSS JOIN
 ) L;
 
 
+-- 병원 테이블 조회
+select *
+from hospital;
+
+
+select userid, email
+from member
+where (midx between 0 and 8) and userid = "";
+
+
+
 

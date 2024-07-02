@@ -5,6 +5,21 @@
 
 <mapper namespace="mediinfora">
 	
+	<!-- 회원가입(중복체크) -->
+	<select id="isExistCheck" parameterType="HashMap" resultType="MemberDTO">
+		select userid, email
+		from member
+		where (midx between 1 and 8)
+		<choose>
+			<when test="type == 'userid'">	<!-- 아이디 중복 체크 -->
+		    	and userid = #{value}
+	    	</when>
+	    	<when test="type == 'email'"> <!-- 이메일 중복 체크  -->
+	    		and email = #{value}
+	    	</when>
+		</choose>
+	</select>
+	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
 		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx
