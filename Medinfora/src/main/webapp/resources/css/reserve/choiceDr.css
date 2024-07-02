@@ -113,7 +113,7 @@
 .exam_choiceDr{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap : 14px;
     border-top: solid 3px var(--grey300);
     padding-top: 48px;
@@ -122,7 +122,7 @@
 
 .btn_card{
     background-color: var(--blue50);
-    width: 32%;
+    width: 32.2%;
     display: flex;
     flex-wrap: wrap;
     transition: all 0.3s;
