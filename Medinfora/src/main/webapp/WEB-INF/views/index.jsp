@@ -90,8 +90,7 @@
         <div class="sh_card-text">
           <h4 class="sh_card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
           <p class="sh_text">
-
-            주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
+		 주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
           </p>
           <div class="img-content">
 

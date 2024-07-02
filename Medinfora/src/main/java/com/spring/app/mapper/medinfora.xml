@@ -99,4 +99,52 @@
 		JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
 	</select>
 	
+	<!-- (진료예약)회원가입된 병원 개수  -->
+	<select id="getTotalCnt" resultType="int">
+		select count(*)
+		from member
+		where midx = 2
+	</select>
+	
+	<!-- (진료예약)회원가입된 병원 리스트 가져오기  -->
+	<select id="mbHospitalList" resultType="HospitalDTO" parameterType="HashMap">
+		SELECT HC.hidx as hidx, hpname, hpaddr, hptel, classcode
+		FROM
+		(
+		    select hidx
+		    from member
+		    where midx = 2
+		) M
+		JOIN
+		(
+		    SELECT hidx, hpname, hpaddr, hptel, H.classcode
+		    FROM
+		    (
+		        select hidx, hpname, hpaddr, hptel, classcode
+		        from hospital
+		        where 1=1
+		        <choose>
+			    	<when test='Area != "" '>
+			    		and hpaddr like '%' || #{Area} || '%'
+			    	</when>
+			    	<when test='local != "" '>
+			    		and hpaddr like '%' || #{Area} || '%' || #{local} || '%'
+			    	</when>
+			    	<when test='hpname != "" '>
+			    		and hpname like '%' || #{hpname} || '%'
+			    	</when>
+			    	<when test='classcode != "" '>
+			    		and classcode = #{classcode}
+			    	</when>
+		    	</choose>
+		    ) H
+		    JOIN
+		    (
+		        select classcode, classname
+		        from classcode
+		    ) C
+		    ON H.classcode = C.classcode
+		) HC
+		ON M.hidx = HC.hidx
+	</select>
 </mapper>

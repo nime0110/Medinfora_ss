@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%
+
 	String ctxPath = request.getContextPath();
 	
 	String url = "";
@@ -52,17 +53,10 @@
 			 const pwd = loginData.pwd;
 			 
 			 const iskakao = loginData.iskakao;
+			 const message = loginData.message;
 			 
-			 // 카카오 
 			 
-			 // console.log(userid);
-			 // console.log(pwd);
-			 
-			 if(iskakao == "false"){
-				 location.href="javascript:location.reload(true)";
-
-			 }
-			 
+			 // 일반 로그인 
 			 if(userid != null && pwd != null ){
 				 
 				 $.ajax({
@@ -103,10 +97,54 @@
 				 
 			 }
 			 
+			 // 카카오  로그인
+			 else if(iskakao != null && message != null){
+				 
+				 switch (iskakao) {
+				 	case "freeze":
+				 		alert(message);
+					 	// 휴먼해제 페이지 이동
+					 	location.href="javascript:location.reload(true)";
+				 		break;
+				 		
+				 	case "suspended":
+				 		alert(message);
+					 	location.href="javascript:location.reload(true)";
+					 	break;
+					 	
+				 	case "true":
+				 		if(Number(${sessionScope.loginuser.pwdchangegap}) >= 3){
+				 			alert(message);
+				 			// 비밀번호 변경페이지로 이동
+						 	location.href="javascript:location.reload(true)";
+				 		}
+				 		else{
+				 			alert(message);
+						 	location.href="javascript:location.reload(true)";
+						 	
+				 		}
+				 		break;
+				 		
+				 	case "false":
+				 		// 회원가입 페이지로 이동
+				 		alert("회원가입 이동간다잉");
+					 	location.href="javascript:location.reload(true)";
+						break;
+				 	
+				 }// end of switch
+
+			 }
+			 
 			 
 		});
 		
+		$('.href_reserve').on("click",function(){
+			location.href = "<%=ctxPath%>/reserve/choiceDr.bibo";
+		})
+		
 	});
+	
+	
 
 </script>
 
@@ -114,7 +152,7 @@
 
 <div id="getCtxPath" style="display: none;"><%=ctxPath %></div>
 
-<header>
+<header class="mainheader">
   <div class="header-container">
     <div class="logo" id="logoimport">
       <img src="<%= ctxPath%>/resources/img/logo-main.png" alt="LOGO">
@@ -124,9 +162,9 @@
     </button>
     <nav>
       <ul id="navbarNav">
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="">의료 통계 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="#">건강 정보 보기</a></li>
-        <li class="nanum-n size-s"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg1m">의료 기관</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg2m">의료 정보</a></li>
+        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
       </ul>
     </nav>
     <div class="input_text">
@@ -153,6 +191,25 @@
     </c:if>
     
   </div>
+  
+  <div class="tog_nav tg1 fadeout">
+  	<div class="tog_title">의료 기관</div>
+  	<ul class="tog_ul">
+  		<li class="tog_li">병원 찾기</li>
+  		<li class="tog_li">약국 찾기</li>
+  		<li class="tog_li">응급실 찾기</li>
+  	</ul>
+  </div>
+  
+  <div class="tog_nav tg2 fadeout">
+  	<div class="tog_title">의료 정보</div>
+  	<ul class="tog_ul">
+  		<li class="tog_li">의료 통계</li>
+  		<li class="tog_li">의약품 정보</li>
+  		<li class="tog_li">묻고 답하기</li>
+  	</ul>
+  </div>
+  
   <div class="pop_search fadeout">
     <div class="pop_title nanum-n">인기검색어</div>
     <ul class="pop_ul_dh">
@@ -163,6 +220,27 @@
       <li>5.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
     </ul>
   </div>
+  
+  <div class="media_tog fadeout">
+  	<div class="media_tog_title">메인메뉴</div>
+	
+  	<div class="media_tog_sub">의료 기관</div>
+  	<ul class="media_tog_ul">
+		<li class="media_tog_li">병원 찾기</li>
+		<li class="media_tog_li">약국 찾기</li>
+		<li class="media_tog_li">응급실 찾기</li>
+	</ul>
+	
+  	<div class="media_tog_sub">의료 정보</div>
+	<ul class="media_tog_ul">
+		<li class="media_tog_li">의료 통계</li>
+		<li class="media_tog_li">의약품 정보</li>
+		<li class="media_tog_li">묻고 답하기</li>
+	</ul>
+	
+  	<div class="media_tog_sub href_reserve">진료 예약하기</div>
+  </div>
+  
 </header>
 
 <aside class="fixed-nav">

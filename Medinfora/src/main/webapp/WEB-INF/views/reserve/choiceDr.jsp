@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <% String ctxPath = request.getContextPath(); %>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDr.css" />
@@ -11,6 +13,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	searchHP();		<%-- 결과창 변경 --%>
+	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getareainfo.bibo",
@@ -19,7 +23,7 @@ $(document).ready(function(){
 		success:function(json){
 			let v_html = `<option>시/도 선택</option>`;
 			for(let i=0; i<json.length; i++){
-				v_html +=`<option>\${json[i]}</option>`;
+				v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
 			}	// end of for---------
 			$("select#city").html(v_html);
 		},
@@ -45,20 +49,39 @@ $(document).ready(function(){
 				let v_html = `<option>시/군구 선택</option>`;
 				for(let i=0; i<json.length; i++){
 					if(json[i]!=null){	<%-- 세종과 다른 시도 구분 --%>
-						v_html +=`<option>\${json[i]}</option>`;
+						v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
 					}
 				}	// end of for---------
 				$("select#lod").html(v_html);
-				
 			},
 			error:function(request){
 				alert("code : " + request.status);
 			}
 		})	// end of $.ajax({-------------
+	})	// end of $("select#city").on("change", function(e) {------------
 		
-	})
+	<%-- 진료과목 데이터 가져오기  --%>
+	$.ajax({
+		url:"<%= ctxPath%>/getclasscode.bibo",
+		async:false,
+		dataType:"json",
+		success:function(json){
+			let v_html = `<option>진료과목 선택</option>`;
+			for(let i=0; i<json.length; i++){
+				v_html +=`<option value="\${json[i].classcode}">\${json[i].classname}</option>`;
+			}	// end of for---------
+			$("select#dept").html(v_html);
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	})	// end of $.ajax({-------------
 	
 })	// end of $(document).ready(function(){--------------
+function HPSearch(){
+	const frm = document.searchHospitalFrm;
+	frm.submit();
+}
 </script>
 
 <div class="hj_container">
@@ -77,7 +100,7 @@ $(document).ready(function(){
 	        </ul>
 	    </div>
 	    
-    	<form name="#" method="get">
+    	<form name="searchHospitalFrm">
 	    	<div class="searchhp">
 	    
 	    		<div class="location_select">
@@ -99,9 +122,7 @@ $(document).ready(function(){
 	            
 	            	<span class="searchoicename">진료과목</span>
 		            <select name="dept" id="dept" class="selectbox inlinesearch">
-		                <option>진료과목 선택</option>
-		                <option value="internal">내과</option>
-		                <option value="surgery">외과</option>
+						<%-- 진료과목 데이터 --%>
 		            </select>
 	            
 	            </div>
@@ -109,8 +130,8 @@ $(document).ready(function(){
 	           	<div class="name_input">
 	           		
 	           		<span class="searchoicename">병원명</span>
-	               	<input text="type" class="inputbox" name="" placeholder="병원명을 입력하세요."/>
-	               	<button type="button" class="searchhpbtn">검색</button>
+	               	<input text="type" class="inputbox" name="hpname" placeholder="병원명을 입력하세요."/>
+	               	<button type="button" class="searchhpbtn" onclick="HPSearch()">검색</button>
 	           	</div>
            	
         	</div>
@@ -118,73 +139,23 @@ $(document).ready(function(){
      	</form>
 	    
 	    <div class="exam_choiceDr">
-	    
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">1등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">2등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">3등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">4등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">5등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
-            <div class="btn_card">
-            	<div class="card_top">
-            		<h4 class="hospital_name">6등병원</h4>
-                	<input type="checkbox" class="hj_custom-checkbox">
-                	<label class="hj_custom-checkbox-label"></label>
-            	</div>
-                <p class="hospital_addr">
-                    	경기도 부천시 원미구 부천로 91, ,부흥로373번길18, 부흥로377(기존디에스병원A동) (심곡동)
-                </p>
-            </div>
-            
+	    	<c:if test="${empty requestScope.mbHospitalList}">
+	    		검색결과에 맞는 결과가 없습니다.
+	    	</c:if>
+	    	<c:if test="${not empty requestScope.mbHospitalList}">
+	    		<c:forEach var="hospitalDTO" items="${requestScope.mbHospitalList}" varStatus="status">
+	    			<div class="btn_card">
+		            	<div class="card_top">
+		            		<h4 class="hospital_name">${hospitalDTO.hpname}</h4>
+		                	<input type="checkbox" class="hj_custom-checkbox">
+		                	<label class="hj_custom-checkbox-label"></label>
+		            	</div>
+		                <p class="hospital_addr">
+		                	${hospitalDTO.hpaddr}
+		                </p>
+		            </div>
+	    		</c:forEach>
+	    	</c:if>          
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>

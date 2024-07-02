@@ -74,10 +74,11 @@ from member
 
 -- 로그 남기기 sql
 insert into member(userid, ip, registerday)
-values()
+values();
 
 select *
-from loginlog;
+from loginlog
+order by registerday desc;
 
 
 
