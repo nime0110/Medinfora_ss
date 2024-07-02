@@ -7,6 +7,10 @@ public class HospitalDTO {
 	starttime1,starttime2,starttime3,starttime4,starttime5,starttime6,starttime7,starttime8,
 	endtime1,endtime2,endtime3,endtime4,endtime5,endtime6,endtime7,endtime8;
 	
+	// [ss] Add field for select query--  
+	private String classname;
+	
+	
 	public int getHidx() {
 		return hidx;
 	}
@@ -151,5 +155,12 @@ public class HospitalDTO {
 	public void setClasscode(String classcode) {
 		this.classcode = classcode;
 	}
+	public String getClassname() {
+		return classname;
+	}
+	public void setClassname(String classname) {
+		this.classname = classname;
+	}
+	
 	
 }
