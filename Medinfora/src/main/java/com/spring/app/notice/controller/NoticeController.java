@@ -92,7 +92,7 @@ public class NoticeController {
         if (n == 1) {
             mav.setViewName("redirect:/notice/noticeList.bibo");
         } else {
-            mav.setViewName("mediinfora/views/notice/noticeWrite.tiles");
+            mav.setViewName("medinfora/views/notice/noticeWrite.tiles");
         }
 
         paraMap.put("userid", noticedto.getUserid());
