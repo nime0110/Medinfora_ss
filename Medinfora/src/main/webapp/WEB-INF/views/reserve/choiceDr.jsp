@@ -11,6 +11,7 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
 
 <script type="text/javascript">
+
 $(document).ready(function(){
 	
 	<%-- 시/도 데이터 가져오기 --%>
@@ -57,7 +58,8 @@ $(document).ready(function(){
 			}
 		})	// end of $.ajax({-------------
 	})	// end of $("select#city").on("change", function(e) {------------
-		
+	
+
 	<%-- 진료과목 데이터 가져오기  --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getclasscode.bibo",
@@ -73,43 +75,20 @@ $(document).ready(function(){
 		error:function(request){
 			alert("code : " + request.status);
 		}
-	})	// end of $.ajax({-------------
-	
-	<%-- 검색 시 데이터 유지 --%>
-	if("${requestScope.paraMap.city}" == ""){
-		$("select[name='city']").val("시/도 선택");
-	}
-	else{
-		$("select[name='city']").val("${requestScope.paraMap.city}");
-	}
-	
-	if("${requestScope.paraMap.local}" == ""){
-		$("select[name='loc']").val("시/군구 선택");
-	}
-	else{
-		$("select[name='loc']").val("${requestScope.paraMap.local}");
-	}
-	
-	if("${requestScope.paraMap.classcode}" == ""){
-		$("select[name='dept']").val("진료과목 선택");
-	}
-	else{
-		$("select[name='dept']").val("${requestScope.paraMap.classcode}");
-	}
-	
-	if("${requestScope.paraMap.hpname}" == ""){
-		$("input[name='hpname']").val("");
-	}
-	else{
-		$("input[name='hpname']").val("${requestScope.paraMap.hpname}");
-	}
+	})	// end of $.ajax({-------------s
 
 	Page(1);
 	
 })	// end of $(document).ready(function(){--------------
+//////////////////////////////////////////////////////////////////////////////////
 function HPSearch(){
-	const frm = document.searchHospitalFrm;
-	frm.submit();
+	
+	const city = $("select[name='city']").val();
+	const local = $("select[name='loc']").val();
+	const classcode = $("select[name='dept']").val();
+	const hpname = $("input[name='hpname']").val();
+
+	Page(1);
 }
 
 function Page(currentShowPageNo){
@@ -128,14 +107,9 @@ function Page(currentShowPageNo){
 			"currentShowPageNo":currentShowPageNo},
 		dataType:"json",
 		success:function(json){
-			console.log(json);
-			
 			if(json.length > 0){
-				
 				<%-- === 검색내용 === --%>
 				let v_html = ``;
-				
-
 				$.each(json,function(index,item){
 					v_html += `<div class="btn_card">
 		            				<div class="card_top">
@@ -193,6 +167,13 @@ function Page(currentShowPageNo){
 				pageBar += "</ul>";
 				
 				$("div#ReserveHP_PageBar").html(pageBar);
+			}
+			else{
+				v_html = `검색결과에 맞는 결과가 없습니다.`;
+				$("div.exam_choiceDr").html(v_html);	
+			
+				let pageBar = ``;
+				$("div#ReserveHP_PageBar").html(pageBar);	
 			}
 		},
 		error:function(request,status,error){
@@ -258,7 +239,7 @@ function Page(currentShowPageNo){
 	    
 	    <div class="exam_choiceDr">
 	    	<c:if test="${empty requestScope.mbHospitalList}">
-	    		검색결과에 맞는 결과가 없습니다.
+	    		진료예약 가능한 병원이 없습니다.
 	    	</c:if>
 	    	<c:if test="${not empty requestScope.mbHospitalList}">
 	    		<c:forEach var="hospitalDTO" items="${requestScope.mbHospitalList}" varStatus="status">

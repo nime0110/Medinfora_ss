@@ -60,7 +60,7 @@ public class ReserveController {
 		mbHospitalList = service.mbHospitalList(paraMap);	// 회원가입된 병원 리스트 가져오기
 		
 		mav.addObject("mbHospitalList",mbHospitalList);
-
+		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
 		return mav;
@@ -101,7 +101,7 @@ public class ReserveController {
 			hpname = hpname.trim();
 		}
 		
-		int sizePerPage = 9;	// 한 페이지당 보여줄 개수
+		int sizePerPage = 1;	// 한 페이지당 보여줄 개수
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
@@ -118,7 +118,7 @@ public class ReserveController {
 		paraMap.put("local", local);
 		paraMap.put("classcode", classcode);
 		paraMap.put("hpname", hpname);
-		
+
         List<HospitalDTO> mbHospitalList = service.mbHospitalList(paraMap);
         
 		int totalCnt = service.getmbHospitalCnt(paraMap);	// 회원가입된 병원 개수
@@ -144,8 +144,9 @@ public class ReserveController {
 				jsonArr.put(jsonObj);
 			}	// end of for---------
 		}
-
+		
 		return jsonArr.toString();
+		
 	}
 	
 }
