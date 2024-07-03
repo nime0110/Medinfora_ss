@@ -113,7 +113,7 @@ FROM
 WHERE rno BETWEEN 1 AND 10;
 
 -- === 검색결과를 포함한 병원 수 === --
-SELECT count(*) 
+SELECT HC.hidx as hidx, hpname, hpaddr, hptel, classcode
 FROM
 (
     select hidx
@@ -139,4 +139,39 @@ JOIN
     ON H.classcode = C.classcode
 ) HC
 ON M.hidx = HC.hidx;
+
+-- === 검색결과를 포함한 페이징 처리 === --
+SELECT hidx, hpname, hpaddr, hptel, classcode
+FROM
+(
+SELECT row_number() over(order by HC.hidx desc) AS rno
+    , HC.hidx as hidx, hpname, hpaddr, hptel, classcode
+FROM
+(
+    select hidx
+    from member
+    where midx = 2
+) M
+JOIN
+(
+    SELECT hidx, hpname, hpaddr, hptel, H.classcode
+    FROM
+    (
+        select hidx, hpname, hpaddr, hptel, classcode
+        from hospital
+        where 1=1
+        and hpaddr like '%' || '인천광역시' || '%' || '서구' || '%'
+            and hpname like '%' || '의' || '%' and classcode = 'D002'
+    ) H
+    JOIN
+    (
+        select classcode, classname
+        from classcode
+    ) C
+    ON H.classcode = C.classcode
+) HC
+ON M.hidx = HC.hidx
+ORDER BY HIDX
+)
+WHERE rno BETWEEN 1 AND 10;
 
