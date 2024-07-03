@@ -3,7 +3,7 @@
 <!-- ==== #29. mapper 기본설정 ==== -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mediinfora">
+<mapper namespace="medinfora">
 	
 	<!-- 회원가입(중복체크) -->
 	<select id="isExistCheck" parameterType="HashMap" resultType="MemberDTO">

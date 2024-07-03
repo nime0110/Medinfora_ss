@@ -20,14 +20,14 @@ public class ReserveDAO_imple implements ReserveDAO {
 	// === 회원가입된 병원 개수  === //
 	@Override
 	public int getTotalCnt(Map<String, String> paraMap) {
-		int totalCnt = sqlsession.selectOne("mediinfora.getTotalCnt",paraMap);
+		int totalCnt = sqlsession.selectOne("medinfora.getTotalCnt",paraMap);
 		return totalCnt;
 	}
 
 	// === 회원가입된 병원 리스트 가져오기 === //
 	@Override
 	public List<HospitalDTO> mbHospitalList(Map<String, String> paraMap) {
-		List<HospitalDTO> mbHospitalList = sqlsession.selectList("mediinfora.mbHospitalList",paraMap);
+		List<HospitalDTO> mbHospitalList = sqlsession.selectList("medinfora.mbHospitalList",paraMap);
 		return mbHospitalList;
 	}
 
