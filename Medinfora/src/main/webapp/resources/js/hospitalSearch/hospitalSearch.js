@@ -56,9 +56,9 @@ $(function() {
                     console.log("city:", city);
                     
                     // 시/도 및 시/군/구 선택 업데이트
-                    $('#si-do').val(city).change();
+                    $('#city').val(city).change();
                     setTimeout(() => {
-                        $('#si-gun-gu').val(region);
+                        $('#local').val(region);
                     }, 500); // 시/군/구 목록 업데이트 대기 시간
                 }
             });
@@ -76,7 +76,7 @@ $(function() {
 	// ****************** 시/도, 진료과목 데이터 가져오기 start ************* 
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
-		url:contextPath + "/getareainfo.bibo",
+		url:contextPath + "/getcityinfo.bibo",
 		async:false,
 		dataType:"json",
 		success:function(json){
@@ -84,7 +84,7 @@ $(function() {
 			for(let i=0; i<json.length; i++){
 				v_html +=`<option value="${json[i]}">${json[i]}</option>`;
 			}	
-			$("select#si-do").html(v_html);
+			$("select#city").html(v_html);
 		},
 		error:function(request){
 			alert("code : " + request.status);
@@ -119,24 +119,18 @@ $(function() {
     });
     
     //시-도 부분이 바뀌면 업데이트
-    $('#si-do').on('change', function() {
+    $('#city').on('change', function() {
     	updateSigunGu();
     });
-    /*
+    
     // 시/군/구 부분이 바뀌면 동 업데이트
-    $('#si-gun-gu').on('change', function() {
+    $('#local').on('change', function() {	
         updateDong();
     });
-    */
-    /*
-    //검색조건변경시 병원검색
-    $('#si-gun-gu, #dong, #classcode, #agency').on('change', function() {
-        searchHospitals(1);
-    });
-    */
+    
     
     // 페이지네이션
-    loadHospitalPage(1); //1페이지로 로드
+    //loadHospitalPage(1); //1페이지로 로드
     
    
    
@@ -156,10 +150,16 @@ window.zoomOut = function() {
 
 
 // 지도에 마커 추가하는 함수
-function addMarker(position, message) {
+function addMarker(position, message,index) {
+    let imageSrc = contextPath + '/images/marker' + index + '.png'; // 마커 이미지 경로 설정
+    let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
+    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    
+    
     let marker = new kakao.maps.Marker({
         map: map,
-        position: position
+        position: position,
+         image: markerImage // 마커 이미지 설정
     });
 
     let infowindow = new kakao.maps.InfoWindow({
@@ -181,26 +181,56 @@ function removeMarkers() {
 
 // 시 도 선택시 업데이트 되는 함수   start
 function updateSigunGu() {
-    let area_val = $('#si-do').val(); // 서울특별시, 경기도
+    let city_val = $('#city').val(); // 서울특별시, 경기도
 
-    const area = { "area": area_val };
+    const city = { "city": city_val };
     
-    console.log("area:", area);
+    //console.log("area:", area);
     
     $.ajax({
         url: contextPath + "/getlocalinfo.bibo",
         async: false,
-        data: area, // 데이터 객체 전달
+        data: city, // 데이터 객체 전달
         dataType: "json",
         success: function(json) {
-            console.log(json);
+           // console.log(json);
             let v_html = `<option value="">시/군구 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
                     v_html += `<option value="${json[i]}">${json[i]}</option>`;
                 }
             }	// end of for---------
-            $("select#si-gun-gu").html(v_html);
+            $("select#local").html(v_html);
+        },
+        error: function(request) {
+            alert("code : " + request.status + "\nmessage : " + request.responseText);
+        }
+    });	// end of $.ajax({-------------
+}
+// 시 도 선택시 업데이트 되는 함수   end
+
+// 시군구 선택시 동이 업데이트 되는 함수   start
+function updateDong() {
+    let city_val = $('#city').val();
+    let local_val = $('#local').val(); 
+
+    const cityLocal = { "city": city_val, "local": local_val };
+
+    
+    $.ajax({
+        url: contextPath + "/getcountryinfo.bibo",
+        async: false,
+        data: cityLocal, // 데이터 객체 전달
+        dataType: "json",
+        success: function(json) {
+            console.log(json);
+            let v_html = `<option value="">읍/면/동 선택</option>`;
+            for (let i = 0; i < json.length; i++) {
+                if (json[i] != null) {	
+                    v_html += `<option value="${json[i]}">${json[i]}</option>`;
+                }
+            }	// end of for---------
+            $("select#country").html(v_html);
         },
         error: function(request) {
             alert("code : " + request.status + "\nmessage : " + request.responseText);
@@ -214,22 +244,27 @@ function updateSigunGu() {
 var currentPage = 1; // 현재 페이지를 추적
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
 function searchHospitals(pageNo) {
-    let sido = $('#si-do').val();
-    let sigungu = $('#si-gun-gu').val();
+    let city = $('#city').val();
+    let local = $('#local').val();
+    let country = $('#country').val();
     
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
-	let addr = sido +" " + sigungu;
+	let addr = city + " " + local;
 
 	
-    if (!sido ) {
+    if (!city ) {
         alert("시/도를 선택하세요");
         return;
     }
 	
-    if (!sigungu ) {
+    if (!local ) {
         alert("시/군/구를 선택하세요");
+        return;
+    }
+    if (!country ) {
+        alert("읍/면/동을 선택하세요");
         return;
     }
 	
@@ -237,6 +272,7 @@ function searchHospitals(pageNo) {
         url: contextPath +'/hpsearch/hpsearchAdd.bibo', 
         data: { 
         		addr: addr, 
+        		country: country,
         		classcode: classcode, 
         		agency: agency,
         		hpname: hpname,
@@ -244,20 +280,21 @@ function searchHospitals(pageNo) {
         	   },
         dataType: "json",
         success: function(json) {
+        	console.log("json:", json);
             removeMarkers();
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
 			let v_html = "";
 			if(json.length > 0) {
-	            json.forEach(item => { // 병원의 위도, 경도를 위치 객체로 변환
-	                //let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
-	                //addMarker(position, item.hpname); // 지도에 병원 위치 마커 추가
-					//마커 렉걸림 추후해결
+	           json.forEach((item, index) => { // 병원의 위도, 경도를 위치 객체로 변환
+	                let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
+	                //addMarker(position, `${index + 1}. ${item.hpname}`, item.hpname); // 지도에 병원 위치 마커 추가
+					
 	
 					
 	                // 병원 리스트로 출력
 	                v_html += `<div class="hospital-details">
 	                			<input type="hidden" name="${item.hidx}"></input>
-			                	<div class="hospital-label"></div>
+			                	<div class="hospital-label">${index + 1}</div>
 			                    <h2 class="hospital-name">${item.hpname}</h2>
 			                    <p class="hospital-type">${item.classname}</p>
 			                    <p class="hospital-contact">TEL: ${item.hptel} </p>
@@ -269,8 +306,45 @@ function searchHospitals(pageNo) {
              	v_html += `검색된 의료기관이 없습니다.`;
              }
              $('#hospitalList').append(v_html);
-          	 displayPagination(json.totalPage, pageNo);
-        }
+             const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
+             console.log("토탈페이지", totalPage); //3 나옴
+          	 
+          	 displayPagination(totalPage, pageNo);
+        },
+		    error: function(request, status, error){
+		        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    }
     });   
 }
 
+function displayPagination(totalPage, currentPage) {
+    var paginationDiv = $('#rpageNumber');
+    paginationDiv.empty();
+
+    if (totalPage > 0) {
+        // 처음 페이지로 이동
+        paginationDiv.append('<span class="page-link" data-page="1">[맨처음]</span>');
+
+        for (var i = 1; i <= totalPage; i++) {
+            var link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
+
+            if (i === currentPage) {
+                link.addClass('active');
+            }
+
+            paginationDiv.append(link);
+        }
+
+        // 마지막 페이지로 이동
+        paginationDiv.append('<span class="page-link" data-page="' + totalPage + '">[마지막]</span>');
+    }
+
+    $('#rpageNumber .page-link').on('click', function(e) {
+        e.preventDefault();
+        var page = $(this).data('page');
+        searchHospitals(page);
+
+        $('#rpageNumber .page-link').removeClass('active');
+        $(this).addClass('active');
+    });
+}
