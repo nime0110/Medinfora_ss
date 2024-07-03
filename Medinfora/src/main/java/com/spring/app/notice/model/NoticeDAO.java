@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.spring.app.domain.NoticeDTO;
 
-@Mapper // dao_imple은 필요없음 
+@Mapper
 public interface NoticeDAO {
 
     // 공지사항

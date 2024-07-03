@@ -89,7 +89,7 @@ function HPSearch(){
 	const hpname = $("input[name='hpname']").val();
 
 	Page(1);
-}
+}	// end of function HPSearch(){---------------------------------------
 
 function Page(currentShowPageNo){
 
@@ -180,7 +180,7 @@ function Page(currentShowPageNo){
 			alert("code: "+request.status);
 		}
 	})	// end of $.ajax({-----
-}
+}	// end of function Page(currentShowPageNo){----------------------
 </script>
 
 <div class="hj_container">
@@ -198,43 +198,30 @@ function Page(currentShowPageNo){
 	            </li>
 	        </ul>
 	    </div>
-	    
     	<form name="searchHospitalFrm">
 	    	<div class="searchhp">
-	    
 	    		<div class="location_select">
-	    		
-		    		<span class="searchoicename">병원위치</span>
-		            
+		    		<span class="searchoicename">병원위치</span>  
 		            <select name="city" id="city" class="selectbox loc_sel">
 		                <%-- 시/도 데이터 --%>
 		            </select>
-		            
 		            <select name="loc" id="loc" class="selectbox loc_sel">
 						<option>시/군구 선택</option>
 						<%-- 시/군구 데이터 --%>
 		            </select>
-		            
 	    		</div>
-	            
 	            <div class="class_select">
-	            
 	            	<span class="searchoicename">진료과목</span>
 		            <select name="dept" id="dept" class="selectbox inlinesearch">
 						<%-- 진료과목 데이터 --%>
 		            </select>
-	            
 	            </div>
-	            
 	           	<div class="name_input">
-	           		
 	           		<span class="searchoicename">병원명</span>
-	               	<input text="type" class="inputbox" name="hpname" placeholder="병원명을 입력하세요."/>
+	               	<input type="text" class="inputbox" name="hpname" placeholder="병원명을 입력하세요."/>
 	               	<button type="button" class="searchhpbtn" onclick="HPSearch()">검색</button>
 	           	</div>
-           	
         	</div>
-        
      	</form>
 	    
 	    <div class="exam_choiceDr">
@@ -263,7 +250,10 @@ function Page(currentShowPageNo){
 	    <%-- ================================================================================================== --%>	    
 	    <div class="div_proc text-center mb-5">
 	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">취소</button>
-	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:location.href='<%= ctxPath%>/reserve/choiceDay.bibo'">다음</button>
+	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:hpSelectNext()">다음</button>
 	    </div>
+	    <form name="hpinfo">
+	    	<input type="text" name="hidx" value="" />
+	    </form>
 	</div>
 </div>
