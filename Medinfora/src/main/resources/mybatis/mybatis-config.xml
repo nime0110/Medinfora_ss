@@ -12,7 +12,6 @@
 		<typeAlias type="com.spring.app.domain.HospitalDTO" alias="HospitalDTO"/>
 		<typeAlias type="com.spring.app.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
 		<typeAlias type="com.spring.app.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
-		
 	</typeAliases>
 	
 	
