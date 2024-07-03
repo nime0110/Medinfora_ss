@@ -8,11 +8,10 @@
 
 	<!-- domain(DTO) package -->
 	<typeAliases>
-		<typeAlias type="com.spring.app.main.domain.MemberDTO" alias="MemberDTO"/>
-		<typeAlias type="com.spring.app.main.domain.HospitalDTO" alias="HospitalDTO"/>
-		<typeAlias type="com.spring.app.main.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
-		<typeAlias type="com.spring.app.main.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
-		
+		<typeAlias type="com.spring.app.domain.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.spring.app.domain.HospitalDTO" alias="HospitalDTO"/>
+		<typeAlias type="com.spring.app.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
+		<typeAlias type="com.spring.app.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
 	</typeAliases>
 	
 	

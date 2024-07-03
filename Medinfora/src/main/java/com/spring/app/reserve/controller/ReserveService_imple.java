@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.reserve.model.ReserveDAO;
 import com.spring.app.reserve.service.ReserveService;
 
@@ -18,8 +18,8 @@ public class ReserveService_imple implements ReserveService {
 	
 	// === 회원가입된 병원 개수 === //
 	@Override
-	public int getmbHospitalCnt() {
-		int totalCnt = dao.getTotalCnt();
+	public int getmbHospitalCnt(Map<String, String> paraMap) {
+		int totalCnt = dao.getTotalCnt(paraMap);
 		return totalCnt;
 	}
 

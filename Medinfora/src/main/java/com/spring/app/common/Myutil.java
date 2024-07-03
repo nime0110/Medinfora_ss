@@ -9,13 +9,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.spring.app.main.domain.HospitalDTO;
-import com.spring.app.main.domain.KoreaAreaVO;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.KoreaAreaVO;
 
 public class Myutil {
 

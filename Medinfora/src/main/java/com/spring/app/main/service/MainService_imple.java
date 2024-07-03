@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
-import com.spring.app.main.domain.ClasscodeDTO;
-import com.spring.app.main.domain.HospitalDTO;
-import com.spring.app.main.domain.KoreaAreaVO;
-import com.spring.app.main.domain.MemberDTO;
+import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MemberDTO;
 import com.spring.app.main.model.MainDAO;
 
 @Service
