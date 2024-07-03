@@ -157,6 +157,7 @@ $(document).ready(function(){
 		}
 	});
 	
+
 	
 });
 
@@ -195,6 +196,20 @@ function loginWithKakao(){
 	
 	
 }// end of function loginWithKakao()--
+
+function loginWithKakaoEnd(iskakao, message){
+	
+	// alert(iskakao);
+	// javascript:location.reload(true)
+	// 또는 회원가입 url
+	
+	if(iskakao != null){
+		const kakaoLogin = {"iskakao":iskakao, "message":message };
+		
+		window.parent.postMessage(kakaoLogin, "http://localhost:9099");
+	}
+	
+}
 
 
   

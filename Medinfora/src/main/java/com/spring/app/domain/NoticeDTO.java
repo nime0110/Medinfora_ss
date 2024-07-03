@@ -1,4 +1,4 @@
-package com.spring.app.main.domain;
+package com.spring.app.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -39,6 +39,14 @@ window.onload = () => {
     $('.dh-section-serachbar').on("focus",function(){
 
         $('.pop_search').removeClass("fadeout");
+        tgremoveclass();
+
+    });
+
+    $('.dh-section-serachbar').on("click",function(){
+
+        $('.pop_search').removeClass("fadeout");
+        tgremoveclass();
 
     });
 
@@ -69,32 +77,65 @@ window.onload = () => {
         location.href = `${ctxPath}/index.bibo`;
 
     });
+
+    const tg1m = $('.tg1m');
+    const tg1 = $('.tg1');
+
+    const tg2m = $('.tg2m');
+    const tg2 = $('.tg2');
+
+    tg1m.on("mouseenter",function(){
+
+        $('.pop_search').addClass("fadeout");
+        tg2.addClass("fadeout");
+        tg1.removeClass("fadeout");
+
+    });
+
+    tg2m.on("mouseenter",function(){
+
+        $('.pop_search').addClass("fadeout");
+        tg1.addClass("fadeout");
+        tg2.removeClass("fadeout");
+
+    });
+
+    const head_container = $(".mainheader");
+
+    head_container.on("mouseleave",function(){
+        tgremoveclass();
+    })
     
     // 동혁 END
 
     
 };
 
-/**
- * 반응형일때 네이게이션바 목록화 시켜주는 함수
- * @param {} 없음
- */
-function toggleMenu() {
+// 누르면 사이트 이동
+jQuery(function() {
+    $(".sh-card").on("click", function () {
+        var url = $(this).data("url");
+        window.location.href = url;
+    });
+})
 
-    var nav = document.getElementById('navbarNav');
-    
-    if (nav.classList.contains('show')) {
-        nav.classList.remove('show');
-    } else {
-        nav.classList.add('show');
-    }
+function tgremoveclass(){
+    $('.tg1').addClass("fadeout");
+    $('.tg2').addClass("fadeout");
 }
 
-// 누르면 사이트 이동
-$(document).ready(function () {
-    $(".sh-card").on("click", function () {
-      var url = $(this).data("url");
-      window.location.href = url;
-    });
-  });
-  
+function toggleMenu(){
+
+    const media_tog = $('.media_tog');
+	
+    if(media_tog.hasClass('fadeout')){
+        
+        media_tog.removeClass('fadeout');
+
+    }else{
+
+        media_tog.addClass('fadeout');
+
+    }
+
+}
