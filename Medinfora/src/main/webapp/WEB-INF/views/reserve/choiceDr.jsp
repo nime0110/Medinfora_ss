@@ -107,7 +107,6 @@ function Page(currentShowPageNo){
 			"currentShowPageNo":currentShowPageNo},
 		dataType:"json",
 		success:function(json){
-			console.log(json);
 			if(json.length > 0){
 				<%-- === 검색내용 === --%>
 				let v_html = ``;
