@@ -3,8 +3,11 @@ package com.spring.app.notice.model;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.spring.app.domain.NoticeDTO;
 
+@Mapper // dao_imple은 필요없음 
 public interface NoticeDAO {
 
     // 공지사항
