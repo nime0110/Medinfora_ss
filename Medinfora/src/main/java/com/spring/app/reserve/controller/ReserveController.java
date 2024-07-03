@@ -27,6 +27,7 @@ public class ReserveController {
 	
 	@GetMapping("/reserve/choiceDr.bibo")
 	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
 		List<HospitalDTO> mbHospitalList = null;
 		
 		String city = request.getParameter("city");
@@ -101,7 +102,7 @@ public class ReserveController {
 			hpname = hpname.trim();
 		}
 		
-		int sizePerPage = 9;	// 한 페이지당 보여줄 개수
+		int sizePerPage = 6;	// 한 페이지당 보여줄 개수
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";

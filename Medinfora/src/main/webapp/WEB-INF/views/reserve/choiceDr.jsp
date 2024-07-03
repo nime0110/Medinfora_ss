@@ -107,6 +107,7 @@ function Page(currentShowPageNo){
 			"currentShowPageNo":currentShowPageNo},
 		dataType:"json",
 		success:function(json){
+			console.log(json);
 			if(json.length > 0){
 				<%-- === 검색내용 === --%>
 				let v_html = ``;
@@ -135,7 +136,7 @@ function Page(currentShowPageNo){
 				
 				if(pageNo != 1) {
 					pageBar += "<li class='page-item'>" 
-							+ " 	<a class='page-link' href='javascript:goView("+(pageNo-1)+")>" 
+							+ " 	<a class='page-link' href='javascript:Page("+(pageNo-1)+")>" 
 							+ "	    	<span aria-hidden='true'>&laquo;</span>" 
 							+ "	    </a>" 
 							+ "</li>";
@@ -149,7 +150,7 @@ function Page(currentShowPageNo){
 					}
 					else{
 						pageBar += "<li class='page-item'>"
-								+ "		<a class='page-link' href='javascript:goView("+pageNo+")>" +pageNo+"</a>" 
+								+ "		<a class='page-link' href='javascript:Page("+pageNo+")'>" +pageNo+"</a>" 
 								+ "</li>";
 					}
 					loop++;
@@ -158,7 +159,7 @@ function Page(currentShowPageNo){
 				
 				if(pageNo <= totalPage) {
 					pageBar += "<li class='page-item'>"
-							+ "		<a class='page-link' href='javascript:goView("+pageNo+")>"
+							+ "		<a class='page-link' href='javascript:Page("+pageNo+")'>"
 							+ "	    	<span aria-hidden='true'>&raquo;</span>"
 							+ "	    </a>"
 							+ "</li>";
