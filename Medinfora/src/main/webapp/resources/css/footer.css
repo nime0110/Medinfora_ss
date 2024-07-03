@@ -1,6 +1,6 @@
 #indexfooter {
     width: 100%;
-	background-color: var(--object-skyblue-color) !important;
+	background-color: var(--navy300) !important;
 	margin :0;
 	display:flex;
 	justify-content:center;
@@ -22,11 +22,13 @@
 }
 
 .info-inner {
+	font-family : var(--font);
 	margin : 0;
 	padding-left: 100px;
 }
 
 .info-inner p{
+	font-family : var(--font);
 	margin : 0;
 }
 
@@ -38,9 +40,18 @@
 }
 
 .info-inner ul li{
+	font-family : var(--font);
 	margin : 0;
 	padding-left : 12px;
 	padding-right: 12px;
+}
+
+.info-inner ul li a{
+	transition : all 0.2s;
+}
+
+.info-inner ul li a:hover{
+	color : var(--grey50);
 }
 
 @media (max-width: 1024px) {
@@ -51,6 +62,10 @@
 	
 	.footerimgsrc {
 		display: none;
+	}
+
+	.info-inner{
+		padding-left: 0;
 	}
 	
 }
