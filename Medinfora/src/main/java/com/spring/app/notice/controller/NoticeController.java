@@ -86,7 +86,7 @@ public class NoticeController {
             n = service.noticeWrite(noticedto);
 
         } else {
-            n = service.add_noticeWrite(noticedto);
+            // n = service.add_noticeWrite(noticedto);
         }
 
         if (n == 1) {
@@ -175,13 +175,13 @@ public class NoticeController {
     @PostMapping("/editEnd.bibo")
     public ModelAndView editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request) {
 
-        int n = service.edit(noticedto);
-
-        if (n == 1) {
-            mav.addObject("message", "글 수정 성공!!");
-            mav.addObject("loc", request.getContextPath() + "/view.action?seq=" + noticedto.getSeq());
-            mav.setViewName("msg");
-        }
+//        int n = service.edit(noticedto);
+//
+//        if (n == 1) {
+//            mav.addObject("message", "글 수정 성공!!");
+//            mav.addObject("loc", request.getContextPath() + "/view.action?seq=" + noticedto.getSeq());
+//            mav.setViewName("msg");
+//        }
         return mav;
     }
 
@@ -192,43 +192,43 @@ public class NoticeController {
 
         String message = "";
 
-        try {
+//        try {
             Integer.parseInt(seq);
 
             // 글 삭제해야 할 글 1개 내용가져오기
             Map<String, String> paraMap = new HashMap<>();
             paraMap.put("seq", seq);
 
-            NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
+            // NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
             // 글 조회수 증가는 없고 단순히 글 1개만 조회를 해오는 것
 
-            if (noticedto == null) {
-                message = "글 삭제가 불가합니다.";
-            } else {
-                HttpSession session = request.getSession();
-                MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-
-                if (!loginuser.getUserid().equals(noticedto.getFk_userid())) {
-                    message = "다른 사용자의 글은 삭제가 불가합니다.";
-                } else {
-                    // 자신의 글을 삭제할 경우
-                    // 가져온 1개글을 글삭제할 폼이 있는 view 단으로 보내준다.
-                    mav.addObject("noticedto", noticedto);
-                    mav.setViewName("notice/del.tiles1");
-
-                    return mav;
-                }
-            }
-
-        } catch (NumberFormatException e) {
-            message = "글 삭제가 불가합니다.";
-        }
-
-        String loc = "javascript:history.back()";
-        mav.addObject("message", message);
-        mav.addObject("loc", loc);
-
-        mav.setViewName("msg");
+//            if (noticedto == null) {
+//                message = "글 삭제가 불가합니다.";
+//            } else {
+//                HttpSession session = request.getSession();
+//                MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+//
+//                if (!loginuser.getUserid().equals(noticedto.getFk_userid())) {
+//                    message = "다른 사용자의 글은 삭제가 불가합니다.";
+//                } else {
+//                    // 자신의 글을 삭제할 경우
+//                    // 가져온 1개글을 글삭제할 폼이 있는 view 단으로 보내준다.
+//                    mav.addObject("noticedto", noticedto);
+//                    mav.setViewName("notice/del.tiles1");
+//
+//                    return mav;
+//                }
+//            }
+//
+//        } catch (NumberFormatException e) {
+//            message = "글 삭제가 불가합니다.";
+//        }
+//
+//        String loc = "javascript:history.back()";
+//        mav.addObject("message", message);
+//        mav.addObject("loc", loc);
+//
+//        mav.setViewName("msg");
 
         return mav;
 
@@ -238,13 +238,13 @@ public class NoticeController {
     public ModelAndView delEnd(ModelAndView mav, HttpServletRequest request) {
         String seq = request.getParameter("seq");
 
-        int n = service.del(seq);
-
-        if (n == 1) {
-            mav.addObject("message", "글 삭제 성공!!");
-            mav.addObject("loc", request.getContextPath() + "/noticeList.bibo");
-            mav.setViewName("msg");
-        }
+//        int n = service.del(seq);
+//
+//        if (n == 1) {
+//            mav.addObject("message", "글 삭제 성공!!");
+//            mav.addObject("loc", request.getContextPath() + "/noticeList.bibo");
+//            mav.setViewName("msg");
+//        }
 
         return mav;
     }
