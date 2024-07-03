@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.app.common.Myutil;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.reserve.service.ReserveService;
 

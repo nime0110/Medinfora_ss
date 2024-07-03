@@ -1,4 +1,4 @@
-package com.spring.app.testcontroller;
+package com.spring.app.test.controller;
 
 import java.util.List;
 
@@ -45,11 +45,11 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		*/
+		
 		if(true) {
 			try {
 				
-				String localAddr = "C:\\NCS\\Medinfora\\Medinfora\\src\\main\\webapp\\resources\\json\\koreaarea.json";
+				String localAddr = "";
 				
 				List<KoreaAreaVO> areaList = Myutil.areaInputer(localAddr);
 				
@@ -70,6 +70,7 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
+		*/
 		
 		mav.setViewName("redirect:index.bibo");
 		

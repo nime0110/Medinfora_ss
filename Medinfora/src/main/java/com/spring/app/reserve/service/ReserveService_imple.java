@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.reserve.model.ReserveDAO;
-import com.spring.app.reserve.service.ReserveService;
 
 @Service
 public class ReserveService_imple implements ReserveService {
