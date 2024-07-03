@@ -16,45 +16,14 @@ $(document).ready(function(){
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getcityinfo.bibo",
-		async:true,
+		async:false,
 		dataType:"json",
 		success:function(json){
-			let v_html = `<option value="시/도 선택">시/도 선택</option>`;
+			let v_html = `<option>시/도 선택</option>`;
 			for(let i=0; i<json.length; i++){
 				v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
 			}	// end of for---------
 			$("select#city").html(v_html);
-			
-			if("${requestScope.paraMap.city}" != ""){
-				$("select[name='city']").val("${requestScope.paraMap.city}");
-				
-				const city_val = $("select#city").val();
-				const city ={"city":city_val};
-				
-				$.ajax({
-					url:"<%= ctxPath%>/getlocalinfo.bibo",
-					async:true,
-					data:city,
-					dataType:"json",
-					success:function(json){
-						let v_html = `<option value="시/군구 선택">시/군구 선택</option>`;
-						for(let i=0; i<json.length; i++){
-							if(json[i]!=null){	<%-- 세종과 다른 시도 구분 --%>
-								v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
-							}
-						}	// end of for---------
-						$("select#loc").html(v_html);
-						
-						$("select#loc").val("${requestScope.paraMap.local}");
-						
-					},
-					error:function(request){
-						alert("code : " + request.status);
-					}
-				});
-				
-			}
-			
 		},
 		error:function(request){
 			alert("code : " + request.status);
@@ -71,11 +40,11 @@ $(document).ready(function(){
 		
 		$.ajax({
 			url:"<%= ctxPath%>/getlocalinfo.bibo",
-			async:true,
+			async:false,
 			data:city,
 			dataType:"json",
 			success:function(json){
-				let v_html = `<option value="시/군구 선택">시/군구 선택</option>`;
+				let v_html = `<option>시/군구 선택</option>`;
 				for(let i=0; i<json.length; i++){
 					if(json[i]!=null){	<%-- 세종과 다른 시도 구분 --%>
 						v_html +=`<option value="\${json[i]}">\${json[i]}</option>`;
@@ -107,15 +76,31 @@ $(document).ready(function(){
 	})	// end of $.ajax({-------------
 	
 	<%-- 검색 시 데이터 유지 --%>
-	
-	
-	
-	
-	if("${requestScope.paraMap.classcode}" != ""){
-		$("select[name='dept']").val("진료과목 선택");
+	if("${requestScope.paraMap.city}" == ""){
+		$("select[name='city']").val("시/도 선택");
+	}
+	else{
+		$("select[name='city']").val("${requestScope.paraMap.city}");
 	}
 	
-	if("${requestScope.paraMap.hpname}" != ""){
+	if("${requestScope.paraMap.local}" == ""){
+		$("select[name='loc']").val("시/군구 선택");
+	}
+	else{
+		$("select[name='loc']").val("${requestScope.paraMap.local}");
+	}
+	
+	if("${requestScope.paraMap.classcode}" == ""){
+		$("select[name='dept']").val("진료과목 선택");
+	}
+	else{
+		$("select[name='dept']").val("${requestScope.paraMap.classcode}");
+	}
+	
+	if("${requestScope.paraMap.hpname}" == ""){
+		$("input[name='hpname']").val("");
+	}
+	else{
 		$("input[name='hpname']").val("${requestScope.paraMap.hpname}");
 	}
 
@@ -143,6 +128,8 @@ function Page(currentShowPageNo){
 			"currentShowPageNo":currentShowPageNo},
 		dataType:"json",
 		success:function(json){
+			console.log(json);
+			
 			if(json.length > 0){
 				
 				<%-- === 검색내용 === --%>
@@ -213,7 +200,6 @@ function Page(currentShowPageNo){
 		}
 	})	// end of $.ajax({-----
 }
-	
 </script>
 
 <div class="hj_container">
