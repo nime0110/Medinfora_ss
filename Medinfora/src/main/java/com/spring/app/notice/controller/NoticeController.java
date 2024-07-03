@@ -25,8 +25,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.spring.app.common.FileManager;
 
 import com.spring.app.common.Myutil;
-import com.spring.app.main.domain.MemberDTO;
-import com.spring.app.main.domain.NoticeDTO;
+import com.spring.app.main.MemberDTO;
+import com.spring.app.main.NoticeDTO;
 import com.spring.app.main.service.MainService;
 
 @Controller

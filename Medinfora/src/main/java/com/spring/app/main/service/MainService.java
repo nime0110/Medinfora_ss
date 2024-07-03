@@ -11,6 +11,7 @@ import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
 
@@ -62,5 +63,6 @@ public interface MainService {
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
 
 }
