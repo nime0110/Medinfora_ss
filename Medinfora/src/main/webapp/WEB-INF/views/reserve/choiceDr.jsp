@@ -11,7 +11,8 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDr.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
+
+jQuery(function() {
 	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
@@ -57,7 +58,8 @@ $(document).ready(function(){
 			}
 		})	// end of $.ajax({-------------
 	})	// end of $("select#city").on("change", function(e) {------------
-		
+	
+
 	<%-- 진료과목 데이터 가져오기  --%>
 	$.ajax({
 		url:"<%= ctxPath%>/getclasscode.bibo",
@@ -67,49 +69,26 @@ $(document).ready(function(){
 			let v_html = `<option>진료과목 선택</option>`;
 			for(let i=0; i<json.length; i++){
 				v_html +=`<option value="\${json[i].classcode}">\${json[i].classname}</option>`;
-			}	// end of for---------
+			}	// end of for--------------
 			$("select#dept").html(v_html);
 		},
 		error:function(request){
 			alert("code : " + request.status);
 		}
-	})	// end of $.ajax({-------------
-	
-	<%-- 검색 시 데이터 유지 --%>
-	if("${requestScope.paraMap.city}" == ""){
-		$("select[name='city']").val("시/도 선택");
-	}
-	else{
-		$("select[name='city']").val("${requestScope.paraMap.city}");
-	}
-	
-	if("${requestScope.paraMap.local}" == ""){
-		$("select[name='loc']").val("시/군구 선택");
-	}
-	else{
-		$("select[name='loc']").val("${requestScope.paraMap.local}");
-	}
-	
-	if("${requestScope.paraMap.classcode}" == ""){
-		$("select[name='dept']").val("진료과목 선택");
-	}
-	else{
-		$("select[name='dept']").val("${requestScope.paraMap.classcode}");
-	}
-	
-	if("${requestScope.paraMap.hpname}" == ""){
-		$("input[name='hpname']").val("");
-	}
-	else{
-		$("input[name='hpname']").val("${requestScope.paraMap.hpname}");
-	}
+	})	// end of $.ajax({--------------
 
 	Page(1);
 	
-})	// end of $(document).ready(function(){--------------
+})	// end of jQuery(function() {})--------------
+//////////////////////////////////////////////////////////////////////////////////
 function HPSearch(){
-	const frm = document.searchHospitalFrm;
-	frm.submit();
+	
+	const city = $("select[name='city']").val();
+	const local = $("select[name='loc']").val();
+	const classcode = $("select[name='dept']").val();
+	const hpname = $("input[name='hpname']").val();
+
+	Page(1);
 }
 
 function Page(currentShowPageNo){
@@ -128,14 +107,9 @@ function Page(currentShowPageNo){
 			"currentShowPageNo":currentShowPageNo},
 		dataType:"json",
 		success:function(json){
-			console.log(json);
-			
 			if(json.length > 0){
-				
 				<%-- === 검색내용 === --%>
 				let v_html = ``;
-				
-
 				$.each(json,function(index,item){
 					v_html += `<div class="btn_card">
 		            				<div class="card_top">
@@ -152,7 +126,7 @@ function Page(currentShowPageNo){
 				$("div.exam_choiceDr").html(v_html);
 					
 				<%-- === 페이지바 === --%>
-				const blockSize = 5;
+				const blockSize = 3;
 				let loop = 1;
 				let pageNo = Math.floor(((currentShowPageNo - 1)/blockSize)) * blockSize + 1;
 				let totalPage = json[0].totalPage;
@@ -161,7 +135,7 @@ function Page(currentShowPageNo){
 				
 				if(pageNo != 1) {
 					pageBar += "<li class='page-item'>" 
-							+ " 	<a class='page-link' href='javascript:goView("+(pageNo-1)+")>" 
+							+ " 	<a class='page-link' href='javascript:Page("+(pageNo-1)+")>" 
 							+ "	    	<span aria-hidden='true'>&laquo;</span>" 
 							+ "	    </a>" 
 							+ "</li>";
@@ -175,7 +149,7 @@ function Page(currentShowPageNo){
 					}
 					else{
 						pageBar += "<li class='page-item'>"
-								+ "		<a class='page-link' href='javascript:goView("+pageNo+")>" +pageNo+"</a>" 
+								+ "		<a class='page-link' href='javascript:Page("+pageNo+")'>" +pageNo+"</a>" 
 								+ "</li>";
 					}
 					loop++;
@@ -184,7 +158,7 @@ function Page(currentShowPageNo){
 				
 				if(pageNo <= totalPage) {
 					pageBar += "<li class='page-item'>"
-							+ "		<a class='page-link' href='javascript:goView("+pageNo+")>"
+							+ "		<a class='page-link' href='javascript:Page("+pageNo+")'>"
 							+ "	    	<span aria-hidden='true'>&raquo;</span>"
 							+ "	    </a>"
 							+ "</li>";
@@ -193,6 +167,13 @@ function Page(currentShowPageNo){
 				pageBar += "</ul>";
 				
 				$("div#ReserveHP_PageBar").html(pageBar);
+			}
+			else{
+				v_html = `검색결과에 맞는 결과가 없습니다.`;
+				$("div.exam_choiceDr").html(v_html);	
+			
+				let pageBar = ``;
+				$("div#ReserveHP_PageBar").html(pageBar);	
 			}
 		},
 		error:function(request,status,error){
@@ -258,7 +239,7 @@ function Page(currentShowPageNo){
 	    
 	    <div class="exam_choiceDr">
 	    	<c:if test="${empty requestScope.mbHospitalList}">
-	    		검색결과에 맞는 결과가 없습니다.
+	    		진료예약 가능한 병원이 없습니다.
 	    	</c:if>
 	    	<c:if test="${not empty requestScope.mbHospitalList}">
 	    		<c:forEach var="hospitalDTO" items="${requestScope.mbHospitalList}" varStatus="status">

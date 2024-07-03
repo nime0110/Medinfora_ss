@@ -1,11 +1,15 @@
 package com.spring.app.reserve.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,8 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.app.common.Myutil;
 import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.MemberDTO;
 import com.spring.app.reserve.service.ReserveService;
 
 @Controller
@@ -27,6 +31,26 @@ public class ReserveController {
 	
 	@GetMapping("/reserve/choiceDr.bibo")
 	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		if(loginuser != null && loginuser.getmIdx() == 2) {
+			String message = "(단체)병원 회원은 접근 불가능합니다.";
+	 		String loc = request.getContextPath()+"/index.bibo";
+	 		
+	 		request.setAttribute("message", message);
+	 		request.setAttribute("loc", loc);
+	 		
+	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+	 		
+	 		try {
+				dispatcher.forward(request, response);
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
+			}
+		}
 		List<HospitalDTO> mbHospitalList = null;
 		
 		String city = request.getParameter("city");
@@ -60,7 +84,7 @@ public class ReserveController {
 		mbHospitalList = service.mbHospitalList(paraMap);	// 회원가입된 병원 리스트 가져오기
 		
 		mav.addObject("mbHospitalList",mbHospitalList);
-
+		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
 		return mav;
@@ -101,7 +125,7 @@ public class ReserveController {
 			hpname = hpname.trim();
 		}
 		
-		int sizePerPage = 9;	// 한 페이지당 보여줄 개수
+		int sizePerPage = 6;	// 한 페이지당 보여줄 개수
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
@@ -118,7 +142,7 @@ public class ReserveController {
 		paraMap.put("local", local);
 		paraMap.put("classcode", classcode);
 		paraMap.put("hpname", hpname);
-		
+
         List<HospitalDTO> mbHospitalList = service.mbHospitalList(paraMap);
         
 		int totalCnt = service.getmbHospitalCnt(paraMap);	// 회원가입된 병원 개수
@@ -144,8 +168,9 @@ public class ReserveController {
 				jsonArr.put(jsonObj);
 			}	// end of for---------
 		}
-
+		
 		return jsonArr.toString();
+		
 	}
 	
 }
