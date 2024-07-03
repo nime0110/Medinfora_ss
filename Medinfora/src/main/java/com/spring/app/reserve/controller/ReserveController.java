@@ -101,7 +101,7 @@ public class ReserveController {
 			hpname = hpname.trim();
 		}
 		
-		int sizePerPage = 1;	// 한 페이지당 보여줄 개수
+		int sizePerPage = 9;	// 한 페이지당 보여줄 개수
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
