@@ -3,10 +3,10 @@ package com.spring.app.main.model;
 import java.util.List;
 import java.util.Map;
 
-import com.spring.app.main.domain.ClasscodeDTO;
-import com.spring.app.main.domain.HospitalDTO;
-import com.spring.app.main.domain.KoreaAreaVO;
-import com.spring.app.main.domain.MemberDTO;
+import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MemberDTO;
 
 public interface MainDAO {
 

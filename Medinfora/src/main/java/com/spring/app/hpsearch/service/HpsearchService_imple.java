@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.hpsearch.model.HpsearchDAO;
-import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.model.MainDAO;
 
 @Service

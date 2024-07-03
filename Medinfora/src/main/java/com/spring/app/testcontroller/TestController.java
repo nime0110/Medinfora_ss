@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.Myutil;
-import com.spring.app.main.domain.KoreaAreaVO;
+import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.main.service.MainService;
 
 @Controller

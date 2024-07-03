@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.spring.app.main.domain.ClasscodeDTO;
-import com.spring.app.main.domain.HospitalDTO;
-import com.spring.app.main.domain.KoreaAreaVO;
-import com.spring.app.main.domain.MemberDTO;
+import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MemberDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
