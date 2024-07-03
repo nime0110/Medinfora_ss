@@ -1,17 +1,21 @@
 package com.spring.app.main.service;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.ModelAndView;
 
+<<<<<<< HEAD
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
+=======
+import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.MemberDTO;
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 
 public interface MainService {
 
@@ -32,6 +36,7 @@ public interface MainService {
 
 	// 로그아웃 처리
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request, String url);
+<<<<<<< HEAD
 
 	// ================================= 공지사항 =====================================
 	public int noticeWrite(NoticeDTO noticedto);
@@ -41,6 +46,9 @@ public interface MainService {
 
 	// 글목록 가져오기(페이징 처리 했으며, 검색어가 있는 것 또는 검색어 없는것 모두 포함 한 것
 	public List<NoticeDTO> noticeListSearch_withPaging(Map<String, String> paraMap);
+=======
+	
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 
 	// 행정구역 리스트 추출
 	public List<String> getcityinfo();

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+<<<<<<< HEAD
     @media (max-width: 768px) {
 
         .board_wrap {
@@ -21,6 +22,44 @@
         .board_view .info dl {
         width: 40%;
         padding: 0;
+=======
+        @media (max-width: 768px) {
+            .board_wrap {
+                width: 90%;
+            }
+            .board_list th, .board_list td {
+                padding: 10px 5px;
+            }
+            .board_title p {
+                font-size: 1.0rem;
+            }
+            .bt_wrap a {
+                padding: 7px;
+                font-size: 1.0rem;
+            }
+            .board_list th, .board_list td {
+                font-size: 1.2rem;
+            }
+            .board_view .info dl {
+        width: 40%;
+        padding: 0;
+    }
+
+    .board_view .info dl:nth-child(-n+2) {
+        margin-bottom: 5px;
+    }
+
+    .board_view .info dl::before {
+        display: none;
+    }
+
+    .board_view .info dl dt,
+    .board_view .info dl dd {
+        font-size: 1.0rem;
+    }
+
+            
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
         }
 
         .board_view .info dl:nth-child(-n+2) {
@@ -93,6 +132,7 @@
         .df {
             display:none;
             }
+<<<<<<< HEAD
         .board-item-title {
             flex: 1;
             font-size: 1rem;
@@ -100,3 +140,21 @@
             text-overflow: ellipsis;
         }
     }
+=======
+            .bt_wrap {
+                margin-top: 10px;
+                font-size: 1.2rem;
+            }
+            .board_title p {
+                font-size: 0.8rem;
+            }
+            .bt_wrap a {
+                padding: 6px;
+                font-size: 1rem;
+            }
+            .board_list th, .board_list td {
+                font-size: 1rem;
+                padding: 8px 2px;
+            }
+        }
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)

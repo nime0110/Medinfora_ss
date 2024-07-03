@@ -1,7 +1,6 @@
 package com.spring.app.main.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+<<<<<<< HEAD
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+=======
+import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.MemberDTO;
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 
 @Repository
 public class MainDAO_imple implements MainDAO {
@@ -63,6 +67,7 @@ public class MainDAO_imple implements MainDAO {
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 		return sqlsession.insert("medinfora.hpApiInputer", hospitalDTO);
 	}
+<<<<<<< HEAD
 
 	// 대한민국 행정구역정보 입력용
 	@Override
@@ -117,5 +122,10 @@ public class MainDAO_imple implements MainDAO {
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("medinfora.getclasscode");
 	}
+=======
+	
+	
+	
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 
 }

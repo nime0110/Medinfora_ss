@@ -111,6 +111,7 @@ public class Myutil {
 		}
 
 		return hpdtoList;
+<<<<<<< HEAD
 
 	}// end of public static List<HospitalDTO> hpApiInputer(String localaddr)
 
@@ -207,4 +208,7 @@ public class Myutil {
 		return pageBar.toString();
 	}
 
+=======
+	}
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 }

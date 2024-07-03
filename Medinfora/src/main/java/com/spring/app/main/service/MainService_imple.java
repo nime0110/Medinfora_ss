@@ -1,6 +1,5 @@
 package com.spring.app.main.service;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+<<<<<<< HEAD
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+=======
+import com.spring.app.main.domain.HospitalDTO;
+import com.spring.app.main.domain.MemberDTO;
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 import com.spring.app.main.model.MainDAO;
 
 @Service
@@ -22,7 +26,11 @@ public class MainService_imple implements MainService {
 
 	@Autowired
 	private MainDAO dao;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 	@Autowired
 	private AES256 aES256;
 
@@ -115,6 +123,7 @@ public class MainService_imple implements MainService {
 
 		return mav;
 	}
+<<<<<<< HEAD
 
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
@@ -170,4 +179,7 @@ public class MainService_imple implements MainService {
 		return dao.getclasscode();
 	}
 
+=======
+	
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 }

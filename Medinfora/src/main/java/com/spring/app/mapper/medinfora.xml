@@ -72,6 +72,7 @@
 		#{endtime1}, #{endtime2}, #{endtime3}, #{endtime4}, #{endtime5}, #{endtime6}, #{endtime7}, #{endtime8})
 	</insert>
 	
+<<<<<<< HEAD
 <!-- 	
 	<select id="getTotalCount" parameterType="HashMap" resultType="int">
 	    select count(*)
@@ -321,4 +322,6 @@
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
 	</select>
 	
+=======
+>>>>>>> parent of 5e6244a ([feat.sh] notice update)
 </mapper>
