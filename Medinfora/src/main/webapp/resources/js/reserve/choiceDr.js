@@ -62,3 +62,7 @@ function checkOnlyOne(ckeckeditem,customitem) {
     customitem.prop("checked",true);
 
 }   // end of function checkOnlyOne(ckeckeditem,customitem) {----------------------
+
+function hpSelectNext(){
+	const checkCnt = $("input:checkbox[name='choicemenu']:checked").length;
+}	// end of function hpSelectNext(){----------------------
