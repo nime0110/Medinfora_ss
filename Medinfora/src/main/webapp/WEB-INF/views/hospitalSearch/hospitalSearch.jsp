@@ -3,7 +3,7 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css?after" />
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services"></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/hospitalSearch/hospitalSearch.js"></script>
@@ -14,16 +14,16 @@
     <h1 class="nanum-b size-b">우리동네 근처 병원 찾기</h1>
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
-		<select id="si-do">
+		<select id="city">
 		  <!-- 시/도 데이터 -->
 		</select>
 		
-		<select id="si-gun-gu">
+		<select id="local">
 		  <option value="">시/군/구 선택</option>
 		  <!-- 시/군/구 데이터 -->
 		</select>
 		
-		<select id="dong">
+		<select id="country">
 		  <option value="">읍/면/동 선택</option>
 		  <!-- 읍/면/동 데이터 -->
 		</select>
@@ -59,7 +59,7 @@
 		    </ul>
 		</div>
 	</div>
-    <div class="pagination">
+    <div class="pagination" id="rpageNumber">
         <span class="page-link">1</span>
         <span class="page-link">2</span>
         <span class="page-link">3</span>

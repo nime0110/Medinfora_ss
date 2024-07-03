@@ -36,12 +36,12 @@ public class HpsearchController {
 	public String hpsearchAdd(HttpServletRequest request) {
 		
 		String addr = request.getParameter("addr"); //경기도 광명시
+		String country = request.getParameter("country"); //동
 		String classcode = request.getParameter("classcode"); //D004
 		String agency = request.getParameter("agency"); //의원
 		String hpname = request.getParameter("hpname"); //병원이름
-		
-		
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
@@ -53,16 +53,13 @@ public class HpsearchController {
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("addr", addr);
+		paraMap.put("country", country);
 		paraMap.put("classcode", classcode);
 		paraMap.put("agency", agency);
 		paraMap.put("hpname", hpname);
         paraMap.put("startRno", String.valueOf(startRno));
         paraMap.put("endRno", String.valueOf(endRno));
 				 
-		System.out.println("~~~~~hpname:" + hpname);
-		System.out.println("~~~~~addr:" + addr);
-		System.out.println("~~classcode:" + classcode);
-		System.out.println("~~agency:" + agency);
 		
 		if(hpname == null) {
 			hpname = "";
@@ -74,6 +71,7 @@ public class HpsearchController {
 		List<HospitalDTO> hospitalList = service.getHospitalList(paraMap);
 		int totalCount = service.getHpListTotalCount(paraMap); //전체개수 
 		
+		System.out.println("~~~ totalCount:" +totalCount );
 
 		JSONArray jsonArr = new JSONArray(); //[]
 		
@@ -91,6 +89,7 @@ public class HpsearchController {
 				jsonObj.put("wgs84lat", hpdto.getWgs84lat());
 				jsonObj.put("totalCount", totalCount);
 				jsonObj.put("currentShowPageNo", currentShowPageNo);
+				jsonObj.put("sizePerPage", sizePerPage);
 				
 				jsonArr.put(jsonObj);
 			}//end of for---------------------------

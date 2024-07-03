@@ -108,6 +108,7 @@
 		     		row_number() over(order by HIDX desc) AS rno
 		    FROM hospital
 			where hpaddr like '%' || #{addr} || '%'
+			 AND hpaddr like '%' || #{country} || '%'
 			<choose>
 				<when test='classcode != "" '>
 				    and classcode = #{classcode}
@@ -165,10 +166,13 @@
 		) HC
 		ON M.hidx = HC.hidx
 	</select>
+	
+	<!-- 병원찾기 페이지네이션 관련 전체갯수 -->
 	<select id="getHpListTotalCount"  parameterType="HashMap" resultType="int">
 		SELECT COUNT(*)
 		FROM hospital
 		WHERE hpaddr LIKE '%' || #{addr} || '%'
+		AND hpaddr LIKE '%' || #{country} || '%'
 		<choose>
 		    <when test='classcode != "" '>
 		        AND classcode = #{classcode}

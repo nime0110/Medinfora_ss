@@ -388,8 +388,8 @@ public class MainController {
 	@RequestMapping(value="/getcountryinfo.bibo", produces = "text/plain;charset=UTF-8")
 	public String getcountryinfo(HttpServletRequest request) {
 		
-		String city = "서울특별시"; //request.getParameter("city");
-		String local = "마포구"; //request.getParameter("local");
+		String city = request.getParameter("city");
+		String local = request.getParameter("local");
 		
 		KoreaAreaVO inputareavo = new KoreaAreaVO(city, local);
 		
