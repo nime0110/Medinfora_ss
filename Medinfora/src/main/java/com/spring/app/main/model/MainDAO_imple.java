@@ -1,6 +1,7 @@
 package com.spring.app.main.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+
 import com.spring.app.main.domain.HospitalDTO;
 import com.spring.app.main.domain.MemberDTO;
+import com.spring.app.main.domain.NoticeDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -54,6 +57,29 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public int hpApiInputer(HospitalDTO hospitalDTO) {
 		return sqlsession.insert("hpApiInputer",hospitalDTO);
+	}
+
+
+	// 공지사항 
+	@Override
+	public int noticeWrite(NoticeDTO noticedto) {
+			int n = sqlsession.insert("mediinfora.noticeWrite", noticedto);
+		return n;
+	}
+
+
+	@Override
+	public int getTotalCount(Map<String, String> paraMap) {
+		int totalCount = sqlsession.selectOne("mediinfora.getTotalCount", paraMap);
+		return totalCount;
+	}
+
+
+	// 글목록 가져오기(페이징 처리 했으며, 검색어가 있는 것 또는 검색어 없는것 모두 포함 한 것 
+	@Override
+	public List<NoticeDTO> noticeListSearch_withPaging(Map<String, String> paraMap) {
+		List<NoticeDTO> noticeList = sqlsession.selectList("mediinfora.noticeListSearch_withPaging", paraMap);
+		return noticeList;
 	}
 	
 	

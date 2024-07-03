@@ -1,80 +1,91 @@
 package com.spring.app.main.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class NoticeDTO {
 
-	private int NIDX; //  글번호
-	private String USERID; // 아이디
-	private String TITLE; // 공지제목
-	private String CONTENT; //공지내용
-	private int VIEWCNT; // 조회수
-	private String WRITEDAY; // 작성일
-	private String FILENAME; // 첨부파일명
-	private String ORGNAME; // 원본 파일명
-	private String FILESIZE; // 파일크기
+
+	private int nidx; //  글번호
+	private String userid; // 아이디
+	private String title; // 공지제목
+	private String content; //공지내용
+	private int viewcnt; // 조회수
+	private String writeday; // 작성일
+	private String filename; // 첨부파일명
+	private String orgname; // 원본 파일명
+	private String filesize; // 파일크기
 	
 	
+	private MultipartFile attach;
+	
+	
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+	public int getNidx() {
+		return nidx;
+	}
+	public void setNidx(int nidx) {
+		this.nidx = nidx;
+	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public int getViewcnt() {
+		return viewcnt;
+	}
+	public void setViewcnt(int viewcnt) {
+		this.viewcnt = viewcnt;
+	}
+	public String getWriteday() {
+		return writeday;
+	}
+	public void setWriteday(String writeday) {
+		this.writeday = writeday;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public String getOrgname() {
+		return orgname;
+	}
+	public void setOrgname(String orgname) {
+		this.orgname = orgname;
+	}
+	public String getFilesize() {
+		return filesize;
+	}
+	public void setFilesize(String filesize) {
+		this.filesize = filesize;
+	}
+	public MultipartFile getAttach() {
+	
+		return attach;
+	}
+	
+	/////////////////////////////////
 	
 	
 	/////////////////////////////////////////
-	
-	public int getNIDX() {
-		return NIDX;
-	}
-	public void setNIDX(int nIDX) {
-		NIDX = nIDX;
-	}
-	public String getUSERID() {
-		return USERID;
-	}
-	public void setUSERID(String uSERID) {
-		USERID = uSERID;
-	}
-	public String getTITLE() {
-		return TITLE;
-	}
-	public void setTITLE(String tITLE) {
-		TITLE = tITLE;
-	}
-	public String getCONTENT() {
-		return CONTENT;
-	}
-	public void setCONTENT(String cONTENT) {
-		CONTENT = cONTENT;
-	}
-	public int getVIEWCNT() {
-		return VIEWCNT;
-	}
-	public void setVIEWCNT(int vIEWCNT) {
-		VIEWCNT = vIEWCNT;
-	}
-	public String getWRITEDAY() {
-		return WRITEDAY;
-	}
-	public void setWRITEDAY(String wRITEDAY) {
-		WRITEDAY = wRITEDAY;
-	}
-	public String getFILENAME() {
-		return FILENAME;
-	}
-	public void setFILENAME(String fILENAME) {
-		FILENAME = fILENAME;
-	}
-	public String getORGNAME() {
-		return ORGNAME;
-	}
-	public void setORGNAME(String oRGNAME) {
-		ORGNAME = oRGNAME;
-	}
-	public String getFILESIZE() {
-		return FILESIZE;
-	}
-	public void setFILESIZE(String fILESIZE) {
-		FILESIZE = fILESIZE;
-	}
-	
-	/////////////////////////////////////////
-	
-	
+
 	
 	
 } // end of public class NoticeDTO

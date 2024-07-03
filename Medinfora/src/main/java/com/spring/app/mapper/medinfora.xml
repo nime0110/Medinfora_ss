@@ -55,4 +55,91 @@
 		#{endtime1}, #{endtime2}, #{endtime3}, #{endtime4}, #{endtime5}, #{endtime6}, #{endtime7}, #{endtime8})
 	</insert>
 	
+<!-- 	
+	<select id="getTotalCount" parameterType="HashMap" resultType="int">
+	    select count(*)
+   		 from notice
+    
+	</select> -->
+	
+		
+	<insert id="noticeWrite" parameterType="NoticeDTO">
+		insert into notice (nidx, userid, title, content, viewcnt, writeday)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday})
+    </insert>
+    
+	 <select id="boardListNoSearch" resultType="NoticeDTO">
+		select nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
+		from notice
+		order by nidx desc;
+    </select>
+    
+   <!--  <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
+	 SELECT nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
+		FROM
+		(
+		 select row_number() over(order by nidx desc) AS rno 
+		      , nidx, userid, content, title
+		      , viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss')) AS writeday 
+		     ,filename, orgname, filesize
+		 from notice
+	) V
+	
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+     -->
+	  <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
+<!--     <select id="getTotalCount" parameterType="HashMap" resultType="int">
+        SELECT COUNT(*)
+        FROM notice
+        WHERE 1=1
+        <if test="searchType != null and searchType != ''">
+            AND ${searchType} LIKE '%' || #{searchWord} || '%'
+        </if>
+    </select>
+
+    글목록 가져오기(페이징 처리 했으며, 검색어가 있는 것 또는 검색어 없는 것 모두 포함한 것
+    <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
+        SELECT nidx, userid, title, content, viewcnt, 
+               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+               filename, orgname, filesize
+        FROM (
+            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+            FROM notice
+            WHERE 1=1
+            <if test="searchType != null and searchType != ''">
+                AND ${searchType} LIKE '%' || #{searchWord} || '%'
+            </if>
+            ORDER BY nidx DESC
+        )
+        WHERE rno BETWEEN #{startRno} AND #{endRno}
+    </select> -->
+    <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
+    <select id="getTotalCount" parameterType="HashMap" resultType="int">
+        SELECT COUNT(*)
+        FROM notice
+        WHERE 1=1
+        <if test="searchType != null and searchType != ''">
+            AND ${searchType} LIKE '%' || #{searchWord} || '%'
+        </if>
+    </select>
+
+    <!-- 글목록 가져오기(페이징 처리 했으며, 검색어가 있는 것 또는 검색어 없는 것 모두 포함한 것 -->
+    <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
+        SELECT nidx, userid, title, content, viewcnt, 
+               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+               filename, orgname, filesize
+        FROM (
+            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+            FROM notice
+            WHERE 1=1
+            <if test="searchType != null and searchType != ''">
+                AND ${searchType} LIKE '%' || #{searchWord} || '%'
+            </if>
+            ORDER BY nidx DESC
+        )
+        WHERE rno BETWEEN #{startRno} AND #{endRno}
+    </select>
+
+	
 </mapper>

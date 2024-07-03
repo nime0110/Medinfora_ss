@@ -108,4 +108,53 @@ public class Myutil {
 		
 		return hpdtoList;
 	}
+
+	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url,
+            String searchType, String searchWord) {
+StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
+
+int blockSize = 10;
+int loop = 1;
+int pageNo = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+
+// [맨처음][이전] 만들기
+if (pageNo != 1) {
+pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
+.append("?searchType=").append(searchType)
+.append("&searchWord=").append(searchWord)
+.append("&currentShowPageNo=1'>[맨처음]</a></li>");
+pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
+.append("?searchType=").append(searchType)
+.append("&searchWord=").append(searchWord)
+.append("&currentShowPageNo=").append(pageNo - 1).append("'>[이전]</a></li>");
+}
+
+while (!(loop > blockSize || pageNo > totalPage)) {
+if (pageNo == currentShowPageNo) {
+pageBar.append("<li class='page-item active'><span class='page-link'>").append(pageNo).append("</span></li>");
+} else {
+pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
+.append("?searchType=").append(searchType)
+.append("&searchWord=").append(searchWord)
+.append("&currentShowPageNo=").append(pageNo).append("'>").append(pageNo).append("</a></li>");
+}
+loop++;
+pageNo++;
+}
+
+// [다음][마지막] 만들기
+if (pageNo <= totalPage) {
+pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
+.append("?searchType=").append(searchType)
+.append("&searchWord=").append(searchWord)
+.append("&currentShowPageNo=").append(pageNo).append("'>[다음]</a></li>");
+pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
+.append("?searchType=").append(searchType)
+.append("&searchWord=").append(searchWord)
+.append("&currentShowPageNo=").append(totalPage).append("'>[마지막]</a></li>");
+}
+
+pageBar.append("</ul>");
+return pageBar.toString();
+}
 }

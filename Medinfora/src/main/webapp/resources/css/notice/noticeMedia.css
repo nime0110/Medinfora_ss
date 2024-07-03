@@ -7,9 +7,9 @@
             .board_list th, .board_list td {
                 padding: 10px 5px;
             }
-            .board_title p {
+         /*    .board_title p {
                 font-size: 1.0rem;
-            }
+            } */
             .bt_wrap a {
                 padding: 7px;
                 font-size: 1.0rem;
@@ -34,7 +34,15 @@
     .board_view .info dl dd {
         font-size: 1.0rem;
     }
-
+ .df {
+             display:none;
+             }
+             
+             .board-item-title {
+    flex: 1;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;}
             
         }
 
@@ -47,9 +55,9 @@
                 margin-top: 10px;
                 font-size: 1.2rem;
             }
-            .board_title p {
+            /* .board_title p {
                 font-size: 0.8rem;
-            }
+            } */
             .bt_wrap a {
                 padding: 6px;
                 font-size: 1rem;
@@ -58,4 +66,12 @@
                 font-size: 1rem;
                 padding: 8px 2px;
             }
+            .df {
+             display:none;
+             }
+              .board-item-title {
+    flex: 1;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;}
         }
