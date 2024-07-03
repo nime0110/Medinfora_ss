@@ -68,7 +68,7 @@ p {
 	border-bottom: 2px solid black;
 	width: 50%;
 	height:inherit;
-	//background-color: var(--grey300);
+	/*background-color: var(--grey300);*/
 	overflow: hidden scroll;
 }
 

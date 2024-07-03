@@ -8,16 +8,12 @@
 
 	<!-- domain(DTO) package -->
 	<typeAliases>
-<<<<<<< HEAD
 		<typeAlias type="com.spring.app.domain.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.spring.app.domain.HospitalDTO" alias="HospitalDTO"/>
 		<typeAlias type="com.spring.app.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
 		<typeAlias type="com.spring.app.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
-=======
-		<typeAlias type="com.spring.app.main.domain.MemberDTO" alias="MemberDTO"/>
-		<typeAlias type="com.spring.app.main.domain.HospitalDTO" alias="HospitalDTO"/>
+		<typeAlias type="com.spring.app.domain.NoticeDTO" alias="NoticeDTO"/>
 		
->>>>>>> parent of 5e6244a ([feat.sh] notice update)
 	</typeAliases>
 	
 	
