@@ -36,7 +36,7 @@ public class ReserveController {
 		
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 		
-		if(loginuser.getmIdx() == 2) {
+		if(loginuser != null && loginuser.getmIdx() == 2) {
 			String message = "(단체)병원 회원은 접근 불가능합니다.";
 	 		String loc = request.getContextPath()+"/index.bibo";
 	 		

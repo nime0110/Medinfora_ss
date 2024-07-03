@@ -126,7 +126,7 @@ function Page(currentShowPageNo){
 				$("div.exam_choiceDr").html(v_html);
 					
 				<%-- === 페이지바 === --%>
-				const blockSize = 5;
+				const blockSize = 3;
 				let loop = 1;
 				let pageNo = Math.floor(((currentShowPageNo - 1)/blockSize)) * blockSize + 1;
 				let totalPage = json[0].totalPage;
