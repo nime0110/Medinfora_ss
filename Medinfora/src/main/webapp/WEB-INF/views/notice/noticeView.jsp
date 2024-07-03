@@ -7,41 +7,23 @@
   
 <body>
 
-      <div class="board_wrap">
-        <div class="board_title">
-            <strong>공지사항</strong>
-        </div>
-        <div class="board_view_wrap">
-            <div class="board_view">
-                <div class="title">
-                    <h2>글 제목이 들어갑니다.</h2>
-                    <div class="info">
-                        <dl>
-                            <dt>작성일</dt>
-                            <dd>2021.1.16</dd>
-                        </dl>
-                        <dl>
-                            <dt>조회</dt>
-                            <dd>33</dd>
-                        </dl>
-                    </div>
-                </div>
-                <div class="cont">
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다<br>
-                    글 내용이 들어갑니다
-                </div>
-            </div>
-            <div class="bt_wrap_view">
-                <a href="javascript:history.back();" class="on">목록</a>
-                <a href="#">수정</a>
-                <a href="#">삭제</a>
-            </div>
-        </div>
-        </div>
+	 <div class="board_title">
+	      <span class="nanum-eb size-b">여기에 글이 들어올 예정입니다 </span>
+	  </div>
+	 <div class="board-item-datee">
+	 
+	    <span class="board-item-date">2024.04.30</span>
+	 </div> 
+	 
+	 <div class="content">
+            <p>#안녕하세요. 토스페이먼츠입니다.</p>
+            <p>‘24년 6월 3일부터 아래와 같이 개정된 개인정보 처리방침이 시행될 예정입니다.</p>
+      </div>
+      
+<button onclick="">목록으로 돌아가기</button>
+	 
+<button onclick="">글 수정하기</button>
+
+<button onclick="">글 삭제하기</button>
+     
 </body>

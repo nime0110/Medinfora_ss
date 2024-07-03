@@ -69,7 +69,6 @@
 	
 }
 
-
 .board-list {
   /*   list-style: none;
     display: flex;
@@ -99,14 +98,14 @@
 
 .board-item-title {
 	font-wight: bold;
-font-size: 20px;	
+font-size: 24px;	
 color: rgb(78, 89, 104);
 display: block;
 text-overflow:ellipsis;
 }
 
 
-.h1 {
+.p {
 	font-size : 44px;
 	
 }
@@ -120,8 +119,25 @@ body > div.homebar {
 
 .board-container {
     padding: 20px;
+    position: relative;
+   
 }
-
+.df {
+	position: absolute;
+	bottom: 13px;
+	right: 83px;
+	width: 90px;
+	height: 30px;
+	background-color: var(--sub-background-color);
+	 text-align: center;
+        line-height: 20px;
+        padding-top: 39px;
+        height: 96px;
+        border-radius: 80px;
+        box-shadow: 2px 3px 3px 0px;
+        display:block;
+	
+}
 .board-item-date{
 	
 	     display: inline-block;
@@ -154,6 +170,19 @@ body > div.homebar {
 
 .attachment-icon img {
     vertical-align: middle;
+   
+}
+
+.board-item-body {
+ 
+	  display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attach_sh {
+	
+	padding-right: 10px;
 }
 
 
@@ -164,4 +193,21 @@ body > div.homebar {
 
 .nowPage{
     font-weight: bold;
+}
+
+/* === noticeList.jsp css 끝 == */
+
+/* noticeView.jsp 시작 */
+.board-item-datee{
+ margin-left: 10%;
+ margin-top: 8px;
+     font-weight: 400;
+
+}
+/* noticeView.jsp 끝 */
+
+
+.writebtn{
+	
+	text-align: center;
 }
