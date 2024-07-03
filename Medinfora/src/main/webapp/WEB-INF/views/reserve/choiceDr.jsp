@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 
-jQuery(function() { 
+jQuery(function() {
 	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
@@ -69,17 +69,17 @@ jQuery(function() {
 			let v_html = `<option>진료과목 선택</option>`;
 			for(let i=0; i<json.length; i++){
 				v_html +=`<option value="\${json[i].classcode}">\${json[i].classname}</option>`;
-			}	// end of for---------
+			}	// end of for--------------
 			$("select#dept").html(v_html);
 		},
 		error:function(request){
 			alert("code : " + request.status);
 		}
-	})	// end of $.ajax({-------------s
+	})	// end of $.ajax({--------------
 
 	Page(1);
 	
-})	// end of $(document).ready(function(){--------------
+})	// end of jQuery(function() {})--------------
 //////////////////////////////////////////////////////////////////////////////////
 function HPSearch(){
 	

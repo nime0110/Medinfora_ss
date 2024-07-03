@@ -38,7 +38,6 @@ $(document).on("mouseover",$(".btn_card"),(e)=>{
     const title = closeset.find(".hospital_name");
 
     title.removeClass("hospital_name_hover");
-
 });
 
 /**
