@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 
-$(document).ready(function(){
+jQuery(function() { 
 	
 	<%-- 시/도 데이터 가져오기 --%>
 	$.ajax({
