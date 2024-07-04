@@ -193,10 +193,15 @@ div.loader {
 <script type="text/javascript">
 
 $(document).ready(function(){
-	
+
 	$(".msg_capslock").hide();
 	
 	$("div#loaderArr").hide();
+	
+	if("${requestScope.isFail}"=='y'){
+		$(".msg_capslock").text('없는 아이디이거나 비밀번호입니다.');
+		$(".msg_capslock").show();
+	}
 	
 	$("input:text[name='userid']").bind("keyup", function(e){
 		if(e.keyCode == 13){ // 엔터를 했을 경우
@@ -218,13 +223,15 @@ function goLogin(){
 	const pwd = $("input:password[name='pwd']").val().trim();
 	
 	if(userid == ""){
-		alert("아이디를 입력하세요.");
+		  $(".msg_capslock").text('아이디를 입력해주세요.');
+		  $(".msg_capslock").show();
 		$("input:text[name='userid']").focus();
 		return;
 	}
 	
 	if(pwd == ""){
-		alert("비밀번호를 입력하세요.");
+		  $(".msg_capslock").text('비밀번호를 입력해주세요.');
+		  $(".msg_capslock").show();
 		$("input:password[name='pwd']").focus();
 		return;
 	}
@@ -271,6 +278,7 @@ function nokakaoregister(){
 
 function checkCapsLock(event)  {
 	  if (event.getModifierState("CapsLock")) {
+		  $(".msg_capslock").text('Caps Lock이 활성화된 상태입니다.');
 		  $(".msg_capslock").show();
 	  } else {
 		  $(".msg_capslock").hide();

@@ -73,7 +73,6 @@
 								// 변경하는 페이지로 이동 만들어야 함
 							}
 							else{
-								alert(json.message);
 								location.href="javascript:location.reload(true)";
 							}
 							
@@ -86,11 +85,8 @@
 							alert(json.message);
 						}
 						else{ // 로그인 실패
-							alert(json.message);
 							$("div#loginModalArr").show();
-						 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login/login.bibo');
-							
-							
+						 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login/login.bibo?isfail=y');
 						}
 					},
 					error: function(request, status, error){

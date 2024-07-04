@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
-//import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +24,6 @@ import com.spring.app.common.KakaoApi;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
-//import com.spring.app.common.Myutil;
-//import com.spring.app.main.domain.HospitalDTO;
-//import com.spring.app.main.domain.KoreaAreaVO;
 import com.spring.app.main.service.MainService;
 
 @Controller
@@ -91,6 +87,7 @@ public class MainController {
 	
 	
 	// 아이디, 이메일  중복검사
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("/register/isexistcheckjson.bibo")
 	public String isExistCheckJSON(HttpServletRequest request) {
@@ -125,10 +122,19 @@ public class MainController {
 	
 	// 로그인 창 띄우기
 	@RequestMapping(value="/login/login.bibo")
-	public ModelAndView login(ModelAndView mav) {
+	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
+		
+		String isFail = request.getParameter("isfail");
+		
+		if(isFail == null) {
+			isFail = "n";
+		}
+		
+		System.out.println(isFail);
 		
 		mav.addObject("kakaoApiKey", KakaoApi.getKakaoApiKey());
 		mav.addObject("RedirectUri", KakaoApi.getRedirectUri());
+		mav.addObject("isFail",isFail);
 		
 		mav.setViewName("/login/login");
 		
@@ -138,6 +144,7 @@ public class MainController {
 	
 	
 	// 로그인
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("/login/loginEnd.bibo")
 	public String loginEnd(HttpServletRequest request) {
@@ -173,7 +180,6 @@ public class MainController {
 				else if(loginuser.getmIdx() == 8) {
 					message = "이용 정지된 회원입니다. \\n관리자에게 문의 바랍니다.";
 					isExistUser = "suspended";
-					
 				}
 				else {
 					message = "로그인 성공하였습니다.";
@@ -229,7 +235,7 @@ public class MainController {
 			
 			String name = (String)userInfo.get("name");
 			String email = (String)userInfo.get("email");
-			String is_email_verified = (String)userInfo.get("is_email_verified"); // 이메일 유효성
+			// String is_email_verified = (String)userInfo.get("is_email_verified"); // 이메일 유효성
 			String birth_year = (String)userInfo.get("birthyear");
 			String birth_day = (String)userInfo.get("birthday");
 			String phone_number = (String)userInfo.get("phone_number");
