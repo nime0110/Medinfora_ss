@@ -20,6 +20,30 @@
 		</choose>
 	</select>
 	
+	<!-- 회원가입(병원찾기 자동검색) -->
+	<select id="autoWord" parameterType="HashMap" resultType="String">
+		<choose>
+			<when test='searchType == "hpname"'>
+				select hpname
+			</when>
+			<when test='searchType == "hpaddr"'>
+				select hpaddr
+			</when>
+		</choose>
+		from hospital
+		where 1=1
+		<choose>
+	       	<when test='searchType == "hpname" and searchWord != ""'>
+	          	and lower(hpname) like '%'||lower(#{searchWord})||'%'  
+	       	</when>
+	       	<when test='searchType == "hpaddr" and searchWord != ""'>
+	          	and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+	       	</when>
+	    </choose>
+	
+	</select>
+	
+	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
 		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx

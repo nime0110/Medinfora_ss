@@ -237,7 +237,7 @@ function Page(currentShowPageNo){
 	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:hpSelectNext()">다음</button>
 	    </div>
 	    <form name="hpinfo">
-	    	<input type="text" name="hidx" value="" />
+	    	<input type="hidden" name="hidx" value="" />
 	    </form>
 	</div>
 </div>

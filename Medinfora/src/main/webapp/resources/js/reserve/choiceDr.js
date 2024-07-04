@@ -24,8 +24,6 @@ $(document).on('click','.resulthp',(e) => {
         closeset.find(".hospital_addr").removeClass("choicefontcolor");
     }
 
-    alert("체크");
-
     $("input[name='hidx']").val(closeset.find('.hidx').text());
 });
 
@@ -43,6 +41,10 @@ $(document).on("mouseover",$(".resulthp"),(e)=>{
 
     title.removeClass("hospital_name_hover");
 });
+
+$(document).on('click','.page-link',() => {
+    $("input[name='hidx']").val("");
+})
 
 /**
  * 체크박스 하나만 선택 가능하게 하는 함수
@@ -68,5 +70,16 @@ function checkOnlyOne(ckeckeditem,customitem) {
 }   // end of function checkOnlyOne(ckeckeditem,customitem) {----------------------
 
 function hpSelectNext(){
-	const checkCnt = $("input:checkbox[name='choicemenu']:checked").length;
+	if($("input[name='hidx']").val() == ""){
+        alert("선택된 병원이 존재하지 않습니다.");
+        return;
+    }
+
+    const hidx = $("input[name='hidx']").val();
+
+    const frm = document.hpinfo;
+    frm.action = "choiceDay.bibo";
+    frm.method = "post";
+    frm.submit();
+
 }	// end of function hpSelectNext(){----------------------

@@ -21,6 +21,9 @@ public interface MainDAO {
 
 	// 회원가입(중복체크)
 	public MemberDTO isExistCheck(Map<String, String> paraMap);
+	
+	// 회원가입(병원찾기 자동검색)
+	public List<String> autoWord(Map<String, String> paraMap);
 
 	// 로그인 유저 정보 가져오기
 	public MemberDTO getLoginuser(Map<String, String> paraMap);
@@ -42,6 +45,7 @@ public interface MainDAO {
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+	
 	
 
 

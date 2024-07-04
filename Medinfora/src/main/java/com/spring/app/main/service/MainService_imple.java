@@ -37,6 +37,13 @@ public class MainService_imple implements MainService {
 		MemberDTO isExist = dao.isExistCheck(paraMap);
 		return isExist;
 	}
+	
+	// 회원가입(병원찾기 자동검색)
+	@Override
+	public List<String> autoWord(Map<String, String> paraMap) {
+		List<String> autoWordList = dao.autoWord(paraMap);
+		return autoWordList;
+	}
 		
 	
 	// 로그인 처리
@@ -153,6 +160,8 @@ public class MainService_imple implements MainService {
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
 	}
+
+	
 
 	
 }
