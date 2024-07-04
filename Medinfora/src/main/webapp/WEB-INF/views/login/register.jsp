@@ -156,7 +156,12 @@ function goback(){
 			<label class="nanum-eb mb-1" for="addressSearch">주소</label><span class="nstar">&nbsp;&ast;</span>
 			<div class="addressArea mb-2">
 				<input class="form-control insert_w" type="text" name="address" id="address" placeholder="주소 입력" disabled/>
-				<button class="isExistCheck rounded-3" id="addressSearch" type="button" onclick="search()">주소검색</button>
+				<c:if test="${not empty requestScope.join and requestScope.join ne 2}">
+					<button class="isExistCheck rounded-3" id="addressSearch" type="button" onclick="search()">주소검색</button>
+				</c:if>
+				<c:if test="${not empty requestScope.join and requestScope.join eq 2}">
+					<button class="isExistCheck rounded-3" id="addressSearch" type="button" onclick="searchMedical()">병원검색</button>
+				</c:if>
 			</div>
 			<input class="form-control " type="text" name="detailAddress" id="detailAddress" placeholder="상세주소 입력"/>
 			<p class="nanum-n size-s mb-4" id="address_cmt"></p>
