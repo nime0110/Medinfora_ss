@@ -102,27 +102,34 @@
 	</select>
 		
 	<select id="getHospitalList" parameterType="HashMap" resultType="HospitalDTO">
-		SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, B.CLASSNAME, A.AGENCY
-		FROM (
-		    SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY,
-		     		row_number() over(order by HIDX desc) AS rno
-		    FROM hospital
-			where hpaddr like '%' || #{addr} || '%'
-			 AND hpaddr like '%' || #{country} || '%'
-			<choose>
-				<when test='classcode != "" '>
-				    and classcode = #{classcode}
-				</when>
-				<when test='agency != "" '>
-				    and agency = #{agency}
-				</when>
-				<when test='hpname != "" '>
-				    and hpname like '%' || #{hpname} || '%'
-				</when>
-			</choose>
-		) A
-		JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
-		WHERE rno Between #{startRno} and #{endRno}
+	    SELECT C.HIDX, C.HPNAME, C.HPADDR, C.HPTEL, C.CLASSCODE, C.AGENCY, C.WGS84LON, C.WGS84LAT, C.CLASSNAME
+ 		FROM (
+	        SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, A.CLASSCODE, A.AGENCY, A.WGS84LON, A.WGS84LAT, B.CLASSNAME,
+	               ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
+	        FROM (
+	            SELECT MIN(H.HIDX) AS HIDX, H.HPNAME, H.HPADDR, MAX(H.HPTEL) AS HPTEL,
+	                   MAX(H.CLASSCODE) AS CLASSCODE, MAX(H.AGENCY) AS AGENCY,
+	                   MAX(H.WGS84LON) AS WGS84LON, MAX(H.WGS84LAT) AS WGS84LAT
+	            FROM hospital H
+	        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
+	          	AND H.hpaddr LIKE '%' || #{country} || '%' 
+	        <choose>
+	            <when test='classcode != "" '>
+	                AND H.classcode = #{classcode}
+	            </when>
+	            <when test='agency != "" '>
+	                AND H.agency = #{agency}
+	            </when>
+	            <when test='hpname != "" '>
+	                AND H.hpname LIKE '%' || #{hpname} || '%'
+	            </when>
+	        </choose>
+	        GROUP BY H.HPNAME, H.HPADDR
+	        ) A
+	        JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
+	    ) C
+	    WHERE C.RNO BETWEEN #{startRno} AND #{endRno}
+
 	</select>
 	
 	<!-- (진료예약)회원가입된 병원 개수  -->
