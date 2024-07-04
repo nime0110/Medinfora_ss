@@ -87,6 +87,10 @@
 						}
 						else{ // 로그인 실패
 							alert(json.message);
+							$("div#loginModalArr").show();
+						 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login/login.bibo');
+							
+							
 						}
 					},
 					error: function(request, status, error){
@@ -108,7 +112,7 @@
 				 		break;
 				 		
 				 	case "suspended":
-				 		alert(message);
+				 		alert(message);	//정지회원
 					 	location.href="javascript:location.reload(true)";
 					 	break;
 					 	
@@ -127,8 +131,7 @@
 				 		
 				 	case "false":
 				 		// 회원가입 페이지로 이동
-				 		alert("회원가입 이동간다잉");
-					 	location.href="javascript:location.reload(true)";
+					 	location.href="<%=ctxPath%>/register/register.bibo?join=3";
 						break;
 				 	
 				 }// end of switch
@@ -143,6 +146,10 @@
 		})
 		
 	});
+	
+	function goregister(){
+		location.href="<%=ctxPath%>/register/registerchoice.bibo";
+	}
 	
 	
 
