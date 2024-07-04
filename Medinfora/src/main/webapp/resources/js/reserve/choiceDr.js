@@ -1,6 +1,6 @@
-$(document).on('click',$(".btn_card"),(e) => {
+$(document).on('click','.resulthp',(e) => {
 
-    const closeset = $(e.target).closest(".btn_card");
+    const closeset = $(e.target).closest(".resulthp");
     // 부모 엘리먼트 btn_card로 고정하기위해 작성
 
     // 각각의 체크박스와 커스텀 박스를 선언
@@ -23,17 +23,21 @@ $(document).on('click',$(".btn_card"),(e) => {
         closeset.find(".hospital_name").removeClass("choicefontcolor");
         closeset.find(".hospital_addr").removeClass("choicefontcolor");
     }
+
+    alert("체크");
+
+    $("input[name='hidx']").val(closeset.find('.hidx').text());
 });
 
-$(document).on("mouseover",$(".btn_card"),(e)=>{
-    const closeset = $(e.target).closest(".btn_card");
+$(document).on("mouseover",$(".resulthp"),(e)=>{
+    const closeset = $(e.target).closest(".resulthp");
 
     const title = closeset.find(".hospital_name");
 
     title.addClass("hospital_name_hover");
-}).on("mouseover",$(".btn_card"),(e)=>{
+}).on("mouseover",$(".resulthp"),(e)=>{
     
-    const closeset = $(e.target).closest(".btn_card");
+    const closeset = $(e.target).closest(".resulthp");
         
     const title = closeset.find(".hospital_name");
 
