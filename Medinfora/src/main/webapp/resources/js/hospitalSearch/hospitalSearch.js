@@ -1,5 +1,6 @@
 let map;
 let markers = [];
+let infowindows = [];
 var positionArr = []; //위치 마커를 표시할 위치와 내용을 갖고 있는 객체 배열 
 var markerImageArr = []; //위치 마커 이미지 배열
 
@@ -117,7 +118,7 @@ $(function() {
     // 검색부분 작성
     $('#searchHpName').on('keydown', function(e) {
         if (e.keyCode == 13) {
-           // searchHpName();
+            searchHospitals(1);
         }
     });
     
@@ -131,12 +132,6 @@ $(function() {
         updateDong();
     });
     
-    
-    // 페이지네이션
-    //loadHospitalPage(1); //1페이지로 로드
-    
-   
-   
 });
 
 // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수
@@ -164,7 +159,6 @@ function updateSigunGu() {
         data: city, // 데이터 객체 전달
         dataType: "json",
         success: function(json) {
-           // console.log(json);
             let v_html = `<option value="">시/군구 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
@@ -193,7 +187,6 @@ function updateDong() {
         data: cityLocal, // 데이터 객체 전달
         dataType: "json",
         success: function(json) {
-            //console.log(json);
             let v_html = `<option value="">읍/면/동 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
@@ -222,6 +215,7 @@ function searchHospitals(pageNo) {
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
+    /* -------- TEST -------
     console.log("city:", city);
     console.log("local:", local);
     console.log("country:", country);
@@ -229,7 +223,7 @@ function searchHospitals(pageNo) {
     console.log("agency:", agency);
     console.log("hpname:", hpname);
     console.log("addr:", addr);
-
+    */
 
 
     if (!city ) {
@@ -258,16 +252,14 @@ function searchHospitals(pageNo) {
         	   },
         dataType: "json",
         success: function(json) {
-        	//console.log("~~~~~~~~~~~~~~json.length:", json.length);
             removeMarkers();
+            removeInfowindows();
             positionArr = []; // 기존 위치 배열 초기화
             
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
 			let v_html = "";
 			if(json.length > 0) {
-			
 	           json.forEach((item, index) => { // 병원의 위도, 경도를 위치 객체로 변환
-	           
 	           		var position = {}; // 위도경도랑 content 담음 
 	           		
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon); // 위도, 경도
@@ -283,7 +275,6 @@ function searchHospitals(pageNo) {
 									    		<p class="add">								    		
 										    		${item.hpaddr} 
 									    		</p>
-									    		
 									    	</div>		    	 
                     				    </div>`;
                     
@@ -301,14 +292,13 @@ function searchHospitals(pageNo) {
 			                    <p class="hospital-type">${item.classname}</p>
 			                    <p class="hospital-contact">TEL: ${item.hptel} </p>
 			                    <p class="hospital-address">${item.hpaddr}</p>
-			                	<button class="details-button">상세</button>
+			                	<button class="details-button">상세보기</button>
 			               		</div>`;
 	            }); //end of forEach -----------------------------------
 
                     
                 let imageArr = []; // 이미지 경로를 저장하는 배열
-                let infowindowArr = new Array();
-                let markerImageArr = [];
+                markerImageArr = [];
 
                 for (let i = 0; i < positionArr.length; i++) {
                     let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
@@ -327,11 +317,23 @@ function searchHospitals(pageNo) {
                         image: markerImageArr[i]
                     });
 
+                    // 모든 인포윈도우가 안보이게 하기
+                    infowindows[i].close();
+
+
+
+
+                    daum.maps.event.addListener(marker, 'click', function() { 
+                        // 마커 위에 인포윈도우를 표시하기
+                        infowindows[i].open(map, marker);
+                    });
+
+
                     // 마커를 배열에 추가
                     markers.push(marker);
 
                     // 지도에 마커를 표시한다.
-                    marker.setMap(map);
+                    //marker.setMap(map);
 
                     // 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
@@ -339,10 +341,8 @@ function searchHospitals(pageNo) {
                         removable: true,
                         zIndex: i + 1
                     });
-
-                    console.log("infowindow",infowindow);
                     // 인포윈도우를 가지고 있는 객체배열에 넣기
-                    infowindowArr.push(infowindow);
+                    infowindows.push(infowindow);
 
                     // 마커 위에 인포윈도우를 표시하기
                     infowindow.open(map, marker);
@@ -400,37 +400,7 @@ function displayPagination(totalPage, currentPage) {
     });
 }
 
-////////////////////////// 마커함수 ///////////////////
-// 지도에 마커 추가하는 함수
-/*
-function addMarker(position, index, message) {
-
-	// 마커 이미지의 이미지 주소
-    let imageSrc = contextPath + '/img/marker/ico_marker' + index + '_on.png'; // 마커 이미지 경로 설정
-    //ico_marker1_on.png 이렇게 나와야함
-    //console.log("imageSrc: ", imageSrc); // /Medinfora/img/marker/ico_marker9_on.png
-    //console.log("index: ", index); //1~10 
-    
-    let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
-    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-    
-    
-    let marker = new kakao.maps.Marker({
-        map: map,
-        position: position,
-         image: markerImage // 마커 이미지 설정
-    });
-
-    let infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;">' + message + '</div>'
-    });
-    infowindow.open(map, marker);
-
-    // 마커 배열에 추가
-    markers.push(marker);
-}
-*/
-
+// ================ marker, infowindows start====================== 
 // 지도에서 모든 마커를 제거하는 함수
 function removeMarkers() {
     for (let i = 0; i < markers.length; i++) {
@@ -438,3 +408,13 @@ function removeMarkers() {
     }
     markers = [];
 }
+
+// 지도에서 모든 인포윈도우를 제거하는 함수
+function removeInfowindows() {
+    for (let i = 0; i < infowindows.length; i++) {
+        infowindows[i].close();
+    }
+    infowindows = [];
+}
+
+// ================ marker, infowindows end ====================== 
