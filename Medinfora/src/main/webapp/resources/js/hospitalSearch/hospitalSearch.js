@@ -222,6 +222,16 @@ function searchHospitals(pageNo) {
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
+    console.log("city:", city);
+    console.log("local:", local);
+    console.log("country:", country);
+    console.log("classcode:", classcode);
+    console.log("agency:", agency);
+    console.log("hpname:", hpname);
+    console.log("addr:", addr);
+
+
+
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -281,9 +291,7 @@ function searchHospitals(pageNo) {
                     
                     //console.log("positionArr:", positionArr);	    
                     //addMarker(position, `${index + 1}`, item.hpname); // 지도에 병원 위치 마커 추가
-					
 
-					
 	                // 병원 리스트로 출력
 	                v_html += `<div class="hospital-details">
 	                			<input type="hidden" name="${item.hidx}"></input>
