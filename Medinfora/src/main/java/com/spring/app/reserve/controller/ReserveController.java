@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,12 +26,13 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.reserve.service.ReserveService;
 
 @Controller
+@RequestMapping(value="/reserve/")
 public class ReserveController {
 
 	@Autowired
 	private ReserveService service;
 	
-	@GetMapping("/reserve/choiceDr.bibo")
+	@GetMapping("choiceDr.bibo")
 	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
@@ -51,55 +54,14 @@ public class ReserveController {
 				e.printStackTrace();
 			}
 		}
-		List<HospitalDTO> mbHospitalList = null;
-		
-		String city = request.getParameter("city");
-		String local = request.getParameter("loc");
-		String classcode = request.getParameter("dept");
-		String hpname = request.getParameter("hpname");
-		
-		if(city == null || "시/도 선택".equals(city)) {
-			city = "";
-		}
-		if(local == null || "시/군구 선택".equals(local)) {
-			local = "";
-		}
-		if(classcode == null || "진료과목 선택".equals(classcode)) {
-			classcode = "";
-		}
-		if(hpname == null) {
-			hpname = "";
-		}
-		if(hpname != null) {
-			hpname = hpname.trim();
-		}
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("city", city);
-		paraMap.put("local", local);
-		paraMap.put("classcode", classcode);
-		paraMap.put("hpname", hpname);
-		mav.addObject("paraMap",paraMap);
-		
-		mbHospitalList = service.mbHospitalList(paraMap);	// 회원가입된 병원 리스트 가져오기
-		
-		mav.addObject("mbHospitalList",mbHospitalList);
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
 		return mav;
 	}
 	
-	@GetMapping("/reserve/choiceDay.bibo")	// 나중에 POST 로 변경할 예정
-	public ModelAndView choiceDay(ModelAndView mav) {
-		
-		mav.setViewName("reserve/choiceDay.tiles");
-		
-		return mav;
-	}
-	
 	@ResponseBody
-	@GetMapping(value="/reserve/choiceDrList.bibo", produces="text/plain;charset=UTF-8")
+	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
 	public String choiceDrList(HttpServletRequest request) {
 		
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
@@ -168,9 +130,22 @@ public class ReserveController {
 				jsonArr.put(jsonObj);
 			}	// end of for---------
 		}
-		
 		return jsonArr.toString();
+	}
+	
+	@GetMapping("choiceDay.bibo")
+	public ModelAndView choiceDay(ModelAndView mav) {
+		mav.setViewName("redirect:/index.bibo");
+		return mav;
+	}
+	@PostMapping("choiceDay.bibo")
+	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
+		String hidx = request.getParameter("hidx");
+		
+		mav.setViewName("reserve/choiceDay.tiles");
+		
+		return mav;
 	}
 	
 }

@@ -275,5 +275,4 @@ function isExistCheck(value, type){
 
     });
 
-
 }// end of function isExistCheck(value, type)---

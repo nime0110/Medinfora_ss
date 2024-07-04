@@ -118,11 +118,13 @@
     border-top: solid 3px var(--grey300);
     padding-top: 48px;
     padding-bottom: 24px;
+    padding-left: auto;
 }
 
 .btn_card{
     background-color: var(--blue50);
-    width: 31.8%;
+    width: 32%;
+    min-height: 115.6px;
     display: flex;
     flex-wrap: wrap;
     transition: all 0.3s;
@@ -245,5 +247,9 @@
 , .btn_proc:hover{
     background-color: var(--navy900);
     color:var(--grey50);
+}
+
+.hidx{
+	display:none;
 }
 

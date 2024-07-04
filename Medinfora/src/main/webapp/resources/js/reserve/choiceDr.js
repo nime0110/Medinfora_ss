@@ -1,6 +1,6 @@
-$(document).on('click',$(".btn_card"),(e) => {
+$(document).on('click','.resulthp',(e) => {
 
-    const closeset = $(e.target).closest(".btn_card");
+    const closeset = $(e.target).closest(".resulthp");
     // 부모 엘리먼트 btn_card로 고정하기위해 작성
 
     // 각각의 체크박스와 커스텀 박스를 선언
@@ -23,22 +23,28 @@ $(document).on('click',$(".btn_card"),(e) => {
         closeset.find(".hospital_name").removeClass("choicefontcolor");
         closeset.find(".hospital_addr").removeClass("choicefontcolor");
     }
+
+    $("input[name='hidx']").val(closeset.find('.hidx').text());
 });
 
-$(document).on("mouseover",$(".btn_card"),(e)=>{
-    const closeset = $(e.target).closest(".btn_card");
+$(document).on("mouseover",$(".resulthp"),(e)=>{
+    const closeset = $(e.target).closest(".resulthp");
 
     const title = closeset.find(".hospital_name");
 
     title.addClass("hospital_name_hover");
-}).on("mouseover",$(".btn_card"),(e)=>{
+}).on("mouseover",$(".resulthp"),(e)=>{
     
-    const closeset = $(e.target).closest(".btn_card");
+    const closeset = $(e.target).closest(".resulthp");
         
     const title = closeset.find(".hospital_name");
 
     title.removeClass("hospital_name_hover");
 });
+
+$(document).on('click','.page-link',() => {
+    $("input[name='hidx']").val("");
+})
 
 /**
  * 체크박스 하나만 선택 가능하게 하는 함수
@@ -64,5 +70,16 @@ function checkOnlyOne(ckeckeditem,customitem) {
 }   // end of function checkOnlyOne(ckeckeditem,customitem) {----------------------
 
 function hpSelectNext(){
-	const checkCnt = $("input:checkbox[name='choicemenu']:checked").length;
+	if($("input[name='hidx']").val() == ""){
+        alert("선택된 병원이 존재하지 않습니다.");
+        return;
+    }
+
+    const hidx = $("input[name='hidx']").val();
+
+    const frm = document.hpinfo;
+    frm.action = "choiceDay.bibo";
+    frm.method = "post";
+    frm.submit();
+
 }	// end of function hpSelectNext(){----------------------

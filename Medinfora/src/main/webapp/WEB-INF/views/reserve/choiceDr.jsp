@@ -111,7 +111,8 @@ function Page(currentShowPageNo){
 				<%-- === 검색내용 === --%>
 				let v_html = ``;
 				$.each(json,function(index,item){
-					v_html += `<div class="btn_card">
+					v_html += `<div class="resulthp btn_card">
+									<h5 class="hidx">\${item.hidx}</h5>
 		            				<div class="card_top">
 		            					<h4 class="hospital_name">\${item.hpname}</h4>
 		                				<input type="checkbox" class="hj_custom-checkbox">
@@ -225,23 +226,6 @@ function Page(currentShowPageNo){
      	</form>
 	    
 	    <div class="exam_choiceDr">
-	    	<c:if test="${empty requestScope.mbHospitalList}">
-	    		진료예약 가능한 병원이 없습니다.
-	    	</c:if>
-	    	<c:if test="${not empty requestScope.mbHospitalList}">
-	    		<c:forEach var="hospitalDTO" items="${requestScope.mbHospitalList}" varStatus="status">
-	    			<div class="btn_card">
-		            	<div class="card_top">
-		            		<h4 class="hospital_name">${hospitalDTO.hpname}</h4>
-		                	<input type="checkbox" class="hj_custom-checkbox">
-		                	<label class="hj_custom-checkbox-label"></label>
-		            	</div>
-		                <p class="hospital_addr">
-		                	${hospitalDTO.hpaddr}
-		                </p>
-		            </div>
-	    		</c:forEach>
-	    	</c:if>          
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
@@ -253,7 +237,7 @@ function Page(currentShowPageNo){
 	        <button type="button" class="btn_proc btn btn-lg" onclick="javascript:hpSelectNext()">다음</button>
 	    </div>
 	    <form name="hpinfo">
-	    	<input type="text" name="hidx" value="" />
+	    	<input type="hidden" name="hidx" value="" />
 	    </form>
 	</div>
 </div>
