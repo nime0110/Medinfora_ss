@@ -1,9 +1,12 @@
 let map;
 let markers = [];
+var positionArr = []; //위치 마커를 표시할 위치와 내용을 갖고 있는 객체 배열 
+var markerImageArr = []; //위치 마커 이미지 배열
+
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
 $(function() {
-  
+        
     // 지도 컨테이너와 옵션 설정
     var mapContainer = document.getElementById('map'),
         mapOption = {
@@ -37,7 +40,7 @@ $(function() {
             map.setCenter(locPosition);
 
             // 현재 위치에 마커 추가
-            addMarker(locPosition, "현재 위치");
+            //addMarker(locPosition,1, "현재 위치");
             
             /*
             // Geocoder를 사용하여 주소 변환하는 코드 
@@ -149,36 +152,6 @@ window.zoomOut = function() {
 
 
 
-// 지도에 마커 추가하는 함수
-function addMarker(position, message,index) {
-    let imageSrc = contextPath + '/images/marker' + index + '.png'; // 마커 이미지 경로 설정
-    let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
-    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-    
-    
-    let marker = new kakao.maps.Marker({
-        map: map,
-        position: position,
-         image: markerImage // 마커 이미지 설정
-    });
-
-    let infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;">' + message + '</div>'
-    });
-    infowindow.open(map, marker);
-
-    // 마커 배열에 추가
-    markers.push(marker);
-}
-
-// 지도에서 모든 마커를 제거하는 함수
-function removeMarkers() {
-    for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-    markers = [];
-}
-
 // 시 도 선택시 업데이트 되는 함수   start
 function updateSigunGu() {
     let city_val = $('#city').val(); // 서울특별시, 경기도
@@ -197,6 +170,7 @@ function updateSigunGu() {
             let v_html = `<option value="">시/군구 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
+                	
                     v_html += `<option value="${json[i]}">${json[i]}</option>`;
                 }
             }	// end of for---------
@@ -223,7 +197,7 @@ function updateDong() {
         data: cityLocal, // 데이터 객체 전달
         dataType: "json",
         success: function(json) {
-            console.log(json);
+            //console.log(json);
             let v_html = `<option value="">읍/면/동 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
@@ -280,37 +254,113 @@ function searchHospitals(pageNo) {
         	   },
         dataType: "json",
         success: function(json) {
-        	console.log("json:", json);
+        	//console.log("~~~~~~~~~~~~~~json.length:", json.length);
             removeMarkers();
+            positionArr = []; // 기존 위치 배열 초기화
+            
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
 			let v_html = "";
 			if(json.length > 0) {
+			
 	           json.forEach((item, index) => { // 병원의 위도, 경도를 위치 객체로 변환
-	                let position = new kakao.maps.LatLng(item.wgs84Lat, item.wgs84Lon);
-	                //addMarker(position, `${index + 1}. ${item.hpname}`, item.hpname); // 지도에 병원 위치 마커 추가
+	           
+	           		var position = {}; // 위도경도랑 content 담음 
+	           		
+	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon); // 위도, 경도
+	                position.content = `<div class='mycontent'>
+									    	<div class="title"> ${item.hpname} </div>
+									    	<div class="content"> 
+									    		<div class="info">
+									    			<strong>${item.classname}</strong>
+									    		</div>
+									    		<p class="tel">
+									    			<span>${item.hptel}</span>
+									    		</p>
+									    		<p class="add">								    		
+										    		${item.hpaddr} 
+									    		</p>
+									    		
+									    	</div>		    	 
+                    				    </div>`;
+                    
+                    positionArr.push(position);	
+                    
+                    //console.log("positionArr:", positionArr);	    
+                    //addMarker(position, `${index + 1}`, item.hpname); // 지도에 병원 위치 마커 추가
 					
-	
+
 					
 	                // 병원 리스트로 출력
 	                v_html += `<div class="hospital-details">
 	                			<input type="hidden" name="${item.hidx}"></input>
 			                	<div class="hospital-label">${index + 1}</div>
+			                	<div class="hospital-label">${item.wgs84lat}, ${item.wgs84lon}</div>
 			                    <h2 class="hospital-name">${item.hpname}</h2>
 			                    <p class="hospital-type">${item.classname}</p>
 			                    <p class="hospital-contact">TEL: ${item.hptel} </p>
 			                    <p class="hospital-address">${item.hpaddr}</p>
 			                	<button class="details-button">상세</button>
 			               		</div>`;
-	            });
-             } else {
-             	v_html += `검색된 의료기관이 없습니다.`;
-             }
-             $('#hospitalList').append(v_html);
-             const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
-             console.log("토탈페이지", totalPage); //3 나옴
-          	 
-          	 displayPagination(totalPage, pageNo);
-        },
+	            }); //end of forEach -----------------------------------
+
+	            
+	            let imageArr = []; // 이미지 경로를 저장하는 배열
+	            let infowindowArr = new Array();
+				let markerImageArr = [];
+	
+	            for (let i = 0; i < positionArr.length; i++) {
+	                let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
+	                imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
+	
+					//console.log("imageArr:", imageArr[i]);
+					//console.log("positionArr:", positionArr);
+	                let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
+	                let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize);
+	                markerImageArr.push(markerImage); // 마커이미지 배열에 넣기
+	
+	                // 마커 생성하기
+	                var marker = new kakao.maps.Marker({
+	                    map: map,
+	                    position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
+	                    image: markerImageArr[i]
+	                });
+	
+			        // 마커를 배열에 추가
+		            markers.push(marker);
+	
+	                // 지도에 마커를 표시한다.
+	                marker.setMap(map);
+	
+	                // 인포윈도우를 생성하기
+	                var infowindow = new kakao.maps.InfoWindow({
+	                    content: positionArr[i].content,
+	                    removable: true,
+	                    zIndex: i + 1
+	                });
+	
+					console.log("infowindow",infowindow);
+	                // 인포윈도우를 가지고 있는 객체배열에 넣기
+	                infowindowArr.push(infowindow);
+	
+	                // 마커 위에 인포윈도우를 표시하기
+	                infowindow.open(map, marker);
+	
+	                // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+	                // 이벤트 리스너로는 클로저를 만들어 등록합니다
+	                    
+	                }
+		            
+		            
+	             } else {
+	             	v_html += `검색된 의료기관이 없습니다.`;
+	             } // end of if(json.length > 0) -------------------------------
+	             
+	             $('#hospitalList').append(v_html);
+	             const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
+	             //console.log("토탈페이지", totalPage); //3 나옴
+	          	 
+	          	 displayPagination(totalPage, pageNo);
+	        },
 		    error: function(request, status, error){
 		        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		    }
@@ -347,4 +397,43 @@ function displayPagination(totalPage, currentPage) {
         $('#rpageNumber .page-link').removeClass('active');
         $(this).addClass('active');
     });
+}
+
+////////////////////////// 마커함수 ///////////////////
+// 지도에 마커 추가하는 함수
+/*
+function addMarker(position, index, message) {
+
+	// 마커 이미지의 이미지 주소
+    let imageSrc = contextPath + '/img/marker/ico_marker' + index + '_on.png'; // 마커 이미지 경로 설정
+    //ico_marker1_on.png 이렇게 나와야함
+    //console.log("imageSrc: ", imageSrc); // /Medinfora/img/marker/ico_marker9_on.png
+    //console.log("index: ", index); //1~10 
+    
+    let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
+    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    
+    
+    let marker = new kakao.maps.Marker({
+        map: map,
+        position: position,
+         image: markerImage // 마커 이미지 설정
+    });
+
+    let infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:5px;">' + message + '</div>'
+    });
+    infowindow.open(map, marker);
+
+    // 마커 배열에 추가
+    markers.push(marker);
+}
+*/
+
+// 지도에서 모든 마커를 제거하는 함수
+function removeMarkers() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
 }

@@ -4,37 +4,6 @@ $(document).ready(function(){
 
     const ctxPath = $("input:hidden[name='ctxPath']").val();
 
-    // 오늘 날짜 구하기
-    const date = new Date();
-
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    const today = year+"-"+month+"-"+day;
-
-	// 달력 관련
-    $("input:text[name='birthday']").daterangepicker({
-        "singleDatePicker": true,
-        "showDropdowns": true,
-        "autoApply": true,  // 자동입력
-        "locale": {
-            "format": "YYYY-MM-DD",
-            "customRangeLabel": "Custom",
-            "weekLabel": "W",
-            "daysOfWeek": ["일","월","화","수","목","금","토"],
-            "monthNames": ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
-            "firstDay": 1
-        },
-        "startDate": today,
-        "endDate": today,
-        "opens": "center"
-
-      }, function(start, end, label) {
-          // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-      });
-    
-
     // 아이디 유효성 검사
     $("input:text[name='userid']").blur((e)=>{
 

@@ -42,11 +42,13 @@ public class HpsearchController {
 		String hpname = request.getParameter("hpname"); //병원이름
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
+		// System.out.println("addr" + addr);
+		// System.out.println("country" + country);
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
-		int sizePerPage = 15;//한 페이지당 15개의 병원  
+		int sizePerPage = 10;//한 페이지당 10개의 병원  
 		
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; // 시작 행번호 
         int endRno = startRno + sizePerPage - 1; // 끝 행번호
@@ -85,6 +87,11 @@ public class HpsearchController {
 				jsonObj.put("hpname", hpdto.getHpname()); 
 				jsonObj.put("hpaddr", hpdto.getHpaddr());
 				jsonObj.put("classname", hpdto.getClassname());
+				
+				//System.out.println("wgs84lon" + hpdto.getWgs84lon()); 37.64561795359584
+				//System.out.println("getWgs84lat" + hpdto.getWgs84lat()); 126.78614067864392
+				
+				
 				jsonObj.put("wgs84lon", hpdto.getWgs84lon());
 				jsonObj.put("wgs84lat", hpdto.getWgs84lat());
 				jsonObj.put("totalCount", totalCount);
