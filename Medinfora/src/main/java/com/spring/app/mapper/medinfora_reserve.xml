@@ -68,20 +68,18 @@
 		            select hidx, hpname, hpaddr, hptel, classcode
 		            from hospital
 		            where 1=1
-		            <choose>
-						<when test='city != "" '>
-					    	and hpaddr like '%' || #{city} || '%'
-					    </when>
-					    <when test='local != "" '>
-					    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
-					    </when>
-					    <when test='hpname != "" '>
-					    	and hpname like '%' || #{hpname} || '%'
-					    </when>
-					    <when test='classcode != "" '>
-					    	and classcode = #{classcode}
-					    </when>
-				    </choose>
+		           	<if test='city != "" '>
+				    	and hpaddr like '%' || #{city} || '%'
+				    </if>
+				    <if test='local != "" '>
+				    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+				    </if>
+				    <if test='hpname != "" '>
+				    	and hpname like '%' || #{hpname} || '%'
+				    </if>
+				    <if test='classcode != "" '>
+				    	and classcode = #{classcode}
+				    </if>
 		        ) H
 		        JOIN
 		        (
