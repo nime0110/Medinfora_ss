@@ -46,6 +46,7 @@ from user_sequences;
 from 
 
 insert into notice(NIDX, USERID, title, content, viewcnt, writeday) values(seq_notice.nextval, 'test001', '두번째입니다','두번째 글입니다',0,20240702  ); 
+commit;
 /*
 
     <insert id="" parameterType="NoticeDTO">

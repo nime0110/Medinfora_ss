@@ -35,5 +35,12 @@ public class NoticeService_imple implements NoticeService {
         return noticeList;
 
     }
+
+    // 파일 첨부가 있는 글쓰기
+	@Override
+	public int add_noticeWrite(NoticeDTO noticedto) {
+		int n = dao.add_noticeWrite(noticedto);
+		 return n;
+	}
 	
 }

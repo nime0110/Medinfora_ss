@@ -41,7 +41,7 @@ public class NoticeController {
     }
 
     @PostMapping("/noticeWriteEnd.bibo")
-    public ModelAndView noticeWriteEnd(Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
+    public ModelAndView isLogin_noticeWriteEnd(Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
             MultipartHttpServletRequest mrequest) {
 
         MultipartFile attach = noticedto.getAttach();
@@ -77,8 +77,7 @@ public class NoticeController {
             }
 
         }
-        // int n = service.noticeWrite(noticedto);
-
+     
         int n = 0;
 
         if (attach.isEmpty()) {
@@ -86,7 +85,7 @@ public class NoticeController {
             n = service.noticeWrite(noticedto);
 
         } else {
-            // n = service.add_noticeWrite(noticedto);
+            n = service.add_noticeWrite(noticedto);
         }
 
         if (n == 1) {
@@ -95,9 +94,7 @@ public class NoticeController {
             mav.setViewName("medinfora/views/notice/noticeWrite.tiles");
         }
 
-        paraMap.put("userid", noticedto.getUserid());
-        paraMap.put("point", "100");
-
+   
         return mav;
     }
 
@@ -153,9 +150,9 @@ public class NoticeController {
         List<NoticeDTO> noticeListdto = service.noticeListSearch_withPaging(paraMap);
 
         // 디버깅: noticeListdto의 크기와 내용을 로그로 출력
-        System.out.println("noticeListdto size: " + noticeListdto.size());
+        //System.out.println("noticeListdto size: " + noticeListdto.size());
         for (NoticeDTO notice : noticeListdto) {
-            System.out.println("Notice: " + notice.getTitle());
+         //   System.out.println("Notice: " + notice.getTitle());
         }
 
         mav.addObject("noticeListdto", noticeListdto);
@@ -248,4 +245,9 @@ public class NoticeController {
 
         return mav;
     }
+    
+    
+    
+    
+    
 }
