@@ -26,6 +26,7 @@ import com.spring.app.main.service.MainService;
 
 @Controller
 public class LoginController {
+	
 	@Autowired
 	private MainService service;
 	
