@@ -37,8 +37,12 @@
 	
 	<!-- 병원찾기 페이지네이션 관련 전체갯수 -->
 	<select id="getHpListTotalCount"  parameterType="HashMap" resultType="int">
-		SELECT COUNT(*)
-		FROM hospital
+        SELECT count(*)
+        FROM (
+        SELECT MIN(HIDX) AS HIDX, HPNAME, HPADDR, MAX(HPTEL) AS HPTEL,
+               MAX(CLASSCODE) AS CLASSCODE, MAX(AGENCY) AS AGENCY,
+               MAX(WGS84LON) AS WGS84LON, MAX(WGS84LAT) AS WGS84LAT
+        FROM hospital
 		WHERE hpaddr LIKE '%' || #{addr} || '%'
 		AND hpaddr LIKE '%' || #{country} || '%'
 		<choose>
@@ -52,5 +56,6 @@
 		        AND hpname LIKE '%' || #{hpname} || '%'
 		    </when>
 		</choose>
+		GROUP BY HPNAME, HPADDR)
 	</select>
 </mapper>
