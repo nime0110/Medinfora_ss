@@ -40,12 +40,6 @@ public class MainController {
 		return mav;
 	}
 	
-	@GetMapping("/notice.bibo")
-	public String notice() {
-		
-		return "notice";
-	}
-	
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value="/getcityinfo.bibo", produces="text/plain;charset=UTF-8")
