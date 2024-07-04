@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,7 +74,7 @@ public class HpsearchController {
 		List<HospitalDTO> hospitalList = service.getHospitalList(paraMap);
 		int totalCount = service.getHpListTotalCount(paraMap); //전체개수 
 		
-		System.out.println("~~~ totalCount:" +totalCount );
+		//System.out.println("~~~ totalCount:" +totalCount );
 
 		JSONArray jsonArr = new JSONArray(); //[]
 		

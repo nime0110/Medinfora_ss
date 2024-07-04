@@ -100,55 +100,5 @@
 	<select id="getclasscode" resultType="ClasscodeDTO">
 		select CLASSCODE,CLASSNAME from CLASSCODE
 	</select>
-		
-	<select id="getHospitalList" parameterType="HashMap" resultType="HospitalDTO">
-	    SELECT C.HIDX, C.HPNAME, C.HPADDR, C.HPTEL, C.CLASSCODE, C.AGENCY, C.WGS84LON, C.WGS84LAT, C.CLASSNAME
- 		FROM (
-	        SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, A.CLASSCODE, A.AGENCY, A.WGS84LON, A.WGS84LAT, B.CLASSNAME,
-	               ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
-	        FROM (
-	            SELECT MIN(H.HIDX) AS HIDX, H.HPNAME, H.HPADDR, MAX(H.HPTEL) AS HPTEL,
-	                   MAX(H.CLASSCODE) AS CLASSCODE, MAX(H.AGENCY) AS AGENCY,
-	                   MAX(H.WGS84LON) AS WGS84LON, MAX(H.WGS84LAT) AS WGS84LAT
-	            FROM hospital H
-	        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
-	          	AND H.hpaddr LIKE '%' || #{country} || '%' 
-	        <choose>
-	            <when test='classcode != "" '>
-	                AND H.classcode = #{classcode}
-	            </when>
-	            <when test='agency != "" '>
-	                AND H.agency = #{agency}
-	            </when>
-	            <when test='hpname != "" '>
-	                AND H.hpname LIKE '%' || #{hpname} || '%'
-	            </when>
-	        </choose>
-	        GROUP BY H.HPNAME, H.HPADDR
-	        ) A
-	        JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
-	    ) C
-	    WHERE C.RNO BETWEEN #{startRno} AND #{endRno}
 
-	</select>
-	
-	<!-- 병원찾기 페이지네이션 관련 전체갯수 -->
-	<select id="getHpListTotalCount"  parameterType="HashMap" resultType="int">
-		SELECT COUNT(*)
-		FROM hospital
-		WHERE hpaddr LIKE '%' || #{addr} || '%'
-		AND hpaddr LIKE '%' || #{country} || '%'
-		<choose>
-		    <when test='classcode != "" '>
-		        AND classcode = #{classcode}
-		    </when>
-		    <when test='agency != "" '>
-		        AND agency = #{agency}
-		    </when>
-		    <when test='hpname != "" '>
-		        AND hpname LIKE '%' || #{hpname} || '%'
-		    </when>
-		</choose>
-	</select>
-	
 </mapper>

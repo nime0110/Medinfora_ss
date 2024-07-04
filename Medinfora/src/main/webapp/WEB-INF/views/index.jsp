@@ -3,6 +3,27 @@
 
 <%String ctxPath = request.getContextPath();%>
 
+<style>
+
+	.choveritem:hover{
+		cursor: pointer;
+	}
+	
+	.icconfig{
+		background-color: black !important;
+    	transition: all 0.3s;
+	}
+	
+	#carouselExampleIndicators{
+		margin-bottom: 100px;
+	}
+	
+	.sh_section{
+		margin-bottom: 100px;
+	}
+
+</style>
+
 	<%-- stylesheet --%>
 	<link rel="stylesheet" href="<%= ctxPath%>/resources/css/index.css"> <%-- 기본 --%>
 	<link rel="stylesheet" href="<%= ctxPath%>/resources/css/indexMedia.css"> <%-- 반응형 --%>
@@ -50,7 +71,7 @@
     <h1 class="sh_title nanum-b size-b">Infora</h1>
 
     <div class="sh_card-inner card-inner first">
-      <a href="#" class="sh-card">
+      <a href="<%=ctxPath %>/hpsearch/hospitalSearch.bibo" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
          <h4 class="nanum-n sh_font" style="font-weight: bold;">병원찾기</h4>
@@ -65,7 +86,7 @@
           </div>
         </div>
       </a>
-      <a href="#" class="sh-card">
+      <a href="" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
          <h4 class="nanum-n sh_font" style="font-weight: bold;">약국 찾기</h4>
@@ -169,63 +190,54 @@
       </a>
     </div>  
     </div>
+    
     <div id="carouselExampleIndicators" class="sh_car carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7" aria-label="Slide 8"></button>
-      </div>
       <div class="carousel-inner">
-          <div class="plz carousel-item active">
-              <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto" alt="...">
-             
+          <div class="plz carousel-item active gohpsearch">
+              <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
           </div>
           <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+              <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
               
             </div>
           <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+              <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
           
             </div>
           <div class="carousel-item">
-            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
          
           </div>
         <div class="carousel-item">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
      
         </div>
       <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+        <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
        
       </div>
       <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+        <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
      
       </div>
     <div class="carousel-item">
-      <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto" alt="...">
+      <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
      
   </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon icconfig" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
       </button>
       <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="carousel-control-next-icon icconfig" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
       </button>
   </div>
 
     </div>
 </div>
+
 <!--  승혜 작업 영역 끝 --> 
 <!-- 동혁 작업 영역 시작 -->
 <div id="FAQ" class="mb-5 sizearr">
