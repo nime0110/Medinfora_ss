@@ -43,8 +43,10 @@ public class HpsearchController {
 		String hpname = request.getParameter("hpname"); //병원이름
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
-		// System.out.println("addr" + addr);
-		// System.out.println("country" + country);
+		 System.out.println("addr" + addr);
+		 System.out.println("country" + country);
+		 System.out.println("classcode" + classcode);
+		 System.out.println("hpname" + hpname);
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
