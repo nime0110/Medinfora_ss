@@ -96,5 +96,7 @@ public class NoticeDTO {
 
         return attach;
     }
+
+	
 	
 } // end of public class NoticeDTO
