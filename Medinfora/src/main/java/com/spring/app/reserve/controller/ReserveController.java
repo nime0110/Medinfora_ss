@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,14 +54,6 @@ public class ReserveController {
 		}
 		
 		mav.setViewName("reserve/choiceDr.tiles");
-		
-		return mav;
-	}
-	
-	@GetMapping("/reserve/choiceDay.bibo")	// 나중에 POST 로 변경할 예정
-	public ModelAndView choiceDay(ModelAndView mav) {
-		
-		mav.setViewName("reserve/choiceDay.tiles");
 		
 		return mav;
 	}
@@ -135,9 +128,22 @@ public class ReserveController {
 				jsonArr.put(jsonObj);
 			}	// end of for---------
 		}
-		
 		return jsonArr.toString();
+	}
+	
+	@GetMapping("/reserve/choiceDay.bibo")
+	public ModelAndView choiceDay(ModelAndView mav) {
+		mav.setViewName("redirect:/index.bibo");
+		return mav;
+	}
+	@PostMapping("/reserve/choiceDay.bibo")
+	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
+		String hidx = request.getParameter("hidx");
+		
+		mav.setViewName("reserve/choiceDay.tiles");
+		
+		return mav;
 	}
 	
 }
