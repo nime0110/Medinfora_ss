@@ -91,6 +91,21 @@ function goback(){
 	location.href="<%=ctxPath%>/index.bibo";
 }
 
+
+function searchMedical(){
+	
+    const url = "<%=ctxPath%>/register/searchmedical.bibo"
+	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=500";
+    
+    window.open(url, 'searchMedical', setting);
+    
+}
+
+
+
+
+
+
 </script>
 
 

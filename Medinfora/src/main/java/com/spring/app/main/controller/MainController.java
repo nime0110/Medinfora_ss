@@ -122,6 +122,15 @@ public class MainController {
 		return jsonObj.toString();
 	}
 	
+	// 병원 찾기
+	@RequestMapping(value="/register/searchmedical.bibo")
+	public ModelAndView searchmedical(ModelAndView mav) {
+		
+		mav.setViewName("/login/searchmedical");
+		return mav;
+	}
+	
+	
 	
 	// 로그인 창 띄우기
 	@RequestMapping(value="/login/login.bibo")
@@ -285,10 +294,7 @@ public class MainController {
 			
 			// 유저가 가입되어 잇는지 있는지 확인한다.
 			MemberDTO loginuser = service.loginEnd(paraMap, request);
-			
-			
-			
-					
+				
 			if(loginuser != null) {
 				// 가입된 적이 있는 경우
 				// 로그인 정보는 sevice 에서 session 에 정보를 저장하였다.
@@ -327,11 +333,8 @@ public class MainController {
 				// sb_script.append("alert("+message+");");
 				sb_script.append("window.opener.loginWithKakaoEnd(iskakao, message);");
 				sb_script.append("window.close();</script>");
-				
-				
+
 				String script = sb_script.toString();
-				
-				
 				out.println(script);
 				
 			}
@@ -356,8 +359,6 @@ public class MainController {
 
 				out.println("<script type='text/javascript'>const iskakao = '"+isExistUser+"'; const message ='nouser'; if(confirm('"+message+"')){window.opener.loginWithKakaoEnd(iskakao, message);}else{window.opener.nokakaoregister();}; window.close();</script>");
 			}
-		
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
@@ -367,11 +368,7 @@ public class MainController {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
-			
 		}
-		
-		
 		// 이제 넘겨주기만 하면 됨
 		return;
 	}// end of public void kakaoLogin(HttpServletRequest request)
