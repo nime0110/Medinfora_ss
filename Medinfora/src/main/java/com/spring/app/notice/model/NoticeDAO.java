@@ -21,5 +21,11 @@ public interface NoticeDAO {
 
     // 첨부파일이 있는 글쓰기
 	public int add_noticeWrite(NoticeDTO noticedto);
+
+	// 글 1개 조회하기 
+	 NoticeDTO getView(Map<String, String> paraMap);
+
+	 // 글 조회수 1 증가하기 
+	 int increase_readCount(int nidx);
 	
 }

@@ -42,5 +42,29 @@ public class NoticeService_imple implements NoticeService {
 		int n = dao.add_noticeWrite(noticedto);
 		 return n;
 	}
+
+	@Override
+	public NoticeDTO getView(Map<String, String> paraMap) {
+		NoticeDTO noticedto = dao.getView(paraMap);
+		String login_userid = paraMap.get("login_userid");
+		
+		if(login_userid != null &&
+				noticedto != null &&
+				!login_userid.equals(noticedto.getUserid())) {
+			
+			int n = dao.increase_readCount(noticedto.getNidx());
+			if(n==1) {
+				noticedto.setViewcnt(noticedto.getViewcnt()+1);
+			}
+		}
+		return noticedto;
+	}
+
+	@Override
+	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
+		NoticeDTO noticedto = dao.getView(paraMap);
+		return noticedto;
+	}
+
 	
 }
