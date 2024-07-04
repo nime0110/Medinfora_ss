@@ -163,6 +163,12 @@ div.loader {
 
 }
 
+.msg_capslock{
+	padding-bottom: 12px;
+	color : #DC3545;
+	font-weight: bold;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
 	0% { -webkit-transform: rotate(0deg); }
@@ -188,6 +194,8 @@ div.loader {
 
 $(document).ready(function(){
 	
+	$(".msg_capslock").hide();
+	
 	$("div#loaderArr").hide();
 	
 	$("input:text[name='userid']").bind("keyup", function(e){
@@ -203,8 +211,6 @@ $(document).ready(function(){
 	});
 	
 });
-
-
 
 function goLogin(){
 	
@@ -263,6 +269,14 @@ function nokakaoregister(){
 	$("div#loaderArr").hide();
 }
 
+function checkCapsLock(event)  {
+	  if (event.getModifierState("CapsLock")) {
+		  $(".msg_capslock").show();
+	  } else {
+		  $(".msg_capslock").hide();
+	  }
+}
+
   
 </script>
 
@@ -277,8 +291,9 @@ function nokakaoregister(){
      		<input class="form-control nanum-b size-s rounded-pill login_insert" type="text" name="userid" placeholder="ID를 입력해주세요."  maxlength="20"/>
 	    </div>
 	    <div class="magin_info">
-      		<input class="form-control nanum-b size-s rounded-pill login_insert" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." maxlength="18"/>
+      		<input class="form-control nanum-b size-s rounded-pill login_insert" onkeyup="checkCapsLock(event)" name="pwd" type="password" placeholder="비밀번호를 입력해주세요." maxlength="18"/>
 	    </div>
+	    <div class="msg_capslock">Caps Lock이 활성화된 상태입니다.</div>
 	    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
 	    <div class="login_idpw_register mb-4">
       		<button class="nanum-n" type="button" onclick="javascript:window.parent.goregister();">회원가입</button><span class="lineG">
