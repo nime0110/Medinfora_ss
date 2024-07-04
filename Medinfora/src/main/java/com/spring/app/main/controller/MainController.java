@@ -122,12 +122,45 @@ public class MainController {
 		return jsonObj.toString();
 	}
 	
-	// 병원 찾기
+	// 병원 찾기 창띄우기
 	@RequestMapping(value="/register/searchmedical.bibo")
 	public ModelAndView searchmedical(ModelAndView mav) {
 		
 		mav.setViewName("/login/searchmedical");
 		return mav;
+	}
+	
+	
+	// 병원찾기(검색 자동완성 json)
+	@ResponseBody
+	@GetMapping(value="/register/autoWord.bibo", produces="text/plain;charset=UTF-8")
+	public String autoWord(HttpServletRequest request) {
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		JSONArray jsonArr = new JSONArray();
+		try {
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		List<String> autoWordList = service.autoWord(paraMap);
+		
+		if(autoWordList != null) {
+			for(String autoWord : autoWordList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("autoWord", autoWord);
+				
+				
+			}// end of for-----------------
+		}
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return jsonArr.toString();
 	}
 	
 	

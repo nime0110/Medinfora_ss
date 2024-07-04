@@ -22,9 +22,25 @@
 <%-- stylesheet --%>
 <style type="text/css">
 
+.searchFrm{
+	height: 3rem;
+	
+}
+
 .searchType{
 	width: 100px;
+	border-radius: 1rem 0 0 1rem;
+}
 
+.searchWord {
+	border: none;
+	border-top: solid 1px gray;
+	border-bottom: solid 1px gray;
+	border-radius: 0;
+}
+
+button#searchbtn{
+	border-radius: 0 1rem 1rem 0;
 }
 
 </style>
@@ -40,28 +56,72 @@
 <script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("div$displayList").hide();
+
+	$("input:text[name='searchWord']").keyup((e)=>{
+		const w_length = $(e.target).val().trim().length;
+
+		if(w_length == 0){
+			$("div$displayList").hide();
+		}
+		else{
+			if( $("select.searchType").val() == "hpname" || $("select.searchType").val() == "hpaddr"){
+				$.ajax({
+					url:"<%=ctxPath%>/register/autoWord.bibo",
+					data:{"searchType":$("select[name='searchType']").val()
+						 ,"searchWord":$("input[name='searchWord']").val()},
+					dataType:"json",
+					success:fucntion(json){
+						if(json.length > 0){
+							
+
+						}
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					}
+				});
+
+			}
+		}
+
+	});
+
+	
+
+
+
+
+});
+
+
+</script>
+
 </head>
 <body>
-<div class="container" style="border: solid 1px red;">
-
-<form class="mt-3 d-flex" name="searchFrm" style="border: solid 1px blue;">
+<div class="m-5" style="border: solid 1px red;">
+<p class="nanum-eb size-n">병원 찾기</p>
+<form class="mt-3 d-flex searchFrm" name="searchFrm">
 	<select class="searchType" name="searchType">
-		<option value="subject">글제목</option>
-		<option value="content">글내용</option>
-		<option value="subject_content">글제목+글내용</option>
-		<option value="name">글쓴이</option>
+		<option value="hpname">병원명</option>
+		<option value="hpaddr">주소</option>
 	</select>
-	<input class="form-control" type="text" name="searchWord" size="70" autocomplete="off" /> 
+	<input class="form-control searchWord" type="text" name="searchWord" size="70" autocomplete="off" /> 
 	<input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. --%> 
-	<button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button> 
+	<button id="searchbtn" type="button" class="btn btn-primary" onclick="goSearch()"><span><i class="fa-solid fa-magnifying-glass"></i></span></button> 
 </form>
-<div class="info_body" style="border: solid 1px black;">
-	<p class="py-3 px-2"><span class="nanum-eb size-n">tip</span><br><span class="px-2 py-3">병원이름 검색 시 주소가 맞는지 확인하시어 선택바랍니다.</span></p>
+<%-- === 검색어 입력시 자동글 완성하기  === --%>
+<div id="displayList" style="border:solid 1px gray; height:200px; overflow:auto;"></div>
+<div class="info_body">
+	<p class="p-3"><span class="nanum-eb h4">tip</span>&nbsp;&nbsp;<span class="nanum-n">병원이름 검색 시 주소가 맞는지 확인하시어 선택바랍니다.</span></p>
 </div>
 	
-<%-- === #114. 검색어 입력시 자동글 완성하기 1 === 
-<div id="displayList" style="border:solid 1px gray; border-top:0px; height:100px; margin-left:13.2%; margin-top:-1px; margin-bottom:30px; overflow:auto;"></div>
---%>
+
+
+
 </div>
 
 

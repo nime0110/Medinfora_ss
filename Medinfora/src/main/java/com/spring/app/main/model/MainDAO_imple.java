@@ -33,6 +33,13 @@ public class MainDAO_imple implements MainDAO{
 		return isExist;
 	}
 	
+	// 회원가입(병원찾기 자동검색)
+	@Override
+	public List<String> autoWord(Map<String, String> paraMap) {
+		List<String> autoWordList = sqlsession.selectList("medinfora.autoWord", paraMap);
+		return autoWordList;
+	}
+	
 	
 	// 로그인 유저 정보
 	@Override
@@ -99,5 +106,7 @@ public class MainDAO_imple implements MainDAO{
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("medinfora.getclasscode");
 	}
+
+	
 	
 }
