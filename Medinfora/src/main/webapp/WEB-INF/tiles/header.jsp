@@ -141,8 +141,14 @@
 			 
 		});
 		
+		// 이동하기 링크
+		
 		$('.href_reserve').on("click",function(){
 			location.href = "<%=ctxPath%>/reserve/choiceDr.bibo";
+		})
+		
+		$('.gohpsearch').on("click",function(){
+			location.href = "<%=ctxPath%>/hpsearch/hospitalSearch.bibo";
 		})
 		
 	});
@@ -202,7 +208,7 @@
   <div class="tog_nav tg1 fadeout">
   	<div class="tog_title">의료 기관</div>
   	<ul class="tog_ul">
-  		<li class="tog_li">병원 찾기</li>
+  		<li class="tog_li gohpsearch">병원 찾기</li>
   		<li class="tog_li">약국 찾기</li>
   		<li class="tog_li">응급실 찾기</li>
   	</ul>
@@ -233,7 +239,7 @@
 	
   	<div class="media_tog_sub">의료 기관</div>
   	<ul class="media_tog_ul">
-		<li class="media_tog_li">병원 찾기</li>
+		<li class="media_tog_li gohpsearch">병원 찾기</li>
 		<li class="media_tog_li">약국 찾기</li>
 		<li class="media_tog_li">응급실 찾기</li>
 	</ul>
