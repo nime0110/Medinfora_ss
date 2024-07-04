@@ -51,39 +51,6 @@ public class ReserveController {
 				e.printStackTrace();
 			}
 		}
-		List<HospitalDTO> mbHospitalList = null;
-		
-		String city = request.getParameter("city");
-		String local = request.getParameter("loc");
-		String classcode = request.getParameter("dept");
-		String hpname = request.getParameter("hpname");
-		
-		if(city == null || "시/도 선택".equals(city)) {
-			city = "";
-		}
-		if(local == null || "시/군구 선택".equals(local)) {
-			local = "";
-		}
-		if(classcode == null || "진료과목 선택".equals(classcode)) {
-			classcode = "";
-		}
-		if(hpname == null) {
-			hpname = "";
-		}
-		if(hpname != null) {
-			hpname = hpname.trim();
-		}
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("city", city);
-		paraMap.put("local", local);
-		paraMap.put("classcode", classcode);
-		paraMap.put("hpname", hpname);
-		mav.addObject("paraMap",paraMap);
-		
-		mbHospitalList = service.mbHospitalList(paraMap);	// 회원가입된 병원 리스트 가져오기
-		
-		mav.addObject("mbHospitalList",mbHospitalList);
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
