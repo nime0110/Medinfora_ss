@@ -150,8 +150,6 @@ window.zoomOut = function() {
 }
 
 
-
-
 // 시 도 선택시 업데이트 되는 함수   start
 function updateSigunGu() {
     let city_val = $('#city').val(); // 서울특별시, 경기도
@@ -170,10 +168,9 @@ function updateSigunGu() {
             let v_html = `<option value="">시/군구 선택</option>`;
             for (let i = 0; i < json.length; i++) {
                 if (json[i] != null) {	
-                	
                     v_html += `<option value="${json[i]}">${json[i]}</option>`;
                 }
-            }	// end of for---------
+            }	
             $("select#local").html(v_html);
         },
         error: function(request) {
@@ -187,7 +184,6 @@ function updateSigunGu() {
 function updateDong() {
     let city_val = $('#city').val();
     let local_val = $('#local').val(); 
-
     const cityLocal = { "city": city_val, "local": local_val };
 
     
@@ -221,13 +217,11 @@ function searchHospitals(pageNo) {
     let city = $('#city').val();
     let local = $('#local').val();
     let country = $('#country').val();
-    
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
-	
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -303,67 +297,66 @@ function searchHospitals(pageNo) {
 			               		</div>`;
 	            }); //end of forEach -----------------------------------
 
-	            
-	            let imageArr = []; // 이미지 경로를 저장하는 배열
-	            let infowindowArr = new Array();
-				let markerImageArr = [];
-	
-	            for (let i = 0; i < positionArr.length; i++) {
-	                let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
-	                imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
-	
-					//console.log("imageArr:", imageArr[i]);
-					//console.log("positionArr:", positionArr);
-	                let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
-	                let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize);
-	                markerImageArr.push(markerImage); // 마커이미지 배열에 넣기
-	
-	                // 마커 생성하기
-	                var marker = new kakao.maps.Marker({
-	                    map: map,
-	                    position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
-	                    image: markerImageArr[i]
-	                });
-	
-			        // 마커를 배열에 추가
-		            markers.push(marker);
-	
-	                // 지도에 마커를 표시한다.
-	                marker.setMap(map);
-	
-	                // 인포윈도우를 생성하기
-	                var infowindow = new kakao.maps.InfoWindow({
-	                    content: positionArr[i].content,
-	                    removable: true,
-	                    zIndex: i + 1
-	                });
-	
-					console.log("infowindow",infowindow);
-	                // 인포윈도우를 가지고 있는 객체배열에 넣기
-	                infowindowArr.push(infowindow);
-	
-	                // 마커 위에 인포윈도우를 표시하기
-	                infowindow.open(map, marker);
-	
-	                // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-	                // 이벤트 리스너로는 클로저를 만들어 등록합니다
-	                    
-	                }
-		            
-		            
-	             } else {
-	             	v_html += `검색된 의료기관이 없습니다.`;
-	             } // end of if(json.length > 0) -------------------------------
-	             
-	             $('#hospitalList').append(v_html);
-	             const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
-	             //console.log("토탈페이지", totalPage); //3 나옴
-	          	 
-	          	 displayPagination(totalPage, pageNo);
-	        },
-		    error: function(request, status, error){
-		        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }
+                    
+                let imageArr = []; // 이미지 경로를 저장하는 배열
+                let infowindowArr = new Array();
+                let markerImageArr = [];
+
+                for (let i = 0; i < positionArr.length; i++) {
+                    let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
+                    imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
+
+                    //console.log("imageArr:", imageArr[i]);
+                    //console.log("positionArr:", positionArr);
+                    let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
+                    let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize);
+                    markerImageArr.push(markerImage); // 마커이미지 배열에 넣기
+
+                    // 마커 생성하기
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
+                        image: markerImageArr[i]
+                    });
+
+                    // 마커를 배열에 추가
+                    markers.push(marker);
+
+                    // 지도에 마커를 표시한다.
+                    marker.setMap(map);
+
+                    // 인포윈도우를 생성하기
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: positionArr[i].content,
+                        removable: true,
+                        zIndex: i + 1
+                    });
+
+                    console.log("infowindow",infowindow);
+                    // 인포윈도우를 가지고 있는 객체배열에 넣기
+                    infowindowArr.push(infowindow);
+
+                    // 마커 위에 인포윈도우를 표시하기
+                    infowindow.open(map, marker);
+
+                    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+                    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+                        
+                } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
+                        
+            } else {
+                v_html += `검색된 의료기관이 없습니다.`;
+            } // end of if(json.length > 0) -------------------------------
+            
+            $('#hospitalList').append(v_html);
+            const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
+            //console.log("토탈페이지", totalPage); //3 나옴
+            
+            displayPagination(totalPage, pageNo);
+        }, //end of  success: function(json)  ------------------
+        error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
     });   
 }
 
