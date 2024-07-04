@@ -60,9 +60,6 @@
 		</div>
 	</div>
     <div class="pagination" id="rpageNumber">
-        <span class="page-link">1</span>
-        <span class="page-link">2</span>
-        <span class="page-link">3</span>
     </div>
 </div>    
     
