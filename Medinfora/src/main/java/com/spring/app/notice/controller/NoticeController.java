@@ -30,6 +30,12 @@ public class NoticeController {
 
     @Autowired
     private FileManager fileManager;
+	
+	@GetMapping("/notice.bibo")
+	public String notice() {
+		
+		return "notice";
+	}
 
     // 공지사항 글 쓰기 폼 페이지 요청
     @GetMapping("/notice/noticeWrite.bibo")

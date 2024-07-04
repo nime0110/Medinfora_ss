@@ -33,10 +33,6 @@
 <script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-
-
-
-
 <style type="text/css">
 .loginContainer{
   width: 100%;
@@ -243,7 +239,7 @@ function goLogin(){
 		
 		window.parent.postMessage(loginData, "http://localhost:9099");
 	}
-}// end of function goLogin()--
+}// end of function goLogin()
 
 function loginWithKakao(){
 	$("div#loaderArr").show();
@@ -254,7 +250,7 @@ function loginWithKakao(){
 	window.open(url, 'url', setting);
 	
 	
-}// end of function loginWithKakao()--
+}// end of function loginWithKakao()
 
 function loginWithKakaoEnd(iskakao, message){
 	
