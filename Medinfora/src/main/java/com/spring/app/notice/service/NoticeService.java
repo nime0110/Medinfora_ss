@@ -3,6 +3,8 @@ package com.spring.app.notice.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.spring.app.domain.NoticeDTO;
 
 public interface NoticeService {
@@ -20,10 +22,7 @@ public interface NoticeService {
 	 int add_noticeWrite(NoticeDTO noticedto);
 
 	 // 글 조회수 증가와 함께 글 1개를 조회해 오는 것 
-	NoticeDTO getView(Map<String, String> paraMap);
-
-	// 글 조회수 증가는 없고 단순히 글 1개만 조회를 해오는 것
-	NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap);
+	NoticeDTO getView(Map<String, String> paraMap, HttpSession session);
 
 
 
