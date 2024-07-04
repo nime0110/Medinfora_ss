@@ -74,7 +74,7 @@ public class HpsearchController {
 		List<HospitalDTO> hospitalList = service.getHospitalList(paraMap);
 		int totalCount = service.getHpListTotalCount(paraMap); //전체개수 
 		
-		System.out.println("~~~ totalCount:" +totalCount );
+		//System.out.println("~~~ totalCount:" +totalCount );
 
 		JSONArray jsonArr = new JSONArray(); //[]
 		
