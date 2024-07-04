@@ -133,6 +133,49 @@
   line-height: 22px;
 }
 
+div#loaderArr{
+  	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+/* -- CSS 로딩화면 구현 시작(bootstrap 에서 가져옴) 시작 -- */    
+div.loader {
+	border: 12px solid #f3f3f3;
+   	border-radius: 50%;
+
+    border-top: 12px solid blue;
+    
+    border-bottom: 12px solid blue;
+
+   	width: 100px;
+   	height: 100px;
+   	-webkit-animation: spin 2s linear infinite; /* Safari */
+   	animation: spin 2s linear infinite;
+
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+  
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+/* -- CSS 로딩화면 구현 끝(bootstrap 에서 가져옴) 끝 -- */
+
+
 </style>
 
 
@@ -145,6 +188,8 @@
 
 $(document).ready(function(){
 	
+	$("div#loaderArr").hide();
+	
 	$("input:text[name='userid']").bind("keyup", function(e){
 		if(e.keyCode == 13){ // 엔터를 했을 경우
 			goLogin();
@@ -156,8 +201,6 @@ $(document).ready(function(){
 			goLogin();
 		}
 	});
-	
-
 	
 });
 
@@ -181,6 +224,8 @@ function goLogin(){
 	}
 	
 	if(userid != "" && pwd != ""){
+		$("div#loaderArr").show();
+		
 		const loginData = {"userid":userid, "pwd":pwd};
 		
 		window.parent.postMessage(loginData, "http://localhost:9099");
@@ -188,6 +233,7 @@ function goLogin(){
 }// end of function goLogin()--
 
 function loginWithKakao(){
+	$("div#loaderArr").show();
 	
 	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}";
 	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=400";
@@ -203,6 +249,8 @@ function loginWithKakaoEnd(iskakao, message){
 	// javascript:location.reload(true)
 	// 또는 회원가입 url
 	
+	$("div#loaderArr").hide();
+	
 	if(iskakao != null){
 		const kakaoLogin = {"iskakao":iskakao, "message":message };
 		
@@ -211,6 +259,9 @@ function loginWithKakaoEnd(iskakao, message){
 	
 }
 
+function nokakaoregister(){
+	$("div#loaderArr").hide();
+}
 
   
 </script>
@@ -230,7 +281,7 @@ function loginWithKakaoEnd(iskakao, message){
 	    </div>
 	    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
 	    <div class="login_idpw_register mb-4">
-      		<button class="nanum-n" type="button">회원가입</button><span class="lineG">
+      		<button class="nanum-n" type="button" onclick="javascript:window.parent.goregister();">회원가입</button><span class="lineG">
 	      	</span><button class="nanum-n" type="button">아이디 찾기</button><span class="lineG">
 	      	</span><button class="nanum-n" type="button">비밀번호 찾기</button>
 	    </div>
@@ -245,17 +296,10 @@ function loginWithKakaoEnd(iskakao, message){
   	</button>
   	
   	
-  	<%-- 
-  	<div>
-  		<a type="button" id="kakao_login_btn" href="https://kauth.kakao.com/oauth/authorize">
-	        <svg fill="none" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg">
-		        <title>kakao 로고</title>
-		        <path clip-rule="evenodd" d="M15 7C10.029 7 6 10.129 6 13.989C6 16.389 7.559 18.505 9.932 19.764L8.933 23.431C8.845 23.754 9.213 24.013 9.497 23.826L13.874 20.921C14.243 20.958 14.618 20.978 15 20.978C19.971 20.978 24 17.849 24 13.989C24 10.129 19.971 7 15 7Z" fill="black" fill-rule="evenodd"></path>
-		    </svg>
-		    <span class="size nanum-b">카카오 간편 로그인</span>
-    	</a>
-  	</div>
-	 --%>
+  	<%-- 로더  --%>
+  	<div id="loaderArr">
+		<div class="loader"></div>
+	</div>
 
 </div>
 

@@ -87,6 +87,10 @@
 						}
 						else{ // 로그인 실패
 							alert(json.message);
+							$("div#loginModalArr").show();
+						 	$("iframe#loginPage").attr('src', '<%=ctxPath %>/login/login.bibo');
+							
+							
 						}
 					},
 					error: function(request, status, error){
@@ -108,7 +112,7 @@
 				 		break;
 				 		
 				 	case "suspended":
-				 		alert(message);
+				 		alert(message);	//정지회원
 					 	location.href="javascript:location.reload(true)";
 					 	break;
 					 	
@@ -127,8 +131,7 @@
 				 		
 				 	case "false":
 				 		// 회원가입 페이지로 이동
-				 		alert("회원가입 이동간다잉");
-					 	location.href="javascript:location.reload(true)";
+					 	location.href="<%=ctxPath%>/register/register.bibo?join=3";
 						break;
 				 	
 				 }// end of switch
@@ -138,11 +141,21 @@
 			 
 		});
 		
+		// 이동하기 링크
+		
 		$('.href_reserve').on("click",function(){
 			location.href = "<%=ctxPath%>/reserve/choiceDr.bibo";
 		})
 		
+		$('.gohpsearch').on("click",function(){
+			location.href = "<%=ctxPath%>/hpsearch/hospitalSearch.bibo";
+		})
+		
 	});
+	
+	function goregister(){
+		location.href="<%=ctxPath%>/register/registerchoice.bibo";
+	}
 	
 	
 
@@ -195,7 +208,7 @@
   <div class="tog_nav tg1 fadeout">
   	<div class="tog_title">의료 기관</div>
   	<ul class="tog_ul">
-  		<li class="tog_li">병원 찾기</li>
+  		<li class="tog_li gohpsearch">병원 찾기</li>
   		<li class="tog_li">약국 찾기</li>
   		<li class="tog_li">응급실 찾기</li>
   	</ul>
@@ -226,7 +239,7 @@
 	
   	<div class="media_tog_sub">의료 기관</div>
   	<ul class="media_tog_ul">
-		<li class="media_tog_li">병원 찾기</li>
+		<li class="media_tog_li gohpsearch">병원 찾기</li>
 		<li class="media_tog_li">약국 찾기</li>
 		<li class="media_tog_li">응급실 찾기</li>
 	</ul>

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -56,13 +57,33 @@ public class MainController {
 	}
 	
 	
+	// 회원가입 선택 페이지
+	@RequestMapping("/register/registerchoice.bibo")
+	public ModelAndView registerChoice(ModelAndView mav) {
+		
+		mav.setViewName("login/registerChoice.tiles");
+
+		return mav;
+	}
+	
+	
+	
 	
 	// 회원가입 페이지 이동
-	@RequestMapping(value="/register/register.bibo")
-	public ModelAndView register(ModelAndView mav) {
+	@GetMapping("/register/register.bibo")
+	public ModelAndView register(ModelAndView mav, HttpServletRequest request) {
 		
-		mav.setViewName("login/register.tiles");
+		String join = request.getParameter("join");
+
 		
+		if(join != null && ("1".equals(join) || "2".equals(join) || "3".equals(join))) {
+			// 1:일반, 2:의료, 3:카카오(일반)
+			mav.addObject("join", join);
+			mav.setViewName("login/register.tiles");
+		}
+		else {
+			mav.setViewName("redirect:/register/registerchoice.bibo");
+		}
 		
 		return mav;
 	}
@@ -186,6 +207,7 @@ public class MainController {
 	@RequestMapping(value="/login/kakaoLogin.bibo")
 	public void kakaoLogin(HttpServletRequest request, HttpServletResponse response) {
 		
+		
 		// **** 웹브라우저에 출력하기 시작 **** //
 		// HttpServletResponse response 객체는 전송되어져온 데이터를 조작해서 결과물을 나타내고자 할때 쓰인다.
 	      
@@ -207,10 +229,11 @@ public class MainController {
 			
 			String name = (String)userInfo.get("name");
 			String email = (String)userInfo.get("email");
-			String is_email_verified = (String)userInfo.get("is_email_verified");
+			String is_email_verified = (String)userInfo.get("is_email_verified"); // 이메일 유효성
 			String birth_year = (String)userInfo.get("birthyear");
 			String birth_day = (String)userInfo.get("birthday");
 			String phone_number = (String)userInfo.get("phone_number");
+			String gender = (String)userInfo.get("gender");
 			
 			String userid = email.substring(0, email.indexOf("@"))+"_kakao";
 			
@@ -223,7 +246,7 @@ public class MainController {
 				없으면, 회원가입 폼으로 넘긴다.
 			*/
 			
-			String birthday = birth_year+birth_day;
+			String birthday = birth_year+"-"+birth_day.substring(0, 2)+"-"+birth_day.substring(2);
 			// System.out.println("확인용 birthday : "+birthday);
 			// 확인용 birthday : 19950406
 			
@@ -313,13 +336,25 @@ public class MainController {
 				
 			}
 			else {
-				// 가입된 적이 없으므로 
+				// 가입된 적이 없으므로 세션에 정보를 저장한뒤 회원가입 페이지에서 꺼내온 후 삭제
 				// 팝업창을 닫고, 회원가입 폼으로 넘겨준다.
 				System.out.println("가입한적 없음");
 				
+				Map<String, String> kakaoInfo = new HashMap<>();
+				kakaoInfo.put("name", name);
+				kakaoInfo.put("email", email);
+				kakaoInfo.put("birthday", birthday);
+				kakaoInfo.put("mobile", mobile);
+				kakaoInfo.put("gender", gender);
+				
+				// 회원가입시 필요한 정보 전달 사용후 삭제할거임
+				HttpSession session = request.getSession();
+				session.setAttribute("kakaoInfo", kakaoInfo);
+				
+				
 				out = response.getWriter();
 
-				out.println("<script type='text/javascript'>const iskakao = '"+isExistUser+"'; const message ='nouser'; if(confirm('"+message+"')){window.opener.loginWithKakaoEnd(iskakao, message);}; window.close();</script>");
+				out.println("<script type='text/javascript'>const iskakao = '"+isExistUser+"'; const message ='nouser'; if(confirm('"+message+"')){window.opener.loginWithKakaoEnd(iskakao, message);}else{window.opener.nokakaoregister();}; window.close();</script>");
 			}
 		
 
