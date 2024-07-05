@@ -147,8 +147,6 @@ public class LoginController {
 			isFail = "n";
 		}
 		
-		// System.out.println(isFail);
-		
 		mav.addObject("kakaoApiKey", KakaoApi.getKakaoApiKey());
 		mav.addObject("RedirectUri", KakaoApi.getRedirectUri());
 		mav.addObject("isFail",isFail);
@@ -157,8 +155,6 @@ public class LoginController {
 		
 		return mav;
 	}
-	
-	
 	
 	// 로그인
 	@ResponseBody
