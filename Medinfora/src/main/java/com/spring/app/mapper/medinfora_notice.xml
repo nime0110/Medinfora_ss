@@ -50,9 +50,18 @@
 	
 	
 	<select id="getView" parameterType="HashMap" resultType="NoticeDTO">
-		SELECT seq_notice.nextval, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		SELECT nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
 		from notice
 		where nidx = #{nidx}
 	
 	</select>
+	
+	 <!-- === #67. 글조회수 1증가 하기 ===  -->
+    <update id="increase_readCount" parameterType="Int">
+    	update notice set viewcnt = viewcnt + 1 
+    	where nidx = #{nidx}
+    </update>
+	
+	
+	
 </mapper>

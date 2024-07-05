@@ -119,10 +119,11 @@ public class NoticeController {
         HttpSession session = request.getSession();
         session.setAttribute("readCountPermission", "yes");
 
-        String searchType = request.getParameter("searchType");
-        String searchWord = request.getParameter("searchWord");
+     //   String searchType = request.getParameter("searchType");
+     //   String searchWord = request.getParameter("searchWord");
         String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 
+        /*
         if (searchType == null) {
             searchType = "";
         }
@@ -134,10 +135,10 @@ public class NoticeController {
         if (searchWord != null) {
             searchWord = searchWord.trim();
         }
-
+*/
         Map<String, String> paraMap = new HashMap<>();
-        paraMap.put("searchType", searchType);
-        paraMap.put("searchWord", searchWord);
+        //paraMap.put("searchType", searchType);
+       // paraMap.put("searchWord", searchWord);
 
         int totalCount = service.getTotalCount(paraMap);
         int sizePerPage = 10;
@@ -172,9 +173,9 @@ public class NoticeController {
         mav.addObject("noticeListdto", noticeListdto);
         mav.addObject("paraMap", paraMap);
 
-        String pageBar = Myutil.makePageBar(currentShowPageNo, sizePerPage, totalPage, "noticeList.bibo", searchType,
-                searchWord);
-        mav.addObject("pageBar", pageBar);
+      //  String pageBar = Myutil.makePageBar(currentShowPageNo, sizePerPage, totalPage, "noticeList.bibo", searchType,
+        //        searchWord);
+  //      mav.addObject("pageBar", pageBar);
 
         String goBackURL = Myutil.getCurrentURL(request);
         mav.addObject("goBackURL", goBackURL);
@@ -210,8 +211,7 @@ public class NoticeController {
             Map<String, String> paraMap = new HashMap<>();
             paraMap.put("seq", seq);
 
-            // NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
-            // 글 조회수 증가는 없고 단순히 글 1개만 조회를 해오는 것
+         
 
 //            if (noticedto == null) {
 //                message = "글 삭제가 불가합니다.";
@@ -263,10 +263,23 @@ public class NoticeController {
 	// === #62. 글1개를 보여주는 페이지 요청 === //
  //	@GetMapping("/view.action")
 	@RequestMapping("/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
-	public ModelAndView view(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
 		String nidx = request.getParameter("nidx");
-		System.out.println("확인용 nidx" + nidx);
+		//System.out.println("확인용 nidx" + nidx);
+		Map<String, String> paraMap = new HashMap<>();
+	
+		paraMap.put("nidx",nidx);
 		
+		HttpSession session = request.getSession();
+		
+		// MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		
+		
+		//System.out.println("session 확인용 "+ loginuser);
+		NoticeDTO n = service.getView(paraMap,session);
+		
+		mav.addObject("noticedto", n);// 저장해줄 이름 
 		mav.setViewName("notice/noticeView.tiles");
 		
 		return mav;
