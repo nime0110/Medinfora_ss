@@ -299,6 +299,7 @@ function searchHospitals(pageNo) {
                     
                 let imageArr = []; // 이미지 경로를 저장하는 배열
                 markerImageArr = [];
+                let bounds = new kakao.maps.LatLngBounds(); // 마커 범위 
 
                 for (let i = 0; i < positionArr.length; i++) {
                     let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
@@ -311,30 +312,23 @@ function searchHospitals(pageNo) {
                     markerImageArr.push(markerImage); // 마커이미지 배열에 넣기
 
                     // 마커 생성하기
-                    var marker = new kakao.maps.Marker({
+                    let marker = new kakao.maps.Marker({
                         map: map,
                         position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
                         image: markerImageArr[i]
-                    });
-
-                    // 모든 인포윈도우가 안보이게 하기
-                    infowindows[i].close();
-
-
-
-
-                    daum.maps.event.addListener(marker, 'click', function() { 
-                        // 마커 위에 인포윈도우를 표시하기
-                        infowindows[i].open(map, marker);
-                    });
-
+                    });                    
+                    // 모든 마커가 한 번에 보이도록 지도의 중심과 확대레벨을 설정
+                    bounds.extend(positionArr[i].latlng); 
+                    map.setBounds(bounds);
 
                     // 마커를 배열에 추가
                     markers.push(marker);
-
+ 
+                console.log("~~~markers.length:", markers[i]);
+                    
                     // 지도에 마커를 표시한다.
                     //marker.setMap(map);
-
+                    
                     // 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content,
@@ -343,14 +337,17 @@ function searchHospitals(pageNo) {
                     });
                     // 인포윈도우를 가지고 있는 객체배열에 넣기
                     infowindows.push(infowindow);
-
+                    
                     // 마커 위에 인포윈도우를 표시하기
-                    infowindow.open(map, marker);
-
+                    /*kakao.maps.event.addListener(marker, 'click', function() { 
+                        infowindows[i].open(map, marker);
+                    });
+                      */              
                     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-                    // 이벤트 리스너로는 클로저를 만들어 등록합니다
-                        
-                } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
+                    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+                    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+                    //kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+             } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
                         
             } else {
                 v_html += `검색된 의료기관이 없습니다.`;
@@ -417,4 +414,13 @@ function removeInfowindows() {
     infowindows = [];
 }
 
+
+
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
 // ================ marker, infowindows end ====================== 
