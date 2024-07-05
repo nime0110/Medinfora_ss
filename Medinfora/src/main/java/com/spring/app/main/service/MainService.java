@@ -29,6 +29,12 @@ public interface MainService {
 	// 회원가입(병원찾기 자동검색)
 	public List<String> autoWord(Map<String, String> paraMap);
 	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	public int totalhospital(Map<String, String> paraMap);
+	
+	// 회원가입(병원찾기 병원리스트(페이징))
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap);
+	
 	// 로그인 처리
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
 
@@ -54,6 +60,11 @@ public interface MainService {
 	
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+	
+	
+	
+	
+	
 
 	
 
