@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -113,6 +114,12 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("medinfora.getclasscode");
+	}
+
+	// 공휴일 입력용
+	@Override
+	public int holidayInputer(HolidayVO holidayVO) {
+		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
 	
 	

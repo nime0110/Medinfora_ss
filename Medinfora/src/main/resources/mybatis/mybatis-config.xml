@@ -13,7 +13,7 @@
 		<typeAlias type="com.spring.app.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
 		<typeAlias type="com.spring.app.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
 		<typeAlias type="com.spring.app.domain.NoticeDTO" alias="NoticeDTO"/>
-		
+		<typeAlias type="com.spring.app.domain.HolidayVO" alias="HolidayVO"/>		
 	</typeAliases>
 	
 	
