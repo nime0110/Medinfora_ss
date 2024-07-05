@@ -46,6 +46,9 @@ public interface MainDAO {
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
 	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	public int totalhospital(Map<String, String> paraMap);
+	
 	
 
 

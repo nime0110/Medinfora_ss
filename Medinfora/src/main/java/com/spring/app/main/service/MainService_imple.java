@@ -44,7 +44,21 @@ public class MainService_imple implements MainService {
 		List<String> autoWordList = dao.autoWord(paraMap);
 		return autoWordList;
 	}
-		
+	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	@Override
+	public int totalhospital(Map<String, String> paraMap) {
+		int totalCount = dao.totalhospital(paraMap);
+		return totalCount;
+	}
+	
+	// 회원가입(병원찾기 병원리스트(페이징))
+	@Override
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 	// 로그인 처리
 	@Override
@@ -160,6 +174,8 @@ public class MainService_imple implements MainService {
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
 	}
+
+	
 
 	
 

@@ -43,6 +43,17 @@ button#searchbtn{
 	border-radius: 0 1rem 1rem 0;
 }
 
+.searchList{
+	border-top: solid 1px #595959;
+	border-bottom: solid 1px #595959;
+}
+
+.searchList:hover{
+	cursor: pointer;
+	background-color: #f2f2f2;
+}
+
+
 </style>
 
 
@@ -60,7 +71,7 @@ button#searchbtn{
 $(document).ready(function(){
 
 	$("div#displayList").hide();
-	$("div.info_body").show();
+	$("div.info_body").hide();
 
 	$("input:text[name='searchWord']").keyup((e)=>{
 		const w_length = $(e.target).val().trim().length;
@@ -125,7 +136,37 @@ $(document).ready(function(){
 
 
 
-});
+});// end of $(document).ready(function(){ ----
+
+//Function Declaration
+function goSearch(currentPageNo){
+
+	const searchType = $("select[name='searchType']").val().trim();
+	const searchWord = $("input:text[name='searchWord']").val().trim();
+
+	if(searchWord == ""){
+		return;
+	}
+
+	
+
+	$.ajax({
+		url:"<%=ctxPath%>/register/searchmedicalEnd.bibo"
+		data:{"searchType":searchType
+			 ,"searchWord":searchWord
+			 ,"currentPageNo":currentPageNo},
+		dataType:"json",
+		success:function(json){
+			alert("검색된거 들어왔음");
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+
+	});
+
+
+}// end of function goSearch(){---
 
 
 </script>
@@ -141,7 +182,7 @@ $(document).ready(function(){
 	</select>
 	<input class="form-control searchWord" type="text" name="searchWord" size="70" autocomplete="off" /> 
 	<input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. --%> 
-	<button id="searchbtn" type="button" class="btn btn-primary" onclick="goSearch()"><span><i class="fa-solid fa-magnifying-glass"></i></span></button> 
+	<button id="searchbtn" type="button" class="btn btn-primary" onclick="goSearch('1')"><span><i class="fa-solid fa-magnifying-glass"></i></span></button> 
 </form>
 
 <%-- === 검색어 입력시 자동글 완성하기  === --%>
@@ -149,7 +190,23 @@ $(document).ready(function(){
 <div class="info_body">
 	<p class="p-3"><span class="nanum-eb h4">tip</span>&nbsp;&nbsp;<span class="nanum-n">병원이름 검색 시 주소가 맞는지 확인하시어 선택바랍니다.</span></p>
 </div>
-	
+
+<%-- 검색한 결과 병원리스트를 보여준다.--%>
+<div class="gd mt-3">
+	<div class="nanum-eb size-s">검색결과&nbsp;&nbsp;<span>x&nbsp;건</span></div>
+	<div class="mt-3">
+		<%-- 여기 이제 포문 돌리고 페이징 처리 --%>
+		<div class="searchList py-3">
+			<div class="nanum-eb size-s"> 서울병원의원</div>
+			<div class="nanum-n size-s">서울특별시 서초구 서초중앙로 26, 1층 109호 (서초동, 래미안 서초유니빌)</div>
+		</div>
+	</div>
+
+
+</div>
+
+<%-- 페이지바 처리 --%>
+<div class="pagebar" align="center">페이지 바</div>
 
 
 

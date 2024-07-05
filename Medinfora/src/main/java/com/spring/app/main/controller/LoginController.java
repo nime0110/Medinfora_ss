@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.KakaoApi;
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.main.service.MainService;
 
@@ -133,6 +134,71 @@ public class LoginController {
 		}
 		
 		return jsonArr.toString();
+	}
+	
+	
+	// 병원검색하기
+	@ResponseBody
+	@GetMapping(value="/register/searchmedicalEnd.bibo", produces="text/plain;charset=UTF-8")
+	public String searchmedicalEnd(HttpServletRequest request) {
+		
+		List<HospitalDTO> hpList = null;
+		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		String str_currentPageNo = request.getParameter("currentPageNo");
+		
+		if(searchType == null) {
+			searchType = "";
+		}
+		
+		if(searchWord == null) {
+			searchWord = "";
+		}
+
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("searchType", searchType);
+			paraMap.put("searchWord", searchWord);
+			
+			// 총 게시물 건수(totalCount)를 구해와야 한다.
+			int totalCount = 0;        // 총 게시물 건수
+			int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
+			int currentPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함. 
+			int totalPage = 0;         // 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바) 
+			
+		try {
+			
+			totalCount = service.totalhospital(paraMap);
+			System.out.println("확인용 totalCount "+totalCount);
+			
+			totalPage = (int) Math.ceil((double)totalCount/sizePerPage); 
+			
+			if(str_currentPageNo == null) {
+				currentPageNo = 1;
+			}
+			else {
+				currentPageNo = Integer.parseInt(str_currentPageNo);
+				
+				if(currentPageNo < 1 || currentPageNo > totalPage) {
+					currentPageNo = 1;
+				}
+				
+				int startRno = ((currentPageNo - 1) * sizePerPage) + 1; // 시작 행번호 
+				int endRno = startRno + sizePerPage - 1; // 끝 행번호
+				
+				paraMap.put("startRno", String.valueOf(startRno));
+				paraMap.put("endRno", String.valueOf(endRno));
+				
+				hpList = service.hpSearch(paraMap);
+				
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			currentPageNo = 1; 
+		}
+		
+		return "";
 	}
 	
 	

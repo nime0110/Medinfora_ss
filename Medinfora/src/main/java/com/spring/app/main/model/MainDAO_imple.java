@@ -41,6 +41,14 @@ public class MainDAO_imple implements MainDAO{
 	}
 	
 	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	@Override
+	public int totalhospital(Map<String, String> paraMap) {
+		int totalCount = sqlsession.selectOne("medinfora.totalhospital", paraMap);
+		return totalCount;
+	}
+	
+	
 	// 로그인 유저 정보
 	@Override
 	public MemberDTO getLoginuser(Map<String, String> paraMap) {
@@ -106,6 +114,8 @@ public class MainDAO_imple implements MainDAO{
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("medinfora.getclasscode");
 	}
+	
+	
 
 	
 	
