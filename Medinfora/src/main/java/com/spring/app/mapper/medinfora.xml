@@ -44,7 +44,11 @@
 		    </choose>
 	    	)H
 	    WHERE rno between 1 and 8
-	
+	    group by 
+	    <choose>
+	    	<when test='searchType == "hpname"'>hpname</when>
+	    	<when test='searchType == "hpaddr"'>hpaddr</when>
+	    </choose>
 	</select>
 	
 	
