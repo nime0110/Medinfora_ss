@@ -204,6 +204,24 @@ body > div.homebar {
      font-weight: 400;
 
 }
+
+.board-item-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: gray;
+}
+
+.board-item-date {
+    margin-right: 10px;
+}
+
+.board-item-viewcnt {
+    margin-left: 10px;
+}
+
+
 /* noticeView.jsp 끝 */
 
 
