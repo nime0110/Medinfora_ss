@@ -167,6 +167,76 @@ select userid, email
 from member
 where (midx between 0 and 8) and userid = "";
 
+SELECT hpname
+FROM(
+select row_number() over(order by hidx desc) AS rno, hpname
+from hospital
+)H
+WHERE rno between 1 and 5;
+
+
+SELECT hpname, hpaddr
+FROM(
+    select row_number() over(order by hidx desc) AS rno,
+           hpname,hpaddr, hidx
+    from hospital
+    where lower(hpaddr) like '%'||lower('해밀3로')||'%'  
+)H
+WHERE rno between 1 and 8
+group by hpname;
+
+<when test='searchType == "hpname"'></when>
+<when test='searchType == "hpaddr"'>hpaddr</when>
+
+SELECT hpaddr, count(*)
+FROM(
+select hpname, hpaddr
+from hospital
+)H
+GROUP BY hpaddr;
+
+WHIH A
+AS(
+    SELECT hpname ,
+           hpaddr ,
+           count(*) AS CNT
+    FROM
+    (
+    select hpname, hpaddr, hidx
+    from hospital
+    )H
+    GROUP BY hpname, hpaddr
+    ORDER BY CNT
+)
+SELECT A.COUNT(*)
+FROM A
+
+
+
+WITH A AS (
+    SELECT hpname,
+           hpaddr,
+           COUNT(*) AS CNT
+    FROM (
+        SELECT hpname, hpaddr
+        FROM hospital
+    ) H
+    GROUP BY hpname, hpaddr
+    ORDER BY CNT
+)
+SELECT count(*)
+FROM A
+where CNT > 2
+
+
+
+select *
+from hospital
+where hpaddr = '충청남도 태안군 안면읍 응지마을길 10';
+
+
+
+
 
 
 

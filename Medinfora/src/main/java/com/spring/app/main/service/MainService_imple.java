@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -44,7 +45,21 @@ public class MainService_imple implements MainService {
 		List<String> autoWordList = dao.autoWord(paraMap);
 		return autoWordList;
 	}
-		
+	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	@Override
+	public int totalhospital(Map<String, String> paraMap) {
+		int totalCount = dao.totalhospital(paraMap);
+		return totalCount;
+	}
+	
+	// 회원가입(병원찾기 병원리스트(페이징))
+	@Override
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 	// 로그인 처리
 	@Override
@@ -160,6 +175,16 @@ public class MainService_imple implements MainService {
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
 	}
+
+	// 공휴일 입력용
+	@Override
+	public int holidayInputer(HolidayVO holidayVO) {
+		System.out.print("확인용 summary : "+holidayVO.getSummary());
+		System.out.print("확인용 holiday_date : "+holidayVO.getHoliday_date());
+		return dao.holidayInputer(holidayVO);
+	}
+
+	
 
 	
 

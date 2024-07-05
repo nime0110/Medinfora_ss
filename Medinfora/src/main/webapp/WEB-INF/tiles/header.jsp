@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
 
@@ -14,7 +15,6 @@
    String uri = request.getRequestURI();
    
 %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
 
@@ -153,6 +153,14 @@
 		location.href="<%=ctxPath%>/register/registerchoice.bibo";
 	}
 	
+	function gomyinfo(){
+		location.href="<%=ctxPath%>/mypage/myinfo.bibo";
+	}
+	
+	function gonotice(){
+		location.href="<%=ctxPath%>/notice/noticeList.bibo";
+	}
+	
 	
 
 </script>
@@ -255,20 +263,36 @@
 <aside class="fixed-nav">
   <ul>
     <li>
-      <div class="icon"></div>
-      <a href="#" class="nanum-b size-s">내 정보</a>
+		<div class="icon" onclick="gomyinfo()">
+			<i class="fa-solid fa-circle-user setcon"></i>
+		</div>
+		<a href="<%=ctxPath%>/mypage/myinfo.bibo" class="nanum-b size-s">내 정보</a>
     </li>
     <li>
-      <div class="icon"></div>
-      <a href="#"  class="nanum-b size-s">Q&A</a>
+    	<div class="icon">
+				<i class="fa-solid fa-circle-question setcon"></i>
+		</div>
+		<c:if test="${sessionScope.loginuser.mIdx == 1}">
+			<a href="#"  class="nanum-b size-s">내 질문</a>
+		</c:if>
+		<c:if test="${sessionScope.loginuser.mIdx == 2}">
+			<a href="#"  class="nanum-b size-s">내 답변</a>
+		</c:if>
+		<c:if test="${sessionScope.loginuser.mIdx != 1 and sessionScope.loginuser.mIdx != 2}">
+			<a href="#"  class="nanum-b size-s">Q&A</a>
+		</c:if>
     </li>
     <li>
-      <div class="icon"></div>
-      <a href="#"  class="nanum-b size-n">이용안내</a>
+		<div class="icon" onclick="gonotice()">
+			<i class="fa-solid fa-circle-exclamation setcon"></i>
+		</div>
+		<a href="<%=ctxPath %>/notice/noticeList.bibo"  class="nanum-b size-n">공지사항</a>
     </li>
     <li>
-      <div class="icon"></div>
-      <a href="#" class="nanum-b size-n">고객센터</a>
+	<div class="icon">
+			<i class="fa-solid fa-circle-info setcon"></i>
+		</div>
+	<a href="#" class="nanum-b size-n">고객센터</a>
     </li>
   </ul>
 </aside>

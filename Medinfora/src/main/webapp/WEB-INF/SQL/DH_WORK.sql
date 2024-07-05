@@ -28,4 +28,5 @@ select * from HOSPITAL where HPADDR like '%'||'금산군'||'%';
 
 select COUNTRY from KOREAAREA where CITY = '서울특별시' and LOCAL = '마포구'
 
-select hidx,HPADDR from HOSPITAL where HPADDR like '%'||'서울특별시 서대문구'||'%';
+select HPADDR from HOSPITAL where HPADDR like '%'||'해밀3로'||'%';
+

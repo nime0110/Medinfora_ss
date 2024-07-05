@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -45,6 +46,12 @@ public interface MainDAO {
 
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	public int totalhospital(Map<String, String> paraMap);
+
+	// 공휴일 입력용
+	public int holidayInputer(HolidayVO holidayVO);
 	
 	
 

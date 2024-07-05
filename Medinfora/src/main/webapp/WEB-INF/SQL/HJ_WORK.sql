@@ -175,3 +175,13 @@ ORDER BY HIDX
 )
 WHERE rno BETWEEN 1 AND 10;
 
+-----------------------------------------------------------------------------------------
+-- === 시퀀스 생성(reserve) === --
+create sequence seq_ridx
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence SEQ_RIDX이(가) 생성되었습니다.

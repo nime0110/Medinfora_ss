@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.Myutil;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.main.service.MainService;
 
 @Controller
@@ -71,7 +72,32 @@ public class TestController {
 			}
 		}
 		*/
-		
+		/*
+		// HOLIDAY API
+		if(true) {
+			try {
+				String holidayAdr = "";
+				
+				List<HolidayVO> holidayList = Myutil.holidayApiInputer(holidayAdr);
+				System.out.println("데이터 입력시작");
+				int totalSize = holidayList.size();
+				
+				for(int i=0;i<holidayList.size();i++) {
+					
+					System.out.print("진행상황 ["+(i+1)+"/"+totalSize+"]");
+					if(service.holidayInputer(holidayList.get(i))==1) {
+						System.out.println("...성공");
+					}else {
+						System.out.println("...실패");
+					}
+					
+				}	// end of for---------------
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		*/
 		mav.setViewName("redirect:index.bibo");
 		
 		return mav;

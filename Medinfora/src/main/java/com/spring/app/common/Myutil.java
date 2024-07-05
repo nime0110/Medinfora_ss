@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 
@@ -130,7 +131,7 @@ public class Myutil {
 		Reader reader = new FileReader(localaddr);
 		
 		JSONArray jsonArr = (JSONArray) parser.parse(reader);
-		
+				
 		if(jsonArr.size()>0) {
 			
 			areavoList = new ArrayList<KoreaAreaVO>();
@@ -150,6 +151,39 @@ public class Myutil {
 		return areavoList;
 		
 	}// end of public static List<KoreaAreaVO> areaInputer(String localaddr)
+	
+	public static List<HolidayVO> holidayApiInputer(String holidayAdr) throws IOException, ParseException {
+		List<HolidayVO> holidayList = null;
+		
+		JSONParser parser = new JSONParser();
+		
+		Reader reader = new FileReader(holidayAdr);
+		
+		JSONObject jsonObj = (JSONObject) parser.parse(reader);
+		
+		JSONArray jsonArr = (JSONArray) jsonObj.get("items");
+		
+		if(jsonArr.size()>0) {
+			holidayList = new ArrayList<HolidayVO>();
+			
+			for(int i=0;i<jsonArr.size();i++) {
+			
+				JSONObject jsonObj_item = new JSONObject();
+				
+				jsonObj_item = (JSONObject) jsonArr.get(i);
+				
+				String summary = jsonObj_item.get("summary").toString();
+				JSONObject startObj = (JSONObject) jsonObj_item.get("start");
+				String date = startObj.get("date").toString();
+				
+				HolidayVO holidayvo = new HolidayVO(summary, date);
+				
+				holidayList.add(holidayvo);
+				
+			}	// end of for--------------------
+		}
+		return holidayList;
+	}
 	
 	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url,
 			String searchType, String searchWord) {

@@ -61,6 +61,13 @@ p {
 	margin:0;
 }
 
+/* 인포윈도우 커스텀 start */
+.mycontent {
+    width: 256px;
+    padding: 19px;
+}
+
+/* 인포윈도우 커스텀 end */
 
 
 #flexbox_map #hplist {
@@ -93,6 +100,7 @@ select::-webkit-scrollbar-thumb {
 ul#hospitalList {
     list-style-type: none;
     padding: 0;
+    cursor:pointer;
 }
 
 .hospital-item {

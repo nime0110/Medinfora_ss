@@ -195,7 +195,7 @@ $(document).ready(function(){
 	$("div#loaderArr").hide();
 	
 	if("${requestScope.isFail}"=='y'){
-		$(".msg_capslock").text('없는 아이디이거나 비밀번호입니다.');
+		$(".msg_capslock").text('아이디 또는 비밀번호가 존재하지 않습니다');
 		$(".msg_capslock").show();
 	}
 	

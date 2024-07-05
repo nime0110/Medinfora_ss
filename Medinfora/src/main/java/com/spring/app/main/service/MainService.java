@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -28,6 +29,12 @@ public interface MainService {
 	
 	// 회원가입(병원찾기 자동검색)
 	public List<String> autoWord(Map<String, String> paraMap);
+	
+	// 회원가입(병원찾기 병원리스트(전체개수))
+	public int totalhospital(Map<String, String> paraMap);
+	
+	// 회원가입(병원찾기 병원리스트(페이징))
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap);
 	
 	// 로그인 처리
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
@@ -54,6 +61,14 @@ public interface MainService {
 	
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
+	// 공휴일 입력용
+	public int holidayInputer(HolidayVO holidayVO);
+	
+	
+	
+	
+	
 
 	
 

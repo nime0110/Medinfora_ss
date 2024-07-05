@@ -74,12 +74,20 @@
 	    text-decoration: none;
 	    color: black;
 	}
+	
+	#wrapper{
+		margin: 0;
+		padding: 0;
+		min-height: 100%;
+	}
 </style>
 
 <body>
 	<tiles:insertAttribute name="header" />
 	<div style="margin-top: 75px;"></div>
+	<div id="wrapper">
 	<tiles:insertAttribute name="content" />
+	</div>
 	<tiles:insertAttribute name="footer" />
 </body>
 </html>

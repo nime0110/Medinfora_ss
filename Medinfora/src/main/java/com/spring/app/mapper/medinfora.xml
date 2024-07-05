@@ -22,25 +22,48 @@
 	
 	<!-- 회원가입(병원찾기 자동검색) -->
 	<select id="autoWord" parameterType="HashMap" resultType="String">
-		<choose>
-			<when test='searchType == "hpname"'>
-				select hpname
-			</when>
-			<when test='searchType == "hpaddr"'>
-				select hpaddr
-			</when>
-		</choose>
+	    SELECT 
+	    <choose>
+	    	<when test='searchType == "hpname"'>hpname</when>
+	    	<when test='searchType == "hpaddr"'>hpaddr</when>
+	    </choose>
+	    FROM(
+	    	select row_number() over(order by hidx desc) AS rno,
+	    	<choose>
+		    	<when test='searchType == "hpname"'>hpname</when>
+		    	<when test='searchType == "hpaddr"'>hpaddr</when>
+	    	</choose>
+	    	from hospital
+	    	<choose>
+		       	<when test='searchType == "hpname" and searchWord != ""'>
+		          	where lower(hpname) like '%'||lower(#{searchWord})||'%'  
+		       	</when>
+		       	<when test='searchType == "hpaddr" and searchWord != ""'>
+		          	where lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+		       	</when>
+		    </choose>
+	    	)H
+	    WHERE rno between 1 and 8
+	    group by 
+	    <choose>
+	    	<when test='searchType == "hpname"'>hpname</when>
+	    	<when test='searchType == "hpaddr"'>hpaddr</when>
+	    </choose>
+	</select>
+	
+	
+	<select id="totalhospital" parameterType="HashMap" resultType="int">
+		select count(*)
 		from hospital
 		where 1=1
 		<choose>
-	       	<when test='searchType == "hpname" and searchWord != ""'>
-	          	and lower(hpname) like '%'||lower(#{searchWord})||'%'  
-	       	</when>
-	       	<when test='searchType == "hpaddr" and searchWord != ""'>
-	          	and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
-	       	</when>
-	    </choose>
-	
+			<when test='searchType == "hpname"'>
+				and lower(hpname) like '%'||lower(#{searchWord})||'%'
+			</when>
+			<when test='searchType == "hpaddr"'>
+				and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+			</when>
+		</choose>
 	</select>
 	
 	
@@ -124,5 +147,11 @@
 	<select id="getclasscode" resultType="ClasscodeDTO">
 		select CLASSCODE,CLASSNAME from CLASSCODE
 	</select>
+	
+	<!-- 공휴일 입력 -->
+	<insert id="holidayInputer" parameterType="HolidayVO">
+		INSERT INTO HOLIDAY (SUMMARY, HOLIDAY_DATE)
+		VALUES (#{summary}, #{holiday_date})
+	</insert>
 
 </mapper>
