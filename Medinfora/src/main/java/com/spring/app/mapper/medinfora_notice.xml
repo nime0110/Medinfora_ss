@@ -7,9 +7,14 @@
 		
 	<insert id="noticeWrite" parameterType="NoticeDTO">
 		insert into notice (nidx, userid, title, content, viewcnt, writeday)
-        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday})
+        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday})
     </insert>
     
+     <insert id="add_noticeWrite" parameterType="NoticeDTO">
+     insert into notice ( nidx, userid, title, content, viewcnt,  TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize)
+        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday}, #{filename}, #{orgname}, #{filesize})
+     
+     </insert>
 	 <select id="boardListNoSearch" resultType="NoticeDTO">
 		select nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
 		from notice
@@ -43,4 +48,11 @@
         WHERE rno BETWEEN #{startRno} AND #{endRno}
     </select>
 	
+	
+	<select id="getView" parameterType="HashMap" resultType="NoticeDTO">
+		SELECT seq_notice.nextval, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		from notice
+		where nidx = #{nidx}
+	
+	</select>
 </mapper>

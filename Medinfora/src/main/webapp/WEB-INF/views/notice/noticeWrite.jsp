@@ -51,7 +51,9 @@
     <br>
     <div style="display: flex;">
         <div style="margin: auto; padding-left: 3%;">
+        <c:if test='${requestScope.seq_notice eq ""}'>
             <h2 style="margin-bottom: 30px;">글쓰기</h2>
+            </c:if>
             <form name="noticeWriteFrm">
                 <table style="width: 1024px" class="table table-bordered">
                     <tr>
@@ -66,13 +68,18 @@
                             <textarea style="width: 100%; height: 612px;" name="CONTENT" id="CONTENT"></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <form = name "noticeWriteFrm" enctype="multipart/form-data">
+                    	<table style="width:1024px" class="table table-bordered">
+                    <tr> 
                         <th style="width: 15%; background-color: #DDDDDD;"> 파일첨부</th>
                         <td>
+                    	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}">
                             <input type="file" name="attach"/>
                         </td>
                     </tr>
+                    </table>
                 </table>
+                </form>
                 <div class="writebtn" style="margin: 20px;">
                     <button type="button" class="btn btn-secondary btn-sm mr-3" id="on">글쓰기</button>
                     <button type="button" class="btn btn-secondary btn-sm" onclick="javascript:history.back()">취소</button>
