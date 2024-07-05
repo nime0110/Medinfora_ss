@@ -374,15 +374,21 @@ nav ul li a {
     align-items: center;
 }
 
-.fixed-nav .icon {
-    background-color: var(--text-gray-color);
+.icon {
+    background-color: var(--navy600);
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
     padding: 10px;
     margin-bottom: 10px;
+    transition: all 0.5s;
 }
 
+.icon:hover{
+    cursor: pointer;
+    background-color: var(--navy800);
+    box-shadow: 0px 0px 30px #0000000d;
+}
 
 .fixed-nav ul li a {
     font-size: small;
@@ -473,6 +479,13 @@ iframe#loginPage {
 .media_tog{
     display: none;
 }
+
+.setcon{
+    color: var(--grey50) !important;
+    font-size: 28px !important;
+}
+
+
 
 
 @media (max-width: 768px) {
@@ -598,8 +611,9 @@ iframe#loginPage {
         display: inline-block;
         width: 30px;
         height: 3px;
-        background-color: #333;
+        background-color: var(--navy900);
         position: relative;
+        color: var(--grey50);
     }
   
     .navbar-toggler-icon::before,

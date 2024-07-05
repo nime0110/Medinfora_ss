@@ -130,7 +130,7 @@ public class Myutil {
 		Reader reader = new FileReader(localaddr);
 		
 		JSONArray jsonArr = (JSONArray) parser.parse(reader);
-		
+				
 		if(jsonArr.size()>0) {
 			
 			areavoList = new ArrayList<KoreaAreaVO>();
