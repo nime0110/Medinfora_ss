@@ -26,11 +26,13 @@
 <div class="board_title">
     <h2>글 내용 보기</h2>
     <span class="nanum-eb size-b">${noticedto.title}</span>
-</div>
-<div>${noticedto.viewcnt}</div>
-<div class="board-item-date">
+<div class="board-item-info">
     <span class="board-item-date">${noticedto.writeday}</span>
+	<span class="board-item-viewcnt">조회수: ${noticedto.viewcnt}</span>
 </div>
+
+</div>
+
 <div class="content">
     <p>${noticedto.content}</p>
 </div>
