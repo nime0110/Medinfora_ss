@@ -1,7 +1,7 @@
 let map;
 let markers = [];
 let infowindows = [];
-var positionArr = []; //위치 마커를 표시할 위치와 내용을 갖고 있는 객체 배열 
+var positionArr = [];  
 var markerImageArr = []; //위치 마커 이미지 배열
 
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
@@ -28,55 +28,6 @@ $(function() {
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
-
-
-    // HTML5의 geolocation으로 사용자 위치 가져오기
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let lat = position.coords.latitude, // 위도
-                lon = position.coords.longitude; // 경도
-            let locPosition = new kakao.maps.LatLng(lat, lon); // 위치 객체 생성
-
-            // 현재 위치로 지도 중심 이동
-            map.setCenter(locPosition);
-
-            // 현재 위치에 마커 추가
-            //addMarker(locPosition,1, "현재 위치");
-            
-            /*
-            // Geocoder를 사용하여 주소 변환하는 코드 
-    		let geocoder = new kakao.maps.services.Geocoder();
-            geocoder.coord2Address(lon, lat, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                
-                	let address = result[0].address; 
-                    console.log("address:", address);// 경기도 고양시 일산동구 일산로 도로명주소 
-                	
-                    let city = address.region_1depth_name; //시-도 단위 경기
-                    let region = address.region_2depth_name; //구단위, 고양시 일산동구 / 백석동->3depth_name
-                    
-                    console.log("address:", address);
-                    console.log("region:", region);
-                    console.log("city:", city);
-                    
-                    // 시/도 및 시/군/구 선택 업데이트
-                    $('#city').val(city).change();
-                    setTimeout(() => {
-                        $('#local').val(region);
-                    }, 500); // 시/군/구 목록 업데이트 대기 시간
-                }
-            });
-            */
-            
-        }, function(error) {
-            // 위치 정보를 가져오는데 실패한 경우
-            alert('위치 정보를 가져올 수 없습니다.');
-        });
-    } else {
-        // Geolocation API를 지원하지 않는 경우
-        alert('GPS를 지원하지 않습니다');
-    }
-
 	// ****************** 시/도, 진료과목 데이터 가져오기 start ************* 
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
@@ -112,8 +63,6 @@ $(function() {
 			alert("code : " + request.status);
 		}
 	}) 
-	
-
 
     // 검색부분 작성
     $('#searchHpName').on('keydown', function(e) {
@@ -215,15 +164,6 @@ function searchHospitals(pageNo) {
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
-    /* -------- TEST -------
-    console.log("city:", city);
-    console.log("local:", local);
-    console.log("country:", country);
-    console.log("classcode:", classcode);
-    console.log("agency:", agency);
-    console.log("hpname:", hpname);
-    console.log("addr:", addr);
-    */
 
 
     if (!city ) {
@@ -263,6 +203,7 @@ function searchHospitals(pageNo) {
 	           		var position = {}; // 위도경도랑 content 담음 
 	           		
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon); // 위도, 경도
+                    //인포윈도우에 들어갈 텍스트
 	                position.content = `<div class='mycontent'>
 									    	<div class="title"> ${item.hpname} </div>
 									    	<div class="content"> 
@@ -280,11 +221,8 @@ function searchHospitals(pageNo) {
                     
                     positionArr.push(position);	
                     
-                    //console.log("positionArr:", positionArr);	    
-                    //addMarker(position, `${index + 1}`, item.hpname); // 지도에 병원 위치 마커 추가
-
 	                // 병원 리스트로 출력
-	                v_html += `<div class="hospital-details">
+	                v_html += `<div class="hospital-details" data-index="${index}">
 	                			<input type="hidden" name="${item.hidx}"></input>
 			                	<div class="hospital-label">${index + 1}</div>
 			                	<div class="hospital-label">${item.wgs84lat}, ${item.wgs84lon}</div>
@@ -294,6 +232,7 @@ function searchHospitals(pageNo) {
 			                    <p class="hospital-address">${item.hpaddr}</p>
 			                	<button class="details-button">상세보기</button>
 			               		</div>`;
+                                
 	            }); //end of forEach -----------------------------------
 
                     
@@ -301,17 +240,18 @@ function searchHospitals(pageNo) {
                 markerImageArr = [];
                 let bounds = new kakao.maps.LatLngBounds(); // 마커 범위 
 
-                for (let i = 0; i < positionArr.length; i++) {
+                for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
+
                     let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
                     imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
 
                     //console.log("imageArr:", imageArr[i]);
                     //console.log("positionArr:", positionArr);
                     let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
-                    let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize);
+                    let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize); // 마커 이미지 생성
                     markerImageArr.push(markerImage); // 마커이미지 배열에 넣기
 
-                    // 마커 생성하기
+                    // 마커 생성
                     let marker = new kakao.maps.Marker({
                         map: map,
                         position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
@@ -323,32 +263,40 @@ function searchHospitals(pageNo) {
 
                     // 마커를 배열에 추가
                     markers.push(marker);
- 
-                console.log("~~~markers.length:", markers[i]);
                     
-                    // 지도에 마커를 표시한다.
-                    //marker.setMap(map);
                     
-                    // 인포윈도우를 생성하기
+                    // 마커에 표시할 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: positionArr[i].content,
+                        content: positionArr[i].content, //
                         removable: true,
                         zIndex: i + 1
                     });
                     // 인포윈도우를 가지고 있는 객체배열에 넣기
                     infowindows.push(infowindow);
-                    
-                    // 마커 위에 인포윈도우를 표시하기
-                    /*kakao.maps.event.addListener(marker, 'click', function() { 
+
+                    // 지도를 클릭하면 인포윈도우를 닫기
+                    kakao.maps.event.addListener(map, 'click', function() {  
+                    	console.log("테스트");      
+                        infowindow.close();
+                    });
+
+
+
+                    // 마커 위에 인포윈도우를 표시하는 클릭 이벤트 
+                    kakao.maps.event.addListener(marker, 'click', function() { 
                         infowindows[i].open(map, marker);
                     });
-                      */              
-                    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-                    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
-                    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-                    //kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-             } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
-                        
+                                  
+                    
+                } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
+
+                // 병원 리스트 항목 클릭 이벤트 추가
+                $('#hospitalList').on('click', '.hospital-details', function() {
+                    var index = $(this).data('index');
+                    map.setCenter(positionArr[index].latlng);
+                    infowindows[index].open(map, markers[index]);
+                });
+                
             } else {
                 v_html += `검색된 의료기관이 없습니다.`;
             } // end of if(json.length > 0) -------------------------------
@@ -405,6 +353,14 @@ function removeMarkers() {
     }
     markers = [];
 }
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
 
 // 지도에서 모든 인포윈도우를 제거하는 함수
 function removeInfowindows() {
