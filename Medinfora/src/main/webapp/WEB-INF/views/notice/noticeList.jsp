@@ -7,6 +7,31 @@
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/notice/notice.js"></script>
 
+<script type="text/javascript">
+function click_on(nidx){
+    //alert(nidx);
+    $("input[name='nidx']").val(nidx);
+    const frm = document.goViewFrm;
+    frm.method = "post";
+    frm.action = "<%= ctxPath%>/view.bibo";
+    frm.submit();
+}
+
+
+
+<%-- function goView(seq){
+    const goBackURL = "${requestScope.goBackURL}";
+
+    const frm = document.goViewFrm;
+    frm.seq.value = seq;
+    frm.goBackURL.value = goBackURL;
+
+    frm.method = "post";
+    frm.action = "<%= ctxPath%>/noticeView.action";
+    frm.submit();
+} --%>
+</script>
+
 <body>
     <div class="board_title">
         <p class="nanum-eb size-b">공지사항</p>
@@ -19,9 +44,9 @@
         <ul class="board-list">
             <c:forEach var="notice" items="${requestScope.noticeListdto}">
                 <li class="board-item nanum-n">
-                    <div class="board-item-body">
+                    <div class="board-item-body" onclick="click_on('${notice.nidx}')">
                         <span class="board-item-title nanum-n" style="font-weight: bold; font-size: 20px; color: rgb(78, 89, 104); display: block; text-overflow:ellipsis;">
-                            <a href="<%= ctxPath %>/notice/noticeView.bibo?seq=${notice.nidx}">${notice.title}</a>
+                            <p>${notice.title}</p>
                         </span>
                         <c:if test="${notice.filename != null}">
                             <span class="attach_sh">
@@ -35,9 +60,13 @@
         </ul>
     </section>
 
+<form name="goViewFrm">
+    <input type="hidden" name="nidx" value=""/>
+
+</form>
+
     <div class="w-100 d-flex justify-content-center pt-3">
         <c:out value="${requestScope.pageBar}" escapeXml="false" />
     </div>
 </body>
-
 </html>

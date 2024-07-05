@@ -26,6 +26,7 @@ import com.spring.app.main.service.MainService;
 
 @Controller
 public class LoginController {
+	
 	@Autowired
 	private MainService service;
 	
@@ -59,7 +60,6 @@ public class LoginController {
 		
 		return mav;
 	}
-	
 	
 	
 	// 아이디, 이메일  중복검사
@@ -124,7 +124,7 @@ public class LoginController {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("autoWord", autoWord);
 				
-				
+				jsonArr.put(jsonObj);
 			}// end of for-----------------
 		}
 		
@@ -147,8 +147,6 @@ public class LoginController {
 			isFail = "n";
 		}
 		
-		System.out.println(isFail);
-		
 		mav.addObject("kakaoApiKey", KakaoApi.getKakaoApiKey());
 		mav.addObject("RedirectUri", KakaoApi.getRedirectUri());
 		mav.addObject("isFail",isFail);
@@ -157,8 +155,6 @@ public class LoginController {
 		
 		return mav;
 	}
-	
-	
 	
 	// 로그인
 	@ResponseBody
