@@ -264,7 +264,22 @@ function searchHospitals(pageNo) {
                     // 마커를 배열에 추가
                     markers.push(marker);
                     
-                    
+                    console.log("markers:", markers);
+                    //마커가 하나 이상일때 그 마커들의 위경도가 서로 같다면 이진탐색    1,2,3,4 순서로 생성되어있음 
+                    if (markers.length > 1) {
+                        for (let i = 0; i < markers.length; i++) {    
+                            console.log("markers[i].getPosition() :" + markers[i].getPosition());   //(37.64235645995963, 126.7878839598955)
+                            
+                            for(let j=i+1; j<markers.length; j++){
+                                if(markers[i].getPosition().equals(markers[j].getPosition())){
+                                    console.log("markers[j].getPosition() :" + markers[j].getPosition()); //(37.64235645995963, 126.7878839598955)
+                                    
+                                }
+                             }
+                            
+                        }
+                    }
+
                     // 마커에 표시할 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content, //
@@ -369,9 +384,6 @@ function removeInfowindows() {
     }
     infowindows = [];
 }
-
-
-
 
 // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
 function makeOutListener(infowindow) {
