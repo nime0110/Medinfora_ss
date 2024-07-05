@@ -167,6 +167,12 @@ select userid, email
 from member
 where (midx between 0 and 8) and userid = "";
 
+SELECT hpname
+FROM(
+select row_number() over(order by hidx desc) AS rno, hpname
+from hospital
+)H
+WHERE rno between 1 and 5;
 
 
 
