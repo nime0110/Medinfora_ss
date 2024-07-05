@@ -62,7 +62,6 @@ public class LoginController {
 	}
 	
 	
-	
 	// 아이디, 이메일  중복검사
 	@ResponseBody
 	@PostMapping("/register/isexistcheckjson.bibo")
@@ -125,7 +124,7 @@ public class LoginController {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("autoWord", autoWord);
 				
-				
+				jsonArr.put(jsonObj);
 			}// end of for-----------------
 		}
 		
@@ -148,7 +147,7 @@ public class LoginController {
 			isFail = "n";
 		}
 		
-		System.out.println(isFail);
+		// System.out.println(isFail);
 		
 		mav.addObject("kakaoApiKey", KakaoApi.getKakaoApiKey());
 		mav.addObject("RedirectUri", KakaoApi.getRedirectUri());
