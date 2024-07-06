@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <% String ctxPath = request.getContextPath(); %>
  <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/notice/notice.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/notice/noticeMedia.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/header.css" />
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/notice/notice.js"></script>
   
 
@@ -22,28 +24,42 @@
         }
     });
 </script>
+<div class="notice-container">
 
 <div class="board_title">
-    <h2>글 내용 보기</h2>
     <span class="nanum-eb size-b">${noticedto.title}</span>
-<div class="board-item-info">
-    <span class="board-item-date">${noticedto.writeday}</span>
-	<span class="board-item-viewcnt">조회수: ${noticedto.viewcnt}</span>
 </div>
 
+<div class="notice-info">
+    <span class="notice-date">날짜: ${noticedto.writeday}</span>
+	<span class="notice-viewcount">조회수: ${noticedto.viewcnt}</span>
+	
+	<div class="notice-attachment">
+    <c:if test="${noticedto.filename != null}">
+        <span class="attachment-label">첨부파일: </span>
+        <span class="attachment-filename">${noticedto.filename}</span>
+    </c:if>
 </div>
 
-<div class="content">
+<hr>
+</div>
+
+
+
+<div class="nanum-n notice-content">
     <p>${noticedto.content}</p>
 </div>
 
-<button onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
-<button onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
-<button onclick="location.href='<%= ctxPath %>/notice/noticeDelete.bibo?seq=${noticedto.nidx}'">글 삭제하기</button>
+<div class="notice-button text-center mb-5">
+<button type="button" class="notice-button01 btn btn-lg mr-5"onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
+<button type="button" class="notice-button02 btn btn-lg" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
+<button type="button" class="notice-button03 btn" onclick="location.href='<%= ctxPath %>/notice/noticeDel.bibo?seq=${noticedto.nidx}'">글 삭제하기</button>
+</div>
+
 
 <form name="goViewFrm" style="display:none;">
     <input type="hidden" name="seq" />
     <input type="hidden" name="goBackURL" />
 </form>
-
+</div>
 </body>
