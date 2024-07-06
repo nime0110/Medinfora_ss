@@ -118,28 +118,12 @@ public class NoticeController {
 
         HttpSession session = request.getSession();
         session.setAttribute("readCountPermission", "yes");
-
-     //   String searchType = request.getParameter("searchType");
-     //   String searchWord = request.getParameter("searchWord");
+      
         String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 
-        /*
-        if (searchType == null) {
-            searchType = "";
-        }
-
-        if (searchWord == null) {
-            searchWord = "";
-        }
-
-        if (searchWord != null) {
-            searchWord = searchWord.trim();
-        }
-*/
+      
         Map<String, String> paraMap = new HashMap<>();
-        //paraMap.put("searchType", searchType);
-       // paraMap.put("searchWord", searchWord);
-
+       
         int totalCount = service.getTotalCount(paraMap);
         int sizePerPage = 10;
         int currentShowPageNo = 1;
@@ -166,9 +150,10 @@ public class NoticeController {
 
         // 디버깅: noticeListdto의 크기와 내용을 로그로 출력
         //System.out.println("noticeListdto size: " + noticeListdto.size());
-        for (NoticeDTO notice : noticeListdto) {
-         //   System.out.println("Notice: " + notice.getTitle());
-        }
+		/*
+		 * for (NoticeDTO notice : noticeListdto) { // System.out.println("Notice: " +
+		 * notice.getTitle()); }
+		 */
 
         mav.addObject("noticeListdto", noticeListdto);
         mav.addObject("paraMap", paraMap);
@@ -177,9 +162,17 @@ public class NoticeController {
         //        searchWord);
   //      mav.addObject("pageBar", pageBar);
 
+	/*
+	 * String goBackURL = Myutil.getCurrentURL(request); mav.addObject("goBackURL",
+	 * goBackURL);
+	 */
+        
+        String pageBar = Myutil.makePageBar(currentShowPageNo, sizePerPage, totalPage, request.getContextPath() + "/notice/noticeList.bibo");
+        mav.addObject("pageBar", pageBar);
+
         String goBackURL = Myutil.getCurrentURL(request);
         mav.addObject("goBackURL", goBackURL);
-
+        
         mav.setViewName("notice/noticeList.tiles");
         return mav;
     }
@@ -228,7 +221,7 @@ public class NoticeController {
 //                    mav.setViewName("notice/del.tiles1");
 //
 //                    return mav;
-//                }
+//           	     }
 //            }
 //
 //        } catch (NumberFormatException e) {
