@@ -2,7 +2,9 @@ package com.spring.app.reserve.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
-import com.spring.app.domain.ReserveDTO;
 import com.spring.app.reserve.service.ReserveService;
 
 @Controller
@@ -153,6 +154,15 @@ public class ReserveController {
 		
 		// String[] dayOfweekArr = {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"};
 		
+		// 만약 30분 이전이라면 현재 분 00분으로 하고 30분 이후라면 현재시간 30으로 설정
+		int minutes = currentDate.get(Calendar.MINUTE);
+		if (minutes < 30) {
+		    currentDate.set(Calendar.MINUTE, 0);
+		} else {
+		    currentDate.set(Calendar.MINUTE, 30);
+		}
+		currentDate.set(Calendar.SECOND, 0);
+		
 		String day = dateFormat.format(currentDate.getTime());
 		/*
 		for(int i=0; i< 30; i++) {
@@ -211,85 +221,122 @@ public class ReserveController {
 		HospitalDTO hospitalTime = service.hospitalTime(hidx);
 		
 		int start_h = 0, start_m = 0, end_h = 0, end_m = 0;
-		if("월요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime1().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime1().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime1().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime1().substring(2));
-		}
-		if("화요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime2().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime2().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime2().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime2().substring(2));
-		}
-		if("수요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime3().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime3().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime3().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime3().substring(2));
-		}
-		if("목요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime4().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime4().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime4().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime4().substring(2));
-		}
-		if("금요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime5().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime5().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime5().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime5().substring(2));
-		}
-		if("토요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime6().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime6().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime6().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime6().substring(2));
-		}
-		if("일요일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime7().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime7().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime7().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime7().substring(2));
-		}
-		if("공휴일".equals(dayOfweek)) {
-			start_h = Integer.parseInt(hospitalTime.getStarttime8().substring(0, 2));
-			start_m = Integer.parseInt(hospitalTime.getStarttime8().substring(2));
-			end_h = Integer.parseInt(hospitalTime.getEndtime8().substring(0,2));
-			end_m = Integer.parseInt(hospitalTime.getEndtime8().substring(2));
+		String start = "", end ="";
+		try {
+			if("월요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime1().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime1().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime1().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime1().substring(2));
+				start = hospitalTime.getStarttime1();
+				end = hospitalTime.getEndtime1();
+			}
+			if("화요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime2().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime2().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime2().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime2().substring(2));
+				start = hospitalTime.getStarttime2();
+				end = hospitalTime.getEndtime2();
+			}
+			if("수요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime3().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime3().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime3().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime3().substring(2));
+				start = hospitalTime.getStarttime3();
+				end = hospitalTime.getEndtime3();
+			}
+			if("목요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime4().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime4().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime4().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime4().substring(2));
+				start = hospitalTime.getStarttime4();
+				end = hospitalTime.getEndtime4();
+			}
+			if("금요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime5().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime5().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime5().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime5().substring(2));
+				start = hospitalTime.getStarttime5();
+				end = hospitalTime.getEndtime5();
+			}
+			if("토요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime6().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime6().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime6().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime6().substring(2));
+				start = hospitalTime.getStarttime6();
+				end = hospitalTime.getEndtime6();
+			}
+			if("일요일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime7().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime7().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime7().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime7().substring(2));
+				start = hospitalTime.getStarttime7();
+				end = hospitalTime.getEndtime7();
+			}
+			if("공휴일".equals(dayOfweek)) {
+				start_h = Integer.parseInt(hospitalTime.getStarttime8().substring(0, 2));
+				start_m = Integer.parseInt(hospitalTime.getStarttime8().substring(2));
+				end_h = Integer.parseInt(hospitalTime.getEndtime8().substring(0,2));
+				end_m = Integer.parseInt(hospitalTime.getEndtime8().substring(2));
+				start = hospitalTime.getStarttime8();
+				end = hospitalTime.getEndtime8();
+			}
+		}catch (Exception e) {
+			// 운영안하는 경우
 		}
 		
-		int start = start_h * 60 + start_m;
-		int end = end_h * 60 + end_m;
-		int cnt = (end - start)/30;
+		int TotalstartM = start_h * 60 + start_m;
+		int TotalendM = end_h * 60 + end_m;
+		int cnt = (TotalendM - TotalstartM)/30;
 		
 		// 선택한 날의 예약 개수 파악
 		int reserveCnt = service.reserveCnt(paraMap);
-		if(cnt == reserveCnt) {
+		if(cnt == 0) {
+			System.out.println("운영안함");
+		}
+		else if(cnt != 0 && cnt == reserveCnt) {
 			System.out.println("예약 가득참");
 		}
 		else {
 			System.out.println("예약 가능한 날 존재");
 			
-			// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
-			HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
-			
+			List<String> availableTimeList = new ArrayList<>(); 
 			for(int i=0; i<cnt; i++) {
+				// 현재시간 이후 그리고 오픈시간 이후 부터 시작
+				int today = currentDate.get(Calendar.DATE);
+				currentDate.add(Calendar.MINUTE, 30);
 				
-				if(impossibleTimeCheck != null) {
-					System.out.println("예약불가능");
-					// 30 분만 추가하고 건너 뛰기
-				}
-				else {
-					System.out.println("예약가능");
-					// 30분 추가한 값을 LIST 에 담기
+				if(today != currentDate.get(Calendar.DATE)){	// 날짜가 바뀔 경우
+					break;
 				}
 				
+				day = dateFormat.format(currentDate.getTime());
+				String day_time = day.substring(11, 13) + day.substring(14, 16);
+				
+				if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
+					i--;
+					continue;
+				}
+				paraMap.put("day", day);
+				
+				// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
+				HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
+				
+				if(impossibleTimeCheck == null) {	// 예약가능					
+					availableTimeList.add(day.substring(11, 16));
+					System.out.println(day.substring(11, 16));
+				}
 			}	// end of for-------------
 			
+			// 선택날짜의 예약가능 시간대 표출
+			mav.addObject("availableTimeList", availableTimeList);
 		}
-		
 		
 		// [보류] 다른날들 예약가득찬지 안찬지 확인
 		mav.setViewName("reserve/choiceDay.tiles");
