@@ -173,6 +173,9 @@ public class Myutil {
 				jsonObj_item = (JSONObject) jsonArr.get(i);
 				
 				String summary = jsonObj_item.get("summary").toString();
+				if (summary.startsWith("쉬는")) {
+					summary = summary.substring(5) + " 대체공휴일";
+				}
 				JSONObject startObj = (JSONObject) jsonObj_item.get("start");
 				String date = startObj.get("date").toString();
 				
