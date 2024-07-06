@@ -18,7 +18,7 @@
                일반 메뉴&nbsp;<i class="fa-solid fa-circle-info"></i>
            </div>
            <ul class="sidebar_list_ul">
-               <li class="sidebar_list_li">내 정보수정</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myinfo.bibo'">내 정보수정</li>
                <li class="sidebar_list_li">내 검색내역</li>
                <li class="sidebar_list_li">회원 탈퇴</li>
            </ul>
