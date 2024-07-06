@@ -141,6 +141,7 @@ public class ReserveController {
 		mav.setViewName("redirect:/index.bibo");
 		return mav;
 	}
+	
 	@PostMapping("choiceDay.bibo")
 	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
