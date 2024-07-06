@@ -152,6 +152,16 @@ public class Myutil {
 		
 	}// end of public static List<KoreaAreaVO> areaInputer(String localaddr)
 	
+	/**
+	 * HolidayApiInputer JSON Inputer (MADE BY Yang HyeJoung)
+	 * Local Json File Insert into My DB
+	 * Json File Type must be JSONObject
+	 * @param {String} Loacl JsonFile Address
+	 * @return {List<HolidayVO>} Parsing List DATA
+	 * @throws FileNotFoundException
+	 * @throws ParseException
+	 * @throws IOException
+	 */
 	public static List<HolidayVO> holidayApiInputer(String holidayAdr) throws IOException, ParseException {
 		List<HolidayVO> holidayList = null;
 		
