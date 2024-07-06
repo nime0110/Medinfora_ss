@@ -1,28 +1,5 @@
 @charset "UTF-8";
-:root {
-    --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
-    --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
 
-     /* div background 색상 등 object 컬럼 색상입니다 */
-    --object-lightpurple-color : #e5e2ff;
-    --object-lightyello-color : #fff6d8;
-    --object-lightgreen-color : #DFF9F2;
-    --object-clearblue-color : #f2f4f8;
-    --object-skyblue-color : #d8eaff;
-
-    /* object 컬럼 색상별 text 진한 컬러 - 오브젝트색상 계열의 진한 fontcolor 로 매칭시켜서 사용하시면됨 */
-    --object-lightgreen-font-color: #23C197;
-    --object-lightyello-font-color: #f46d19;
-    --object-lightpurple-font-color: #2614F3;
-
-    /* 포인트 컬러 */
-    
-    /* 기본 텍스트 컬러 */
-    --text-black-color: #0e0e0e; 
-    --text-white-color: #fff; 
-    --text-gray-color: #222; 
-
-}
 
 /* 스타일 clear 공통 코드 start */
 .nanum-n {
@@ -60,22 +37,22 @@
 /* noticeList.jsp css 시작 */
 
 .board_title {
+	    padding: 98px 0;
 	 width: 80vw;
       margin: auto;
       height:20vh !important;
       display: flex;
-      align-items: flex-end;
+/*       align-items: flex-end; */
       background-color: ( --text-black-color);
-	
+		justify-content: space-between;
+		padding-bottom: 20px;
+		   align-items: flex-start;
 }
 
 .board-list {
-  /*   list-style: none;
-    display: flex;
-    flex-direction: column;*/
-    gap: 10px; 
-/*     border: solid 1px red; */
-    margin-top: 40px; 
+     gap: 10px;
+    margin-top: 40px;
+ 
     width: 80vw;
     margin: auto;
 }
@@ -120,9 +97,49 @@ body > div.homebar {
 .board-container {
     padding: 20px;
     position: relative;
-   
 }
-.df {
+
+.notice-1 {
+	/* 
+	 justify-content: center;
+     */
+
+}
+.notice-1 {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+
+.notice-btn{
+ border: none;
+ background-color: var(--navy700);
+ color: var(--blue50);
+ font-family: 'Nanum Gothic', sans-serif !important;
+ font-size: 1rem;
+ border-radius: 4px;
+}
+.notice-btn{
+	
+	
+	/* display:block;
+ border: none;
+    border-radius: 0;
+    background-color: var(--navy700);
+    color: var(--blue50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    border-radius: 4px; */
+    
+}
+.notice-btn:hover{
+	background-color: var(--grey600);
+}
+
+/* .df {
 	position: absolute;
 	bottom: 13px;
 	right: 83px;
@@ -135,9 +152,9 @@ body > div.homebar {
         height: 96px;
         border-radius: 80px;
         box-shadow: 2px 3px 3px 0px;
-        display:block;
+        
 	
-}
+} */
 .board-item-date{
 	
 	     display: inline-block;
@@ -145,7 +162,6 @@ body > div.homebar {
         font-size: 14px;
         color:  rgb(139, 149, 161);
 }
-
 
 
 .board-item-title {
@@ -194,16 +210,116 @@ body > div.homebar {
 .nowPage{
     font-weight: bold;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
 
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
 /* === noticeList.jsp css 끝 == */
 
 /* noticeView.jsp 시작 */
-.board-item-datee{
- margin-left: 10%;
- margin-top: 8px;
-     font-weight: 400;
+
+.notice-container {
+	 
+    width: 80vw;
+    margin: auto;
+    padding: 30px 0;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+ .board_title1 {
+	padding-bottom: 27px;
+  width: 80vw;
+      margin: auto;
+      height:20vh !important;
+      display: flex;
+      align-items: flex-end;
+    font-size: 2rem;
+    font-weight: bold;
+ 
+}
+ 
+.notice-info {
+
+    margin-bottom: 20px;
+    text-align: left;
+    color: gray;
+}
+
+.notice-info span {
+    margin: 0 10px;
+}
+
+.notice-content {
+	
+	
+    padding: 50px 0;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    height: 500px;
 
 }
+
+.notice-attachment {
+    margin-bottom: 20px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.attachment-label {
+    font-weight: bold;
+}
+
+
+
+
+
+.notice-button01,
+.notice-button02,
+.notice-button03 {
+    border: none;
+    border-radius: 0;
+    background-color: var(--navy700);
+    color: var(--blue50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.notice-button01:hover,
+.notice-button02:hover,
+.notice-button03:hover 
+{
+	 background-color: var(--grey600);
+}
+
+
+
 /* noticeView.jsp 끝 */
 
 

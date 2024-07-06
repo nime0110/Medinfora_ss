@@ -2,19 +2,19 @@ package com.spring.app.domain;
 
 public class HolidayVO {
 
-	private String sumary,date;
+	private String summary,holiday_date;
 
-	public HolidayVO(String sumary, String date) {
-		this.sumary = sumary;
-		this.date = date;
+	public HolidayVO(String summary, String holiday_date) {
+		this.summary = summary;
+		this.holiday_date = holiday_date;
 	}
 
-	public String getSumary() {
-		return sumary;
+	public String getSummary() {
+		return summary;
 	}
 
-	public String getDate() {
-		return date;
+	public String getHoliday_date() {
+		return holiday_date;
 	}
 	
 }

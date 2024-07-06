@@ -147,5 +147,11 @@
 	<select id="getclasscode" resultType="ClasscodeDTO">
 		select CLASSCODE,CLASSNAME from CLASSCODE
 	</select>
+	
+	<!-- 공휴일 입력 -->
+	<insert id="holidayInputer" parameterType="HolidayVO">
+		INSERT INTO HOLIDAY (SUMMARY, HOLIDAY_DATE)
+		VALUES (#{summary}, #{holiday_date})
+	</insert>
 
 </mapper>

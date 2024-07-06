@@ -4,12 +4,11 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/notice/notice.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/notice/noticeMedia.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/header.css" />
-
+<link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/footer.css"/>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/notice/notice.js"></script>
 
 <script type="text/javascript">
 function click_on(nidx){
-    //alert(nidx);
     $("input[name='nidx']").val(nidx);
     const frm = document.goViewFrm;
     frm.method = "post";
@@ -18,29 +17,23 @@ function click_on(nidx){
 }
 
 
-
-<%-- function goView(seq){
-    const goBackURL = "${requestScope.goBackURL}";
-
-    const frm = document.goViewFrm;
-    frm.seq.value = seq;
-    frm.goBackURL.value = goBackURL;
-
-    frm.method = "post";
-    frm.action = "<%= ctxPath%>/noticeView.action";
-    frm.submit();
-} --%>
 </script>
 
 <body>
     <div class="board_title">
         <p class="nanum-eb size-b">공지사항</p>
+        <div class="notice-1">
+        <c:if test="${sessionScope.loginuser.mIdx==0}">
+        <div class="notice-btn1 nanum-eb mb-5">
+   <button type="button" class="notice-btn btn btn-lg mr-5" onclick="location.href='<%= ctxPath %>/notice/noticeWrite.bibo'">글 작성하기</button>
+ </div>
+ </c:if>
+ </div> 
     </div>
-    <br>
+   
+    <hr style="max-width: 80%; margin: auto;">
     <section class="board-container">
-        <div class="df nanum-eb size-s">
-            <a href="<%= ctxPath %>/notice/noticeWrite.bibo">글 등록하기</a>
-        </div>
+       
         <ul class="board-list">
             <c:forEach var="notice" items="${requestScope.noticeListdto}">
                 <li class="board-item nanum-n">
@@ -60,13 +53,12 @@ function click_on(nidx){
         </ul>
     </section>
 
-<form name="goViewFrm">
-    <input type="hidden" name="nidx" value=""/>
+    <form name="goViewFrm">
+        <input type="hidden" name="nidx" value=""/>
+    </form>
 
-</form>
-
-    <div class="w-100 d-flex justify-content-center pt-3">
-        <c:out value="${requestScope.pageBar}" escapeXml="false" />
+  <div class="w-100 d-flex justify-content-center pt-3">
+        <c:out value="${pageBar}" escapeXml="false" />
     </div>
 </body>
 </html>
