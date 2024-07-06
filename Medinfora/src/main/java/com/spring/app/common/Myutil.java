@@ -185,54 +185,35 @@ public class Myutil {
 		return holidayList;
 	}
 	
-	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url,
-			String searchType, String searchWord) {
-		StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
+	 public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
+	        StringBuilder pageBar = new StringBuilder("<nav><ul class='pagination'>");
 
-		int blockSize = 10;
-		int loop = 1;
-		int pageNo = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+	        int blockSize = 10; // Page block size
+	        int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+	        int endPage = startPage + blockSize - 1;
 
-		// [맨처음][이전] 만들기
-		if (pageNo != 1) {
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=1'>[맨처음]</a></li>");
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(pageNo - 1).append("'>[이전]</a></li>");
-		}
+	        if (endPage > totalPage) {
+	            endPage = totalPage;
+	        }
 
-		while (!(loop > blockSize || pageNo > totalPage)) {
-			if (pageNo == currentShowPageNo) {
-				pageBar.append("<li class='page-item active'><span class='page-link'>").append(pageNo)
-						.append("</span></li>");
-			} else {
-				pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-						.append("?searchType=").append(searchType)
-						.append("&searchWord=").append(searchWord)
-						.append("&currentShowPageNo=").append(pageNo).append("'>").append(pageNo).append("</a></li>");
-			}
-			loop++;
-			pageNo++;
-		}
+	        if (startPage > 1) {
+	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(startPage - 1).append("'>Previous</a></li>");
+	        }
 
-		// [다음][마지막] 만들기
-		if (pageNo <= totalPage) {
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(pageNo).append("'>[다음]</a></li>");
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(totalPage).append("'>[마지막]</a></li>");
-		}
+	        for (int i = startPage; i <= endPage; i++) {
+	            if (i == currentShowPageNo) {
+	                pageBar.append("<li class='page-item active'><span class='page-link'>").append(i).append("</span></li>");
+	            } else {
+	                pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(i).append("'>").append(i).append("</a></li>");
+	            }
+	        }
 
-		pageBar.append("</ul>");
-		return pageBar.toString();
-	}
+	        if (endPage < totalPage) {
+	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(endPage + 1).append("'>Next</a></li>");
+	        }
+
+	        pageBar.append("</ul></nav>");
+	        return pageBar.toString();
+	    }
 	
 }

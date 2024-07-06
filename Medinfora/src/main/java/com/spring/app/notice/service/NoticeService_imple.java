@@ -59,7 +59,7 @@ public class NoticeService_imple implements NoticeService {
 			}
 		}
 		NoticeDTO noticedto = dao.getView(paraMap);
-System.out.println("noticedto : " + noticedto.getNidx());
+//System.out.println("noticedto : " + noticedto.getNidx());
 	if(plz != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
 
 	//if(mIdx.getmIdx() != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
