@@ -180,7 +180,7 @@ public class MainService_imple implements MainService {
 	@Override
 	public int holidayInputer(HolidayVO holidayVO) {
 		System.out.print("확인용 summary : "+holidayVO.getSummary());
-		System.out.print("확인용 holiday_date : "+holidayVO.getHoliday_date());
+		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
 

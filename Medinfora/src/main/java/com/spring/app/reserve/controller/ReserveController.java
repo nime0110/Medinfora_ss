@@ -1,6 +1,8 @@
 package com.spring.app.reserve.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.ReserveDTO;
 import com.spring.app.reserve.service.ReserveService;
 
 @Controller
@@ -138,10 +141,72 @@ public class ReserveController {
 		mav.setViewName("redirect:/index.bibo");
 		return mav;
 	}
+	
 	@PostMapping("choiceDay.bibo")
 	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
 		String hidx = request.getParameter("hidx");
+		
+		Calendar currentDate = Calendar.getInstance();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		// String[] dayOfweekArr = {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"};
+		
+		String day = dateFormat.format(currentDate.getTime());
+		/*
+		for(int i=0; i< 30; i++) {
+			String date = dateFormat.format(currentDate.getTime());
+			int n = currentDate.get(Calendar.DAY_OF_WEEK) - 1;
+			String dayOfweek = dayOfweekArr[n];
+			System.out.println(dayOfweek);
+			
+			currentDate.add(Calendar.DATE, 1);
+		}
+		*/
+		String dayOfweek = "";
+		int n = currentDate.get(Calendar.DAY_OF_WEEK);
+		
+		// 날짜가 공휴일인지 확인
+		int check = service.holidayCheck(day);
+		if(check == 1) {
+			n = 0;
+		}
+		
+		switch (n) {
+		case 1:
+			dayOfweek = "일요일";
+			break;
+		case 2:
+			dayOfweek = "월요일";
+			break;
+		case 3:
+			dayOfweek = "화요일";
+			break;
+		case 4:
+			dayOfweek = "수요일";
+			break;
+		case 5:
+			dayOfweek = "목요일";
+			break;
+		case 6:
+			dayOfweek = "금요일";
+			break;
+		case 7:
+			dayOfweek = "토요일";
+			break;
+		case 0:
+			dayOfweek = "공휴일";
+			break;
+		}
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("hidx", hidx);
+		paraMap.put("day", day);
+		paraMap.put("dayOfweek", dayOfweek);
+		
+		// 병원과 요일 파악하여, 오늘(현재시간 이후) 진료예약 가능한 업무시간 파악하기
+		List<HospitalDTO> availableTimeList = service.todayReserveAvailable(paraMap);
 		
 		mav.setViewName("reserve/choiceDay.tiles");
 		

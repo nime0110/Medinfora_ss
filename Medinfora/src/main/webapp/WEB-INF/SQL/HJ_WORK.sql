@@ -26,7 +26,7 @@ from user_tab_comments;
 select column_name, comments
 from user_col_comments
 where table_name = '테이블명';
--- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE
+-- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE, KOREAAREA, HOLIDAY, CLASSCODE
 
 ----------------------------------------------------------------------------------------
 -- === 활동중인 의료종사자인 회원의 수 === --
@@ -185,3 +185,38 @@ nominvalue
 nocycle
 nocache;
 -- Sequence SEQ_RIDX이(가) 생성되었습니다.
+
+-------------------------------------------------------------------------------------------
+-- 날짜가 공휴일인지 체크
+select count(*)
+from holiday
+where holiday_date = '2020-01-01'
+
+
+
+
+
+-- 현재시간 이후, 병원과 요일 파악하여 진료예약 가능한 업무시간 파악하기(보류 이전꺼부터 할거)
+select ridx, userid, hospital, reportday, checkin, symptom, rcode, hidx
+from reserve
+-- RESERVECODE, RESERVE, HOLIDAY
+
+select rcode, rStatus
+from reservecode
+
+SELECT hidx, starttime1, starttime2, starttime3, starttime4, starttime5, starttime6, starttime7, starttime8
+    , endtime1, endtime2, endtime3, endtime4, endtime5, endtime6, endtime7, endtime8
+FROM
+(
+    select ridx, userid, hospital, reportday, checkin, symptom, rcode, hidx
+    from reserve
+    where checkin = to_char('2024-07-10 14:00','yyyy-mm-dd')
+) R
+JOIN
+(
+    select hidx, 
+        starttime1, starttime2, starttime3, starttime4, starttime5, starttime6, starttime7, starttime8
+        , endtime1, endtime2, endtime3, endtime4, endtime5, endtime6, endtime7, endtime8
+    from hospital
+) H
+ON R.hidx = H.hidx
