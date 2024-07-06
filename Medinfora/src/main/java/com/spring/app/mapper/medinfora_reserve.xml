@@ -101,9 +101,33 @@
 		where holiday_date = #{day}
 	</select>
 	
-	<!-- 병원과 요일 파악하여, 오늘(현재시간 이후) 진료예약 가능한 업무시간 파악하기  -->
-	<select id="todayReserveAvailable" resultType="HospitalDTO">
-		select *
-		from holiday
+	<!-- 병원의 오픈시간과 마감시간 파악  -->
+	<select id="hospitalTime" resultType="HospitalDTO" parameterType="String">
+		select hidx
+	        , nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3
+	        , nvl(starttime4, ' ') as starttime4, nvl(starttime5, ' ') as starttime5, nvl(starttime6, ' ') as starttime6
+	        , nvl(starttime7, ' ') as starttime7, nvl(starttime8,' ') as starttime8
+	        , nvl(endtime1, ' ') as endtime1, nvl(endtime2, ' ') as endtime2, nvl(endtime3, ' ') as endtime3
+	        , nvl(endtime4, ' ') as endtime4, nvl(endtime5, ' ') as endtime5, nvl(endtime6, ' ') as endtime6
+	        , nvl(endtime7, ' ') as endtime7, nvl(endtime8, ' ') as endtime8
+		from hospital
+		where hidx = #{hidx}
+	</select>
+	
+	<!-- 선택한 날의 예약 개수 파악  -->
+	<select id="reserveCnt" resultType="int" parameterType="HashMap">
+		select count(*)
+		from reserve
+		where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(#{day},'yyyy-mm-dd hh24:mi:ss'))
+			and hidx = #{hidx}
+	</select>
+	
+	<!-- 현재시간 이후, 선택한 날짜와 예약일이 같은 경우  -->
+	<select id="dayReserveImpossible" resultType="HospitalDTO" parameterType="HashMap">
+		select ridx, userid, reportday, checkin, symptom, rcode, hidx
+		from reserve
+		where hidx = #{hidx}
+			and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(sysdate,'yyyy-mm-dd hh24:mi:ss'))
+		    and checkin = #{day}
 	</select>
 </mapper>
