@@ -15,17 +15,23 @@ function click_on(nidx){
     frm.action = "<%= ctxPath%>/view.bibo";
     frm.submit();
 }
+
+
 </script>
 
 <body>
     <div class="board_title">
         <p class="nanum-eb size-b">공지사항</p>
+        <div class="notice-1">
+       <div class="notice-btn1 nanum-eb mb-5">
+   <button type="button" class="notice-btn btn btn-lg mr-5"onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo'">글 작성하기</button>
+ </div>
+ </div> 
     </div>
+   
     <hr style="max-width: 80%; margin: auto;">
     <section class="board-container">
-        <div class="df nanum-eb size-s">
-            <a href="<%= ctxPath %>/notice/noticeWrite.bibo">글 등록하기</a>
-        </div>
+       
         <ul class="board-list">
             <c:forEach var="notice" items="${requestScope.noticeListdto}">
                 <li class="board-item nanum-n">
