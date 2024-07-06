@@ -37,13 +37,16 @@
 /* noticeList.jsp css 시작 */
 
 .board_title {
+	    padding: 98px 0;
 	 width: 80vw;
       margin: auto;
       height:20vh !important;
       display: flex;
-      align-items: flex-end;
+/*       align-items: flex-end; */
       background-color: ( --text-black-color);
-	
+		justify-content: space-between;
+		padding-bottom: 20px;
+		   align-items: flex-start;
 }
 
 .board-list {
@@ -94,10 +97,49 @@ body > div.homebar {
 .board-container {
     padding: 20px;
     position: relative;
-     margin-bottom: 339px;
-   
 }
-.df {
+
+.notice-1 {
+	/* 
+	 justify-content: center;
+     */
+
+}
+.notice-1 {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+
+.notice-btn{
+ border: none;
+ background-color: var(--navy700);
+ color: var(--blue50);
+ font-family: 'Nanum Gothic', sans-serif !important;
+ font-size: 1rem;
+ border-radius: 4px;
+}
+.notice-btn{
+	
+	
+	/* display:block;
+ border: none;
+    border-radius: 0;
+    background-color: var(--navy700);
+    color: var(--blue50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    border-radius: 4px; */
+    
+}
+.notice-btn:hover{
+	background-color: var(--grey600);
+}
+
+/* .df {
 	position: absolute;
 	bottom: 13px;
 	right: 83px;
@@ -110,9 +152,9 @@ body > div.homebar {
         height: 96px;
         border-radius: 80px;
         box-shadow: 2px 3px 3px 0px;
-        display:block;
+        
 	
-}
+} */
 .board-item-date{
 	
 	     display: inline-block;
@@ -120,7 +162,6 @@ body > div.homebar {
         font-size: 14px;
         color:  rgb(139, 149, 161);
 }
-
 
 
 .board-item-title {
@@ -204,17 +245,21 @@ body > div.homebar {
 	 
     width: 80vw;
     margin: auto;
-    padding: 20px 0;
+    padding: 30px 0;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
- .board_title {
-	
-    margin-bottom: 10px;
+ .board_title1 {
+	padding-bottom: 27px;
+  width: 80vw;
+      margin: auto;
+      height:20vh !important;
+      display: flex;
+      align-items: flex-end;
     font-size: 2rem;
     font-weight: bold;
-    text-align: center;
+ 
 }
  
 .notice-info {
@@ -230,10 +275,12 @@ body > div.homebar {
 
 .notice-content {
 	
-	padding : 150px 0;
+	
+    padding: 50px 0;
     margin-bottom: 20px;
     font-size: 1.2em;
-    text-align: center;
+    height: 500px;
+
 }
 
 .notice-attachment {

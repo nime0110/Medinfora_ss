@@ -26,7 +26,7 @@
 </script>
 <div class="notice-container">
 
-<div class="board_title">
+<div class="board_title1">
     <span class="nanum-eb size-b">${noticedto.title}</span>
 </div>
 
@@ -50,13 +50,20 @@
     <p>${noticedto.content}</p>
 </div>
 
-<div class="notice-button text-center mb-5">
+<%-- <div class="notice-button text-center mb-5">
 <button type="button" class="notice-button01 btn btn-lg mr-5"onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
 <button type="button" class="notice-button02 btn btn-lg" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
 <button type="button" class="notice-button03 btn" onclick="location.href='<%= ctxPath %>/notice/noticeDel.bibo?seq=${noticedto.nidx}'">글 삭제하기</button>
+</div> 
+--%>
+
+<div class="notice-button text-center mb-5">
+    <button type="button" class="notice-button01 btn btn-lg mr-5" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
+    <c:if test="${sessionScope.loginuser.mIdx==0}">
+        <button type="button" class="notice-button02 btn btn-lg" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
+        <button type="button" class="notice-button03 btn" onclick="location.href='<%= ctxPath %>/notice/noticeDel.bibo?seq=${noticedto.nidx}'">글 삭제하기</button>
+    </c:if>
 </div>
-
-
 <form name="goViewFrm" style="display:none;">
     <input type="hidden" name="seq" />
     <input type="hidden" name="goBackURL" />

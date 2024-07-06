@@ -189,7 +189,7 @@ public class Myutil {
 	}
 	
 	 public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
-	        StringBuilder pageBar = new StringBuilder("<nav><ul class='pagination'>");
+	        StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
 
 	        int blockSize = 10; // Page block size
 	        int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
@@ -215,7 +215,7 @@ public class Myutil {
 	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(endPage + 1).append("'>Next</a></li>");
 	        }
 
-	        pageBar.append("</ul></nav>");
+	        pageBar.append("</ul>");
 	        return pageBar.toString();
 	    }
 	

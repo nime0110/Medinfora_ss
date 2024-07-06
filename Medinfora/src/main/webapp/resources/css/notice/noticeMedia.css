@@ -30,7 +30,7 @@
     .board_view .info dl dd {
         font-size: 1.0rem;
     }
-    .df {
+   .notice-btn {
         display: none;
     }
     .board-item-title {
@@ -55,7 +55,7 @@
         font-size: 1rem;
         padding: 8px 2px;
     }
-    .df {
+   .notice-btn {
         display: none;
     }
     .board-item-title {
