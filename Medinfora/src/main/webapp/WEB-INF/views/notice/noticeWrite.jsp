@@ -50,8 +50,8 @@
 </script>
 
 <div class="board_wrap">
-    <div class="board_title">
-        <p class="nanum-eb size-b">공지사항 글 등록하기</p>
+    <div class="board_title11">
+        <p class="nanum-eb size-b">글 등록하기</p>
     </div>
     <br>
     <div style="display: flex;">
@@ -62,7 +62,7 @@
                     <tr>
                         <th style="width: 15%;">제목</th>
                         <td>
-                            <input type="text" name="TITLE" size="100" maxlength="200" />
+                            <input type="text" name="TITLE" size="103" maxlength="200" />
                         </td>
                     </tr>
                     <tr>
@@ -72,7 +72,7 @@
                         </td>
                     </tr>
                     <tr> 
-                        <th style="width: 15%; background-color: #DDDDDD;"> 파일첨부</th>
+                        <th style="width: 15%;"> 파일첨부</th>
                         <td>
                             <input type="hidden" name="userid" value="${sessionScope.loginuser.userid}">
                             <input type="file" name="attach"/>
