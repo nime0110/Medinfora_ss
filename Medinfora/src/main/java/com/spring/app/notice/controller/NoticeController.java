@@ -47,7 +47,7 @@ public class NoticeController {
 
     // 공지사항 글 쓰기 폼 페이지 요청
     @GetMapping("/notice/noticeWrite.bibo")
-    public ModelAndView isLogin_noticeWrite(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView noticeWrite(HttpServletRequest request, HttpServletResponse response,
             ModelAndView mav) {
 
         mav.setViewName("notice/noticeWrite.tiles");
@@ -55,7 +55,7 @@ public class NoticeController {
     }
 
     @PostMapping("/noticeWriteEnd.bibo")
-    public ModelAndView isLogin_noticeWriteEnd(Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
+    public ModelAndView noticeWriteEnd(Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
             MultipartHttpServletRequest mrequest) {
 
         MultipartFile attach = noticedto.getAttach();

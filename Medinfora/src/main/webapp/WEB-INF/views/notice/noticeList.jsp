@@ -23,9 +23,11 @@ function click_on(nidx){
     <div class="board_title">
         <p class="nanum-eb size-b">공지사항</p>
         <div class="notice-1">
-       <div class="notice-btn1 nanum-eb mb-5">
-   <button type="button" class="notice-btn btn btn-lg mr-5"onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo'">글 작성하기</button>
+        <c:if test="${sessionScope.loginuser.mIdx==0}">
+        <div class="notice-btn1 nanum-eb mb-5">
+   <button type="button" class="notice-btn btn btn-lg mr-5" onclick="location.href='<%= ctxPath %>/notice/noticeWrite.bibo'">글 작성하기</button>
  </div>
+ </c:if>
  </div> 
     </div>
    
