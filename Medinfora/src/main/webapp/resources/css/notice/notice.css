@@ -1,128 +1,145 @@
 @charset "UTF-8";
 
-
 /* 스타일 clear 공통 코드 start */
 .nanum-n {
-    font-family: "Nanum Gothic", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+	font-family: "Nanum Gothic", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 .nanum-b {
-    font-family: "Nanum Gothic", sans-serif;
-    font-weight: 700;
-    font-style: normal;
+	font-family: "Nanum Gothic", sans-serif;
+	font-weight: 700;
+	font-style: normal;
 }
 
 .nanum-eb {
-    font-family: "Nanum Gothic", sans-serif;
-    font-weight: 800;
-    font-style: normal;
+	font-family: "Nanum Gothic", sans-serif;
+	font-weight: 800;
+	font-style: normal;
 }
 
 .size-s {
-    font-size: 1rem;
+	font-size: 1rem;
 }
 
 .size-n {
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 .size-b {
-    font-size: 3rem;
+	font-size: 3rem;
 }
 
-
-
 /* noticeList.jsp css 시작 */
+.notice0000 {
+	/* padding: 10px; */
+/* 	margin-top: 50px; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 80vw;
+	margin: auto;
+	height: 30px;
+}
 
 .board_title {
-	    padding: 98px 0;
-	 width: 80vw;
-      margin: auto;
-      height:20vh !important;
-      display: flex;
-/*       align-items: flex-end; */
-      background-color: ( --text-black-color);
-		justify-content: space-between;
-		padding-bottom: 20px;
-		   align-items: flex-start;
+	margin: auto;
+	font-size: 10px;
+ height: 50px;
+ margin-top: 200px;
+	width: 80vw;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+ /*  padding: 98px 0; */
+ 
+    background-color: (--text-black-color);
+   
+    align-items: center;
+  
+    
 }
 
 .board-list {
-     gap: 10px;
-    margin-top: 40px;
- 
-    width: 80vw;
-    margin: auto;
+	cursor:pointer;
+	gap: 10px;
+	margin-top: 40px;
+	width: 80vw;
+	margin: auto;
 }
 
-.board-item{
-	padding : 20px 20px;
+.board-item {
+	padding: 20px 20px;
 	transition: 0s;
-	 border-bottom: solid 1px #eee;
-	 border-radius: 25px;
-	 text-overflow:ellipsis;
-	 
-	 
-
+	border-bottom: solid 1px #eee;
+	border-radius: 25px;
+	text-overflow: ellipsis;
 }
-.board-item:hover{
-        background-color: #f0f0f0;
-   opacity:0.6;
-   text-overflow:ellipsis;
-    }
+
+.board-item:hover {
+	background-color: #f0f0f0;
+	opacity: 0.6;
+	text-overflow: ellipsis;
+}
 
 .board-item-title {
-	font-wight: bold;
-font-size: 24px;	
-color: rgb(78, 89, 104);
-display: block;
-text-overflow:ellipsis;
+/* 	font-wight: bold;
+	font-size: 24px;
+	color: rgb(78, 89, 104);
+	display: block;
+	text-overflow: ellipsis; */
+display:flex;
 }
 
 
-.p {
-	font-size : 44px;
-	
-}
 
-body > div.homebar {
+body>div.homebar {
 	margin-top: 20px;
 	text-align: center;
 	margin-bottom: 10px;
-	
 }
 
 .board-container {
-    padding: 20px;
-    position: relative;
+	padding: 20px;
+	position: relative;
 }
 
 .notice-1 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	/* 
 	 justify-content: center;
      */
-
+	height: 10px;
 }
-.notice-1 {
+/* .notice-1 {
  display: flex;
  align-items: center;
  justify-content: center;
+
+ 
 }
 
+ */
 
 .notice-btn{
- border: none;
+ padding:5px;
  background-color: var(--navy700);
  color: var(--blue50);
  font-family: 'Nanum Gothic', sans-serif !important;
  font-size: 1rem;
- border-radius: 4px;
+ border-radius: 5px;
+
+} 
+
+ .notice-btn:hover{
+	background-color: var(--grey600);
 }
-.notice-btn{
+/* .notice-btn {
 	
-	
+
 	/* display:block;
  border: none;
     border-radius: 0;
@@ -133,11 +150,10 @@ body > div.homebar {
     font-family: 'Nanum Gothic', sans-serif !important;
     font-size: 1rem;
     border-radius: 4px; */
-    
 }
-.notice-btn:hover{
+/* .notice-btn:hover{
 	background-color: var(--grey600);
-}
+} */
 
 /* .df {
 	position: absolute;
@@ -155,175 +171,167 @@ body > div.homebar {
         
 	
 } */
-.board-item-date{
-	
-	     display: inline-block;
-        padding-top: 10px;
-        font-size: 14px;
-        color:  rgb(139, 149, 161);
+.board-item-date {
+	display: inline-block;
+	padding-top: 10px;
+	font-size: 14px;
+	color: rgb(139, 149, 161);
 }
 
-
 .board-item-title {
-    flex: 1;
-    font-size: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	flex: 1;
+	font-size: 1rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .board-item-title a {
-    color: var(--text-black-color);
-    display: inline-block;
-    max-width: 120%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	color: var(- -text-black-color);
+	display: inline-block;
+	max-width: 120%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .attachment-icon img {
-    vertical-align: middle;
-   
+	vertical-align: middle;
 }
 
 .board-item-body {
- 
-	  display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .attach_sh {
-	
 	padding-right: 10px;
 }
 
-
 .page-link {
-    border: none !important;
-    color: black;
+	border: none !important;
+	color: black;
 }
 
-.nowPage{
-    font-weight: bold;
+.nowPage {
+	font-weight: bold;
 }
+
 .pagination {
-    display: flex;
-    justify-content: center;
-    padding-left: 0;
-    list-style: none;
+	display: flex;
+	justify-content: center;
+	padding-left: 0;
+	list-style: none;
 }
 
 .page-item {
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 .page-link {
-    display: block;
-    padding: 0.5rem 0.75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #007bff;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
+	display: block;
+	padding: 0.5rem 0.75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	color: #007bff;
+	background-color: #fff;
+	border: 1px solid #dee2e6;
 }
 
 .page-item.active .page-link {
-    z-index: 1;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+	z-index: 1;
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
 }
 /* === noticeList.jsp css 끝 == */
 
 /* noticeView.jsp 시작 */
-
 .notice-container {
-	 
-    width: 80vw;
-    margin: auto;
-    padding: 30px 0;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+	width: 80vw;
+	margin: auto;
+	padding: 30px 0;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
 }
 
- .board_title1 {
+.board_title1 {
 	padding-bottom: 27px;
-  width: 80vw;
-      margin: auto;
-      height:20vh !important;
-      display: flex;
-      align-items: flex-end;
-    font-size: 2rem;
-    font-weight: bold;
- 
+	width: 80vw;
+	margin: auto;
+	height: 20vh !important;
+	display: flex;
+	align-items: flex-end;
+	font-size: 2rem;
+	font-weight: bold;
 }
- 
-.notice-info {
 
-    margin-bottom: 20px;
-    text-align: left;
-    color: gray;
+.notice-info {
+	margin-bottom: 20px;
+	text-align: left;
+	color: gray;
 }
 
 .notice-info span {
-    margin: 0 10px;
+	margin: 0 10px;
 }
 
 .notice-content {
-	
-	
-    padding: 50px 0;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    height: 500px;
-
+	padding: 50px 0;
+	margin-bottom: 20px;
+	font-size: 1.2em;
+	height: 500px;
 }
 
 .notice-attachment {
-    margin-bottom: 20px;
-    font-size: 1em;
-    text-align: center;
+	margin-bottom: 20px;
+	font-size: 1em;
+	text-align: center;
 }
 
 .attachment-label {
-    font-weight: bold;
+	font-weight: bold;
 }
 
-
-
-
-
-.notice-button01,
-.notice-button02,
-.notice-button03 {
-    border: none;
-    border-radius: 0;
-    background-color: var(--navy700);
-    color: var(--blue50);
-    height: 38px;
-    transition: all 0.5s;
-    font-family: 'Nanum Gothic', sans-serif !important;
-    font-size: 1rem;
-    border-radius: 4px;
+.notice-button01, .notice-button02, .notice-button03 {
+	border: none;
+	border-radius: 0;
+	background-color: var(- -navy700);
+	color: var(- -blue50);
+	height: 38px;
+	transition: all 0.5s;
+	font-family: 'Nanum Gothic', sans-serif !important;
+	font-size: 1rem;
+	border-radius: 4px;
 }
 
-.notice-button01:hover,
-.notice-button02:hover,
-.notice-button03:hover 
-{
-	 background-color: var(--grey600);
+.notice-button01:hover, .notice-button02:hover, .notice-button03:hover {
+	background-color: var(- -grey600);
 }
-
-
 
 /* noticeView.jsp 끝 */
-
-
-.writebtn{
-	
+.writebtn {
 	text-align: center;
+}
+
+tr>th {
+	text-align: center;
+}
+.board_title11{
+	width: 60vw;
+	display: flex;
+	justify-content: center;
+	margin-top: 120px;
+	margin-bottom: -20px;
+	
+	
+}
+#wrapper>div>div:nth-child(3)>div>form>table>tbody>tr:nth-child(2)>th {
+
+	margin: 40px auto;
+	vertical-align: middle;
 }
