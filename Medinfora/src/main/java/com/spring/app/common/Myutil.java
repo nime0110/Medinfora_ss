@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 
@@ -151,54 +152,81 @@ public class Myutil {
 		
 	}// end of public static List<KoreaAreaVO> areaInputer(String localaddr)
 	
-	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url,
-			String searchType, String searchWord) {
-		StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
-
-		int blockSize = 10;
-		int loop = 1;
-		int pageNo = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
-
-		// [맨처음][이전] 만들기
-		if (pageNo != 1) {
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=1'>[맨처음]</a></li>");
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(pageNo - 1).append("'>[이전]</a></li>");
+	/**
+	 * HolidayApiInputer JSON Inputer (MADE BY Yang HyeJoung)
+	 * Local Json File Insert into My DB
+	 * Json File Type must be JSONObject
+	 * @param {String} Loacl JsonFile Address
+	 * @return {List<HolidayVO>} Parsing List DATA
+	 * @throws FileNotFoundException
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public static List<HolidayVO> holidayApiInputer(String holidayAdr) throws IOException, ParseException {
+		List<HolidayVO> holidayList = null;
+		
+		JSONParser parser = new JSONParser();
+		
+		Reader reader = new FileReader(holidayAdr);
+		
+		JSONObject jsonObj = (JSONObject) parser.parse(reader);
+		
+		JSONArray jsonArr = (JSONArray) jsonObj.get("items");
+		
+		if(jsonArr.size()>0) {
+			holidayList = new ArrayList<HolidayVO>();
+			
+			for(int i=0;i<jsonArr.size();i++) {
+			
+				JSONObject jsonObj_item = new JSONObject();
+				
+				jsonObj_item = (JSONObject) jsonArr.get(i);
+				
+				String summary = jsonObj_item.get("summary").toString();
+				if (summary.startsWith("쉬는")) {
+					summary = summary.substring(5) + " 대체공휴일";
+				}
+				JSONObject startObj = (JSONObject) jsonObj_item.get("start");
+				String date = startObj.get("date").toString();
+				
+				HolidayVO holidayvo = new HolidayVO(summary, date);
+				
+				holidayList.add(holidayvo);
+				
+			}	// end of for--------------------
 		}
-
-		while (!(loop > blockSize || pageNo > totalPage)) {
-			if (pageNo == currentShowPageNo) {
-				pageBar.append("<li class='page-item active'><span class='page-link'>").append(pageNo)
-						.append("</span></li>");
-			} else {
-				pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-						.append("?searchType=").append(searchType)
-						.append("&searchWord=").append(searchWord)
-						.append("&currentShowPageNo=").append(pageNo).append("'>").append(pageNo).append("</a></li>");
-			}
-			loop++;
-			pageNo++;
-		}
-
-		// [다음][마지막] 만들기
-		if (pageNo <= totalPage) {
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(pageNo).append("'>[다음]</a></li>");
-			pageBar.append("<li class='page-item'><a class='page-link' href='").append(url)
-					.append("?searchType=").append(searchType)
-					.append("&searchWord=").append(searchWord)
-					.append("&currentShowPageNo=").append(totalPage).append("'>[마지막]</a></li>");
-		}
-
-		pageBar.append("</ul>");
-		return pageBar.toString();
+		return holidayList;
 	}
+	
+	 public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
+	        StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
+
+	        int blockSize = 10; // Page block size
+	        int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+	        int endPage = startPage + blockSize - 1;
+
+	        if (endPage > totalPage) {
+	            endPage = totalPage;
+	        }
+
+	        if (startPage > 1) {
+	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(startPage - 1).append("'>Previous</a></li>");
+	        }
+
+	        for (int i = startPage; i <= endPage; i++) {
+	            if (i == currentShowPageNo) {
+	                pageBar.append("<li class='page-item active'><span class='page-link'>").append(i).append("</span></li>");
+	            } else {
+	                pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(i).append("'>").append(i).append("</a></li>");
+	            }
+	        }
+
+	        if (endPage < totalPage) {
+	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(endPage + 1).append("'>Next</a></li>");
+	        }
+
+	        pageBar.append("</ul>");
+	        return pageBar.toString();
+	    }
 	
 }

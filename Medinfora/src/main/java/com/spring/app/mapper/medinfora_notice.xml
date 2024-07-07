@@ -50,7 +50,7 @@
 	
 	
 	<select id="getView" parameterType="HashMap" resultType="NoticeDTO">
-		SELECT nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		SELECT nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday, filename, orgname, filesize
 		from notice
 		where nidx = #{nidx}
 	

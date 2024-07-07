@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -173,6 +174,14 @@ public class MainService_imple implements MainService {
 	@Override
 	public List<ClasscodeDTO> getclasscode() {
 		return dao.getclasscode();
+	}
+
+	// 공휴일 입력용
+	@Override
+	public int holidayInputer(HolidayVO holidayVO) {
+		System.out.print("확인용 summary : "+holidayVO.getSummary());
+		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
+		return dao.holidayInputer(holidayVO);
 	}
 
 	

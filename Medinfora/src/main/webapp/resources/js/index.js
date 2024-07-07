@@ -105,6 +105,15 @@ window.onload = () => {
     head_container.on("mouseleave",function(){
         tgremoveclass();
     })
+
+    const dropdownmenu = $('.fa-caret-down');
+
+    dropdownmenu.on("click",function(){
+
+        tg1.removeClass("fadeout");
+        tg2.removeClass("fadeout");
+
+    })
     
     // 동혁 END
 

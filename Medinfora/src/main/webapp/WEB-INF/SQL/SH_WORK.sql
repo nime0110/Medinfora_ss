@@ -4,6 +4,8 @@ show USER
 select *
 from tab
 
+select *
+from member;
 
 /*
 /* 이거 수업시간 때꺼임 
@@ -183,4 +185,4 @@ ORDER BY
         
         	SELECT seq_notice.nextval, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
 		from notice
-		where seq_notic.nextval = '27';
+		where seq_notic.nextval = '21';

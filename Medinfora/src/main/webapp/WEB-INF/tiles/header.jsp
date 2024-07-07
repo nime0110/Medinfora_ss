@@ -182,6 +182,7 @@
         <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg1m">의료 기관</a></li>
         <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg2m">의료 정보</a></li>
         <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
+      	<li class="nanum-n size-s dh_nav_item"><i class="fa-solid fa-caret-down"></i></li>
       </ul>
     </nav>
     <div class="input_text">

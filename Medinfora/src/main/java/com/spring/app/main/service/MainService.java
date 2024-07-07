@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
@@ -60,6 +61,9 @@ public interface MainService {
 	
 	// 병원 진료과 리스트 추출
 	public List<ClasscodeDTO> getclasscode();
+
+	// 공휴일 입력용
+	public int holidayInputer(HolidayVO holidayVO);
 	
 	
 	

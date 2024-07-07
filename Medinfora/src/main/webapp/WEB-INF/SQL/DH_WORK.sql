@@ -30,3 +30,6 @@ select COUNTRY from KOREAAREA where CITY = '서울특별시' and LOCAL = '마포
 
 select HPADDR from HOSPITAL where HPADDR like '%'||'해밀3로'||'%';
 
+select ridx, to_date(CHECKIN,'yyyy-mm-dd'), hidx
+from RESERVE
+
