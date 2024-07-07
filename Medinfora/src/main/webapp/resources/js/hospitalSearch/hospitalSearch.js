@@ -4,7 +4,8 @@ let infowindows = [];
 let overlays = [];
 let positionArr = [];  
 let markerImageArr = []; //위치 마커 이미지 배열
-
+let openInfowindow = null; // 열려있는 인포윈도우를 추적
+let openOverlay = null; // 열려있는 오버레이를 추적
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
 $(function() {
@@ -157,6 +158,7 @@ function updateDong() {
 var currentPage = 1; // 현재 페이지를 추적
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
 function searchHospitals(pageNo) {
+    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
     let city = '경기도' //$('#city').val();
     let local = '고양시' //$('#local').val();
     let country = '백석동' //$('#country').val();
@@ -195,7 +197,6 @@ function searchHospitals(pageNo) {
         dataType: "json",
         success: function(json) {
             removeMarkers();
-            removeInfowindows();
             positionArr = []; // 기존 위치 배열 초기화
             overlays = []; // overlays 초기화 
             
@@ -244,14 +245,14 @@ function searchHospitals(pageNo) {
                 let imageArr = []; // 이미지 경로를 저장하는 배열
                 markerImageArr = [];
                 let bounds = new kakao.maps.LatLngBounds(); // 마커 범위 
-                let openInfowindow = null; // 열려있는 인포윈도우를 추적
-                let openOverlay = null; // 열려있는 오버레이를 추적
                 markers = []; // 마커를 저장하는 배열
                 overlays = []; // 커스텀 오버레이를 저장하는 배열
                 let infowindows = []; // 인포윈도우를 저장하는 배열
 
+                
                 for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
-
+                    
+                    $('#hospitalList').children().eq(i).find('.hospital-label').removeClass('click-maker');
                     let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
                     imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
 
@@ -291,15 +292,35 @@ function searchHospitals(pageNo) {
                         }
                         infowindows[i].open(map, marker);
                         openInfowindow = infowindows[i];
+                        
                         // 열려있는 오버레이가 있으면 닫기
                         if (openOverlay) {
                             openOverlay.setMap(null);
                         }
+                        /*
                         // 오버레이 열기
-                        if (overlays[i]) {
-                            overlays[i].setMap(map);
+                        if (overlays[i]) {  
+                            overlays[i].setMap(openOverlay.map);
                             openOverlay = overlays[i];
-                        }
+                        }*/
+                        
+                        // 마커 클릭시 해당 병원의 리스트로 이동
+                        const hplist = $('#hplist');
+                        let hospitalItem = $('#hospitalList').children().eq(i);
+
+                        // 병원 리스트의 스크롤 위치 계산
+                        let scrollPosition = hospitalItem.offset().top - hplist.offset().top + hplist.scrollTop();
+
+                        // 병원 리스트의 스크롤 위치 설정
+                        hplist.scrollTop(scrollPosition);
+                        
+                        // 마커 클릭시 해당 병원 리스트 hospital-label에 css 클래스 추가
+                        $('#hospitalList').find('.hospital-label').removeClass('click-maker'); // 모든 항목에서 클래스 제거
+                        hospitalItem.find('.hospital-label').addClass('click-maker'); // 클릭한 항목에 클래스 추가
+
+                        console.log("마커 클릭시 해당 병원의 리스트로 이동: ", hospitalItem.position().top);
+
+
                     });
                                   
                     
@@ -330,6 +351,7 @@ function searchHospitals(pageNo) {
                                     position: markers[i].getPosition(),
                                     yAnchor: 1, // 위치 조정
                                     clickable: true // 클릭 가능하도록 설정  지도 이벤트를 막아준다.
+                                    
                                 });
 
                                 // 커스텀 오버레이 배열에 추가
@@ -338,12 +360,15 @@ function searchHospitals(pageNo) {
                                 (function(marker, customOverlay) {
                                     // 마커 위에 커스텀 오버레이 표시하는 클릭 이벤트
                                     kakao.maps.event.addListener(marker, 'click', function() { 
+                                        console.log('커스텀오버레이 마커 클릭됨:', marker.getPosition()); // 로그 추가
                                     // 열려있는 오버레이가 있으면 닫기
                                     if (openOverlay) {
                                         openOverlay.setMap(null);
                                     }
                                     customOverlay.setMap(map);        
-                                    openOverlay = customOverlay;                        
+                                    openOverlay = customOverlay;  
+                                    
+               
                                     });
                                 })(markers[j], customOverlay);
 
@@ -354,8 +379,8 @@ function searchHospitals(pageNo) {
                 }
                 // 커스텀오버레이 안의 병원 이름 클릭 이벤트 추가
                 $(document).on('click', '.cb-content', function(event) {
-                    event.stopPropagation(); // 이벤트 전파 막기
-                    event.stopImmediatePropagation(); // 즉시 전파 막기
+                   // event.stopPropagation(); // 이벤트 전파 막기
+                    //event.stopImmediatePropagation(); // 즉시 전파 막기
                     
                     var index = $(this).data('index');
                     console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
@@ -383,11 +408,20 @@ function searchHospitals(pageNo) {
                         openInfowindow.close();
                         openInfowindow = null; // 열려있는 인포윈도우를 초기화
                     }
-                    
+                    $('#hospitalList').find('.hospital-label').removeClass('click-maker'); // 병원 리스트 선택클래스 제거
                     // 열려있는 오버레이가 있으면 닫기
+                    /*
                     if (openOverlay) {
                         openOverlay.setMap(null);
                         openOverlay = null; // 열려있는 오버레이 초기화
+                    }
+                        */
+
+                    // 모든 오버레이를 닫기
+                    if (overlays) {  
+                        overlays.forEach(function(overlay) {
+                            overlay.setMap(null);
+                        });
                     }
 
                 });
@@ -397,19 +431,14 @@ function searchHospitals(pageNo) {
                     var index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
                     
-                    // 인포윈도우 열기
-                    infowindows[index].open(map, markers[index]);
-                    openInfowindow = infowindows[index];
+                    // // 인포윈도우 열기
+                    // infowindows[index].open(map, markers[index]);
+                    // openInfowindow = infowindows[index];
 
-                     // 열려있는 오버레이가 있으면 닫기
-                    if (openOverlay) {
-                        openOverlay.setMap(null);
-                    }
-                    // 오버레이 열기
-                    if (overlays[index]) {
-                        overlays[index].setMap(map);
-                        openOverlay = overlays[index];
-                    }
+                    // 마커 클릭 이벤트 트리거
+                    kakao.maps.event.trigger(markers[index], 'click');
+                                            // 열려있는 오버레이가 있으면 닫기
+                    
                 });
 
 
@@ -431,6 +460,7 @@ function searchHospitals(pageNo) {
 }
 
 function displayPagination(totalPage, currentPage) {
+    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
     var paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
@@ -471,27 +501,19 @@ function removeMarkers() {
     markers = [];
 }
 
-// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-function makeOverListener(map, marker, infowindow) {
-    return function() {
-        infowindow.open(map, marker);
-    };
-}
 
-
-// 지도에서 모든 인포윈도우를 제거하는 함수
-function removeInfowindows() {
-    for (let i = 0; i < infowindows.length; i++) {
-        infowindows[i].close();
+// 인포윈도우와 오버레이 초기화 함수
+function clearInfowindowsAndOverlays() {
+    if (openInfowindow) {
+        openInfowindow.close();
+        openInfowindow = null;
     }
-    infowindows = [];
+
+    if (openOverlay) {
+        openOverlay.setMap(null);
+        openOverlay = null;
+    }
 }
 
-// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-function makeOutListener(infowindow) {
-    return function() {
-        infowindow.close();
-    };
-}
 
 // ================ marker, infowindows end ====================== 

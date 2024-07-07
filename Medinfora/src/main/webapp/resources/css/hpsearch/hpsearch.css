@@ -141,12 +141,22 @@ ul#hospitalList {
     background-color: #fff;
 }
 
-.hospital-label {
+.hospital-label, .click-marker {
     font-size: 20px;
     font-weight: bold;
-    color: red;
+    color: var(--blue500);
+    border: 1px solid var(--blue500);
+    width: 33px;
     margin-right: 10px;
+    height: 31px;
+    border-radius: 50%;
 }
+
+.click-maker {
+	background-color: var(--blue500);
+	color: var(--grey50);
+}
+
 
 .hospital-details {
 	border-bottom: 1px solid var(--grey200);
