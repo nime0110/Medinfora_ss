@@ -28,6 +28,9 @@ public interface MainDAO {
 	
 	// 회원가입(병원찾기 검색)
 	public List<HospitalDTO> hpSearch(Map<String, String> paraMap);
+	
+	// 회원가입(병원찾기 병원정보 입력)
+	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap);
 
 	// 로그인 유저 정보 가져오기
 	public MemberDTO getLoginuser(Map<String, String> paraMap);
@@ -55,6 +58,7 @@ public interface MainDAO {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
+	
 	
 	
 	

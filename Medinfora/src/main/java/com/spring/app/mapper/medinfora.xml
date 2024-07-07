@@ -53,39 +53,67 @@
 	
 	<!-- 회원가입(병원찾기 총검색 개수 알아오기) -->
 	<select id="totalhospital" parameterType="HashMap" resultType="int">
-		select count(*)
-		from hospital
-		where 1=1
-		<choose>
-			<when test='searchType == "hpname"'>
-				and lower(hpname) like '%'||lower(#{searchWord})||'%'
-			</when>
-			<when test='searchType == "hpaddr"'>
-				and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
-			</when>
-		</choose>
+		WITH B
+		AS(
+		    SELECT count(*) as CNT
+		    FROM(
+		        select hpname, hpaddr
+		        from hospital
+		        where 1=1
+				<choose>
+					<when test='searchType == "hpname"'>
+						and lower(hpname) like '%'||lower(#{searchWord})||'%'
+					</when>
+					<when test='searchType == "hpaddr"'>
+						and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+					</when>
+				</choose>
+		        )H
+		    GROUP BY hpname, hpaddr
+		)
+		SELECT COUNT(*)
+		FROM B
 	</select>
 	
 	
 	
 	<!-- 회원가입(병원찾기 검색 병원리스트) -->
-	<select id="hpSearch" parameterType="HashMap" resultType="HospitalDTO">
+	<select id="hpSearch" parameterType="HashMap" resultType="HospitalDTO">	    
+	    WITH B
+		AS(
+		    SELECT hpname, hpaddr, hptel
+		    FROM(
+		        select row_number() over(order by hidx) AS rno
+		             , hpname, hpaddr, replace(hptel, '-', '') as hptel
+		        from hospital
+		        <choose>
+			       	<when test='searchType == "hpname" and searchWord != ""'>
+			          	where lower(hpname) like '%'||lower(#{searchWord})||'%'  
+			       	</when>
+			       	<when test='searchType == "hpaddr" and searchWord != ""'>
+			          	where lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+			       	</when>
+		    	</choose>
+		        )H
+		    WHERE rno between #{startRno} and #{endRno}
+		    GROUP BY hpname, hpaddr, hptel
+		)
 		SELECT hpname, hpaddr, hptel
+		FROM B
+		ORDER BY hpname
+	</select>
+	
+	
+	<!-- 회원가입(병원찾기 병원정보 입력) -->
+	<select id="searchMedicalEnd" parameterType="HashMap" resultType="HospitalDTO">
+		SELECT hidx, hpname, hpaddr, hptel
 	    FROM(
-	    	select row_number() over(order by hidx desc) AS rno, hpname, hpaddr, hptel
-	    	from hospital
-	    	<choose>
-		       	<when test='searchType == "hpname" and searchWord != ""'>
-		          	where lower(hpname) like '%'||lower(#{searchWord})||'%'  
-		       	</when>
-		       	<when test='searchType == "hpaddr" and searchWord != ""'>
-		          	where lower(hpaddr) like '%'||lower(#{searchWord})||'%'
-		       	</when>
-		    </choose>
-	    	)H
-	    WHERE rno between #{startRno} and #{endRno}
-	    GROUP BY hpname, hpaddr, hptel
-	    ORDER BY hpname
+	        select row_number() over(order by hidx) AS rno
+	             , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
+	        from hospital
+	        where hpname = #{hpname} and hpaddr = #{hpaddr}
+        )H
+        WHERE rno = 1
 	</select>
 	
 	

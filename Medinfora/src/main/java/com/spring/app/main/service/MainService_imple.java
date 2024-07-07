@@ -60,6 +60,13 @@ public class MainService_imple implements MainService {
 		return hpList;
 	}
 	
+	// 회원가입(병원찾기 병원정보 입력)
+	@Override
+	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap) {
+		HospitalDTO hpdto = dao.searchMedicalEnd(paraMap);
+		return hpdto;
+	}
+	
 	
 	// 로그인 처리
 	@Override
@@ -183,6 +190,8 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
+
+	
 
 	
 

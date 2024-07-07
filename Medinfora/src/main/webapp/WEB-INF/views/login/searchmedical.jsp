@@ -53,6 +53,12 @@ button#searchbtn{
 	background-color: #f2f2f2;
 }
 
+.pagebar{
+	display: grid;
+    place-items: center;
+	margin-top: 10px;
+}
+
 
 </style>
 
@@ -73,6 +79,7 @@ $(document).ready(function(){
 	$("div#displayList").hide();
 	$("div.tipbox").show();
 	$("div[name='searchtoal']").hide();
+	$("div.pagebar").empty();
 
 	$("input:text[name='searchWord']").keyup((e)=>{
 		const w_length = $(e.target).val().trim().length;
@@ -130,6 +137,37 @@ $(document).ready(function(){
 		const autoword = $(e.target).text();
 		$("input[name='searchWord']").val(autoword); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
 		$("div#displayList").hide();
+		goSearch('1');
+	});
+
+
+
+	$(document).on("click", "div.search_hp", function(e){
+		const target = $(e.target).closest("div.search_hp");
+    
+    	const hpname = target.find("div[name='hpname']").text();
+		const hpaddr = target.find("div[name='hpaddr']").text();
+
+		// console.log(hpname);	
+		// console.log(hpaddr);	
+		// console.log(hptel);	
+
+		$.ajax({
+			url:"<%=ctxPath%>/register/searchMedicalEnd.bibo",
+			data:{"hpname":hpname
+				 ,"hpaddr":hpaddr},
+			dataType:"json",
+			success:function(json){
+				console.log(JSON.stringify(json));
+				alert("확인");
+
+
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+
+		});
 	});
 
 
@@ -150,7 +188,7 @@ function goSearch(currentPageNo){
 	}
 
 	$.ajax({
-		url:"<%=ctxPath%>/register/searchmedicalEnd.bibo",
+		url:"<%=ctxPath%>/register/searchMedicalShow.bibo",
 		data:{"searchType":searchType
 			 ,"searchWord":searchWord
 			 ,"currentPageNo":currentPageNo},
@@ -158,28 +196,81 @@ function goSearch(currentPageNo){
 		dataType:"json",
 		success:function(json){
 			// 배열이니까, for문돌려서 넣어주면 댐
-			console.log(JSON.stringify(json));
+			// console.log(JSON.stringify(json));
 
 			$("div.tipbox").hide();
 			$("div[name='searchtoal']").show();
-			/*
-			let add_html = ``;
 
-			$.each(json, function(index, item){
+			/*/ 검색값 유지
+			$("select[name='searchType']").val(searchType);
+			$("input:text[name='searchWord']").val(searchWord);
+			*/
 
-				if(index==1){
-					$("span[name='size']").html(item.totalCount);
+			$("span[name='size']").html(json.jsonMap.totalCount);
+			
+			if(json.jsonMap.hpList != null){
+				let add_html = ``;
+
+				$.each(json.jsonMap.hpList, function(index, item){
+					
+					add_html += `<div class="search_hp px-2 py-3">
+									<div class="nanum-eb size-s" name="hpname">\${item.hpname}</div>
+									<div class="nanum-n size-s" name="hpaddr">\${item.hpaddr}</div>
+									<div class="nanum-n size-s" name="hptel">\${item.hptel}</div>
+								</div>`;
+				});
+
+				$("div#searchList").html(add_html);
+
+				<%-- 페이지바 관련 --%>
+				
+				const blockSize = json.jsonMap.blockSize;
+				let loop = json.jsonMap.loop;
+				let pageNo = json.jsonMap.pageNo;
+				const totalPage = json.jsonMap.totalPage;
+
+				let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
+					
+				if(pageNo != 1) {
+					pageBar += "<li class='page-item'>" 
+							+ " 	<a class='page-link' onclick='goSearch("+(pageNo-1)+")>" 
+							+ "	    	<span aria-hidden='true'>&laquo;</span>" 
+							+ "	    </a>" 
+							+ "</li>";
 				}
 				
-				add_html += `<div class="search_hp px-2 py-3">
-								<div class="nanum-eb size-s" name="hpname"> \${item.hpname}</div>
-								<div class="nanum-n size-s" name="hpaddr">\${item.hpaddr}</div>
-								<div class="nanum-n size-s" name="hptel">\${item.hptel}</div>
-							</div>`;
-			});
+				while(!(loop>blockSize || pageNo > totalPage)) {
+					if(pageNo == currentPageNo) {
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
+								+ "</li>";
+					}
+					else{
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>" +pageNo+"</a>" 
+								+ "</li>";
+					}
+					loop++;
+					pageNo++;
+				}
+				
+				if(pageNo <= totalPage) {
+					pageBar += "<li class='page-item'>"
+							+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>"
+							+ "	    	<span aria-hidden='true'>&raquo;</span>"
+							+ "	    </a>"
+							+ "</li>";
+				}
+				
+				pageBar += "</ul>";
+				
+				$("div.pagebar").html(pageBar);
 
-			$("div#searchList").html(add_html);
-			*/
+			}
+			
+
+			
+			
 			
 		},
 		error: function(request, status, error){
@@ -196,7 +287,7 @@ function goSearch(currentPageNo){
 
 </head>
 <body>
-<div class="m-5" style="border: solid 1px red;">
+<div class="m-5">
 <p class="nanum-eb size-n">병원 찾기</p>
 <form class="mt-3 d-flex searchFrm" name="searchFrm">
 	<select class="searchType" name="searchType">
@@ -230,7 +321,7 @@ function goSearch(currentPageNo){
 </div>
 
 <%-- 페이지바 처리 --%>
-<div class="pagebar" align="center">페이지 바</div>
+<div class="pagebar"></div>
 
 
 

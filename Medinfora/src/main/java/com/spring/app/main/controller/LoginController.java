@@ -139,8 +139,8 @@ public class LoginController {
 	
 	// 병원검색하기
 	@ResponseBody
-	@GetMapping(value="/register/searchmedicalEnd.bibo", produces="text/plain;charset=UTF-8")
-	public String searchmedicalEnd(HttpServletRequest request) {
+	@GetMapping(value="/register/searchMedicalShow.bibo", produces="text/plain;charset=UTF-8")
+	public String searchMedicalShow(HttpServletRequest request) {
 		
 		List<HospitalDTO> hpList = null;
 		
@@ -166,7 +166,6 @@ public class LoginController {
 			int currentPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함. 
 			int totalPage = 0;         // 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
 			
-			// JSONArray json_arr = new JSONArray();
 			JSONObject jsonObj = new JSONObject();
 			
 			
@@ -197,28 +196,20 @@ public class LoginController {
 				
 				if(hpList != null) {
 					
-					/*
-					for(HospitalDTO hpdto : hpList) {
-						JSONObject jsonObj = new JSONObject();
-						jsonObj.put("hpname", hpdto.getHpname());
-						jsonObj.put("hpaddr", hpdto.getHpaddr());
-						jsonObj.put("totalCount", totalCount);
-						String[] hptel_arr = hpdto.getHptel().split("-");
-						String hptel = "";
-						
-						for(int i=0; i<hptel_arr.length; i++) {
-							hptel += hptel_arr[i];
-						}
-
-						jsonObj.put("hptel", hptel);
-						
-						json_arr.put(jsonObj);
-					}
-					*/
-					
 					Map<String, Object> jsonMap = new HashMap<>();
 					jsonMap.put("hpList", hpList);
 					jsonMap.put("totalCount", totalCount);
+					
+					
+					// 페이지바 관련
+					int blockSize = 10; // blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수이다.
+					int loop = 1;
+					int pageNo = ((currentPageNo - 1)/blockSize) * blockSize + 1;
+					
+					jsonMap.put("blockSize", blockSize);
+					jsonMap.put("loop", loop);
+					jsonMap.put("pageNo", pageNo);
+					jsonMap.put("totalPage", totalPage);
 					
 					
 					jsonObj.put("jsonMap", jsonMap);
@@ -226,7 +217,7 @@ public class LoginController {
 				}
 
 			}
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 			currentPageNo = 1; 
@@ -236,6 +227,42 @@ public class LoginController {
 		return jsonObj.toString();
 	}
 	
+	
+	// 회원가입(병원찾기 hidx 및 값 입력하기)
+	@ResponseBody
+	@GetMapping(value="/register/searchMedicalEnd.bibo", produces="text/plain;charset=UTF-8")
+	public String searchMedicalEnd(HttpServletRequest request) {
+		
+		String hpname = request.getParameter("hpname");
+		String hpaddr = request.getParameter("hpaddr");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("hpname", hpname);
+		paraMap.put("hpaddr", hpaddr);
+		
+		HospitalDTO hpdto = service.searchMedicalEnd(paraMap);
+		
+		String addr = "";
+		String detailAddr = "";
+		if(hpdto.getHpaddr().contains(",")) {
+			addr = hpdto.getHpaddr().substring(0, hpdto.getHpaddr().indexOf(","));
+			detailAddr = hpdto.getHpaddr().substring(hpdto.getHpaddr().indexOf(",")+1).trim();
+		}
+		else {
+			addr = hpdto.getHpaddr();
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("hidx", hpdto.getHidx());
+		jsonObj.put("hpname", hpdto.getHpname());
+		jsonObj.put("hpaddr", hpdto.getHpaddr());
+		jsonObj.put("hptel", hpdto.getHptel());
+		
+		jsonObj.put("addr", addr);
+		jsonObj.put("detailAddr", detailAddr);
+		
+		return jsonObj.toString();
+	}
 	
 	
 	// 로그인 창 띄우기
