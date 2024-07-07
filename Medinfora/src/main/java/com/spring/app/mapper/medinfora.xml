@@ -43,7 +43,7 @@
 		       	</when>
 		    </choose>
 	    	)H
-	    WHERE rno between 1 and 8
+	    WHERE rno between 0 and 8
 	    group by 
 	    <choose>
 	    	<when test='searchType == "hpname"'>hpname</when>
@@ -51,7 +51,7 @@
 	    </choose>
 	</select>
 	
-	
+	<!-- 회원가입(병원찾기 총검색 개수 알아오기) -->
 	<select id="totalhospital" parameterType="HashMap" resultType="int">
 		select count(*)
 		from hospital
@@ -64,6 +64,28 @@
 				and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
 			</when>
 		</choose>
+	</select>
+	
+	
+	
+	<!-- 회원가입(병원찾기 검색 병원리스트) -->
+	<select id="hpSearch" parameterType="HashMap" resultType="HospitalDTO">
+		SELECT hpname, hpaddr, hptel
+	    FROM(
+	    	select row_number() over(order by hidx desc) AS rno, hpname, hpaddr, hptel
+	    	from hospital
+	    	<choose>
+		       	<when test='searchType == "hpname" and searchWord != ""'>
+		          	where lower(hpname) like '%'||lower(#{searchWord})||'%'  
+		       	</when>
+		       	<when test='searchType == "hpaddr" and searchWord != ""'>
+		          	where lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+		       	</when>
+		    </choose>
+	    	)H
+	    WHERE rno between #{startRno} and #{endRno}
+	    GROUP BY hpname, hpaddr, hptel
+	    ORDER BY hpname
 	</select>
 	
 	

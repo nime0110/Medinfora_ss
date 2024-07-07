@@ -48,6 +48,12 @@ public class MainDAO_imple implements MainDAO{
 		return totalCount;
 	}
 	
+	// 회원가입(병원찾기 병원검색리스트)
+	@Override
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap) {
+		List<HospitalDTO> hpList = sqlsession.selectList("medinfora.hpSearch", paraMap);
+		return hpList;
+	}
 	
 	// 로그인 유저 정보
 	@Override
@@ -114,6 +120,8 @@ public class MainDAO_imple implements MainDAO{
 	public List<ClasscodeDTO> getclasscode() {
 		return sqlsession.selectList("medinfora.getclasscode");
 	}
+
+	
 	
 	
 

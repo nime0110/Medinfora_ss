@@ -215,14 +215,12 @@ FROM A
 
 WITH A AS (
     SELECT hpname,
-           hpaddr,
-           COUNT(*) AS CNT
+           hpaddr
     FROM (
         SELECT hpname, hpaddr
         FROM hospital
     ) H
     GROUP BY hpname, hpaddr
-    ORDER BY CNT
 )
 SELECT count(*)
 FROM A
@@ -233,6 +231,21 @@ where CNT > 2
 select *
 from hospital
 where hpaddr = '충청남도 태안군 안면읍 응지마을길 10';
+
+
+
+select *
+from hospital
+ where lower(hpname) like '%'||lower('행복한의원')||'%'
+
+SELECT hpname, hpaddr, hptel
+FROM(
+    select row_number() over(order by hidx desc) AS rno, hpname, hpaddr, hptel
+    from hospital
+    where lower() like '%'||lower('해밀3로')||'%'
+    )H
+WHERE rno between 11 and 20
+group by hpname, hpaddr, hptel
 
 
 

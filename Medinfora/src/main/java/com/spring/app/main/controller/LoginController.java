@@ -164,7 +164,11 @@ public class LoginController {
 			int totalCount = 0;        // 총 게시물 건수
 			int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
 			int currentPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함. 
-			int totalPage = 0;         // 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바) 
+			int totalPage = 0;         // 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			// JSONArray json_arr = new JSONArray();
+			JSONObject jsonObj = new JSONObject();
+			
 			
 		try {
 			
@@ -191,6 +195,36 @@ public class LoginController {
 				
 				hpList = service.hpSearch(paraMap);
 				
+				if(hpList != null) {
+					
+					/*
+					for(HospitalDTO hpdto : hpList) {
+						JSONObject jsonObj = new JSONObject();
+						jsonObj.put("hpname", hpdto.getHpname());
+						jsonObj.put("hpaddr", hpdto.getHpaddr());
+						jsonObj.put("totalCount", totalCount);
+						String[] hptel_arr = hpdto.getHptel().split("-");
+						String hptel = "";
+						
+						for(int i=0; i<hptel_arr.length; i++) {
+							hptel += hptel_arr[i];
+						}
+
+						jsonObj.put("hptel", hptel);
+						
+						json_arr.put(jsonObj);
+					}
+					*/
+					
+					Map<String, Object> jsonMap = new HashMap<>();
+					jsonMap.put("hpList", hpList);
+					jsonMap.put("totalCount", totalCount);
+					
+					
+					jsonObj.put("jsonMap", jsonMap);
+					
+				}
+
 			}
 			
 		}catch(Exception e) {
@@ -198,7 +232,8 @@ public class LoginController {
 			currentPageNo = 1; 
 		}
 		
-		return "";
+		// return json_arr.toString();
+		return jsonObj.toString();
 	}
 	
 	
