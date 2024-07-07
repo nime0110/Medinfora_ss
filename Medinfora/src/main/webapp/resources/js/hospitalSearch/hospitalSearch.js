@@ -246,8 +246,8 @@ function searchHospitals(pageNo) {
                 let bounds = new kakao.maps.LatLngBounds(); // 마커 범위 
                 let openInfowindow = null; // 열려있는 인포윈도우를 추적
                 let openOverlay = null; // 열려있는 오버레이를 추적
-                let markers = []; // 마커를 저장하는 배열
-                let overlays = []; // 커스텀 오버레이를 저장하는 배열
+                markers = []; // 마커를 저장하는 배열
+                overlays = []; // 커스텀 오버레이를 저장하는 배열
                 let infowindows = []; // 인포윈도우를 저장하는 배열
 
                 for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
