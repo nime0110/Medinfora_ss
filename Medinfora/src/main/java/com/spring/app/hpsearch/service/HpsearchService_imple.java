@@ -27,4 +27,9 @@ public class HpsearchService_imple implements HpsearchService {
 		return hsdao.getHpListTotalCount(paraMap);
 	}
 
+	@Override
+	public HospitalDTO getHpDetail(String hidx) {
+		return hsdao.getHpDetail(hidx);
+	}
+
 }

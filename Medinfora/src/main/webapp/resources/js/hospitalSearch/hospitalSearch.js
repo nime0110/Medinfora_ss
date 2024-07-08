@@ -1,33 +1,39 @@
 let map;
 let markers = [];
 let infowindows = [];
-var positionArr = [];  
-var markerImageArr = []; //위치 마커 이미지 배열
-
+let overlays = [];
+let positionArr = [];  
+let markerImageArr = []; //위치 마커 이미지 배열
+let openInfowindow = null; // 열려있는 인포윈도우를 추적
+let openOverlay = null; // 열려있는 오버레이를 추적
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
 $(function() {
-        
+          
     // 지도 컨테이너와 옵션 설정
-    var mapContainer = document.getElementById('map'),
+    let mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(37.566535, 126.9779692), // 초기 중심 좌표 (서울 시청)
             level: 3 // 초기 확대 레벨
         };
-
-    // 지도 생성
+    
+    // 지도 생성 
     map = new kakao.maps.Map(mapContainer, mapOption);
 
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
-    var mapTypeControl = new kakao.maps.MapTypeControl();
+    let mapTypeControl = new kakao.maps.MapTypeControl();
     // 지도 타입 컨트롤을 지도에 표시함.
     map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT); 
 
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 생성함.   
-    var zoomControl = new kakao.maps.ZoomControl();
+    let zoomControl = new kakao.maps.ZoomControl();
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+
+
+
+
 	// ****************** 시/도, 진료과목 데이터 가져오기 start ************* 
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
@@ -156,16 +162,17 @@ function updateDong() {
 var currentPage = 1; // 현재 페이지를 추적
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
 function searchHospitals(pageNo) {
-    let city = $('#city').val();
-    let local = $('#local').val();
-    let country = $('#country').val();
+    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
+    let city = '경기도' //$('#city').val();
+    let local = '고양시' //$('#local').val();
+    let country = '백석동' //$('#country').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
 
-
+    /*
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -179,6 +186,7 @@ function searchHospitals(pageNo) {
         alert("읍/면/동을 선택하세요");
         return;
     }
+        */
 	
     $.ajax({
         url: contextPath +'/hpsearch/hpsearchAdd.bibo', 
@@ -193,15 +201,15 @@ function searchHospitals(pageNo) {
         dataType: "json",
         success: function(json) {
             removeMarkers();
-            removeInfowindows();
             positionArr = []; // 기존 위치 배열 초기화
+            overlays = []; // overlays 초기화 
             
             $('#hospitalList').empty(); // 기존 병원 리스트 초기화
 			let v_html = "";
 			if(json.length > 0) {
 	           json.forEach((item, index) => { // 병원의 위도, 경도를 위치 객체로 변환
 	           		var position = {}; // 위도경도랑 content 담음 
-	           		
+
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon); // 위도, 경도
                     //인포윈도우에 들어갈 텍스트
 	                position.content = `<div class='mycontent' data-index="${index}">
@@ -216,20 +224,22 @@ function searchHospitals(pageNo) {
 									    		<p class="add">								    		
 										    		${item.hpaddr} 
 									    		</p>
+                                                <button class="details-button"  onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
                     				    </div>`;
-                    
+                    // 병원 이름을 추가
+                    position.hpname = item.hpname;
                     positionArr.push(position);	
-                    
+                    const alphabetIndex = String.fromCharCode(65 + index); 
 	                // 병원 리스트로 출력
                     v_html += `<div class="hospital-details" data-index="${index}">
                                 <input type="hidden" name="${item.hidx}"></input>
-                                <div class="hospital-label">${index + 1}</div>
+                                <div class="hospital-label">${alphabetIndex}</div>
                                 <h2 class="hospital-name">${item.hpname}</h2>
                                 <p class="hospital-type">${item.classname}</p>
                                 <p class="hospital-contact">TEL: ${item.hptel} </p>
                                 <p class="hospital-address">${item.hpaddr}</p>
-                                <button class="details-button">상세보기</button>
+                                <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
                             </div>`;
 
                                 
@@ -240,9 +250,15 @@ function searchHospitals(pageNo) {
                 let imageArr = []; // 이미지 경로를 저장하는 배열
                 markerImageArr = [];
                 let bounds = new kakao.maps.LatLngBounds(); // 마커 범위 
+                markers = []; // 마커를 저장하는 배열
+                overlays = []; // 커스텀 오버레이를 저장하는 배열
+                let infowindows = []; // 인포윈도우를 저장하는 배열
 
+
+                
                 for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
-
+                    
+                    $('#hospitalList').children().eq(i).find('.hospital-label').removeClass('click-maker');
                     let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
                     imageArr.push(imageSrc); // 배열에 이미지 경로를 추가
 
@@ -257,80 +273,187 @@ function searchHospitals(pageNo) {
                         map: map,
                         position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
                         image: markerImageArr[i]
-                    });                    
+                    });                  
+                    
+                    // 마커를 배열에 추가
+                    markers.push(marker);
+       
                     // 모든 마커가 한 번에 보이도록 지도의 중심과 확대레벨을 설정
                     bounds.extend(positionArr[i].latlng); 
                     map.setBounds(bounds);
-
-                    // 마커를 배열에 추가
-                    markers.push(marker);
-                    
-
-
+                        
+                    var clusterer = new kakao.maps.MarkerClusterer({
+                            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+                            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+                            minLevel: 5, // 클러스터 할 최소 지도 레벨 
+                            markers: markers // 클러스터에 마커 추가
+                    });
                     // 마커에 표시할 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: positionArr[i].content, //
-                        removable: true,
-                        zIndex: i + 1
+                        content: positionArr[i].content, 
+                        removable: true
                     });
                     // 인포윈도우를 가지고 있는 객체배열에 넣기
                     infowindows.push(infowindow);
 
-                    // 지도를 클릭하면 인포윈도우를 닫기
-                    kakao.maps.event.addListener(map, 'click', function() {  
-                    	console.log("테스트");      
-                        infowindow.close();
-                    });
 
-
-
+                    
                     // 마커 위에 인포윈도우를 표시하는 클릭 이벤트 
                     kakao.maps.event.addListener(marker, 'click', function() { 
+                        // 열려있는 인포윈도우가 있으면 닫기
+                        if (openInfowindow) {
+                            openInfowindow.close();
+                        }
                         infowindows[i].open(map, marker);
+                        openInfowindow = infowindows[i];
+                        
+                        // 열려있는 오버레이가 있으면 닫기
+                        if (openOverlay) {
+                            openOverlay.setMap(null);
+                        }
+                        /*
+                        // 오버레이 열기
+                        if (overlays[i]) {  
+                            overlays[i].setMap(openOverlay.map);
+                            openOverlay = overlays[i];
+                        }*/
+                        
+                        // 마커 클릭시 해당 병원의 리스트로 이동
+                        const hplist = $('#hplist');
+                        let hospitalItem = $('#hospitalList').children().eq(i);
+
+                        // 병원 리스트의 스크롤 위치 계산
+                        let scrollPosition = hospitalItem.offset().top - hplist.offset().top + hplist.scrollTop();
+
+                        // 병원 리스트의 스크롤 위치 설정
+                        hplist.scrollTop(scrollPosition);
+                        
+                        // 마커 클릭시 해당 병원 리스트 hospital-label에 css 클래스 추가
+                        $('#hospitalList').find('.hospital-label').removeClass('click-maker'); // 모든 항목에서 클래스 제거
+                        hospitalItem.find('.hospital-label').addClass('click-maker'); // 클릭한 항목에 클래스 추가
+
+                        console.log("마커 클릭시 해당 병원의 리스트로 이동: ", hospitalItem.position().top);
+
+
                     });
                                   
                     
                 } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
 
+                
                 //마커가 하나 이상일때 그 마커들의 위경도가 서로 같다면 이진탐색    1,2,3,4 순서로 생성되어있음 
-                if (markers.length > 1) {
+                if (markers.length > 1) { 
                     for (let i = 0; i < markers.length; i++) {    
                         //console.log("markers[i].getPosition() :" + markers[i].getPosition());   //(37.64235645995963, 126.7878839598955)
-                        
                         for(let j=i+1; j<markers.length; j++){
+                            //두 마커의 위경도가 같다면
                             if(markers[i].getPosition().equals(markers[j].getPosition())){
-                                //console.log("markers[j].getPosition() :" + markers[j].getPosition()); //(37.64235645995963, 126.7878839598955)
-                                
-                                //인포윈도우 생성
-                                var infowindow = new kakao.maps.InfoWindow({
-                                    content: `<div>
-                                            <div class="title"> ${positionArr[j].hpname} </div>	    	 
-                    				    </div>`,
-                                    removable: true,
-                                    zIndex: j + 1
+                                // 중복된 위치에 있는 병원명을 모두 추가
+                                let combinedContent = `<div class="cb-box">`;
+                                combinedContent += `<div class="title cb-content" data-index="${i}"> ${positionArr[i].hpname} </div>`; // 첫번째 중복 마커 병원명 추가
+                                for (let k = j; k < markers.length; k++) { // 나머지 중복 마커 병원명 추가
+                                    if(markers[i].getPosition().equals(markers[k].getPosition())){
+                                        combinedContent += `<div class="title cb-content" data-index="${k}"> ${positionArr[k].hpname} </div>`;
+                                    }
+                                }
+                                combinedContent += `</div>`;
+
+                                // 중복된 병원명을 모두 포함한 커스텀 오버레이 생성
+                                let customOverlay = new kakao.maps.CustomOverlay({
+                                    content: `<div class="custom-overlay">${combinedContent}</div>`,
+                                    position: markers[i].getPosition(),
+                                    yAnchor: 1, // 위치 조정
+                                    clickable: true // 클릭 가능하도록 설정  지도 이벤트를 막아준다. 
                                 });
-                                // 인포윈도우를 가지고 있는 객체배열에 넣기 
-                                infowindows.push(infowindow);
-                                // 마커 위에 인포윈도우를 표시하는 클릭 이벤트
-                                (function(marker, infowindow) {
+
+                                // 커스텀 오버레이 배열에 추가
+                                overlays.push(customOverlay);
+
+                                (function(marker, customOverlay) {
+                                    // 마커 위에 커스텀 오버레이 표시하는 클릭 이벤트
                                     kakao.maps.event.addListener(marker, 'click', function() { 
-                                        infowindow.open(map, marker);
+                                        console.log('커스텀오버레이 마커 클릭됨:', marker.getPosition()); // 로그 추가
+                                    // 열려있는 오버레이가 있으면 닫기
+                                    if (openOverlay) {
+                                        openOverlay.setMap(null);
+                                    }
+                                    customOverlay.setMap(map);        
+                                    openOverlay = customOverlay;  
+               
                                     });
-                                })(markers[j], infowindow);
+                                })(markers[j], customOverlay);
+
+ 
                             }
-                        }
-                        
+                        }   
                     }
                 }
+                // 커스텀오버레이 안의 병원 이름 클릭 이벤트 추가
+                $(document).on('click', '.cb-content', function(event) {
+                   // event.stopPropagation(); // 이벤트 전파 막기
+                    //event.stopImmediatePropagation(); // 즉시 전파 막기
+                    
+                    var index = $(this).data('index');
+                    console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
+                    map.setCenter(positionArr[index].latlng);
 
+                    // 마커 클릭 이벤트 트리거
+                    kakao.maps.event.trigger(markers[index], 'click');
 
+                    // 커스텀 오버레이 유지
+                    if(openOverlay != null) {  
+                        openOverlay.setMap(map);
+                    }
+
+                    if (overlays[index]) {
+                        for (let i = 0; i <=index; i++) {
+                            overlays[i].setMap(map);
+                            openOverlay = overlays[i];
+                        }
+                    }
+                });
+
+                // 지도를 클릭하면 인포윈도우/오버레이를 닫기
+                kakao.maps.event.addListener(map, 'click', function(event) {  
+                    if (openInfowindow) {
+                        openInfowindow.close();
+                        openInfowindow = null; // 열려있는 인포윈도우를 초기화
+                    }
+                    $('#hospitalList').find('.hospital-label').removeClass('click-maker'); // 병원 리스트 선택클래스 제거
+                    // 열려있는 오버레이가 있으면 닫기
+                    /*
+                    if (openOverlay) {
+                        openOverlay.setMap(null);
+                        openOverlay = null; // 열려있는 오버레이 초기화
+                    }
+                        */
+
+                    // 모든 오버레이를 닫기
+                    if (overlays) {  
+                        overlays.forEach(function(overlay) {
+                            overlay.setMap(null);
+                        });
+                    }
+
+                });
+                    
                 // 병원 리스트 항목 클릭 이벤트 추가
                 $('#hospitalList').on('click', '.hospital-details', function() {
                     var index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
-                    infowindows[index].open(map, markers[index]);
+                    
+                    // // 인포윈도우 열기
+                    // infowindows[index].open(map, markers[index]);
+                    // openInfowindow = infowindows[index];
+
+                    // 마커 클릭 이벤트 트리거
+                    kakao.maps.event.trigger(markers[index], 'click');
+                                            // 열려있는 오버레이가 있으면 닫기
+                    
                 });
-                
+
+
+     
             } else {
                 v_html += `검색된 의료기관이 없습니다.`;
             } // end of if(json.length > 0) -------------------------------
@@ -348,6 +471,7 @@ function searchHospitals(pageNo) {
 }
 
 function displayPagination(totalPage, currentPage) {
+    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
     var paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
@@ -382,32 +506,44 @@ function displayPagination(totalPage, currentPage) {
 // ================ marker, infowindows start====================== 
 // 지도에서 모든 마커를 제거하는 함수
 function removeMarkers() {
+    
     for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
     markers = [];
 }
 
-// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-function makeOverListener(map, marker, infowindow) {
-    return function() {
-        infowindow.open(map, marker);
-    };
-}
 
-
-// 지도에서 모든 인포윈도우를 제거하는 함수
-function removeInfowindows() {
-    for (let i = 0; i < infowindows.length; i++) {
-        infowindows[i].close();
+// 인포윈도우와 오버레이 초기화 함수
+function clearInfowindowsAndOverlays() {
+    if (openInfowindow) {
+        openInfowindow.close();
+        openInfowindow = null;
     }
-    infowindows = [];
+
+    if (openOverlay) {
+        openOverlay.setMap(null);
+        openOverlay = null;
+    }
 }
 
-// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-function makeOutListener(infowindow) {
-    return function() {
-        infowindow.close();
-    };
-}
+
 // ================ marker, infowindows end ====================== 
+
+// 상세보기 함수
+function detailSearch(index) {
+    let hidx = $('#hospitalList').children().eq(index).find('input').attr('name');
+    //console.log("hidx:", hidx); 37516
+    $.ajax({
+        url: contextPath + '/hpsearch/hpsearchDetail.bibo',
+        data: {hidx: hidx},
+        dataType: "json",
+        success: function (json) {
+            console.log(JSON.stringify(json));
+            
+        }, //end of  success: function(json)  ------------------
+        error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+    }); //end of $.ajax({-------------
+} //end of function detailSearch(index) ------------------
