@@ -37,11 +37,25 @@ public class ReserveService_imple implements ReserveService {
 		return check;
 	}
 
-	// 병원과 요일 파악하여, 오늘(현재시간 이후) 진료예약 가능한 업무시간 파악하기
+	// 병원의 오픈시간과 마감시간 파악
 	@Override
-	public List<HospitalDTO> todayReserveAvailable(Map<String, String> paraMap) {
-		List<HospitalDTO> availableTimeList = dao.todayReserveAvailable(paraMap);
-		return availableTimeList;
+	public HospitalDTO hospitalTime(String hidx) {
+		HospitalDTO hospitalTime = dao.hospitalTime(hidx);
+		return hospitalTime;
 	}
 
+	// 선택한 날의 예약 개수 파악
+	@Override
+	public int reserveCnt(Map<String, String> paraMap) {
+		int reserveCnt = dao.reserveCnt(paraMap);
+		return reserveCnt;
+	}
+	
+	// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
+	@Override
+	public HospitalDTO dayReserveImpossible(Map<String, String> paraMap) {
+		HospitalDTO impossibleTimeCheck  = dao.dayReserveImpossible(paraMap);
+		return impossibleTimeCheck;
+	}
+	
 }

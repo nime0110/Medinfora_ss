@@ -36,20 +36,24 @@
 	
 	<div class="notice-attachment">
     <c:if test="${noticedto.filename != null}">
-        <span class="attachment-label">첨부파일: </span>
-        <span class="attachment-filename">${noticedto.filename}</span>
+   
+        <span class="attach_sh">
+        <img src="<%=ctxPath%>/resources/img/sh_attach.png"
+								style="width: 20px; height: 20px;">첨부파일 : </span>
+        <a href="<%= ctxPath %>/download.action?seq=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+        <c:if test="${noticedto.filename == 'image'}">
+            <img src="<%= ctxPath %>/download.action?seq=${noticedto.nidx}" alt="${noticedto.orgname}" />
+        </c:if>
     </c:if>
 </div>
 
 <hr>
-</div>
-
 
 
 <div class="nanum-n notice-content">
     <p>${noticedto.content}</p>
 </div>
-
+</div>
 <%-- <div class="notice-button text-center mb-5">
 <button type="button" class="notice-button01 btn btn-lg mr-5"onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
 <button type="button" class="notice-button02 btn btn-lg" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
@@ -58,10 +62,10 @@
 --%>
 
 <div class="notice-button text-center mb-5">
-    <button type="button" class="notice-button01 btn btn-lg mr-5" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">목록으로 돌아가기</button>
-    <c:if test="${sessionScope.loginuser.mIdx==0}">
-        <button type="button" class="notice-button02 btn btn-lg" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">글 수정하기</button>
-        <button type="button" class="notice-button03 btn" onclick="location.href='<%= ctxPath %>/notice/noticeDel.bibo?seq=${noticedto.nidx}'">글 삭제하기</button>
+    <button type="writebtn" class="btn btn-secondary btn-sm" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
+    <c:if test="${sessionScope.loginuser.mIdx == 0}">
+        <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">수정하기</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='<%= ctxPath %>/notice/noticeDel.bibo?seq=${noticedto.nidx}'">삭제하기</button>
     </c:if>
 </div>
 <form name="goViewFrm" style="display:none;">
