@@ -39,6 +39,9 @@ public interface MainService {
 	// 회원가입(병원찾기 병원정보 입력)
 	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap);
 	
+	// 회원가입하기
+	public int registerEnd(Map<String, String> paraMap);
+	
 	// 로그인 처리
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
 
@@ -67,6 +70,7 @@ public interface MainService {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
+
 	
 	
 	

@@ -42,10 +42,11 @@ $(document).ready(function(){
 	
 	console.log(k_name);
 	
-	if(join == "2"){
-		$("label#name").html("병원명");
-	}
-    
+    if(join== "1"){
+    	$("input:radio[id='male']").prop("checked", true);
+    }
+	
+	
     if(join == "3"){
     	today = k_birthday;
     	$("input:text[name='name']").val(k_name);
@@ -58,6 +59,9 @@ $(document).ready(function(){
     	else if(k_gender == "female"){
     		$("input:radio[id='female']").prop("checked", true);
     	}
+		else{
+			$("input:radio[id='male']").prop("checked", true);
+		}
     }
 
 	// 달력 관련
@@ -102,8 +106,26 @@ function searchMedical(){
 }
 
 
+function searchMedical_IN(medicalInfo){
+	
+	const hidx = medicalInfo.hidx;
+	const hpname = medicalInfo.hpname;
+	const hpaddr = medicalInfo.hpaddr;
+	const hptel = medicalInfo.hptel;
+	const addr = medicalInfo.addr;
+	const detailAddr = medicalInfo.detailAddr;
 
+	console.log("확인용 hidx : "+hidx);
+	
+	$("input:hidden[name='hidx']").val(hidx);
+	$("input:text[name='name']").val(hpname);
+	$("input:hidden[name='hpaddr']").val(hpaddr);
+	$("input:text[name='mobile']").val(hptel);
+	$("input:text[name='address']").val(addr);
+	$("input:text[name='detailAddress']").val(detailAddr);
 
+	return;
+}
 
 
 </script>
@@ -116,6 +138,7 @@ function searchMedical(){
 <div class="jh_container">
 	<div class="registerArea">
 		<form id="registerFrm" name="registerFrm">
+			<input type="hidden" name="join" value="${requestScope.join}"/>
 			<p class="size-n nanum-eb" align="center">회원가입</p>
 			
 			<%-- 일반 및 의료(카카오제외)만  활성화 --%>
@@ -136,18 +159,11 @@ function searchMedical(){
 					<input class="form-control insert_w" type="password" name="pwd" id="pwd" placeholder="문자, 숫자, 특수문자(!@#$%^&*) 포함 8-16자"/>
 					<p class="mb-4 nanum-n size-s" id="pwd_cmt"></p>
 					
-					<label class="nanum-eb mb-1" for="pwd">비밀번호 확인</label><span class="nstar">&nbsp;&ast;</span>
+					<label class="nanum-eb mb-1" for="pwd_check">비밀번호 확인</label><span class="nstar">&nbsp;&ast;</span>
 					<input class="form-control insert_w" type="password" id="pwd_check" placeholder="비밀번호 재입력"/>
 					<p class="nanum-n size-s" id="pwd_check_cmt"></p>
 				</div>
 			</c:if>
-			
-			<%-- 이름 모두 활성화 --%>
-			<div class="nameArea">
-				<label class="nanum-eb mb-1" for="name" id="name">이름</label><span class="nstar">&nbsp;&ast;</span>
-				<input class="form-control insert_w" type="text" name="name" id="name" placeholder="이름을 입력하세요(최대 12글자)"/>
-			</div>
-			<p class="nanum-n size-s mb-4" id="name_cmt"></p>
 			
 			<%-- 이메일 모두 활성화 --%>
 			<label class="nanum-eb mb-1" for="email">이메일</label><span class="nstar">&nbsp;&ast;</span>
@@ -160,25 +176,61 @@ function searchMedical(){
 			<p class="nanum-n size-s mb-4" id="email_cmt"></p>
 			
 			
-			<%-- 연락처 모두 활성화 --%>
-			<div class="mobileArea mb-4">
-				<label class="nanum-eb mb-1" for="name">전화번호</label><span class="nstar">&nbsp;&ast;</span>
-				<input class="form-control insert_w" type="text" name="mobile" id="mobile" placeholder="전화번호 입력('-' 제외 입력)"/>
-				<p class="nanum-n size-s mb-4" id="mobile_cmt"></p>
-			</div>
+			<%-- 이름 모두 활성화(의료에 경우 병원선택으로 입력할 수 있도록 함)--%>
+			<%-- 일반유저 --%>
+			<c:if test="${not empty requestScope.join and requestScope.join ne 2}">
+				<div class="nameArea">
+					<label class="nanum-eb mb-1" for="name" id="name">이름</label><span class="nstar">&nbsp;&ast;</span>
+					<input class="form-control insert_w" type="text" name="name" id="name" placeholder="이름을 입력하세요(최대 12글자)"/>
+				</div>
+				<p class="nanum-n size-s mb-4" id="name_cmt"></p>
+			</c:if>
+
+			<%-- 의료유저  병원명 --%>
+			<c:if test="${not empty requestScope.join and requestScope.join eq 2}">
+				<label class="nanum-eb mb-1" for="searchMedical_btn" id="name">병원명</label><span class="nstar">&nbsp;&ast;</span>
+				<div class="d-flex">
+					<input class="form-control insert_w" type="text" name="name" id="name" placeholder="병원검색을 통해 선택하세요" disabled/>
+					<button class="isExistCheck rounded-3" id="searchMedical_btn" type="button" onclick="searchMedical()">병원검색</button>
+					<input type="hidden" name="hidx" value="" />
+				</div>
+				<p class="nanum-n size-s mb-4" id="name_cmt"></p>
+			</c:if>
+			
+			
+			<%-- 연락처 모두 활성화 (의료에 경우 병원선택으로 입력할 수 있도록 함)--%>
+			<%-- 일반유저  --%>
+			<c:if test="${not empty requestScope.join and requestScope.join ne 2}">
+				<div class="mobileArea mb-4">
+					<label class="nanum-eb mb-1" for="mobile">전화번호</label><span class="nstar">&nbsp;&ast;</span>
+					<input class="form-control insert_w" type="text" name="mobile" id="mobile" placeholder="전화번호 입력('-' 제외 입력)"/>
+					<p class="nanum-n size-s mb-4" id="mobile_cmt"></p>
+				</div>
+			</c:if>
+			<%-- 의료유저 --%>
+			<c:if test="${not empty requestScope.join and requestScope.join eq 2}">
+				<div class="mobileArea mb-4">
+					<label class="nanum-eb mb-1" for="searchMedical_btn">전화번호</label><span class="nstar">&nbsp;&ast;</span>
+					<input class="form-control insert_w" type="text" name="mobile" id="mobile" placeholder="병원검색을 통해 선택하세요" disabled/>
+					<p class="nanum-n size-s mb-4" id="mobile_cmt"></p>
+				</div>
+			</c:if>
 			
 			<%-- 주소 모두 활성화 (단, 의료에 경우 주소검색 버튼 카카오주소검색 아님 --%>
-			<label class="nanum-eb mb-1" for="addressSearch">주소</label><span class="nstar">&nbsp;&ast;</span>
-			<div class="addressArea mb-2">
-				<input class="form-control insert_w" type="text" name="address" id="address" placeholder="주소 입력" disabled/>
-				<c:if test="${not empty requestScope.join and requestScope.join ne 2}">
+			<c:if test="${not empty requestScope.join and requestScope.join ne 2}">
+				<label class="nanum-eb mb-1" for="addressSearch">주소</label><span class="nstar">&nbsp;&ast;</span>
+				<div class="addressArea mb-2">
+					<input class="form-control insert_w" type="text" name="address" id="address" placeholder="주소 입력" disabled/>
 					<button class="isExistCheck rounded-3" id="addressSearch" type="button" onclick="search()">주소검색</button>
-				</c:if>
-				<c:if test="${not empty requestScope.join and requestScope.join eq 2}">
-					<button class="isExistCheck rounded-3" id="addressSearch" type="button" onclick="searchMedical()">병원검색</button>
-				</c:if>
-			</div>
-			<input class="form-control " type="text" name="detailAddress" id="detailAddress" placeholder="상세주소 입력"/>
+				</div>
+				<input class="form-control" type="text" name="detailAddress" id="detailAddress" placeholder="상세주소 입력"/>
+			</c:if>
+			<c:if test="${not empty requestScope.join and requestScope.join eq 2}">
+				<label class="nanum-eb mb-1" for="searchMedical_btn">주소</label><span class="nstar">&nbsp;&ast;</span>
+				<input class="form-control mb-2" type="text" name="address" id="address" placeholder="병원검색을 통해 선택하세요" disabled/>
+				<input class="form-control" type="text" name="detailAddress" id="detailAddress" placeholder="상세주소" disabled/>
+				<input type="hidden" name="hpaddr" value="" />
+			</c:if>
 			<p class="nanum-n size-s mb-4" id="address_cmt"></p>
 			
 			
@@ -202,7 +254,7 @@ function searchMedical(){
 				<%-- 생년월일 --%>
 				<div class="birthArea mb-5">
 			  		<label class="nanum-eb my-1" for="birthday">생년월일</label>
-				  	<input class="form-control inser_date" type="text" id="birthday" name="birthday" value="2022-01-01" />
+				  	<input class="form-control inser_date" type="text" id="birthday" name="birthday" />
 				  	<label class="mx-1 pt-2" for="birthday"><i class="fa-solid fa-calendar-days"></i></label>
 				</div>
 			</c:if>

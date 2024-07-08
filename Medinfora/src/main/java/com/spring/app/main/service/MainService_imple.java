@@ -1,5 +1,7 @@
 package com.spring.app.main.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.common.Sha256;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
@@ -65,6 +68,27 @@ public class MainService_imple implements MainService {
 	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap) {
 		HospitalDTO hpdto = dao.searchMedicalEnd(paraMap);
 		return hpdto;
+	}
+	
+	// 회원가입하기
+	@Override
+	public int registerEnd(Map<String, String> paraMap) {
+		
+		String pwd = paraMap.get("pwd");
+		String email = paraMap.get("email");
+		String mobile = paraMap.get("mobile");
+		try {
+			paraMap.put("pwd", Sha256.encrypt(pwd));
+			paraMap.put("email", aES256.encrypt(email));
+			paraMap.put("mobile", aES256.encrypt(mobile));
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		
+		
+		int n = dao.registerEnd(paraMap);
+		return n;
 	}
 	
 	
@@ -190,6 +214,8 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
+
+	
 
 	
 

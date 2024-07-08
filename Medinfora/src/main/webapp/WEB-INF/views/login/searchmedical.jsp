@@ -141,7 +141,7 @@ $(document).ready(function(){
 	});
 
 
-
+	// 클릭한 값 넘겨서 입력해주기
 	$(document).on("click", "div.search_hp", function(e){
 		const target = $(e.target).closest("div.search_hp");
     
@@ -159,8 +159,17 @@ $(document).ready(function(){
 			dataType:"json",
 			success:function(json){
 				console.log(JSON.stringify(json));
-				alert("확인");
 
+				const medicalInfo = {"hidx":json.hidx
+									,"hpname":json.hpname
+									,"hpaddr":json.hpaddr
+									,"hptel":json.hptel
+									,"addr":json.addr
+									,"detailAddr":json.detailAddr}
+
+				window.opener.searchMedical_IN(medicalInfo);
+
+				window.close();
 
 			},
 			error: function(request, status, error){

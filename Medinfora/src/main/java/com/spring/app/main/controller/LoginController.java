@@ -264,6 +264,109 @@ public class LoginController {
 		return jsonObj.toString();
 	}
 	
+	// 회원가입 완료
+	@PostMapping("/register/registerEnd.bibo")
+	public ModelAndView registerEnd(ModelAndView mav, HttpServletRequest request) {
+		
+		// 초기값 설정
+		String userid = "";
+		String pwd = "";
+
+		String address = "";
+		String detailAddress = "";
+		String midx = "";
+		String loginmethod = "";
+		
+		HttpSession session = request.getSession();
+		Map<String, String> kakaoInfo = (Map<String, String>)session.getAttribute("kakaoInfo");
+		
+		String join = request.getParameter("join");
+		
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		
+		
+		// System.out.println(join);
+		// System.out.println(kakaoInfo.get("name"));
+		
+		paraMap.put("join", join);
+		
+		
+		
+		if("1".equals(join) || "2".equals(join)) {
+			userid = request.getParameter("userid");
+			pwd = request.getParameter("pwd");
+			loginmethod = "0";
+			
+		}
+		else {	// 카카오
+			userid = kakaoInfo.get("userid");
+			pwd = userid+"medinfora";
+			loginmethod = "1";
+			
+		}
+		
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		String mobile = request.getParameter("mobile");
+		
+		paraMap.put("userid", userid);
+		paraMap.put("pwd", pwd);
+		paraMap.put("loginmethod", loginmethod);
+		paraMap.put("email", email);
+		paraMap.put("name", name);
+		paraMap.put("mobile", mobile);
+		
+		
+		
+		if("1".equals(join) || "3".equals(join)) {
+			midx = "1";
+			address = request.getParameter("address");
+			detailAddress = request.getParameter("detailAddress");
+			String gender = request.getParameter("gender");
+			
+			String birthday = request.getParameter("birthday");
+			birthday = birthday.replace("-", "");
+			
+			paraMap.put("midx", midx);
+			paraMap.put("address", address);
+			paraMap.put("detailAddress", detailAddress);
+			paraMap.put("gender", gender);
+			paraMap.put("birthday", birthday);
+			
+			
+		}
+		else { // 의료
+			midx = "2";
+			address = request.getParameter("hpaddr");
+			String hidx = request.getParameter("hidx");
+			
+			paraMap.put("midx", midx);
+			paraMap.put("address", address);
+			paraMap.put("hidx", hidx);
+		}
+		
+		int n = service.registerEnd(paraMap);
+		
+		String message = "";
+		String loc = request.getContextPath()+"/index.bibo";
+		
+		if(n==1) {
+			message = "회원가입이 완료되었습니다.";
+		}
+		else {
+			message = "회원가입을 실패하였습니다. 다시 진행해주세요.";
+		}
+		
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
 	
 	// 로그인 창 띄우기
 	@RequestMapping(value="/login/login.bibo")
@@ -481,11 +584,14 @@ public class LoginController {
 				System.out.println("가입한적 없음");
 				
 				Map<String, String> kakaoInfo = new HashMap<>();
+				kakaoInfo.put("userid", userid);
 				kakaoInfo.put("name", name);
 				kakaoInfo.put("email", email);
 				kakaoInfo.put("birthday", birthday);
 				kakaoInfo.put("mobile", mobile);
 				kakaoInfo.put("gender", gender);
+				
+				// 비밀번호는 암호화로 넣어주기만할거임
 				
 				// 회원가입시 필요한 정보 전달 사용후 삭제할거임
 				HttpSession session = request.getSession();
