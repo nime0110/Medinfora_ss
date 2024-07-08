@@ -43,14 +43,20 @@ button#searchbtn{
 	border-radius: 0 1rem 1rem 0;
 }
 
-.searchList{
+.search_hp{
 	border-top: solid 1px #595959;
 	border-bottom: solid 1px #595959;
 }
 
-.searchList:hover{
+.search_hp:hover{
 	cursor: pointer;
 	background-color: #f2f2f2;
+}
+
+.pagebar{
+	display: grid;
+    place-items: center;
+	margin-top: 10px;
 }
 
 
@@ -71,18 +77,18 @@ button#searchbtn{
 $(document).ready(function(){
 
 	$("div#displayList").hide();
-	$("div.info_body").hide();
+	$("div.tipbox").show();
+	$("div[name='searchtoal']").hide();
+	$("div.pagebar").empty();
 
 	$("input:text[name='searchWord']").keyup((e)=>{
 		const w_length = $(e.target).val().trim().length;
 
 		if(w_length == 0){
 			$("div#displayList").hide();
-			$("div.info_body").show();
+			$("div.tipbox").show();
 		}
 		else{
-			$("div.info_body").hide();
-
 			if( $("select.searchType").val() == "hpname" || $("select.searchType").val() == "hpaddr"){
 				$.ajax({
 					url:"<%=ctxPath%>/register/autoWord.bibo",
@@ -131,6 +137,37 @@ $(document).ready(function(){
 		const autoword = $(e.target).text();
 		$("input[name='searchWord']").val(autoword); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
 		$("div#displayList").hide();
+		goSearch('1');
+	});
+
+
+
+	$(document).on("click", "div.search_hp", function(e){
+		const target = $(e.target).closest("div.search_hp");
+    
+    	const hpname = target.find("div[name='hpname']").text();
+		const hpaddr = target.find("div[name='hpaddr']").text();
+
+		// console.log(hpname);	
+		// console.log(hpaddr);	
+		// console.log(hptel);	
+
+		$.ajax({
+			url:"<%=ctxPath%>/register/searchMedicalEnd.bibo",
+			data:{"hpname":hpname
+				 ,"hpaddr":hpaddr},
+			dataType:"json",
+			success:function(json){
+				console.log(JSON.stringify(json));
+				alert("확인");
+
+
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+
+		});
 	});
 
 
@@ -141,6 +178,8 @@ $(document).ready(function(){
 //Function Declaration
 function goSearch(currentPageNo){
 
+	$("div#displayList").hide();
+
 	const searchType = $("select[name='searchType']").val().trim();
 	const searchWord = $("input:text[name='searchWord']").val().trim();
 
@@ -148,16 +187,91 @@ function goSearch(currentPageNo){
 		return;
 	}
 
-	
-
 	$.ajax({
-		url:"<%=ctxPath%>/register/searchmedicalEnd.bibo"
+		url:"<%=ctxPath%>/register/searchMedicalShow.bibo",
 		data:{"searchType":searchType
 			 ,"searchWord":searchWord
 			 ,"currentPageNo":currentPageNo},
+		async:"false",
 		dataType:"json",
 		success:function(json){
-			alert("검색된거 들어왔음");
+			// 배열이니까, for문돌려서 넣어주면 댐
+			// console.log(JSON.stringify(json));
+
+			$("div.tipbox").hide();
+			$("div[name='searchtoal']").show();
+
+			/*/ 검색값 유지
+			$("select[name='searchType']").val(searchType);
+			$("input:text[name='searchWord']").val(searchWord);
+			*/
+
+			$("span[name='size']").html(json.jsonMap.totalCount);
+			
+			if(json.jsonMap.hpList != null){
+				let add_html = ``;
+
+				$.each(json.jsonMap.hpList, function(index, item){
+					
+					add_html += `<div class="search_hp px-2 py-3">
+									<div class="nanum-eb size-s" name="hpname">\${item.hpname}</div>
+									<div class="nanum-n size-s" name="hpaddr">\${item.hpaddr}</div>
+									<div class="nanum-n size-s" name="hptel">\${item.hptel}</div>
+								</div>`;
+				});
+
+				$("div#searchList").html(add_html);
+
+				<%-- 페이지바 관련 --%>
+				
+				const blockSize = json.jsonMap.blockSize;
+				let loop = json.jsonMap.loop;
+				let pageNo = json.jsonMap.pageNo;
+				const totalPage = json.jsonMap.totalPage;
+
+				let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
+					
+				if(pageNo != 1) {
+					pageBar += "<li class='page-item'>" 
+							+ " 	<a class='page-link' onclick='goSearch("+(pageNo-1)+")>" 
+							+ "	    	<span aria-hidden='true'>&laquo;</span>" 
+							+ "	    </a>" 
+							+ "</li>";
+				}
+				
+				while(!(loop>blockSize || pageNo > totalPage)) {
+					if(pageNo == currentPageNo) {
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
+								+ "</li>";
+					}
+					else{
+						pageBar += "<li class='page-item'>"
+								+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>" +pageNo+"</a>" 
+								+ "</li>";
+					}
+					loop++;
+					pageNo++;
+				}
+				
+				if(pageNo <= totalPage) {
+					pageBar += "<li class='page-item'>"
+							+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>"
+							+ "	    	<span aria-hidden='true'>&raquo;</span>"
+							+ "	    </a>"
+							+ "</li>";
+				}
+				
+				pageBar += "</ul>";
+				
+				$("div.pagebar").html(pageBar);
+
+			}
+			
+
+			
+			
+			
 		},
 		error: function(request, status, error){
 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -173,7 +287,7 @@ function goSearch(currentPageNo){
 
 </head>
 <body>
-<div class="m-5" style="border: solid 1px red;">
+<div class="m-5">
 <p class="nanum-eb size-n">병원 찾기</p>
 <form class="mt-3 d-flex searchFrm" name="searchFrm">
 	<select class="searchType" name="searchType">
@@ -186,27 +300,28 @@ function goSearch(currentPageNo){
 </form>
 
 <%-- === 검색어 입력시 자동글 완성하기  === --%>
-<div id="displayList" style="border:solid 1px gray; border-top:none; height:200px; overflow:auto;"></div>
-<div class="info_body">
+<div id="displayList" style="border:solid 1px gray; border-top:none; overflow:auto;"></div>
+<div class="tipbox">
 	<p class="p-3"><span class="nanum-eb h4">tip</span>&nbsp;&nbsp;<span class="nanum-n">병원이름 검색 시 주소가 맞는지 확인하시어 선택바랍니다.</span></p>
 </div>
 
 <%-- 검색한 결과 병원리스트를 보여준다.--%>
 <div class="gd mt-3">
-	<div class="nanum-eb size-s">검색결과&nbsp;&nbsp;<span>x&nbsp;건</span></div>
-	<div class="mt-3">
-		<%-- 여기 이제 포문 돌리고 페이징 처리 --%>
-		<div class="searchList py-3">
+	<div class="nanum-eb size-s" name="searchtoal">검색결과&nbsp;&nbsp;<span name="size"></span>&nbsp;건</div>
+	<div class="mt-1" id="searchList">
+		<%-- 여기 이제 포문 돌리고 페이징 처리 
+		<div class="search_hp py-3">
 			<div class="nanum-eb size-s"> 서울병원의원</div>
 			<div class="nanum-n size-s">서울특별시 서초구 서초중앙로 26, 1층 109호 (서초동, 래미안 서초유니빌)</div>
 		</div>
+		--%>
 	</div>
 
 
 </div>
 
 <%-- 페이지바 처리 --%>
-<div class="pagebar" align="center">페이지 바</div>
+<div class="pagebar"></div>
 
 
 

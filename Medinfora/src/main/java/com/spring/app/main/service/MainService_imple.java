@@ -56,8 +56,15 @@ public class MainService_imple implements MainService {
 	// 회원가입(병원찾기 병원리스트(페이징))
 	@Override
 	public List<HospitalDTO> hpSearch(Map<String, String> paraMap) {
-		// TODO Auto-generated method stub
-		return null;
+		List<HospitalDTO> hpList = dao.hpSearch(paraMap);
+		return hpList;
+	}
+	
+	// 회원가입(병원찾기 병원정보 입력)
+	@Override
+	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap) {
+		HospitalDTO hpdto = dao.searchMedicalEnd(paraMap);
+		return hpdto;
 	}
 	
 	
@@ -183,6 +190,8 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
+
+	
 
 	
 
