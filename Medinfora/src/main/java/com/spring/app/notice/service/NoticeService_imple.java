@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.common.FileManager;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.notice.model.NoticeDAO;
@@ -17,6 +18,10 @@ public class NoticeService_imple implements NoticeService {
 
 	@Autowired
 	private NoticeDAO dao;
+	
+	// === #186. 첨부파일 삭제를 위한 것 === //
+	 	@Autowired  // Type에 따라 알아서 Bean 을 주입해준다.
+		private FileManager fileManager;
 
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
@@ -81,7 +86,11 @@ public class NoticeService_imple implements NoticeService {
 	// 임시 
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
-		NoticeDTO noticedto = dao.getView(paraMap);
+		NoticeDTO noticedto = dao.getView1(paraMap);
+		  if (noticedto == null) {
+	            System.out.println("NoticeService_imple.getView_no_increase_readCount() - noticedto is null");
+	            return null;		
+	        }
 		return noticedto;
 	}
 
@@ -91,6 +100,27 @@ public class NoticeService_imple implements NoticeService {
 		int n = dao.edit(noticedto);
 		return n;
 	}
+
+	@Override
+	public int del(Map<String, String> paraMap) {
+		int n = dao.del(paraMap.get("seq"));
+		
+		if(n==1) {
+			String path = paraMap.get("path");
+			String fileName = paraMap.get("fileName");
+			
+			if(fileName != null && !"".equals(fileName)) {
+				try {
+					fileManager.doFileDelete(fileName, path);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return n;
+	}
+
+	
 
 } // end of public class NoticeService_imple implements NoticeService 
 

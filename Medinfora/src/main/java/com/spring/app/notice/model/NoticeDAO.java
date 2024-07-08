@@ -29,5 +29,9 @@ public interface NoticeDAO {
 	 int increase_readCount(int nidx);
 
 	public int edit(NoticeDTO noticedto);
+
+	public NoticeDTO getView1(Map<String, String> paraMap);
+
+	public int del(String string);
 	
 }
