@@ -70,7 +70,7 @@ $(document).ready(function(){
 
         $("p#pwd_check_cmt").empty();
 
-        if($(e.target).val != pwd){
+        if($(e.target).val().trim() != pwd){
             $("p#pwd_check_cmt").html("비밀번호가 일치하지 않습니다.");
             $(e.target).val("");
             $("input:password[name='pwd']").val("");
@@ -244,6 +244,7 @@ function isExistCheck(value, type){
         data:{"value":value
              ,"type":type},
         dataType:"json",
+        async:"false",
         success:function(json){
 
             if(type == "userid"){
@@ -276,3 +277,179 @@ function isExistCheck(value, type){
     });
 
 }// end of function isExistCheck(value, type)---
+
+
+// 가입하기 버튼 클릭
+function register(){
+    // 모두 입력했는지 유효성 검사 후 submit 진행
+
+    let check_comple = false;
+
+    const join = $("input:hidden[name='join']").val();
+
+    const userid = $("input:text[name='userid']").val();
+    const idCheck_click = $("input:hidden[name='idCheck_click']").val();
+
+    const pwd = $("input:password[name='pwd']").val();
+    const pwd_check = $("input#pwd_check").val();
+
+    const email = $("input:text[name='email']").val();
+    const emailCheck_click = $("input:hidden[name='emailCheck_click']").val();
+
+    const name = $("input:text[name='name']").val();
+    const mobile = $("input:text[name='mobile']").val();
+
+    const address = $("input:text[name='address']").val().trim();
+    const detailAddress = $("input:text[name='detailAddress']").val().trim();
+
+    let birthday = $("input:text[name='birthday']").val();
+
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    const today = year+"-"+month+"-"+day;
+
+    date = new Date(birthday);
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+
+    birthday = year+"-"+month+"-"+day;
+    
+    console.log("birthday : "+birthday);
+    console.log("today : "+today);
+
+
+
+
+    if(userid == "" || idCheck_click == "false"){
+        if(userid == ""){
+            alert("아이디값을 입력하세요.");
+            $("input:text[name='userid']").focus();
+            return;
+        }
+        else{
+            alert("아이디 중복확인이 필요합니다.");
+            return;
+        }
+    }
+    else{
+        check_comple = true;
+    }
+        
+
+
+    if(pwd == "" || pwd_check == ""){
+        if(pwd == ""){
+            alert("비밀번호를 입력하세요.");
+            $("input:password[name='pwd']").focus();
+            return;
+        }
+        else{
+            alert("비밀번호 확인이 필요합니다.");
+            $("input#pwd_check").focus();
+            return;
+        }
+    }
+    else{
+        check_comple = true;
+    }
+
+
+    if(email =="" || emailCheck_click == "false"){
+        if(email == ""){
+            alert("이메일을 입력하세요");
+            $("input:text[name='email']").focus();
+            return;
+        }
+        else{
+            alert("이메일 중복확인이 필요합니다.");
+            return;
+        }
+    }
+    else{
+        check_comple = true;
+    }
+
+    if(name == ""){
+        if(join == "1" || join == "3"){
+            alert("성명을 입력하세요");
+            $("input:text[name='name']").focus();
+            return;
+        }
+        else{
+            alert("병원검색을 진행하세요");
+            return;
+        }
+    }
+    else{
+        check_comple = true;
+    }
+
+
+    if(mobile == ""){
+        if(join == "1" || join == "3"){
+            alert("전화번호를 입력하세요");
+            $("input:text[name='mobile']").focus();
+            return;
+        }
+        else{
+            alert("병원검색을 진행하세요");
+            return;
+        }
+    }
+    else{
+        check_comple = true;
+    }
+
+    
+    if(address == ""){
+        if(join == "1" || join == "3"){
+            alert("주소를 입력하세요.");
+            return;
+        }
+        else{
+            alert("병원찾기를 진행하세요");
+            return;
+        }
+    }
+    else{
+        if(detailAddress == ""){
+            if(join == "1" || join == "3"){
+                alert("상세주소를 입력하세요");
+                $("input:text[name='detailAddress']").focus();
+                return;
+            }
+        }
+        
+        check_comple = true;
+    }
+
+    if(join == "1" || join == "3"){
+        if(birthday >= today){
+            alert("생년월일은 현재일을 초과할 수 없습니다.");
+            return;
+        }
+        else{
+            check_comple = true;
+        }
+    }
+    
+
+    if(check_comple){
+        $(document).find("input:disabled").prop("disabled", false);
+
+        const frm = document.registerFrm;
+        frm.action = "registerEnd.bibo";
+        frm.method = "post";
+        frm.submit();
+        
+    }
+    
+    return;
+
+
+
+}

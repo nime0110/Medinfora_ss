@@ -296,14 +296,24 @@ SELECT COUNT(*) AS TotalCount
 FROM B;
 
 -- 하나 데이터가져오기(중복되면 맨 위에거만)
-SELECT hpname, hpaddr, hptel
-	    FROM(
-	        select row_number() over(order by hidx) AS rno
-	             , hpname, hpaddr, replace(hptel, '-', '') as hptel
-	        from hospital
-	        where hpname = ${hpname} and hpaddr = ${hpaddr}
-        )H
-        WHERE rno = 1
+SELECT hidx, hpname, hpaddr, hptel
+FROM(
+    select row_number() over(order by hidx) AS rno
+         , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
+    from hospital
+    where hpname = '행복한의원' and hpaddr = '광주광역시 북구 서암대로 179, 2층 (신안동)'
+)H
+WHERE rno = 1
+
+desc member;
+
+select * from member;
+
+
+delete from member
+where userid = 'user001';
+
+commit;
 
 
 
