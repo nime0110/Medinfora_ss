@@ -1,4 +1,5 @@
 let map;
+let clusterer;
 let markers = [];
 let infowindows = [];
 let overlays = [];
@@ -8,8 +9,9 @@ let openInfowindow = null; // 열려있는 인포윈도우를 추적
 let openOverlay = null; // 열려있는 오버레이를 추적
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
+
 $(function() {
-          
+    $("div#loaderArr").hide();     
     // 지도 컨테이너와 옵션 설정
     let mapContainer = document.getElementById('map'),
         mapOption = {
@@ -30,6 +32,13 @@ $(function() {
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+                  
+    clusterer = new kakao.maps.MarkerClusterer({
+        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+        minLevel: 5, // 클러스터 할 최소 지도 레벨 
+    });
+
 
 
 
@@ -80,6 +89,7 @@ $(function() {
     //시-도 부분이 바뀌면 업데이트
     $('#city').on('change', function() {
     	updateSigunGu();
+        updateDong();
     });
     
     // 시/군/구 부분이 바뀌면 동 업데이트
@@ -134,8 +144,6 @@ function updateDong() {
     let city_val = $('#city').val();
     let local_val = $('#local').val(); 
     const cityLocal = { "city": city_val, "local": local_val };
-
-    
     $.ajax({
         url: contextPath + "/getcountryinfo.bibo",
         async: false,
@@ -162,9 +170,10 @@ function updateDong() {
 var currentPage = 1; // 현재 페이지를 추적
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수!! 
 function searchHospitals(pageNo) {
-    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
+    clearAllwithmarker(); // 인포윈도우와 오버레이 초기화
+    clearClusterer(); // 클러스터러 초기화
     let city = '경기도' //$('#city').val();
-    let local = '고양시' //$('#local').val();
+    let local = '고양시 일산동구' //$('#local').val();
     let country = '백석동' //$('#country').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
@@ -234,12 +243,12 @@ function searchHospitals(pageNo) {
 	                // 병원 리스트로 출력
                     v_html += `<div class="hospital-details" data-index="${index}">
                                 <input type="hidden" name="${item.hidx}"></input>
-                                <div class="hospital-label">${alphabetIndex}</div>
+                                <div class="hospital-label nanum-n">${alphabetIndex}</div>
                                 <h2 class="hospital-name">${item.hpname}</h2>
-                                <p class="hospital-type">${item.classname}</p>
-                                <p class="hospital-contact">TEL: ${item.hptel} </p>
-                                <p class="hospital-address">${item.hpaddr}</p>
-                                <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
+                                <p class="hospital-type nanum-n">${item.classname}</p>
+                                <p class="hospital-contact nanum-n">TEL: ${item.hptel} </p>
+                                <p class="hospital-address nanum-n">${item.hpaddr}</p>
+                                <button class="details-button nanum-n" onclick="detailSearch(${index})">상세보기</button>
                             </div>`;
 
                                 
@@ -253,7 +262,6 @@ function searchHospitals(pageNo) {
                 markers = []; // 마커를 저장하는 배열
                 overlays = []; // 커스텀 오버레이를 저장하는 배열
                 let infowindows = []; // 인포윈도우를 저장하는 배열
-
 
                 
                 for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
@@ -274,20 +282,15 @@ function searchHospitals(pageNo) {
                         position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
                         image: markerImageArr[i]
                     });                  
-                    
+                    // 클러스터러에 마커들을 추가합니다
+                    clusterer.addMarkers(markers);
                     // 마커를 배열에 추가
                     markers.push(marker);
        
                     // 모든 마커가 한 번에 보이도록 지도의 중심과 확대레벨을 설정
                     bounds.extend(positionArr[i].latlng); 
                     map.setBounds(bounds);
-                        
-                    var clusterer = new kakao.maps.MarkerClusterer({
-                            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-                            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-                            minLevel: 5, // 클러스터 할 최소 지도 레벨 
-                            markers: markers // 클러스터에 마커 추가
-                    });
+
                     // 마커에 표시할 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content, 
@@ -300,6 +303,10 @@ function searchHospitals(pageNo) {
                     
                     // 마커 위에 인포윈도우를 표시하는 클릭 이벤트 
                     kakao.maps.event.addListener(marker, 'click', function() { 
+
+                        var level = map.getLevel() - 2;
+                        map.setLevel(level, {anchor: this.getPosition()});
+
                         // 열려있는 인포윈도우가 있으면 닫기
                         if (openInfowindow) {
                             openInfowindow.close();
@@ -339,6 +346,8 @@ function searchHospitals(pageNo) {
                                   
                     
                 } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
+                    
+
 
                 
                 //마커가 하나 이상일때 그 마커들의 위경도가 서로 같다면 이진탐색    1,2,3,4 순서로 생성되어있음 
@@ -448,14 +457,15 @@ function searchHospitals(pageNo) {
 
                     // 마커 클릭 이벤트 트리거
                     kakao.maps.event.trigger(markers[index], 'click');
-                                            // 열려있는 오버레이가 있으면 닫기
+                    // 열려있는 오버레이가 있으면 닫기
                     
                 });
-
-
      
             } else {
-                v_html += `검색된 의료기관이 없습니다.`;
+                v_html += `<div id="no_searchList">
+		        		<span>😥</span>
+		            	<p>검색된 의료기관이 없습니다.</p>
+		        	</div>`;
             } // end of if(json.length > 0) -------------------------------
             
             $('#hospitalList').append(v_html);
@@ -471,7 +481,7 @@ function searchHospitals(pageNo) {
 }
 
 function displayPagination(totalPage, currentPage) {
-    clearInfowindowsAndOverlays(); // 인포윈도우와 오버레이 초기화
+    clearAllwithmarker(); // 인포윈도우와 오버레이 초기화
     var paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
@@ -513,9 +523,14 @@ function removeMarkers() {
     markers = [];
 }
 
+function clearClusterer() {
+    if (clusterer) {
+        clusterer.clear(); // 클러스터러에서 모든 마커 제거
+    }
+}
 
-// 인포윈도우와 오버레이 초기화 함수
-function clearInfowindowsAndOverlays() {
+// 인포윈도우와 오버레이, 클러스터러 초기화 함수
+function clearAllwithmarker() {
     if (openInfowindow) {
         openInfowindow.close();
         openInfowindow = null;
@@ -540,7 +555,28 @@ function detailSearch(index) {
         dataType: "json",
         success: function (json) {
             console.log(JSON.stringify(json));
+            /* 
+            {"agency":"의원","hidx":77937,"hpname":"의료법인마리아의료재단마리아의원","endtime4":"1700","endtime5":"1700","endtime6":"1200","endtime1":"1700","hpaddr":"경기도 고양시 일산동구 중앙로 1060, 2,3층,4(일부)층 (백석동)","endtime2":"1700","endtime3":"1700","starttime5":"0730","starttime6":"0730","starttime3":"0730","starttime4":"0730","starttime1":"0730","hptel":"031-924-6555","starttime2":"0730"}
+hospitalSearch.js:557 Uncaught 
             
+            
+            */
+            // 모달 내용 업데이트
+            $('#modal-hpname').text(json.hpname);
+            $('#modal-hptel').text(json.hptel);
+            $('#modal-hpaddr').text(json.hpaddr);
+            $('#modal-classname').text(json.classname);
+            $('#modal-operating-hours').text(json.operatingHours);
+
+            // 진료 시간 비교
+            let now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+
+            // 모달 표시
+            $('#hospitalDetailModal').modal('show');
+
+
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
