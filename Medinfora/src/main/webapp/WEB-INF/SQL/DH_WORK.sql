@@ -33,3 +33,7 @@ select HPADDR from HOSPITAL where HPADDR like '%'||'해밀3로'||'%';
 select ridx, to_date(CHECKIN,'yyyy-mm-dd'), hidx
 from RESERVE
 
+DELETE
+FROM KOREAAREA;
+
+select * from KOREAAREA where LOCAL like '%'||'구';
