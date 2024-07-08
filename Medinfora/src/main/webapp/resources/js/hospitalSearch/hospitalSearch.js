@@ -11,14 +11,21 @@ const contextPath = window.location.pathname.substring(0, window.location.pathna
 
 
 $(function() {
+    // 로딩 이미지 숨기기
     $("div#loaderArr").hide();     
+
+    // 모달 닫기 버튼 클릭 이벤트
+    $('#closeModalButton').click(function(){
+        $('#hospitalDetailModal').modal('hide');
+    });
+
     // 지도 컨테이너와 옵션 설정
     let mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(37.566535, 126.9779692), // 초기 중심 좌표 (서울 시청)
             level: 3 // 초기 확대 레벨
         };
-    
+
     // 지도 생성 
     map = new kakao.maps.Map(mapContainer, mapOption);
 
@@ -556,22 +563,40 @@ function detailSearch(index) {
         success: function (json) {
             console.log(JSON.stringify(json));
             /* 
-            {"agency":"의원","hidx":77937,"hpname":"의료법인마리아의료재단마리아의원","endtime4":"1700","endtime5":"1700","endtime6":"1200","endtime1":"1700","hpaddr":"경기도 고양시 일산동구 중앙로 1060, 2,3층,4(일부)층 (백석동)","endtime2":"1700","endtime3":"1700","starttime5":"0730","starttime6":"0730","starttime3":"0730","starttime4":"0730","starttime1":"0730","hptel":"031-924-6555","starttime2":"0730"}
-hospitalSearch.js:557 Uncaught 
-            
-            
+            {"agency":"의원","hidx":77937,"hpname":"의료법인마리아의료재단마리아의원",
+            "endtime4":"1700","endtime5":"1700","endtime6":"1200","endtime1":"1700",
+            "hpaddr":"경기도 고양시 일산동구 중앙로 1060, 2,3층,4(일부)층 (백석동)",
+            "endtime2":"1700","endtime3":"1700","starttime5":"0730","starttime6":"0730",
+            "starttime3":"0730","starttime4":"0730","starttime1":"0730","hptel":"031-924-6555",
+            "starttime2":"0730"}
             */
+            // 시작시간과 종료시간을 시간 형식으로 변환
+            for (let i = 1; i <= 8; i++) {
+                let startkey = 'starttime' + i;
+                let endkey = 'endtime' + i;
+                // 존재하는 starttime 필드만 포맷팅
+                // hasOwnProperty(key) => json 객체에 key 속성이 있는지 확인
+                // json[key] => : json 객체의 key 속성의 값을 가져옴
+                if (json.hasOwnProperty(startkey) && json[startkey]) { //시작시간존재시 끝나는시간 무조건 존재
+                    json[startkey] = json[startkey].substring(0, 2) + "시 " + json[startkey].substring(2, 4) + "분";
+                    json[endkey] = json[endkey].substring(0, 2) + "시 " + json[endkey].substring(2, 4) + "분";
+                    $('#modal-daytime' + i).text(json[startkey] + " ~ " + json[endkey]);
+                } else {
+                    $('#modal-daytime' + i).text("휴진");
+                }
+            }
+            //console.log("json.starttime1:", json.starttime1); // 07시 30분
+            //console.log("json.endtime1:", json.endtime1); // 17시 00분
+
+
+            
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
+            $('#modal-hpaddr').text(json.hpaddr);   
             $('#modal-hptel').text(json.hptel);
-            $('#modal-hpaddr').text(json.hpaddr);
             $('#modal-classname').text(json.classname);
-            $('#modal-operating-hours').text(json.operatingHours);
+            $('#modal-agency').text(json.agency);
 
-            // 진료 시간 비교
-            let now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
 
             // 모달 표시
             $('#hospitalDetailModal').modal('show');
