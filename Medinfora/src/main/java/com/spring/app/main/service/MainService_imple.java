@@ -96,6 +96,9 @@ public class MainService_imple implements MainService {
 	@Override
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
 		
+		String pwd = paraMap.get("pwd");
+		paraMap.put("pwd", Sha256.encrypt(pwd));
+		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
 		
 		// == 로그인 경우의수  == //
@@ -136,6 +139,11 @@ public class MainService_imple implements MainService {
 						loginuser.setMobile(mobile);
 					}
 					*/
+					
+					loginuser.setEmail(aES256.decrypt(loginuser.getEmail()));
+					loginuser.setMobile(aES256.decrypt(loginuser.getMobile()));
+					
+					
 					HttpSession sesstion =  request.getSession();
 					sesstion.setAttribute("loginuser", loginuser);
 				}
