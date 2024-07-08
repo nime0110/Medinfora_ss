@@ -27,5 +27,7 @@ public interface NoticeDAO {
 
 	 // 글 조회수 1 증가하기 
 	 int increase_readCount(int nidx);
+
+	public int edit(NoticeDTO noticedto);
 	
 }
