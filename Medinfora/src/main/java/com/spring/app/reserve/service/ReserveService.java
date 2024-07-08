@@ -17,7 +17,13 @@ public interface ReserveService {
 	// 날짜가 공휴일인지 체크
 	int holidayCheck(String day);
 
-	// 병원과 요일 파악하여, 오늘(현재시간 이후) 진료예약 가능한 업무시간 파악하기
-	List<HospitalDTO> todayReserveAvailable(Map<String, String> paraMap);
+	// 병원의 오픈시간과 마감시간 파악
+	HospitalDTO hospitalTime(String hidx);
+
+	// 선택한 날의 예약 개수 파악
+	int reserveCnt(Map<String, String> paraMap);
+	
+	// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
+	HospitalDTO dayReserveImpossible(Map<String, String> paraMap);
 
 }
