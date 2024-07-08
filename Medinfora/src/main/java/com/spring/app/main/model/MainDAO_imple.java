@@ -63,6 +63,13 @@ public class MainDAO_imple implements MainDAO{
 		return hpdto;
 	}
 	
+	// 회원가입하기
+	@Override
+	public int registerEnd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("medinfora.registerEnd", paraMap);
+		return n;
+	}
+	
 	// 로그인 유저 정보
 	@Override
 	public MemberDTO getLoginuser(Map<String, String> paraMap) {
@@ -134,6 +141,7 @@ public class MainDAO_imple implements MainDAO{
 	public int holidayInputer(HolidayVO holidayVO) {
 		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
+
 	
 	
 	

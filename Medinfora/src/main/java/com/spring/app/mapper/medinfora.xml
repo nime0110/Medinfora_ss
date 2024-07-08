@@ -117,6 +117,33 @@
 	</select>
 	
 	
+	<!-- 회원가입하기 -->
+	<insert id="registerEnd" parameterType="HashMap">
+		insert into member ( userid, pwd, email, name, mobile, address ,
+						     midx, registerday, pwdUpdateday, loginmethod
+		<choose>
+			<when test='join == "1" or join == "3"'>
+				 , detailAddress, birthday, gender
+			</when>
+			<when test='join == "2"'>
+				 , hidx
+			</when>
+		</choose>
+		)
+		values( #{userid}, #{pwd}, #{email}, #{name}, #{mobile}, #{address},
+			    to_number(#{midx}), to_char(sysdate, 'yyyymmdd'), to_char(sysdate, 'yyyymmdd'), to_number(#{loginmethod})
+		<choose>
+			<when test='join == "1" or join == "3"'>
+				, #{detailAddress}, #{birthday}, to_number(#{gender})
+			</when>
+			<when test='join == "2"'>
+			, to_number(#{hidx})
+			</when>
+		</choose>
+		)
+	</insert>
+	
+	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
 		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx
