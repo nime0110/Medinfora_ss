@@ -349,6 +349,9 @@ public class LoginController {
 		
 		int n = service.registerEnd(paraMap);
 		
+		// 저장했던 카카오 정보 삭제
+		session.removeAttribute("kakaoInfo");
+		
 		String message = "";
 		String loc = request.getContextPath()+"/index.bibo";
 		
