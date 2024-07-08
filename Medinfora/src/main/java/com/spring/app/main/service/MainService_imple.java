@@ -96,8 +96,10 @@ public class MainService_imple implements MainService {
 	@Override
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
 		
-		String pwd = paraMap.get("pwd");
-		paraMap.put("pwd", Sha256.encrypt(pwd));
+		if(paraMap.get("loginmethod") == "0") {
+			String pwd = paraMap.get("pwd");
+			paraMap.put("pwd", Sha256.encrypt(pwd));
+		}
 		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
 		
