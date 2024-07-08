@@ -128,6 +128,6 @@
 		from reserve
 		where hidx = #{hidx}
 			and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(sysdate,'yyyy-mm-dd hh24:mi:ss'))
-		    or checkin = #{day}
+		    and checkin = #{day}
 	</select>
 </mapper>
