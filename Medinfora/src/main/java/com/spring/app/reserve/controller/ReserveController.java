@@ -64,6 +64,7 @@ public class ReserveController {
 		return mav;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
 	public String choiceDrList(HttpServletRequest request) {

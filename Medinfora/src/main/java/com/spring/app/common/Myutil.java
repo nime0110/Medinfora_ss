@@ -18,6 +18,8 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 
+import oracle.net.aso.l;
+
 public class Myutil {
 
 	/**
@@ -141,7 +143,26 @@ public class Myutil {
 				JSONObject jsonObj = new JSONObject();
 				
 				jsonObj = (JSONObject) jsonArr.get(i);
-				KoreaAreaVO areavo = new KoreaAreaVO((String)jsonObj.get("city"), (String)jsonObj.get("local"), (String)jsonObj.get("country"));
+				
+				String local = (String)jsonObj.get("local");
+				
+				if(local.charAt(local.length()-1) == '구') {
+					
+					String newLocal = "";
+					
+					for(int j=0;j<local.length();j++) {
+						char readchar = local.charAt(j);
+						
+						newLocal += readchar;
+						if(readchar=='시') {
+							newLocal += ' ';
+						}
+					}
+					
+					local = newLocal;
+				}
+				
+				KoreaAreaVO areavo = new KoreaAreaVO((String)jsonObj.get("city"), local, (String)jsonObj.get("country"));
 				
 				areavoList.add(areavo);
 			}
