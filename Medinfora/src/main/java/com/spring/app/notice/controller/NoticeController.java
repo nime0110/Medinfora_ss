@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,76 +55,57 @@ public class NoticeController {
         return mav;
     }
 
-    @PostMapping("/noticeWriteEnd.bibo")
-    public ModelAndView noticeWriteEnd(Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
+    @PostMapping("/notice/noticeWriteEnd.bibo")
+    public ModelAndView noticeWriteEnd(@RequestParam Map<String, String> paraMap, ModelAndView mav, NoticeDTO noticedto,
             MultipartHttpServletRequest mrequest) {
 
         MultipartFile attach = noticedto.getAttach();
 
-        if (attach != null) {
+        if (attach != null && !attach.isEmpty()) {
             HttpSession session = mrequest.getSession();
             String root = session.getServletContext().getRealPath("/");
-
             String path = root + "resources" + File.separator + "files";
 
             String newFileName = "";
 
-            byte[] bytes = null;
-
-            long fileSize = 0;
-
             try {
-
-                bytes = attach.getBytes();
-
+                byte[] bytes = attach.getBytes();
                 String originalFilename = attach.getOriginalFilename();
-
                 newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-
-                noticedto.setFilename(newFileName);
-                noticedto.setOrgname(originalFilename);
-
-                fileSize = attach.getSize();
-                noticedto.setFilesize(String.valueOf(fileSize));
-
+                noticedto.setFilename(newFileName); // 파일 이름을 설정
+                noticedto.setOrgname(originalFilename); // 원본 파일 이름을 설정
+                long fileSize = attach.getSize();
+                noticedto.setFilesize(String.valueOf(fileSize)); // 파일 크기를 설정
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-     
-        int n = 0;
 
-        if (attach.isEmpty()) {
-
-            n = service.noticeWrite(noticedto);
-
+        HttpSession session = mrequest.getSession();
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser != null) {
+            noticedto.setUserid(loginUser.getUserid());
         } else {
-            n = service.add_noticeWrite(noticedto);
+            mav.addObject("message", "로그인 정보가 없습니다. 로그인 후 다시 시도해 주세요.");
+            mav.setViewName("notice/noticeWrite.tiles");
+            return mav;
         }
 
-        if (n == 1) {
-            mav.setViewName("redirect:/notice/noticeList.bibo");
-        } else {
-            mav.setViewName("/notice/noticeWrite.tiles");
-        }
+        // 파일 첨부가 없는 경우와 있는 경우를 구분하여 서비스 메소드를 호출
+        int n = (attach == null || attach.isEmpty()) ? service.noticeWrite(noticedto) : service.add_noticeWrite(noticedto);
 
-   
+        // 글쓰기 성공 여부에 따라 이동할 페이지를 설정
+        mav.setViewName(n == 1 ? "redirect:/notice/noticeList.bibo" : "/notice/noticeWrite.tiles");
         return mav;
     }
-
-    // 글 목록 보기
     @GetMapping("/notice/noticeList.bibo")
     public ModelAndView noticeList(ModelAndView mav, HttpServletRequest request) {
-
         HttpSession session = request.getSession();
         session.setAttribute("readCountPermission", "yes");
-      
+
         String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 
-      
         Map<String, String> paraMap = new HashMap<>();
-       
         int totalCount = service.getTotalCount(paraMap);
         int sizePerPage = 10;
         int currentShowPageNo = 1;
@@ -148,19 +130,15 @@ public class NoticeController {
 
         List<NoticeDTO> noticeListdto = service.noticeListSearch_withPaging(paraMap);
 
-      
-
         mav.addObject("noticeListdto", noticeListdto);
         mav.addObject("paraMap", paraMap);
 
-     
-        
         String pageBar = Myutil.makePageBar(currentShowPageNo, sizePerPage, totalPage, request.getContextPath() + "/notice/noticeList.bibo");
         mav.addObject("pageBar", pageBar);
 
         String goBackURL = Myutil.getCurrentURL(request);
         mav.addObject("goBackURL", goBackURL);
-        
+
         mav.setViewName("notice/noticeList.tiles");
         return mav;
     }
@@ -368,7 +346,7 @@ public class NoticeController {
    	public ModelAndView view_2(ModelAndView mav, HttpServletRequest request, RedirectAttributes redirectAttr) {
    		
    		// 조회하고자 하는 글번호 받아오기
-   		String seq = request.getParameter("seq");
+   		String seq = request.getParameter("nidx");
    		
    		// === #141. 이전글제목, 다음글제목 보기 시작 === //
    		String goBackURL = request.getParameter("goBackURL");

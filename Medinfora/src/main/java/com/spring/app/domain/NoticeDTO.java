@@ -16,9 +16,7 @@ public class NoticeDTO {
 
     private MultipartFile attach;
 
-    public void setAttach(MultipartFile attach) {
-        this.attach = attach;
-    }
+  
 
     public int getNidx() {
         return nidx;
@@ -95,6 +93,10 @@ public class NoticeDTO {
     public MultipartFile getAttach() {
 
         return attach;
+    }
+
+    public void setAttach(MultipartFile attach) {
+        this.attach = attach;
     }
 
 	
