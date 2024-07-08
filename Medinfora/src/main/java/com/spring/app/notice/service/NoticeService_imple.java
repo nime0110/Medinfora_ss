@@ -21,6 +21,7 @@ public class NoticeService_imple implements NoticeService {
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
 		int n = dao.noticeWrite(noticedto);
+		System.out.println("gc : "+n);
 		return n;
 	}
 
@@ -76,6 +77,20 @@ public class NoticeService_imple implements NoticeService {
 		
 		return noticedto;
 	} //end of public NoticeDTO getView(Map<String, String> paraMap, HttpSession session)
+
+	// 임시 
+	@Override
+	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
+		NoticeDTO noticedto = dao.getView(paraMap);
+		return noticedto;
+	}
+
+	
+	@Override
+	public int edit(NoticeDTO noticedto) {
+		int n = dao.edit(noticedto);
+		return n;
+	}
 
 } // end of public class NoticeService_imple implements NoticeService 
 

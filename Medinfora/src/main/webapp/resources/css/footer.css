@@ -55,7 +55,7 @@
 }
 
 @media (max-width: 1024px) {
-
+	
 	.footerimg {
 		display: none;
 	}
@@ -63,7 +63,7 @@
 	.footerimgsrc {
 		display: none;
 	}
-
+	
 	.info-inner{
 		padding-left: 0;
 	}
