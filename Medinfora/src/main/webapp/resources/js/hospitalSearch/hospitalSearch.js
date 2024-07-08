@@ -30,6 +30,10 @@ $(function() {
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+
+
+
+
 	// ****************** 시/도, 진료과목 데이터 가져오기 start ************* 
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
@@ -220,6 +224,7 @@ function searchHospitals(pageNo) {
 									    		<p class="add">								    		
 										    		${item.hpaddr} 
 									    		</p>
+                                                <button class="details-button"  onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
                     				    </div>`;
                     // 병원 이름을 추가
@@ -234,7 +239,7 @@ function searchHospitals(pageNo) {
                                 <p class="hospital-type">${item.classname}</p>
                                 <p class="hospital-contact">TEL: ${item.hptel} </p>
                                 <p class="hospital-address">${item.hpaddr}</p>
-                                <button class="details-button">상세보기</button>
+                                <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
                             </div>`;
 
                                 
@@ -248,6 +253,7 @@ function searchHospitals(pageNo) {
                 markers = []; // 마커를 저장하는 배열
                 overlays = []; // 커스텀 오버레이를 저장하는 배열
                 let infowindows = []; // 인포윈도우를 저장하는 배열
+
 
                 
                 for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
@@ -267,13 +273,21 @@ function searchHospitals(pageNo) {
                         map: map,
                         position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성
                         image: markerImageArr[i]
-                    });                    
+                    });                  
+                    
                     // 마커를 배열에 추가
                     markers.push(marker);
+       
                     // 모든 마커가 한 번에 보이도록 지도의 중심과 확대레벨을 설정
                     bounds.extend(positionArr[i].latlng); 
                     map.setBounds(bounds);
-
+                        
+                    var clusterer = new kakao.maps.MarkerClusterer({
+                            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+                            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+                            minLevel: 5, // 클러스터 할 최소 지도 레벨 
+                            markers: markers // 클러스터에 마커 추가
+                    });
                     // 마커에 표시할 인포윈도우를 생성하기
                     var infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content, 
@@ -344,14 +358,12 @@ function searchHospitals(pageNo) {
                                 }
                                 combinedContent += `</div>`;
 
-
                                 // 중복된 병원명을 모두 포함한 커스텀 오버레이 생성
                                 let customOverlay = new kakao.maps.CustomOverlay({
                                     content: `<div class="custom-overlay">${combinedContent}</div>`,
                                     position: markers[i].getPosition(),
                                     yAnchor: 1, // 위치 조정
-                                    clickable: true // 클릭 가능하도록 설정  지도 이벤트를 막아준다.
-                                    
+                                    clickable: true // 클릭 가능하도록 설정  지도 이벤트를 막아준다. 
                                 });
 
                                 // 커스텀 오버레이 배열에 추가
@@ -367,7 +379,6 @@ function searchHospitals(pageNo) {
                                     }
                                     customOverlay.setMap(map);        
                                     openOverlay = customOverlay;  
-                                    
                
                                     });
                                 })(markers[j], customOverlay);
@@ -495,6 +506,7 @@ function displayPagination(totalPage, currentPage) {
 // ================ marker, infowindows start====================== 
 // 지도에서 모든 마커를 제거하는 함수
 function removeMarkers() {
+    
     for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
@@ -517,3 +529,21 @@ function clearInfowindowsAndOverlays() {
 
 
 // ================ marker, infowindows end ====================== 
+
+// 상세보기 함수
+function detailSearch(index) {
+    let hidx = $('#hospitalList').children().eq(index).find('input').attr('name');
+    //console.log("hidx:", hidx); 37516
+    $.ajax({
+        url: contextPath + '/hpsearch/hpsearchDetail.bibo',
+        data: {hidx: hidx},
+        dataType: "json",
+        success: function (json) {
+            console.log(JSON.stringify(json));
+            
+        }, //end of  success: function(json)  ------------------
+        error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+    }); //end of $.ajax({-------------
+} //end of function detailSearch(index) ------------------

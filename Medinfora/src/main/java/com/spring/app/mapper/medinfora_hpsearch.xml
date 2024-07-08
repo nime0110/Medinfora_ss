@@ -55,4 +55,11 @@
 		</choose>
 		GROUP BY HPNAME, HPADDR)
 	</select>
+	
+	<select id="getHpDetail" parameterType="String" resultType="HospitalDTO">
+		SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY, STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
+       		   STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8
+		FROM hospital
+		WHERE hidx = #{hidx}
+	</select>
 </mapper>

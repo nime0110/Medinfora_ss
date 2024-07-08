@@ -10,5 +10,7 @@ public interface HpsearchService {
 	List<HospitalDTO> getHospitalList(Map<String, String> paraMap);
 
 	int getHpListTotalCount(Map<String, String> paraMap);
+	// 상세정보 불러오기
+	HospitalDTO getHpDetail(String hidx);
 
 }

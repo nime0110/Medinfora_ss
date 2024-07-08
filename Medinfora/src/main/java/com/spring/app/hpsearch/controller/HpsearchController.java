@@ -109,5 +109,46 @@ public class HpsearchController {
 
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/hpsearch/hpsearchDetail.bibo", produces="text/plain;charset=UTF-8")
+	public String hpsearchDetail(HttpServletRequest request) {
+		
+		String hidx = request.getParameter("hidx"); //경기도 광명시
+		//System.out.println("~~~ hidx:" + hidx );
+		HospitalDTO hpdetail = null;
+		if(hidx != null) {
+			hpdetail = service.getHpDetail(hidx);			
+		}
+
+		
+		JSONObject jsonObj = new JSONObject(); //{}
+		if(hpdetail != null) {
+			jsonObj.put("hidx", hpdetail.getHidx()); 
+			jsonObj.put("hpname", hpdetail.getHpname()); 
+			jsonObj.put("hpaddr", hpdetail.getHpaddr());
+			jsonObj.put("hptel", hpdetail.getHptel());				
+			jsonObj.put("classname", hpdetail.getClassname());
+			jsonObj.put("agency", hpdetail.getAgency());
+			jsonObj.put("starttime1", hpdetail.getStarttime1());
+			jsonObj.put("starttime2", hpdetail.getStarttime2());
+			jsonObj.put("starttime3", hpdetail.getStarttime3());
+			jsonObj.put("starttime4", hpdetail.getStarttime4());
+			jsonObj.put("starttime5", hpdetail.getStarttime5());
+			jsonObj.put("starttime6", hpdetail.getStarttime6());
+			jsonObj.put("starttime7", hpdetail.getStarttime7());
+			jsonObj.put("starttime8", hpdetail.getStarttime8());
+			jsonObj.put("endtime1", hpdetail.getEndtime1());
+			jsonObj.put("endtime2", hpdetail.getEndtime2());
+			jsonObj.put("endtime3", hpdetail.getEndtime3());
+			jsonObj.put("endtime4", hpdetail.getEndtime4());
+			jsonObj.put("endtime5", hpdetail.getEndtime5());
+			jsonObj.put("endtime6", hpdetail.getEndtime6());
+			jsonObj.put("endtime7", hpdetail.getEndtime7());
+			jsonObj.put("endtime8", hpdetail.getEndtime8());
+		}
+		System.out.println(jsonObj.toString());
+		return jsonObj.toString();
+	}
+	
 	
 }
