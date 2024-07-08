@@ -9,8 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.Myutil;
 import com.spring.app.domain.KoreaAreaVO;
-import com.spring.app.domain.HolidayVO;
 import com.spring.app.main.service.MainService;
+
 
 @Controller
 public class TestController {
@@ -45,12 +45,12 @@ public class TestController {
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		if(true) {
 			try {
 				
-				String localAddr = "";
+				String localAddr = "C:\\NCS\\Medinfora\\Medinfora\\src\\main\\webapp\\resources\\json\\koreaarea.json";
 				
 				List<KoreaAreaVO> areaList = Myutil.areaInputer(localAddr);
 				
@@ -71,7 +71,7 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		*/
+		
 		/*
 		// HOLIDAY API
 		if(true) {
