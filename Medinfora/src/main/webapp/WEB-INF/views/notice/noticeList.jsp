@@ -26,26 +26,20 @@ function click_on(nidx){
 
 <body>
 	<div class="board_title">
-		<!--nanum-eb size-b  -->
-
-		<!-- <div class="notice-1"> -->
-	
-			<div class="notice-btn1 nanum-eb mb-5">
-				<div class="notice0000">
-					<p class="nanum-eb size-b">공지사항</p>
-						<c:if test="${sessionScope.loginuser.mIdx==0}">
-						<a class="notice-btn" href="<%=ctxPath%>/notice/noticeWrite.bibo">글 작성하기</a>
-						</c:if>
-					
-				</div>
+		<div class="notice-btn1 nanum-eb mb-5">
+			<div class="notice0000">
+				<p class="nanum-eb size-b">공지사항</p>
+					<c:if test="${sessionScope.loginuser.mIdx==0}">
+					<a class="notice-btn" href="<%=ctxPath%>/notice/noticeWrite.bibo">글 작성하기</a>
+					</c:if>
 			</div>
+		</div>
 	</div>
 
 	<hr style="max-width: 80%; margin: auto;">
 	<section class="board-container">
-
 		<ul class="board-list">
-			<c:forEach var="notice" items="${requestScope.noticeListdto}">
+			<c:forEach var="notice" items="${noticeListdto}">
 				<li class="board-item nanum-n">
 					<div class="board-item-body" onclick="click_on('${notice.nidx}')">
 						<span class="board-item-title nanum-n" style="font-weight: bold;align-items: center; font-size: 20px; color: rgb(78, 89, 104); text-overflow: ellipsis;">

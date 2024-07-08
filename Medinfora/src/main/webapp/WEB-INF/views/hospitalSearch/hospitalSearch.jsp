@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css?after" />
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/hospitalSearch/hospitalSearch.js"></script>
 
 
@@ -53,7 +53,10 @@
 		    <ul id="hospitalList">
 		        <!-- Sample List Items -->
 		        <li>
-		             <p>지역을 설정하고 검색버튼을 눌러주세요.</p>
+		        	<div id="no_searchList">
+		        		<span>🪄</span>
+		            	<p> 지역을 설정하고 검색버튼을 눌러주세요.</p>
+		        	</div>
 		        </li>
 		        <!-- More items can be added here -->
 		    </ul>
@@ -64,4 +67,33 @@
 </div>    
     
 <div id="hospitalList"></div>
+
+  	
+<%-- 로더  --%>
+<div id="loaderArr">
+	<div class="loader"></div>
+</div>
+
+<!-- 모달 구조 start -->
+<div class="modal fade" id="hospitalDetailModal" tabindex="-1" role="dialog" aria-labelledby="hospitalDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hospitalDetailModalLabel">병원 상세정보</h5>
+      </div>
+      <div class="modal-body">
+        <p><strong>Hospital Name:</strong> <span id="modal-hpname"></span></p>
+        <p><strong>Telephone:</strong> <span id="modal-hptel"></span></p>
+        <p><strong>Address:</strong> <span id="modal-hpaddr"></span></p>
+        <p><strong>Class Name:</strong> <span id="modal-classname"></span></p>
+        <p><strong>Operating Hours:</strong> <span id="modal-operating-hours"></span></p>
+        <p><strong>Status:</strong> <span id="modal-status"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 모달 구조 end -->
 

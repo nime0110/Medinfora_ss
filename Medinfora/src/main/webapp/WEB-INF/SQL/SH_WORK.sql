@@ -63,6 +63,21 @@ from
 
 insert into notice(NIDX, USERID, title, content, viewcnt, writeday) values(seq_notice.nextval, 'test001', '두번째입니다','두번째 글입니다',0,20240702  ); 
 commit;
+
+
+
+insert into notice(NIDX, USERID, title, content, viewcnt, writeday) values(seq_notice.nextval, 'test001', '이것도 나와야함','?번째 글입니다',0,20240707  ); 
+commit;
+
+insert into notice(NIDX, TITLE, CONTENT, VIEWCNT, WRTIEDAY) VALUES(SEQ_NOTICE.NEXTVAL,'세번째입니다','세번째 글입니다',
+select nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
+		from notice
+		order by nidx desc;
+        
+        
+        select nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
+		from notice
+		order by nidx desc;
 /*
 
     <insert id="" parameterType="NoticeDTO">
@@ -83,54 +98,32 @@ order by nidx desc;
     select seq_notice.nextval
     from notice
     
-    
-    
-    SELECT nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
-      FROM
-      (
-       select row_number() over(order by nidx desc) AS rno 
-            , nidx, userid, content, title
-            , viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss')) AS writeday 
-           ,filename, orgname, filesize
-       from notice
-   ) V
-      WHERE rno between 1 and 10
-        
-        
-        SELECT * FROM notice;
-        
-        
-        SELECT nidx, userid, title, content, viewcnt, 
-       TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
-       filename, orgname, filesize
-FROM (
-    SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
-    FROM notice
-    WHERE 1=1
-    ORDER BY nidx DESC
-)
-WHERE rno BETWEEN 1 AND 10;
+    /*
+이름       널?       유형             
+-------- -------- -------------- 
+NIDX     NOT NULL NUMBER         
+USERID   NOT NULL VARCHAR2(20)   
+TITLE    NOT NULL NVARCHAR2(50)  
+CONTENT  NOT NULL CLOB           
+VIEWCNT  NOT NULL NUMBER(3)      
+WRITEDAY NOT NULL NVARCHAR2(20)  
+FILENAME          NVARCHAR2(300) 
+ORGNAME           NVARCHAR2(300) 
+FILESIZE          NUMBER      
+*/
+ insert into tbl_board(NIDX, TITLE, content, pw, readCount, regDate, status, groupno, fk_seq, depthno, fileName, orgFilename, fileSize)
+          values(boardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, #{groupno}, default, default, #{fileName}, #{orgFilename}, #{fileSize}) 
+
+ insert into notice (nidx, userid, title, content, viewcnt, writeday, status, filename, orgname, filesize)
+        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, default, default, #{filename}, #{orgname}, #{filesize})
 
 
+select *
+from notice
 
-SELECT 
-    n.nidx, 
-    n.userid, 
-    n.title, 
-    n.content, 
-    n.viewcnt, 
-    TO_CHAR(n.writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday, 
-    n.filename, 
-    n.orgname, 
-    n.filesize,
-    s.seq_value
-FROM 
-    notice n
-JOIN 
-    notice_seq s ON n.nidx = s.nidx
-ORDER BY 
-    n.nidx DESC;
-    
+     insert into notice (nidx, userid, title, content, viewcnt, writeday, status, filename, orgname, filesize)
+        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, default, default, #{filename}, #{orgname}, #{filesize})
+  
     
     
     SELECT 
@@ -176,13 +169,45 @@ ORDER BY
 		    ) V
 		WHERE V.seq = #{seq}
         
+        insert into notice (nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize)
+values (seq_notice.nextval, 'kimsh', '세번째입니다', '내용이 들어갈 예정입니다', 10, '20240707', '1643900851960.jpg', '1643900851960.jpg', '10')
         
         
-        
-        
-        
-        
-        
-        	SELECT seq_notice.nextval, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+        	SELECT seq_notice.nextval, nidx, userid, title, content, viewcnt, writeday, filename, '', filesize
 		from notice
 		where seq_notic.nextval = '21';
+        
+        
+        
+         SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+            FROM notice
+            WHERE 1=1
+            ORDER BY nidx DESC
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            SELECT nidx, userid, title, content, viewcnt, 
+               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+               filename, orgname, filesize
+        FROM (
+            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+            FROM notice
+            WHERE 1=1
+            ORDER BY nidx DESC
+        )
+        WHERE rno BETWEEN #{startRno} AND #{endRno}

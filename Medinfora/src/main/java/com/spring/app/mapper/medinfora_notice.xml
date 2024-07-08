@@ -5,20 +5,28 @@
 
 <mapper namespace="com.spring.app.notice.model.NoticeDAO">
 		
-	<insert id="noticeWrite" parameterType="NoticeDTO">
-		insert into notice (nidx, userid, title, content, viewcnt, writeday)
-        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday})
+	 <insert id="noticeWrite" parameterType="NoticeDTO">
+        insert into notice (nidx, userid, title, content, viewcnt, writeday)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd') )
+    </insert> 
+    
+    <insert id="add_noticeWrite" parameterType="NoticeDTO">
+        insert into notice (nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd'), #{filename}, #{orgname}, #{filesize})
     </insert>
     
-     <insert id="add_noticeWrite" parameterType="NoticeDTO">
-     insert into notice ( nidx, userid, title, content, viewcnt,  TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize)
-        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday}, #{filename}, #{orgname}, #{filesize})
-     
-     </insert>
-	 <select id="boardListNoSearch" resultType="NoticeDTO">
-		select nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss') AS writeday, filename, orgname, filesize
-		from notice
-		order by nidx desc;
+    <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
+         
+            SELECT nidx, userid, title, content, viewcnt, 
+               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+               filename, orgname, filesize
+        FROM (
+            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+            FROM notice
+            WHERE 1=1
+            ORDER BY nidx DESC
+        )
+     WHERE rno BETWEEN #{startRno} AND #{endRno}
     </select>
     
     <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
@@ -26,42 +34,24 @@
         SELECT COUNT(*)
         FROM notice
         WHERE 1=1
-        <if test="searchType != null and searchType != ''">
+        <!-- <if test="searchType != null and searchType != ''">
             AND ${searchType} LIKE '%' || #{searchWord} || '%'
-        </if>
+        </if> -->
     </select>
 
-    <!-- 글목록 가져오기(페이징 처리 했으며, 검색어가 있는 것 또는 검색어 없는 것 모두 포함한 것 -->
-    <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
+    <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
-               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday, 
                filename, orgname, filesize
-        FROM (
-            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
-            FROM notice
-            WHERE 1=1
-            <if test="searchType != null and searchType != ''">
-                AND ${searchType} LIKE '%' || #{searchWord} || '%'
-            </if>
-            ORDER BY nidx DESC
-        )
-        WHERE rno BETWEEN #{startRno} AND #{endRno}
+        FROM notice
+        WHERE nidx = #{nidx}
     </select>
-	
-	
-	<select id="getView" parameterType="HashMap" resultType="NoticeDTO">
-		SELECT nidx, userid, title, content, viewcnt, TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday, filename, orgname, filesize
-		from notice
-		where nidx = #{nidx}
-	
-	</select>
-	
-	 <!-- === #67. 글조회수 1증가 하기 ===  -->
-    <update id="increase_readCount" parameterType="Int">
-    	update notice set viewcnt = viewcnt + 1 
-    	where nidx = #{nidx}
+    
+    <!-- === #67. 글조회수 1증가 하기 === -->
+    <update id="increase_readCount" parameterType="int">
+        UPDATE notice SET viewcnt = viewcnt + 1 
+        WHERE nidx = #{nidx}
     </update>
-	
 	
 	
 </mapper>

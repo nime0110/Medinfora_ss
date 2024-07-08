@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
-import com.spring.app.domain.ReserveDTO;
 import com.spring.app.reserve.service.ReserveService;
 
 @Controller
@@ -63,6 +62,7 @@ public class ReserveController {
 		return mav;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
 	public String choiceDrList(HttpServletRequest request) {
@@ -130,7 +130,7 @@ public class ReserveController {
 				jsonObj.put("totalPage", totalPage);
 				jsonObj.put("paraMap", paraMap);
 				
-				jsonArr.put(jsonObj);
+				jsonArr.add(jsonObj);
 			}	// end of for---------
 		}
 		return jsonArr.toString();
