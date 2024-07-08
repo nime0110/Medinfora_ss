@@ -53,17 +53,19 @@
 				<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
 			</div>
 			
-			<div class="item_title">
-				주소
-			</div>
-			<div class="item_input">
-				<input type="text" class="item_inputtag" name="address" value="${sessionScope.loginuser.address}" readonly="readonly" />
-			</div>
-			<div class="item_title">
-			</div>
-			<div class="item_input">
-				<input type="text" class="item_inputtag" name="detailaddress" value="${sessionScope.loginuser.detailAddress}" />
-			</div>
+			<c:if test="${sessionScope.loginuser.mIdx==1}">
+				<div class="item_title">
+					주소
+				</div>
+				<div class="item_input">
+					<input type="text" class="item_inputtag" name="address" value="${sessionScope.loginuser.address}" readonly="readonly" />
+				</div>
+				<div class="item_title">
+				</div>
+				<div class="item_input">
+					<input type="text" class="item_inputtag" name="detailaddress" value="${sessionScope.loginuser.detailAddress}" />
+				</div>
+			</c:if>
 			
 			<div class="save_liner">
 				<button type="button" class="item_btn">수정</button>
