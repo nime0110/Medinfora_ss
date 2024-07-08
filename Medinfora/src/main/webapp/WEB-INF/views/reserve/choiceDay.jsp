@@ -31,6 +31,7 @@
             <div class="choiceTimediv col-md-6 pt-3 pl-5">
                 <h3 class="nanum-b size-n">${requestScope.today_str}</h3>
                 <div class="choiceTime row mt-3">
+					${requestScope.availableTimeList}
                     <button type="button" class="timebtn mb-3 btn btn-lg col-3">
                         <span class="exTimebtn">09:00</span>
                     </button>

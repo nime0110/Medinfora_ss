@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -131,7 +131,7 @@ public class ReserveController {
 				jsonObj.put("totalPage", totalPage);
 				jsonObj.put("paraMap", paraMap);
 				
-				jsonArr.put(jsonObj);
+				jsonArr.add(jsonObj);
 			}	// end of for---------
 		}
 		return jsonArr.toString();
@@ -350,6 +350,7 @@ public class ReserveController {
 					}	// end of for-------------
 					// 오늘 예약가능 시간대 표출
 					mav.addObject("availableTimeList", availableTimeList);
+					
 				}	// end of if---------
 			}	// end of for---------------------
 			currentDate.add(Calendar.DATE, 1);
@@ -524,6 +525,7 @@ public class ReserveController {
 		
 		mav.addObject("today_str",today_str);
 		mav.addObject("availableDayList",availableDayList);		// 30일 예약가능 여부
+		
 		mav.setViewName("reserve/choiceDay.tiles");
 		
 		return mav;
