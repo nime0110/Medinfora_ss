@@ -5,14 +5,14 @@
 
 <mapper namespace="com.spring.app.notice.model.NoticeDAO">
 		
-		<insert id="noticeWrite" parameterType="NoticeDTO">
-		insert into notice (nidx, userid, title, content, viewcnt, writeday)
-        values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, #{writeday})
-    </insert>
+	 <insert id="noticeWrite" parameterType="NoticeDTO">
+        insert into notice (nidx, userid, title, content, viewcnt, writeday)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd') )
+    </insert> 
     
     <insert id="add_noticeWrite" parameterType="NoticeDTO">
         insert into notice (nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize)
-        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, default, #{filename}, #{orgname}, #{filesize})
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd'), #{filename}, #{orgname}, #{filesize})
     </insert>
     
     <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
