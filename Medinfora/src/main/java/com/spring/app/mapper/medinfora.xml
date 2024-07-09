@@ -203,5 +203,23 @@
 		INSERT INTO HOLIDAY (SUMMARY, HOLIDAY_DATE)
 		VALUES (#{summary}, #{holiday_date})
 	</insert>
+<<<<<<< Updated upstream
+=======
+	
+	<!-- ClasscodeList 가져오기 -->
+	<select id="getclassCodeList" parameterType="HashMap" resultType="String">
+		select CLASSCODE
+		from HOSPITAL
+		where HPNAME like #{hpname} and HPADDR like #{hpaddr}
+	</select>
+	
+	<!-- CLASSMET 입력용 -->
+	<insert id="classcodeMetInput" parameterType="HashMap">
+		INSERT INTO CLASSCODEMET (USERID, CLASSCODE, HIDX)
+		VALUES (#{userid}, #{classcode}, #{hidx})
+	</insert>
+	
+	
+>>>>>>> Stashed changes
 
 </mapper>

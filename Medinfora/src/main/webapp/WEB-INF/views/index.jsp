@@ -312,6 +312,7 @@
     </a>
   </div>
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
+<<<<<<< Updated upstream
     <div class="col hj_cardMb">
       <div class="hj_noticeitem card">
         <a href="">
@@ -323,6 +324,9 @@
         </a>
       </div>
     </div>
+=======
+    
+>>>>>>> Stashed changes
     <div class="col hj_cardMb">
       <div class="hj_noticeitem card">
         <a href="">
@@ -338,19 +342,7 @@
         </a>
       </div>
     </div>
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-            </p>
-            <span>2024.06.18</span>
-          </div>
-        </a>
-      </div>
-    </div>
+    
   </div>
+  
 </session>

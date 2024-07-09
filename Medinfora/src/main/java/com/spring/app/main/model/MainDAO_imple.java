@@ -14,6 +14,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -135,6 +136,39 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
 	
+<<<<<<< Updated upstream
+=======
+	// 의료 ClassCode 리스트 추출
+	@Override
+	public List<String> getclassCodeList(Map<String, String> paraMap) {
+		System.out.println(paraMap.get("hpname"));
+		System.out.println(paraMap.get("hpaddr"));
+		return sqlsession.selectList("medinfora.getclassCodeList", paraMap);
+	}
+
+	// CLASSMET 입력용
+	@Override
+	public boolean classcodeMetInput(Map<String, String> inputparaMap) {
+		
+		boolean result = false;
+		
+		if(1==sqlsession.insert("medinfora.classcodeMetInput", inputparaMap)) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	// 인덱스 공지 리스트 가져오기
+	@Override
+	public List<NoticeDTO> getIndexNoticeList() {
+		return sqlsession.selectList("medinfora.getIndexNoticeList");
+	}
+
+	
+
+	
+>>>>>>> Stashed changes
 	
 	
 	

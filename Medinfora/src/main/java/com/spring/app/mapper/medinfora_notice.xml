@@ -6,19 +6,18 @@
 <mapper namespace="com.spring.app.notice.model.NoticeDAO">
 		
 	 <insert id="noticeWrite" parameterType="NoticeDTO">
-        insert into notice (nidx, userid, title, content, viewcnt, writeday)
-        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd') )
-    </insert> 
+        insert into notice (nidx, userid, title, content, viewcnt)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt})
+    </insert>
     
     <insert id="add_noticeWrite" parameterType="NoticeDTO">
-        insert into notice (nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize)
-        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, to_char(sysdate, 'yyyymmdd'), #{filename}, #{orgname}, #{filesize})
+        insert into notice (nidx, userid, title, content, viewcnt, filename, orgname, filesize)
+        values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt}, #{filename}, #{orgname}, #{filesize})
     </insert>
     
     <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
-         
-            SELECT nidx, userid, title, content, viewcnt, 
-               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday,
+		SELECT nidx, userid, title, content, viewcnt, 
+               TO_CHAR(TO_DATE(writeday, 'YYYY-MM-DD HI24:MI:SS'), 'yyyy-mm-dd') AS writeday,
                filename, orgname, filesize
         FROM (
             SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
@@ -41,7 +40,7 @@
 
     <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
-               TO_CHAR(TO_DATE(writeday, 'YYYYMMDD'), 'yyyy-mm-dd') AS writeday, 
+               TO_CHAR(TO_DATE(writeday, 'YYYY-MM-DD HI24:MI:SS'), 'yyyy-mm-dd') AS writeday, 
                filename, orgname, filesize
         FROM notice
         WHERE nidx = #{nidx}

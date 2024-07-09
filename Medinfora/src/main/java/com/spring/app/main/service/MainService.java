@@ -12,6 +12,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
 
@@ -67,6 +68,9 @@ public interface MainService {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
+
+	// 인덱스 공지 리스트 가져오기
+	public List<NoticeDTO> getIndexNoticeList();
 	
 	
 	

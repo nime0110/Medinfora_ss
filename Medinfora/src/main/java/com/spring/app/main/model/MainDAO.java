@@ -8,6 +8,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 public interface MainDAO {
 
@@ -58,6 +59,20 @@ public interface MainDAO {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
+<<<<<<< Updated upstream
+=======
+
+	// 의료 CLASSCODE 리스트 추출
+	public List<String> getclassCodeList(Map<String, String> paraMap);
+
+	// CLASSMET 입력용
+	public boolean classcodeMetInput(Map<String, String> inputparaMap);
+
+	// 인덱스 공지 리스트 가져오기
+	public List<NoticeDTO> getIndexNoticeList();
+
+	
+>>>>>>> Stashed changes
 	
 	
 	
