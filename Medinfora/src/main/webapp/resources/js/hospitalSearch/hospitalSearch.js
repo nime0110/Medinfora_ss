@@ -9,6 +9,11 @@ let openInfowindow = null; // 열려있는 인포윈도우를 추적
 let openOverlay = null; // 열려있는 오버레이를 추적
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
+// 폴리곤 관련 변수
+let detailMode = false; // level에 따라 다른 json 파일 사용
+let level = '';
+let polygons = [];
+
 
 $(function() {
     // 로딩 이미지 숨기기
@@ -27,7 +32,8 @@ $(function() {
         };
 
     // 지도 생성 
-    map = new kakao.maps.Map(mapContainer, mapOption);
+    map = new kakao.maps.Map(mapContainer, mapOption),
+    customOverlay = new kakao.maps.CustomOverlay({});
 
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
     let mapTypeControl = new kakao.maps.MapTypeControl();
@@ -39,6 +45,23 @@ $(function() {
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+    //폴리곤 ---
+    init( contextPath + "/resources/json/sido.json") // 초기 시작
+
+    kakao.maps.event.addListener(map, 'zoom_changed', function () {
+        level = map.getLevel()
+        if (!detailMode && level <= 10) { // level 에 따라 다른 json 파일을 사용한다.
+            detailMode = true;
+            removePolygon();
+            init(contextPath +"/resources/json/sig.json")
+        } else if (detailMode && level > 10) { // level 에 따라 다른 json 파일을 사용한다.
+            detailMode = false;
+            removePolygon();
+            init(contextPath +"/resources/json/sido.json")
+        }
+    });
+
+    
                   
     clusterer = new kakao.maps.MarkerClusterer({
         map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
@@ -179,9 +202,10 @@ var currentPage = 1; // 현재 페이지를 추적
 function searchHospitals(pageNo) {
     clearAllwithmarker(); // 인포윈도우와 오버레이 초기화
     clearClusterer(); // 클러스터러 초기화
-    let city = '경기도' //$('#city').val();
-    let local = '고양시 일산동구' //$('#local').val();
-    let country = '백석동' //$('#country').val();
+    //테스트용 리터럴값 경기도 고양시 일산동구 백석동
+    let city = $('#city').val();
+    let local = $('#local').val();
+    let country = $('#country').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
@@ -548,6 +572,88 @@ function clearAllwithmarker() {
         openOverlay = null;
     }
 }
+
+
+// 모든 폴리곤을 지우는 함수
+    function removePolygon() { 
+    for (let i = 0; i < polygons.length; i++) {
+        polygons[i].setMap(null);
+    }
+    areas = [];
+    polygons = [];
+}
+
+// 폴리곤 생성
+function init(path) {
+    $.getJSON(path, function (geojson) {
+        let areas = geojson.features.map((unit) => {
+            let coordinates = unit.geometry.coordinates[0].map(coord => new kakao.maps.LatLng(coord[1], coord[0]));
+            return {
+                name: unit.properties.SIG_KOR_NM,
+                path: coordinates,
+                location: unit.properties.SIG_CD
+            };
+        });
+
+        areas.forEach(area => displayArea(area));
+    });
+}   //init
+
+
+
+
+
+// 폴리곤 보여지기
+function displayArea(area) {
+    var polygon = new kakao.maps.Polygon({
+        map: map,
+        path: area.path,
+        strokeWeight: 2,
+        strokeColor: '#004c80',
+        strokeOpacity: 0.8,
+        fillColor: '#fff',
+        fillOpacity: 0.7
+    });
+    polygons.push(polygon);
+
+    kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+        polygon.setOptions({ fillColor: '#09f' });
+        customOverlay.setContent('<div class="area">' + area.name + '</div>');
+        customOverlay.setPosition(mouseEvent.latLng);
+        customOverlay.setMap(map);
+    });
+
+    kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
+        customOverlay.setPosition(mouseEvent.latLng);
+    });
+
+    kakao.maps.event.addListener(polygon, 'mouseout', function () {
+        polygon.setOptions({ fillColor: '#fff' });
+        customOverlay.setMap(null);
+    });
+
+    kakao.maps.event.addListener(polygon, 'click', function () {
+        $('#city').val(area.city);
+        $('#local').val(area.local);
+        $('#country').val(area.country);
+        // 병원 검색
+        searchHospitals(1);
+        if (!detailMode) {
+            map.setLevel(10);
+            map.panTo(mouseEvent.latLng);
+        } else {
+            // callFunctionWithRegionCode(area.location);
+        }
+    });
+}
+
+
+
+
+
+
+
+
 
 
 // ================ marker, infowindows end ====================== 
