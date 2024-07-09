@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.app.domain.HospitalDTO;
-import com.spring.app.domain.ReserveDTO;
 import com.spring.app.reserve.model.ReserveDAO;
 
 @Service
