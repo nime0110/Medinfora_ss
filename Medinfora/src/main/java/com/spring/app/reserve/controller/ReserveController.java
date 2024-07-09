@@ -202,37 +202,33 @@ public class ReserveController {
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
 			
-			if(cnt == 0) {
-				// System.out.println("운영안함");
-			}
-			else if(cnt != 0 && cnt == reserveCnt) {
-				// System.out.println("예약 가득참");
-			}
-			else {
-				// System.out.println(day.substring(0, 10));
+			if(cnt != 0 || cnt != reserveCnt) {
 				availableDayList.add(day.substring(0, 10));
 			}	// end of if~else---------------------
 			currentDate.add(Calendar.DATE, 1);
 		}	// end of for--------------------------------
 		
-		if(availableDayList.size() == 0) {
-			
+		if(availableDayList.size() == 0) {	// 30일간의 예약이 모두 가득 찼을 경우
+			mav.addObject("message", "예약가능한 날이 존재하지 않습니다.");
+            mav.addObject("loc", "javascript:history.back()");
+			mav.setViewName("msg");
+	        return mav;
 		}
 		JSONArray jsonArr = new JSONArray();
 		for(String availableDay : availableDayList) {
 			jsonArr.add(availableDay);
 		}
-		
-		String today_str = today.substring(0, 11);
-		today_str = today_str.replaceAll("-", ".");
 
-		mav.addObject("dateList",jsonArr.toString());
-		mav.addObject("today_str",today_str);
+		String today_str = today.substring(0, 11);		// 추후에 없앨 예정
+		today_str = today_str.replaceAll("-", ".");		// 추후에 없앨 예정
+
 		mav.addObject("hidx",hidx);
+		mav.addObject("today_str",today_str);			// 추후에 없앨 예정
+		mav.addObject("dateList",jsonArr.toString());
 		mav.setViewName("reserve/choiceDay.tiles");
 		
 		return mav;
-	}
+	}	// end of public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {----------
 
 
 
@@ -275,6 +271,7 @@ public class ReserveController {
 //			}	// end of if---------
 //	mav.addObject("availableDayList",availableDayList);		// 30일 예약가능 여부
 	
+	// 공휴일인지 파악 후 요일 구분
 	private String parseDayofWeek(Calendar currentDate, String day) {
 		
 		int n = currentDate.get(Calendar.DAY_OF_WEEK);
@@ -317,6 +314,7 @@ public class ReserveController {
 		return dayOfweek;
 	}
 	
+	// 요일별 시간 파악
 	private Map<String, String> getTimes(HospitalDTO hospitalTime,String dayOfweek) throws Exception {
 		
 		Map<String,String> resultMap = new HashMap<String, String>();
@@ -385,7 +383,6 @@ public class ReserveController {
 			resultMap.put("start", hospitalTime.getStarttime8());
 			resultMap.put("end", hospitalTime.getEndtime8());
 		}
-		
 		
 		return resultMap;
 	}
