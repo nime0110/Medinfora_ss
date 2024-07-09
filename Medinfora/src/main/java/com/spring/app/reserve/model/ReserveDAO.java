@@ -6,16 +6,21 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.spring.app.domain.HospitalDTO;
-import com.spring.app.domain.ReserveDTO;
 
 @Mapper
 public interface ReserveDAO {
 
 	// 회원가입된 병원 개수
 	int getTotalCnt(Map<String, String> paraMap);
+	
+	// 회원가입된 병원 리스트 가져오기 (클라스코드있음)
+	int getTotalCntClass(Map<String, String> paraMap);
 
 	// 회원가입된 병원 리스트 가져오기
 	List<HospitalDTO> mbHospitalList(Map<String, String> paraMap);
+	
+	// 회원가입된 병원 리스트 가져오기 (클라스코드있음)
+	List<HospitalDTO> mbHospitalListClass(Map<String, String> paraMap);
 
 	// 날짜가 공휴일인지 체크
 	int holidayCheck(String day);
@@ -28,5 +33,7 @@ public interface ReserveDAO {
 	
 	// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
 	HospitalDTO dayReserveImpossible(Map<String, String> paraMap);
+
+
 
 }
