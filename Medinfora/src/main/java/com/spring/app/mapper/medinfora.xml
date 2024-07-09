@@ -140,13 +140,13 @@
 	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
-		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx
 			   , loginmethod
 		       , pwdUpdategap
 		       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
 		FROM
 		(
-		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx
+		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 		           , loginmethod
 		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
 		    from member

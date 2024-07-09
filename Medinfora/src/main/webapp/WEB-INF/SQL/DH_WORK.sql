@@ -47,3 +47,25 @@ where HPNAME = '행복한의원' and HPADDR ='전라남도 여수시 동문로 1
 select *
 from MEMBER
 where MIDX = 2;
+
+select  hidx, hpname, hpaddr, hptel
+from(
+    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+    where HPADDR like '%'||'창원시'||'%'
+    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+)
+
+select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX where CLASSCODEMET.CLASSCODE = 'D001'
+
+select count(*)
+from MEMBER where MIDX = '2';
+
+select  count(*)
+from(
+    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+)
