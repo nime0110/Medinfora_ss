@@ -232,9 +232,12 @@
 	
 	<!-- Index 공지 불러오기 -->
 	<select id="getIdxNdtoList" resultType="NoticeDTO">
-		select nidx, userid, TITLE, CONTENT, VIEWCNT, WRITEDAY
-		from NOTICE
-		order by NIDX desc
+		select nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
+		from (
+		    select rownum AS rno,nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
+		    from NOTICE
+		    order by NIDX desc
+		) where rno between 1 and 3
 	</select>
 
 </mapper>

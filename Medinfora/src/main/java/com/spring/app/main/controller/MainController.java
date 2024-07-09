@@ -38,6 +38,7 @@ public class MainController {
 		
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
 		return mav;

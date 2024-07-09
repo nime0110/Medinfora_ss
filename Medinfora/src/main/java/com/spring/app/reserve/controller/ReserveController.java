@@ -149,7 +149,6 @@ public class ReserveController {
 		
 		String hidx = request.getParameter("hidx");
 		
-		
 		Calendar currentDate = Calendar.getInstance();
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
