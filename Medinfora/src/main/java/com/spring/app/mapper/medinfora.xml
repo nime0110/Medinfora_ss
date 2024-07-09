@@ -232,9 +232,8 @@
 	
 	<!-- Index 공지 불러오기 -->
 	<select id="getIdxNdtoList" resultType="NoticeDTO">
-		select nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
-		from NOTICE 
-		where ROWNUM <=3 
+		select nidx, userid, TITLE, CONTENT, VIEWCNT, WRITEDAY
+		from NOTICE
 		order by NIDX desc
 	</select>
 

@@ -16,39 +16,43 @@
 	const origindata = [];
 	
 	jQuery(function(){
-		console.log(typeof(dateList));
 		
 		for(let i=0; i<dateList.length; i++){
 			origindata.push({title:'예약가능',start:dateList[i]});
 		}
-		console.log(origindata);
-	})
-	// 예약가능한 날짜들만 가져오면됨
+		
+		var calendarEl = document.getElementById('calendar');
 
-	// 이벤트 실제 불러온 데이터가 들어가는 부분이다 형식은 
-	// [{"title":"이름","start":"날짜"},...{"title":"이름","start":"날짜"}] 형식으로 해야한다.
-      
+	    var calendar = new FullCalendar.Calendar(calendarEl, {
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+	      headerToolbar: { // 상단바 툴에 어떤 기능을 작성하는지에 대한 부분이다!
+	        left: 'prev',
+	        center: 'title',
+	        right: 'next'
+	      },
+	      locale: "ko", // 언어설정 "Korean"
+	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
+	        
+	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+	        const sendDate = {"hidx":${requestScope.hidx},"date":eventDate};
+	        
+	        searchTimes(sendDate);
+	        
+	      },
+	      editable: false, // 데이터 수정이 가능한지 설정하는 부분 (true 면 변조가 가능하니 false로 한다)
+	      events: origindata
+	    });
 
-      headerToolbar: { // 상단바 툴에 어떤 기능을 작성하는지에 대한 부분이다!
-        left: 'prev',
-        center: 'title',
-        right: 'next'
-      },
-      locale: "ko", // 언어설정 "Korean"
-      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
-        
-        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
-
-        // hidx 정보와 eventDate를 Ajax를 통해 통신하면된다!
-        
-        const sendDate = {"hidx":"value(실제들어가야하는값)","date":eventDate};
-        
-        $.ajax({
+	    calendar.render();
+	    
+	   //searchTimes({"hidx":${requestScope.hidx},"date":"오늘날짜"});
+	    
+	}) // end of jQuery(function(){})-------------------
+	
+	function searchTimes(sendDate){
+		
+		$.ajax({
         	url:'<%= ctxPath%>/reserve/selectDay.bibo'
         	, data: sendDate
         	, dataType:"json"
@@ -57,23 +61,10 @@
         	}
         	, error: function(request, status, error){
 	        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		    }	
-        	
-        	
-        })	// end of $.ajax({--------
-        
-        
-
-        console.log(eventDate);
-
-      },
-      editable: false, // 데이터 수정이 가능한지 설정하는 부분 (true 면 변조가 가능하니 false로 한다)
-      events: origindata
-    });
-
-    calendar.render();
-
-  });
+		    }
+        })
+		
+	}
 
 </script>
 
