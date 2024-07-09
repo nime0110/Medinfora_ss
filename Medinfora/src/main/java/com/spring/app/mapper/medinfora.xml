@@ -140,33 +140,24 @@
 	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
-		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 			   , loginmethod
 		       , pwdUpdategap
-		       , NVL(lastlogingap, trunc(months_between(sysdate, M.registerday) )) AS lastlogingap
-		FROM
-		(
+		       , NVL(lastlogingap, trunc(months_between(sysdate, registerday) )) AS lastlogingap
+		FROM (
 		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 		           , loginmethod
 		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
 		    from member
-		    where (midx between 0 and 8)
-		    <choose>
-		    	<when test="loginmethod eq 0">	<!-- 일반로그인 -->
-		    		and loginmethod = #{loginmethod} and userid = #{userid} and pwd = #{pwd}
-		    	</when>
-		    	<when test="loginmethod eq 1"> <!-- 카카오 로그인  -->
-		    		and loginmethod = #{loginmethod} and userid = #{userid}
-		    	</when>
-		    </choose>
-		)M
-		CROSS JOIN
-		(
+		    where userid = #{userid}
+		    <if test="loginmethod == 0">	<!-- 일반로그인 -->
+		    		and pwd = #{pwd}
+	    	</if>
+		) cross join (
 		    select trunc(months_between(sysdate,max(to_date(REGISTERDAY,'YYYY-MM-DD HH24:MI:SS')))) as lastlogingap
 		    from loginlog
 		    where userid = #{userid}
-		    group by userid
-		)L
+		)
 	</select>
 	
 	<!-- 회원코드 변경 (휴먼처리) -->

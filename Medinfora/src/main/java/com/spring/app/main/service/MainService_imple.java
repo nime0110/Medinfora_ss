@@ -172,7 +172,6 @@ public class MainService_imple implements MainService {
 					loginuser.setEmail(aES256.decrypt(loginuser.getEmail()));
 					loginuser.setMobile(aES256.decrypt(loginuser.getMobile()));
 					
-					
 					HttpSession sesstion =  request.getSession();
 					sesstion.setAttribute("loginuser", loginuser);
 				}
