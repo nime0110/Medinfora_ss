@@ -25,12 +25,12 @@
 
 	    var calendar = new FullCalendar.Calendar(calendarEl, {
 
-	      headerToolbar: { // 상단바 툴에 어떤 기능을 작성하는지에 대한 부분이다!
+	      headerToolbar: {
 	        left: 'prev',
 	        center: 'title',
 	        right: 'next'
 	      },
-	      locale: "ko", // 언어설정 "Korean"
+	      locale: "ko",
 	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
 	        
 	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
@@ -40,20 +40,35 @@
 	        searchTimes(sendDate);
 	        
 	      },
-	      editable: false, // 데이터 수정이 가능한지 설정하는 부분 (true 면 변조가 가능하니 false로 한다)
+	      editable: false, 		// 데이터 수정 불가능
 	      events: origindata
 	    });
 
 	    calendar.render();
 	    
-	   //searchTimes({"hidx":${requestScope.hidx},"date":"오늘날짜"});
+	    const day = new Date();
+	    const year = day.getFullYear();
+	    let month = day.getMonth() + 1;
+	    let date = day.getDate();
 	    
+	    if(month < 10){
+	        month = "0"+month;
+	    }
+	    if(date < 10){
+	        date = "0"+date;
+	    }
+	    
+	    const date_str = year + "-" + month + "-" + date;
+	   	
+	    // searchTimes({"hidx":"${requestScope.hidx}","date":date_str});
+	   	
 	}) // end of jQuery(function(){})-------------------
 	
 	function searchTimes(sendDate){
 		
 		$.ajax({
         	url:'<%= ctxPath%>/reserve/selectDay.bibo'
+        	, type:"post"
         	, data: sendDate
         	, dataType:"json"
         	, success:function(json){
@@ -92,7 +107,6 @@
             <div class="choiceTimediv col-md-6 pt-3 pl-5">
                 <h3 class="nanum-b size-n">${requestScope.today_str}</h3>
                 <div class="choiceTime row mt-3">
-					${requestScope.availableTimeList}
                     <button type="button" class="timebtn mb-3 btn btn-lg col-3">
                         <span class="exTimebtn">09:00</span>
                     </button>
