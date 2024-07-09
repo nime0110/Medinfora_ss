@@ -309,14 +309,14 @@ function register(){
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    const today = year+"-"+month+"-"+day;
+    const today = new Date(year, month - 1, day);
 
     date = new Date(birthday);
     year = date.getFullYear();
     month = date.getMonth() + 1;
     day = date.getDate();
 
-    birthday = year+"-"+month+"-"+day;
+    birthday = new Date(year, month - 1, day);
     
     console.log("birthday : "+birthday);
     console.log("today : "+today);
