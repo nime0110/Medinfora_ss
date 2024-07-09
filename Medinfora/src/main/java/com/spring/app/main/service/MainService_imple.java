@@ -20,6 +20,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
 
 @Service
@@ -248,6 +249,12 @@ public class MainService_imple implements MainService {
 		System.out.print("확인용 summary : "+holidayVO.getSummary());
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
+	}
+
+	// 인덱스 화면 공지 불러오기
+	@Override
+	public List<NoticeDTO> getIdxNdtoList() {
+		return dao.getIdxNdtoList();
 	}
 	
 }

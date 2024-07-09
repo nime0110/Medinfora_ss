@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.service.MainService;
 
 @Controller
@@ -33,6 +35,8 @@ public class MainController {
 	
 	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
+		
+		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
 		mav.setViewName("index.tiles");
 		

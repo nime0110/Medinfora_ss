@@ -229,5 +229,13 @@
 		INSERT INTO CLASSCODEMET (USERID, CLASSCODE, HIDX)
 		VALUES (#{userid}, #{classcode}, #{hidx})
 	</insert>
+	
+	<!-- Index 공지 불러오기 -->
+	<select id="getIdxNdtoList" resultType="NoticeDTO">
+		select nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
+		from NOTICE 
+		where ROWNUM <=3 
+		order by NIDX desc
+	</select>
 
 </mapper>
