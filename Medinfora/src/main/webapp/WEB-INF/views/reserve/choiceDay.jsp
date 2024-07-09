@@ -7,6 +7,57 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDayMedia.css">
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDay.js"></script>
+<script src='../dist/index.global.min.js'></script>
+<script>
+
+  // 이벤트 실제 불러온 데이터가 들어가는 부분이다 형식은 
+  // [{"title":"이름","start":"날짜"},...{"title":"이름","start":"날짜"}] 형식으로 해야한다.
+  data = [ 
+    {
+      title: '예약가능',
+      start: '2023-01-02'
+    },
+    {
+      title: '예약가능',
+      start: '2023-01-03'
+    }
+  ];
+      
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+      headerToolbar: { // 상단바 툴에 어떤 기능을 작성하는지에 대한 부분이다!
+        left: 'prev',
+        center: 'title',
+        right: 'next'
+      },
+      initialDate: '2023-01-12', // 첫 기준이 되는 날짜를 선택할수 있다. (오늘날짜로 선택하면 됨!)
+      locale: "ko", // 언어설정 "Korean"
+      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
+        
+        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
+
+        // hidx 정보와 eventDate를 Ajax를 통해 통신하면된다!
+
+        const sendDate = {"hidx":"value(실제들어가야하는값)","date":eventDate};
+
+        console.log(eventDate);
+
+      },
+      editable: false, // 데이터 수정이 가능한지 설정하는 부분 (true 면 변조가 가능하니 false로 한다)
+      events: data
+    });
+
+    calendar.render();
+
+  });
+
+</script>
+
+
 
 <div class="hj_container">
 	<div class="reserveContent pt-3">
@@ -26,7 +77,8 @@
 	    <%-- 달력에서 선택한 데이터를 어떻게 보내줄지 생각해야함(캘린더?) --%>
         <div class="div_choiceDay row mt-5">
             <div class="reserve_day col-md-6">
-               	 달력들어올 예정
+               	 <div id='calendar'>
+               	 </div>
             </div>
             <div class="choiceTimediv col-md-6 pt-3 pl-5">
                 <h3 class="nanum-b size-n">${requestScope.today_str}</h3>
