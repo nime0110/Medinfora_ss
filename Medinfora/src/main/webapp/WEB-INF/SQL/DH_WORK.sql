@@ -69,3 +69,8 @@ from(
     from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
     group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
 )
+
+
+select trunc(months_between(sysdate, max(to_date(registerday),'YYYY/MM/DD')) ) as lastlogingap
+from loginlog where USERID ='redtree2379';
+
