@@ -318,7 +318,7 @@ public class LoginController {
 		paraMap.put("name", name);
 		paraMap.put("mobile", mobile);
 		
-		
+		boolean ismetinsert = true;
 		
 		if("1".equals(join) || "3".equals(join)) {
 			midx = "1";
@@ -345,14 +345,18 @@ public class LoginController {
 			paraMap.put("midx", midx);
 			paraMap.put("address", address);
 			paraMap.put("hidx", hidx);
+			
 		}
 		
 		int n = service.registerEnd(paraMap);
 		
+		// 저장했던 카카오 정보 삭제
+		session.removeAttribute("kakaoInfo");
+		
 		String message = "";
 		String loc = request.getContextPath()+"/index.bibo";
 		
-		if(n==1) {
+		if(n==1&&ismetinsert) {
 			message = "회원가입이 완료되었습니다.";
 		}
 		else {
@@ -469,10 +473,8 @@ public class LoginController {
 		try {
 		
 			String code = request.getParameter("code");
-			// System.out.println(code);
 			
 			String accessToken = KakaoApi.getAccessToken(code);
-			// System.out.println("확인용 accessToken"+accessToken);
 			
 			Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
 			
@@ -486,22 +488,7 @@ public class LoginController {
 			
 			String userid = email.substring(0, email.indexOf("@"))+"_kakao";
 			
-			// System.out.println(userid);
-		
-			
-			// 가정은 다음과 같다
-			/*
-				카카오로 로그인 시 카카오계정(이메일형식)에서 @ 기준으로 id 추출해서 _kakao 추가해서 아이디를 인서트한다.으로 가입한 적이 있는지 확인(loginmethod로 select 조건 추가) 검증한다음
-				없으면, 회원가입 폼으로 넘긴다.
-			*/
-			
 			String birthday = birth_year+"-"+birth_day.substring(0, 2)+"-"+birth_day.substring(2);
-			// System.out.println("확인용 birthday : "+birthday);
-			// 확인용 birthday : 19950406
-			
-	
-			// System.out.println("확인용 카카오 연락처 정보 : "+phone_number);
-			// +82 10-xxxx-xxxx
 			
 			phone_number = phone_number.substring(4);
 			
@@ -515,13 +502,8 @@ public class LoginController {
 					sb.append(mobile_arr[i]);
 				}
 				
-			}// end of for -----
-			
+			}// end of for
 			String mobile = "0"+sb.toString();
-			
-			// System.out.println("확인용 mobile: "+mobile);
-			// 확인용 mobile: 010xxxxxxxx
-			
 			
 			// service 에 넘겨줄 데이터 loginEnd에 mapper 에서 where 문 사용
 			String clientip = request.getRemoteAddr();

@@ -17,7 +17,6 @@ public class MemberDTO {
 	
 	
 	// 추가 컬럼
-	private int hidx;	// 병원인덱스
 	private int loginmethod;	// 로그인방법 ( 0 : 일반, 1 : 카카오)
 	
 	
@@ -142,15 +141,6 @@ public class MemberDTO {
 	public void setRequirePwdChange(boolean requirePwdChange) {
 		this.requirePwdChange = requirePwdChange;
 	}
-	
-	
-	public int getHidx() {
-		return hidx;
-	}
-	public void setHidx(int hidx) {
-		this.hidx = hidx;
-	}
-	
 	
 	public int getLoginmethod() {
 		return loginmethod;

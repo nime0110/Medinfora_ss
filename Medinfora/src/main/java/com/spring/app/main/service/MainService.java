@@ -70,7 +70,6 @@ public interface MainService {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
-
 	
 	
 	

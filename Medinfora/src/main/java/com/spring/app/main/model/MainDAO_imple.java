@@ -141,6 +141,29 @@ public class MainDAO_imple implements MainDAO{
 	public int holidayInputer(HolidayVO holidayVO) {
 		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
+	
+	// 의료 ClassCode 리스트 추출
+	@Override
+	public List<String> getclassCodeList(Map<String, String> paraMap) {
+		System.out.println(paraMap.get("hpname"));
+		System.out.println(paraMap.get("hpaddr"));
+		return sqlsession.selectList("medinfora.getclassCodeList", paraMap);
+	}
+
+	// CLASSMET 입력용
+	@Override
+	public boolean classcodeMetInput(Map<String, String> inputparaMap) {
+		
+		boolean result = false;
+		
+		if(1==sqlsession.insert("medinfora.classcodeMetInput", inputparaMap)) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	
 
 	
 	

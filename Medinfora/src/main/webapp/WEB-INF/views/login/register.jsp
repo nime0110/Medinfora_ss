@@ -79,6 +79,7 @@ $(document).ready(function(){
         },
         "startDate": today,
         "endDate": today,
+        "maxDate": today,
         "opens": "center"
 
       }, function(start, end, label) {

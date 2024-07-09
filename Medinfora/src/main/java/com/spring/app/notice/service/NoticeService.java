@@ -29,6 +29,11 @@ public interface NoticeService {
 	int edit(NoticeDTO noticedto);
 
 
+	int del(Map<String, String> paraMap);
+
+	
+
+
 
 	
 }

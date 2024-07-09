@@ -2,6 +2,7 @@ package com.spring.app.main.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,15 @@ public class MainService_imple implements MainService {
 	// 회원가입(중복체크)
 	@Override
 	public MemberDTO isExistCheck(Map<String, String> paraMap) {
+		
+		if("email".equalsIgnoreCase(paraMap.get("type"))) {
+			try {
+				paraMap.put("value",aES256.encrypt(paraMap.get("value")));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		MemberDTO isExist = dao.isExistCheck(paraMap);
 		return isExist;
 	}
@@ -81,13 +91,31 @@ public class MainService_imple implements MainService {
 			paraMap.put("pwd", Sha256.encrypt(pwd));
 			paraMap.put("email", aES256.encrypt(email));
 			paraMap.put("mobile", aES256.encrypt(mobile));
-			
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		}
 		
-		
 		int n = dao.registerEnd(paraMap);
+		
+		if(paraMap.get("midx").equals("2")) {
+			Map<String,String> classCodeListParaMap = new HashMap<String, String>();
+			
+			classCodeListParaMap.put("hpname",paraMap.get("name"));
+			classCodeListParaMap.put("hpaddr",paraMap.get("address"));
+			
+			List<String> classCodeList = dao.getclassCodeList(classCodeListParaMap);
+			
+			for(String classcode : classCodeList) {
+				Map<String,String> inputparaMap = new HashMap<String, String>();
+				
+				inputparaMap.put("userid",paraMap.get("userid"));
+				inputparaMap.put("classcode",classcode);
+				inputparaMap.put("hidx",paraMap.get("hidx"));
+				
+				dao.classcodeMetInput(inputparaMap);
+			}
+		}
+		
 		return n;
 	}
 	
@@ -97,8 +125,7 @@ public class MainService_imple implements MainService {
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
 		
 		if(paraMap.get("loginmethod") == "0") {
-			String pwd = paraMap.get("pwd");
-			paraMap.put("pwd", Sha256.encrypt(pwd));
+			paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
 		}
 		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
@@ -144,7 +171,6 @@ public class MainService_imple implements MainService {
 					
 					loginuser.setEmail(aES256.decrypt(loginuser.getEmail()));
 					loginuser.setMobile(aES256.decrypt(loginuser.getMobile()));
-					
 					
 					HttpSession sesstion =  request.getSession();
 					sesstion.setAttribute("loginuser", loginuser);
@@ -224,8 +250,6 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
-
-	
 
 	
 
