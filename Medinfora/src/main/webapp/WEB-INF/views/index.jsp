@@ -314,11 +314,11 @@
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
     <div class="col hj_cardMb">
       <div class="hj_noticeitem card">
-        <a href="">
+        <a href="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}">
           <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">내용 샬라샬라~~</p>
-            <span>2024.06.18</span>
+            <h5 class="card-title nanum-b">${noticedto.title}</h5>
+            <p class="card-text hj_notice_content nanum-n">${noticedto.content}</p>
+            <span>${noticedto.writeday}</span>
           </div>
         </a>
       </div>

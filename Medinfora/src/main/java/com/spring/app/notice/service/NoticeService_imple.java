@@ -71,7 +71,7 @@ public class NoticeService_imple implements NoticeService {
 	if(plz != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
 
 	//if(mIdx.getmIdx() != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
-		int nidx = noticedto.getNidx();
+			int nidx = noticedto.getNidx();
 			int n = dao.increase_readCount(nidx);
 
 			if(n==1) { 
@@ -101,25 +101,24 @@ public class NoticeService_imple implements NoticeService {
 		return n;
 	}
 
-	@Override
-	public int del(Map<String, String> paraMap) {
-		int n = dao.del(paraMap.get("seq"));
-		
-		if(n==1) {
-			String path = paraMap.get("path");
-			String fileName = paraMap.get("fileName");
-			
-			if(fileName != null && !"".equals(fileName)) {
-				try {
-					fileManager.doFileDelete(fileName, path);
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return n;
-	}
+	 @Override
+	    public int del(Map<String, String> paraMap) {
+	        int n = dao.del(paraMap.get("nidx"));
 
+	        if (n == 1) {
+	            String path = paraMap.get("path");
+	            String fileName = paraMap.get("fileName");
+
+	            if (fileName != null && !"".equals(fileName)) {
+	                try {
+	                    fileManager.doFileDelete(fileName, path);
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return n;
+	    }
 	
 
 } // end of public class NoticeService_imple implements NoticeService 

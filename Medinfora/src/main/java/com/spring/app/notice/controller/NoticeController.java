@@ -1,6 +1,8 @@
 package com.spring.app.notice.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -504,15 +506,16 @@ public class NoticeController {
    	    }
 
 
-    	
-		  System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
-		  System.out.println("nidx: " + noticedto.getNidx()); 
-		  System.out.println("NoticeController.editEnd() called"); // 디버깅 로그 추가
-		  System.out.println("title: " + noticedto.getTitle());
-		  System.out.println("content: " + noticedto.getContent());
-		  System.out.println("filename: " + noticedto.getFilename());
-		  System.out.println("orgname: " + noticedto.getOrgname());
-		  System.out.println("filesize: " + noticedto.getFilesize());
+		/*
+		 * System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
+		 * System.out.println("nidx: " + noticedto.getNidx());
+		 * System.out.println("NoticeController.editEnd() called"); // 디버깅 로그 추가
+		 * System.out.println("title: " + noticedto.getTitle());
+		 * System.out.println("content: " + noticedto.getContent());
+		 * System.out.println("filename: " + noticedto.getFilename());
+		 * System.out.println("orgname: " + noticedto.getOrgname());
+		 * System.out.println("filesize: " + noticedto.getFilesize());
+		 */
 		 
         int n = service.edit(noticedto);
         
@@ -532,95 +535,127 @@ public class NoticeController {
     
     
     
-    @GetMapping("/noticeDel.bibo")
-    public ModelAndView del(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-
-        String seq = request.getParameter("seq");
-
-        String message = "";
-
-       try {
-            Integer.parseInt(seq);
-
-            // 글 삭제해야 할 글 1개 내용가져오기
-            Map<String, String> paraMap = new HashMap<>();
-            paraMap.put("seq", seq);
-
-         NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
-
-           if (noticedto == null) {
-              message = "글 삭제가 불가합니다.";
-          } else {
-               HttpSession session = request.getSession();
-             MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-
-             if( !loginuser.getUserid().equals(noticedto.getUserid()) ) {
-					message = "다른 사용자의 글은 삭제가 불가합니다.";
+    // 첨부파일 다운로드 하기
+    @GetMapping("/download.bibo")
+    public void download(HttpServletRequest request, HttpServletResponse response, NoticeDTO noticedto) {
+    	
+    	String seq = request.getParameter("seq");
+    
+    	Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+	
+		// **** 웹브라우저에 출력하기 시작 **** //
+				// HttpServletResponse response 객체는 전송되어져온 데이터를 조작해서 결과물을 나타내고자 할때 쓰인다.
+				response.setContentType("text/html; charset=UTF-8");
+			
+				PrintWriter out = null;
+				// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+				try {
+					Integer.parseInt(seq);
+				//NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap); 
+					
+					if(noticedto == null || (noticedto != null && noticedto.getFilename() == null) ) {
+						out = response.getWriter();
+						out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
+				    	return;
+					}
+					
+					else {
+						// 정상적으로 다운로드를 할 경우 
+					
+						String fileName = noticedto.getFilename();
+						// 20240628092043154731282615400.jpg  이것이 바로 WAS(톰캣) 디스크에 저장된 파일명이다.
+						
+						String orgFilename = noticedto.getOrgname();
+						// 쉐보레전면.jpg   다운로드시 보여줄 파일명
+						
+						// 첨부파일이 저장되어 있는 WAS(톰캣) 디스크 경로명을 알아와야만 다운로드를 해줄 수 있다.
+				    	// 이 경로는 우리가 파일첨부를 위해서 /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.  
+						// WAS 의 webapp 의 절대경로를 알아와야 한다. 
+						HttpSession session = request.getSession(); 
+						String root = session.getServletContext().getRealPath("/");  
+						
+					System.out.println("~~~ 확인용 webapp 의 절대경로 => " + root);
+						// ~~~ 확인용 webapp 의 절대경로 => C:\NCS\workspace_spring_framework\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\board\ 
+						
+						String path = root+"resources"+File.separator+"files";
+						/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+						      운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+						      운영체제가 UNIX, Linux, 매킨토시(맥) 이라면  File.separator 는 "/" 이다. 
+						*/
+						
+						// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+						 System.out.println("~~~ 확인용 path => " + path);
+						// ~~~ 확인용 path => C:\NCS\workspace_spring_framework\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\board\resources\files
+						// ***** file 다운로드 하기 ***** //
+						boolean flag = false; // file 다운로드 성공, 실패인지 여부를 알려주는 용도 
+						flag = fileManager.doFileDownload(fileName, orgFilename, path, response); 
+						// file 다운로드 성공시 flag 는 true,
+						// file 다운로드 실패시 flag 는 false 를 가진다.
+						
+						if(!flag) {
+							// 다운로드가 실패한 경우 메시지를 띄워준다. 
+							out = response.getWriter();
+					    	// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+					    	
+					    	out.println("<script type='text/javascript'>alert('파일다운로드가 실패되었습니다.'); history.back();</script>");
+						}
+						
+					}
+					
+				}catch (NumberFormatException | IOException e) {
+					
+					try {
+						out = response.getWriter();
+						// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+						
+						out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>"); 
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					
 				}
-				else {
-                  mav.addObject("noticedto", noticedto);
-                    mav.setViewName("notice/noticeDel.tiles");
+				
+			}
+			
+			
+    
+    
+    
+    @PostMapping("/notice/delEnd.bibo")
+    public ModelAndView delEnd(HttpServletRequest request, ModelAndView mav) {
+        String nidx = request.getParameter("nidx");
 
-                    return mav;
-           	     }
-          
-          }
-        } catch (NumberFormatException e) {
-            message = "글 삭제가 불가합니다.";
-       }
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("nidx", nidx);
 
-       String loc = "javascript:history.back()";
-       mav.addObject("message", message);
-       mav.addObject("loc", loc);
+        NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
+        String fileName = noticedto.getFilename();
 
+        if (fileName != null && !"".equals(fileName)) {
+            HttpSession session = request.getSession();
+            String root = session.getServletContext().getRealPath("/");
+            String path = root + "resources" + File.separator + "files";
+
+            paraMap.put("path", path);
+            paraMap.put("fileName", fileName);
+        }
+
+        int n = service.del(paraMap);
+
+        if (n == 1) {
+            mav.addObject("message", "글 삭제 성공!!");
+            mav.addObject("loc", request.getContextPath() + "/notice/noticeList.bibo");
+        } else {
+            mav.addObject("message", "글 삭제 실패!!");
+            mav.addObject("loc", "javascript:history.back()");
+        }
         mav.setViewName("msg");
 
         return mav;
-
     }
-       
-
-    @PostMapping("/delEnd.bibo")
-    public ModelAndView delEnd(ModelAndView mav, HttpServletRequest request) {
-       
-    	String seq = request.getParameter("seq");
-
-    	Map<String, String> paraMap = new HashMap<>();
-    	paraMap.put("seq",seq);
-    	
-    	NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
-		
-		String fileName = noticedto.getFilename();
-		
-		if(fileName != null && !"".equals(fileName)) {
-			HttpSession session = request.getSession(); 
-			String root = session.getServletContext().getRealPath("/");  
-		
-			System.out.println("~~~ 확인용 webapp 의 절대경로 => " + root);
-			
-			String path = root+"resources"+File.separator+"files";
-		
-			
-
-			paraMap.put("path", path); // 삭제해야할 파일이 저장된 경로
-			paraMap.put("fileName", fileName); // 삭제해야할 파일명
-	
-		}
-    	
-    // int n = service.del(seq);
-
-		int n = service.del(paraMap);
-		
-       if (n == 1) {
-           mav.addObject("message", "글 삭제 성공!!");
-            mav.addObject("loc", request.getContextPath() + "/noticeList.bibo");
-            mav.setViewName("msg");
-       }
-
-        return mav;
-    }
-    
-	
-    
-    
 }
+    
+	
+    
+

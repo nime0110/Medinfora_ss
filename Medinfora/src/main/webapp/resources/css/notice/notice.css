@@ -257,6 +257,7 @@ body>div.homebar {
 	padding: 30px 0;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
+	 position: relative;
 }
 
 .board_title1 {
