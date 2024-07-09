@@ -7,21 +7,23 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDayMedia.css">
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDay.js"></script>
-<script src='../dist/index.global.min.js'></script>
+<script src='<%= ctxPath%>/resources/node_modules/fullcalendar/dist/index.global.min.js'></script>
 <script>
 
-  // 이벤트 실제 불러온 데이터가 들어가는 부분이다 형식은 
-  // [{"title":"이름","start":"날짜"},...{"title":"이름","start":"날짜"}] 형식으로 해야한다.
-  data = [ 
-    {
-      title: '예약가능',
-      start: '2023-01-02'
-    },
-    {
-      title: '예약가능',
-      start: '2023-01-03'
-    }
-  ];
+	// 예약가능한 날짜들만 가져오면됨
+
+	// 이벤트 실제 불러온 데이터가 들어가는 부분이다 형식은 
+	// [{"title":"이름","start":"날짜"},...{"title":"이름","start":"날짜"}] 형식으로 해야한다.
+	data = [ 
+	  {
+	    title: '예약가능',
+	    start: '2023-01-02'
+	  },
+	  {
+	    title: '예약가능',
+	    start: '2023-01-03'
+	  }
+	];
       
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -34,15 +36,20 @@
         center: 'title',
         right: 'next'
       },
-      initialDate: '2023-01-12', // 첫 기준이 되는 날짜를 선택할수 있다. (오늘날짜로 선택하면 됨!)
+      initialDate: '2024-07-12', // 첫 기준이 되는 날짜를 선택할수 있다. (오늘날짜로 선택하면 됨!)
       locale: "ko", // 언어설정 "Korean"
       eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
         
         const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
 
         // hidx 정보와 eventDate를 Ajax를 통해 통신하면된다!
+        
 
         const sendDate = {"hidx":"value(실제들어가야하는값)","date":eventDate};
+        
+        
+        
+        
 
         console.log(eventDate);
 
@@ -57,7 +64,42 @@
 
 </script>
 
+<style>
 
+  /* 기본적으로 내장된 css 스타일 건들지 말것 */
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* 추가적으로 커스텀한 css 스타일 */
+  /* 사이즈에 맞게 커스텀 하면 된다! */
+
+  .fc-daygrid-day-frame{
+    height: 50px !important;
+  }
+
+  .fc-event-title-container{
+    text-align: center;
+    padding-top: 2px;
+    height: 20px;
+    transition: all 0.5s;
+  }
+
+  .fc-event-title-container:hover{
+    background-color: blue;
+    cursor: pointer;
+  }
+
+</style>
 
 <div class="hj_container">
 	<div class="reserveContent pt-3">
