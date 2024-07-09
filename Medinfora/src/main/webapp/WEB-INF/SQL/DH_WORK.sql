@@ -39,3 +39,11 @@ FROM KOREAAREA;
 select * from KOREAAREA where LOCAL like '%'||'구';
 
 select * from NOTICE;
+
+select CLASSCODE
+from HOSPITAL
+where HPNAME = '행복한의원' and HPADDR ='전라남도 여수시 동문로 100(공화동)'
+
+select *
+from MEMBER
+where MIDX = 2;
