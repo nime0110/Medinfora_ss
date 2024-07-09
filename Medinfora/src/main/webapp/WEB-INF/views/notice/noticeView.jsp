@@ -89,24 +89,26 @@
         <span class="notice-date">날짜: ${noticedto.writeday}</span>
         <span class="notice-viewcount">조회수: ${noticedto.viewcnt}</span>
 
-        <div class="notice-attachment">
+         <div class="notice-attachment">
             <c:if test="${noticedto.filename != null}">
                 <span class="attach_sh">
                     <img src="<%= ctxPath %>/resources/img/sh_attach.png" style="width: 20px; height: 20px;">
                     첨부파일 : 
                 </span>
-                <a href="<%= ctxPath %>/download.bibo?seq=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
-                <c:if test="${noticedto.filename == 'image'}">
-                    <img src="<%= ctxPath %>/download.bibo?seq=${noticedto.nidx}" alt="${noticedto.orgname}" />
-                </c:if>
+                <a href="<%= ctxPath %>/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+                
             </c:if>
         </div>
     </div>
 
+
     <hr>
 
-    <div class="nanum-n notice-content">
+    <div class="nanum-n notice-content" style="height: auto;">
         <p>${noticedto.content}</p>
+        <c:if test="${noticedto.filename.endsWith('.jpg') || noticedto.filename.endsWith('.jpeg') || noticedto.filename.endsWith('.png') || noticedto.filename.endsWith('.gif')}">
+                    <img src="<%= ctxPath %>/resources/files/${noticedto.filename}" alt="${noticedto.orgname}" style="max-width: 100%; height: auto;" />
+                </c:if>
     </div>
 
     <div class="notice-button text-center mb-5">

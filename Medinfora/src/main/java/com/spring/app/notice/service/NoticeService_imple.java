@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.common.AES256;
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
@@ -23,6 +24,16 @@ public class NoticeService_imple implements NoticeService {
 	 	@Autowired  // Type에 따라 알아서 Bean 을 주입해준다.
 		private FileManager fileManager;
 
+		// === #45. 양방향 암호화 알고리즘인 AES256 를 사용하여 복호화 하기 위한 클래스 의존객체 주입하기(DI: Dependency Injection) ===
+	 	@Autowired
+	 	private AES256 aES256;
+	    // Type 에 따라 Spring 컨테이너가 알아서 bean 으로 등록된 com.spring.board.common.AES256 의 bean 을  aES256 에 주입시켜준다. 
+	    // 그러므로 aES256 는 null 이 아니다.
+		// com.spring.app.common.AES256 의 bean 은 /webapp/WEB-INF/spring/appServlet/servlet-context.xml 파일에서 bean 으로 등록시켜주었음. 
+		
+	
+		
+	 	
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
 		int n = dao.noticeWrite(noticedto);
@@ -86,11 +97,8 @@ public class NoticeService_imple implements NoticeService {
 	// 임시 
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
-		NoticeDTO noticedto = dao.getView1(paraMap);
-		  if (noticedto == null) {
-	            System.out.println("NoticeService_imple.getView_no_increase_readCount() - noticedto is null");
-	            return null;		
-	        }
+		NoticeDTO noticedto = dao.getView1(paraMap); // 글 1개 조회하기
+	
 		return noticedto;
 	}
 

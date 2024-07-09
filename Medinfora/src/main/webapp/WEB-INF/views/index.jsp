@@ -314,10 +314,10 @@
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
     <div class="col hj_cardMb">
       <div class="hj_noticeitem card">
-        <a href="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}">
+        <a href="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${requestScope.noticedto.nidx}">
           <div class="card-body">
-            <h5 class="card-title nanum-b">${noticedto.title}</h5>
-            <p class="card-text hj_notice_content nanum-n">${noticedto.content}</p>
+            <h5 class="card-title nanum-b">${requestScope.noticedto.title}</h5>
+            <p class="card-text hj_notice_content nanum-n">${requestScope.noticedto.content}</p>
             <span>${noticedto.writeday}</span>
           </div>
         </a>
