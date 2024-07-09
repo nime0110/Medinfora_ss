@@ -162,10 +162,11 @@
 		)M
 		CROSS JOIN
 		(
-		    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+		    select trunc(months_between(sysdate,max(to_date(REGISTERDAY,'YYYY-MM-DD HH24:MI:SS')))) as lastlogingap
 		    from loginlog
 		    where userid = #{userid}
-		) L
+		    group by userid
+		)L
 	</select>
 	
 	<!-- 회원코드 변경 (휴먼처리) -->
