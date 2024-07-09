@@ -176,8 +176,8 @@
 	
 	<!-- 로그인 유저 ip 기록 -->
 	<insert id="insert_log" parameterType="HashMap">
-		insert into loginlog(userid, ip, registerday)
-		values(#{userid}, #{clientip}, sysdate)
+		insert into loginlog(userid, ip)
+		values(#{userid}, #{clientip})
 	</insert>
 	
 	<!-- 병원정보 입력 API -->
