@@ -97,8 +97,7 @@ public class MainService_imple implements MainService {
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
 		
 		if(paraMap.get("loginmethod") == "0") {
-			String pwd = paraMap.get("pwd");
-			paraMap.put("pwd", Sha256.encrypt(pwd));
+			paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
 		}
 		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
