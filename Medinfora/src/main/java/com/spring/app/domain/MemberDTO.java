@@ -27,7 +27,7 @@ public class MemberDTO {
 	private boolean requirePwdChange = false;	// 비밀번호 변경안한지 3개월 지났는지 확인 용도
 	
 	
-	
+	private HospitalDTO hdto;
 	
 	
 	
@@ -159,9 +159,12 @@ public class MemberDTO {
 		this.loginmethod = loginmethod;
 	}
 	
+	public HospitalDTO getHdto() {
+		return hdto;
+	}
 	
-	
-	
-	
+	public void setHdto(HospitalDTO hdto) {
+		this.hdto = hdto;
+	}
 	
 }

@@ -220,6 +220,7 @@ where hidx = 1
 select ridx, userid, reportday, checkin, symptom, rcode, hidx
 from reserve
 where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date('2024-07-08','yyyy-mm-dd hh24:mi:ss'))
+    and hidx = 1
 
 
 

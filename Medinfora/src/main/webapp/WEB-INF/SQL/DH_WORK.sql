@@ -37,3 +37,5 @@ DELETE
 FROM KOREAAREA;
 
 select * from KOREAAREA where LOCAL like '%'||'구';
+
+select * from NOTICE;

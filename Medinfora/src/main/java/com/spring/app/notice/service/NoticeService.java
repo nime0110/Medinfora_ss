@@ -24,6 +24,15 @@ public interface NoticeService {
 	 // 글 조회수 증가와 함께 글 1개를 조회해 오는 것 
 	NoticeDTO getView(Map<String, String> paraMap, HttpSession session);
 
+	NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap);
+
+	int edit(NoticeDTO noticedto);
+
+
+	int del(Map<String, String> paraMap);
+
+	
+
 
 
 	

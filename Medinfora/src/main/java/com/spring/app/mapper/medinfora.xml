@@ -43,7 +43,7 @@
 		       	</when>
 		    </choose>
 	    	)H
-	    WHERE rno between 1 and 8
+	    WHERE rno between 0 and 8
 	    group by 
 	    <choose>
 	    	<when test='searchType == "hpname"'>hpname</when>
@@ -51,20 +51,97 @@
 	    </choose>
 	</select>
 	
-	
+	<!-- 회원가입(병원찾기 총검색 개수 알아오기) -->
 	<select id="totalhospital" parameterType="HashMap" resultType="int">
-		select count(*)
-		from hospital
-		where 1=1
+		WITH B
+		AS(
+		    SELECT count(*) as CNT
+		    FROM(
+		        select hpname, hpaddr
+		        from hospital
+		        where 1=1
+				<choose>
+					<when test='searchType == "hpname"'>
+						and lower(hpname) like '%'||lower(#{searchWord})||'%'
+					</when>
+					<when test='searchType == "hpaddr"'>
+						and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+					</when>
+				</choose>
+		        )H
+		    GROUP BY hpname, hpaddr
+		)
+		SELECT COUNT(*)
+		FROM B
+	</select>
+	
+	
+	
+	<!-- 회원가입(병원찾기 검색 병원리스트) -->
+	<select id="hpSearch" parameterType="HashMap" resultType="HospitalDTO">	    
+	    WITH B
+		AS(
+		    SELECT hpname, hpaddr, hptel
+		    FROM(
+		        select row_number() over(order by hidx) AS rno
+		             , hpname, hpaddr, replace(hptel, '-', '') as hptel
+		        from hospital
+		        <choose>
+			       	<when test='searchType == "hpname" and searchWord != ""'>
+			          	where lower(hpname) like '%'||lower(#{searchWord})||'%'  
+			       	</when>
+			       	<when test='searchType == "hpaddr" and searchWord != ""'>
+			          	where lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+			       	</when>
+		    	</choose>
+		        )H
+		    WHERE rno between #{startRno} and #{endRno}
+		    GROUP BY hpname, hpaddr, hptel
+		)
+		SELECT hpname, hpaddr, hptel
+		FROM B
+		ORDER BY hpname
+	</select>
+	
+	
+	<!-- 회원가입(병원찾기 병원정보 입력) -->
+	<select id="searchMedicalEnd" parameterType="HashMap" resultType="HospitalDTO">
+		SELECT hidx, hpname, hpaddr, hptel
+	    FROM(
+	        select row_number() over(order by hidx) AS rno
+	             , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
+	        from hospital
+	        where hpname = #{hpname} and hpaddr = #{hpaddr}
+        )H
+        WHERE rno = 1
+	</select>
+	
+	
+	<!-- 회원가입하기 -->
+	<insert id="registerEnd" parameterType="HashMap">
+		insert into member ( userid, pwd, email, name, mobile, address ,
+						     midx, registerday, pwdUpdateday, loginmethod
 		<choose>
-			<when test='searchType == "hpname"'>
-				and lower(hpname) like '%'||lower(#{searchWord})||'%'
+			<when test='join == "1" or join == "3"'>
+				 , detailAddress, birthday, gender
 			</when>
-			<when test='searchType == "hpaddr"'>
-				and lower(hpaddr) like '%'||lower(#{searchWord})||'%'
+			<when test='join == "2"'>
+				 , hidx
 			</when>
 		</choose>
-	</select>
+		)
+		values( #{userid}, #{pwd}, #{email}, #{name}, #{mobile}, #{address},
+			    to_number(#{midx}), to_char(sysdate, 'yyyymmdd'), to_char(sysdate, 'yyyymmdd'), to_number(#{loginmethod})
+		<choose>
+			<when test='join == "1" or join == "3"'>
+				, #{detailAddress}, #{birthday}, to_number(#{gender})
+			</when>
+			<when test='join == "2"'>
+			, to_number(#{hidx})
+			</when>
+		</choose>
+		)
+	</insert>
 	
 	
 	<!-- 로그인 유저 정보 가져오기 -->

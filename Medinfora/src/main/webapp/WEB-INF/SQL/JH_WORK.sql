@@ -214,29 +214,106 @@ FROM A
 
 
 WITH A AS (
-    SELECT hpname,
-           hpaddr,
-           COUNT(*) AS CNT
+    SELECT hpname,hpaddr
     FROM (
         SELECT hpname, hpaddr
         FROM hospital
+        GROUP BY hpname, hpaddr
     ) H
     GROUP BY hpname, hpaddr
-    ORDER BY CNT
 )
 SELECT count(*)
 FROM A
-where CNT > 2
 
 
 
 select *
 from hospital
-where hpaddr = '충청남도 태안군 안면읍 응지마을길 10';
+where hpname = '한울내과의원';
 
 
 
+select *
+from hospital
+ where lower(hpname) like '%'||lower('행복한의원')||'%'
+ 
+ -- 검색한 병원 총 수
 
+WITH B
+AS(
+    SELECT count(*) as CNT
+    FROM(
+        select hpname, hpaddr
+        from hospital
+        where lower(hpname) like '%'||lower('행복한의원')||'%'
+        )H
+    GROUP BY hpname, hpaddr
+)
+SELECT COUNT(*)
+FROM B
+--------------
+
+WITH B
+AS(
+    SELECT hpname, hpaddr, hptel
+    FROM(
+        select row_number() over(order by hidx) AS rno
+             , hpname, hpaddr, replace(hptel, '-', '') as hptel
+        from hospital
+        where lower(hpname) like '%'||lower('행복한의원')||'%'
+        )H
+    WHERE rno between 1 and 10
+    GROUP BY hpname, hpaddr, hptel
+)
+SELECT hpname, hpaddr, hptel
+FROM B
+ORDER BY hpname
+
+
+-- 검색한 병원 리스트 sql(이거 데이터 누락됨 위에게 맞음)
+SELECT hpname, hpaddr, hptel
+FROM(
+    select row_number() over(order by hidx desc) AS rno, hpname, hpaddr
+         , replace(hptel, '-', '') as hptel
+    from hospital
+    where lower(hpname) like '%'||lower('행복한의원')||'%'
+    )H
+WHERE rno between 1 and 10
+group by hpname, hpaddr, hptel
+order by hpname
+
+
+WITH B AS (
+    SELECT COUNT(*) AS CNT
+    FROM (
+        SELECT hpname, hpaddr
+        FROM hospital
+        WHERE LOWER(hpname) LIKE '%' || LOWER('우리') || '%'
+    ) H
+    GROUP BY hpname, hpaddr
+)
+SELECT COUNT(*) AS TotalCount
+FROM B;
+
+-- 하나 데이터가져오기(중복되면 맨 위에거만)
+SELECT hidx, hpname, hpaddr, hptel
+FROM(
+    select row_number() over(order by hidx) AS rno
+         , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
+    from hospital
+    where hpname = '행복한의원' and hpaddr = '광주광역시 북구 서암대로 179, 2층 (신안동)'
+)H
+WHERE rno = 1
+
+desc member;
+
+select * from member;
+
+
+delete from member
+where userid = 'user001';
+
+commit;
 
 
 

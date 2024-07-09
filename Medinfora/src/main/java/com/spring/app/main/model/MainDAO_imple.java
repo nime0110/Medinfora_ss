@@ -49,6 +49,26 @@ public class MainDAO_imple implements MainDAO{
 		return totalCount;
 	}
 	
+	// 회원가입(병원찾기 병원검색리스트)
+	@Override
+	public List<HospitalDTO> hpSearch(Map<String, String> paraMap) {
+		List<HospitalDTO> hpList = sqlsession.selectList("medinfora.hpSearch", paraMap);
+		return hpList;
+	}
+	
+	// 회원가입(병원찾기 병원정보 입력)
+	@Override
+	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap) {
+		HospitalDTO hpdto = sqlsession.selectOne("medinfora.searchMedicalEnd", paraMap);
+		return hpdto;
+	}
+	
+	// 회원가입하기
+	@Override
+	public int registerEnd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("medinfora.registerEnd", paraMap);
+		return n;
+	}
 	
 	// 로그인 유저 정보
 	@Override
@@ -121,6 +141,9 @@ public class MainDAO_imple implements MainDAO{
 	public int holidayInputer(HolidayVO holidayVO) {
 		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
+
+	
+	
 	
 	
 
