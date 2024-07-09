@@ -19,14 +19,32 @@ public class ReserveService_imple implements ReserveService {
 	// === 회원가입된 병원 개수 === //
 	@Override
 	public int getmbHospitalCnt(Map<String, String> paraMap) {
-		int totalCnt = dao.getTotalCnt(paraMap);
+		
+		int totalCnt = 0;
+		
+		// 일반적으로 불러오는경우
+		if("".equals(paraMap.get("classcode"))) { //클라스 코드가 없다면
+			totalCnt = dao.getTotalCnt(paraMap);
+		}else { //진료과목을 지정한 경우
+			totalCnt = dao.getTotalCntClass(paraMap);
+		}
+		
 		return totalCnt;
 	}
 
 	// === 회원가입된 병원 리스트 가져오기 === //
 	@Override
 	public List<HospitalDTO> mbHospitalList(Map<String, String> paraMap) {
-		List<HospitalDTO> mbHospitalList = dao.mbHospitalList(paraMap);
+		
+		List<HospitalDTO> mbHospitalList = null;
+		
+		// 일반적으로 불러오는경우
+		if("".equals(paraMap.get("classcode"))) { //클라스 코드가 없다면
+			mbHospitalList = dao.mbHospitalList(paraMap);
+		}else { //진료과목을 지정한 경우
+			mbHospitalList = dao.mbHospitalListClass(paraMap);
+		}
+		
 		return mbHospitalList;
 	}
 

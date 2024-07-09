@@ -7,89 +7,84 @@
 	
 	<!-- (진료예약-병원선택)회원가입된 병원 개수  -->
 	<select id="getTotalCnt" resultType="int" parameterType="HashMap">
-		SELECT count(*) 
-		FROM
-		(
-		    select hidx
-		    from member
-		    where midx = 2
-		) M
-		JOIN
-		(
-		    SELECT hidx, hpname, hpaddr, hptel, H.classcode
-		    FROM
-		    (
-		        select hidx, hpname, hpaddr, hptel, classcode
-		        from hospital
-		        where 1=1
-		       <choose>
-					<when test='city != "" '>
-				    	and hpaddr like '%' || #{city} || '%'
-				    </when>
-				    <when test='local != "" '>
-				    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
-				    </when>
-				    <when test='hpname != "" '>
-				    	and hpname like '%' || #{hpname} || '%'
-				    </when>
-				    <when test='classcode != "" '>
-				    	and classcode = #{classcode}
-				    </when>
-			    </choose>
-		    ) H
-		    JOIN
-		    (
-		        select classcode, classname
-		        from classcode
-		    ) C
-		    ON H.classcode = C.classcode
-		) HC
-		ON M.hidx = HC.hidx
+		select count(*)
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where 1=1
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+		)
+	</select>
+	
+	<!-- (진료예약-병원선택)회원가입된 병원 개수 (classcode가 있는경우)  -->
+	<select id="getTotalCntClass" resultType="int" parameterType="HashMap">
+		select count(*)
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+			from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX 
+			where CLASSCODEMET.CLASSCODE = #{classcode}
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		)
 	</select>
 	
 	<!-- (진료예약-병원선택)회원가입된 병원 리스트 가져오기  -->
 	<select id="mbHospitalList" resultType="HospitalDTO" parameterType="HashMap">
-		SELECT hidx, hpname, hpaddr, hptel, classcode
-		FROM
-		(
-		    SELECT row_number() over(order by HC.hidx desc) AS rno
-		        , HC.hidx as hidx, hpname, hpaddr, hptel, classcode
-		    FROM
-		    (
-		        select hidx
-		        from member
-		        where midx = 2
-		    ) M
-		    JOIN
-		    (
-		        SELECT hidx, hpname, hpaddr, hptel, H.classcode
-		        FROM
-		        (
-		            select hidx, hpname, hpaddr, hptel, classcode
-		            from hospital
-		            where 1=1
-		           	<if test='city != "" '>
-				    	and hpaddr like '%' || #{city} || '%'
-				    </if>
-				    <if test='local != "" '>
-				    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
-				    </if>
-				    <if test='hpname != "" '>
-				    	and hpname like '%' || #{hpname} || '%'
-				    </if>
-				    <if test='classcode != "" '>
-				    	and classcode = #{classcode}
-				    </if>
-		        ) H
-		        JOIN
-		        (
-		            select classcode, classname
-		            from classcode
-		        ) C
-		        ON H.classcode = C.classcode
-		    ) HC
-		    ON M.hidx = HC.hidx
-		    order by hidx
+		select  hidx, hpname, HPADDR, HPTEL
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where 1=1
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+	</select>
+	
+	<!-- (진료예약-병원선택)회원가입된 병원 리스트 가져오기 (classcode가 있는경우) -->
+	<select id="mbHospitalListClass" resultType="HospitalDTO" parameterType="HashMap">
+		select  hidx, hpname, HPADDR, HPTEL
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+			from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX 
+			where CLASSCODEMET.CLASSCODE = #{classcode}
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
 		)
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
 	</select>

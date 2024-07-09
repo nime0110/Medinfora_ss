@@ -125,9 +125,6 @@
 			<when test='join == "1" or join == "3"'>
 				 , detailAddress, birthday, gender
 			</when>
-			<when test='join == "2"'>
-				 , hidx
-			</when>
 		</choose>
 		)
 		values( #{userid}, #{pwd}, #{email}, #{name}, #{mobile}, #{address},
@@ -136,9 +133,6 @@
 			<when test='join == "1" or join == "3"'>
 				, #{detailAddress}, #{birthday}, to_number(#{gender})
 			</when>
-			<when test='join == "2"'>
-			, to_number(#{hidx})
-			</when>
 		</choose>
 		)
 	</insert>
@@ -146,13 +140,13 @@
 	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
-		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx
 			   , loginmethod
 		       , pwdUpdategap
 		       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
 		FROM
 		(
-		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx
+		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 		           , loginmethod
 		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
 		    from member
@@ -229,6 +223,19 @@
 	<insert id="holidayInputer" parameterType="HolidayVO">
 		INSERT INTO HOLIDAY (SUMMARY, HOLIDAY_DATE)
 		VALUES (#{summary}, #{holiday_date})
+	</insert>
+	
+	<!-- ClasscodeList 가져오기 -->
+	<select id="getclassCodeList" parameterType="HashMap" resultType="String">
+		select CLASSCODE
+		from HOSPITAL
+		where HPNAME like #{hpname} and HPADDR like #{hpaddr}
+	</select>
+	
+	<!-- CLASSMET 입력용 -->
+	<insert id="classcodeMetInput" parameterType="HashMap">
+		INSERT INTO CLASSCODEMET (USERID, CLASSCODE, HIDX)
+		VALUES (#{userid}, #{classcode}, #{hidx})
 	</insert>
 
 </mapper>

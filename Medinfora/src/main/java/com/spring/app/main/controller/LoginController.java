@@ -318,7 +318,7 @@ public class LoginController {
 		paraMap.put("name", name);
 		paraMap.put("mobile", mobile);
 		
-		
+		boolean ismetinsert = true;
 		
 		if("1".equals(join) || "3".equals(join)) {
 			midx = "1";
@@ -345,6 +345,7 @@ public class LoginController {
 			paraMap.put("midx", midx);
 			paraMap.put("address", address);
 			paraMap.put("hidx", hidx);
+			
 		}
 		
 		int n = service.registerEnd(paraMap);
@@ -355,7 +356,7 @@ public class LoginController {
 		String message = "";
 		String loc = request.getContextPath()+"/index.bibo";
 		
-		if(n==1) {
+		if(n==1&&ismetinsert) {
 			message = "회원가입이 완료되었습니다.";
 		}
 		else {
