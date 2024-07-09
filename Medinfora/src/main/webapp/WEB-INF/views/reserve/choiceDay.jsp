@@ -68,13 +68,6 @@
 
   /* 기본적으로 내장된 css 스타일 건들지 말것 */
 
-  body {
-    margin: 40px 10px;
-    padding: 0;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-    font-size: 14px;
-  }
-
   #calendar {
     max-width: 1100px;
     margin: 0 auto;

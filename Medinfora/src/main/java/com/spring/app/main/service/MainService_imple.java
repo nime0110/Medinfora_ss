@@ -217,7 +217,6 @@ public class MainService_imple implements MainService {
 		return dao.areaInputer(koreaAreaVO);
 	}
 
-
 	// 행정구역 리스트 추출
 	@Override
 	public List<String> getcityinfo() {
@@ -250,12 +249,5 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
-
-	
-
-	
-
-	
-
 	
 }

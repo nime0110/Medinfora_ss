@@ -163,13 +163,4 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	
-
-	
-	
-	
-	
-
-	
-	
 }
