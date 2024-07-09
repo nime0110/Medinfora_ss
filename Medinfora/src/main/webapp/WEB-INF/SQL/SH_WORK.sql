@@ -126,12 +126,18 @@ from notice
   
     
     
+       update notice set title = '두번째입니다'
+            , content = '두번째 글입니다!!'
+        where nidx = 21;  
+    
     SELECT 
     n.nidx, 
     n.userid, 
     n.title, 
     n.content, 
     n.viewcnt, 
+    
+    
     TO_CHAR(n.writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday, 
     n.filename, 
     n.orgname, 
@@ -147,10 +153,13 @@ ORDER BY
     
     
     
+ delete from notice
+ where nidx = 88;
+    
+ commit;   
     
     
-    
-    
+    desc notice
     
     
     	SELECT previousseq, previoussubject

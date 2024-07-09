@@ -53,5 +53,30 @@
         WHERE nidx = #{nidx}
     </update>
 	
-	
+	 
+    <!-- === 1개글 수정하기 === -->
+  <update id="edit" parameterType="NoticeDTO">
+    update notice
+    set title = #{title},
+        content = #{content},
+        filename = #{filename},
+        orgname = #{orgname},
+        filesize = #{filesize}
+    where nidx = #{nidx}
+</update>
+
+<select id="getView1" parameterType="HashMap" resultType="com.spring.app.domain.NoticeDTO">
+        SELECT nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+        FROM notice
+        WHERE nidx = #{nidx}
+    </select>
+
+
+  
+    <!-- === 1개글 삭제하기 === -->
+    <delete id="del" parameterType="String">
+        delete from notice
+        where nidx = #{nidx}
+    </delete>
+
 </mapper>
