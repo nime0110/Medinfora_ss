@@ -9,7 +9,7 @@
 	<select id="isExistCheck" parameterType="HashMap" resultType="MemberDTO">
 		select userid, email
 		from member
-		where (midx between 1 and 8)
+		where (midx between 0 and 8)
 		<choose>
 			<when test="type == 'userid'">	<!-- 아이디 중복 체크 -->
 		    	and userid = #{value}
