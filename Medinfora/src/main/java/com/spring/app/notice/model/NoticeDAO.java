@@ -23,10 +23,10 @@ public interface NoticeDAO {
 	public int add_noticeWrite(NoticeDTO noticedto);
 
 	// 글 1개 조회하기 
-	 NoticeDTO getView(Map<String, String> paraMap);
+	NoticeDTO getView(Map<String, String> paraMap);
 
-	 // 글 조회수 1 증가하기 
-	 int increase_readCount(int nidx);
+	// 글 조회수 1 증가하기 
+	int increase_readCount(int nidx);
 
 	public int edit(NoticeDTO noticedto);
 

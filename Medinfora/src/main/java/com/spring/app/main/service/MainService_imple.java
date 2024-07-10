@@ -20,6 +20,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
 
 @Service
@@ -217,7 +218,6 @@ public class MainService_imple implements MainService {
 		return dao.areaInputer(koreaAreaVO);
 	}
 
-
 	// 행정구역 리스트 추출
 	@Override
 	public List<String> getcityinfo() {
@@ -251,11 +251,10 @@ public class MainService_imple implements MainService {
 		return dao.holidayInputer(holidayVO);
 	}
 
-	
-
-	
-
-	
-
+	// 인덱스 화면 공지 불러오기
+	@Override
+	public List<NoticeDTO> getIdxNdtoList() {
+		return dao.getIdxNdtoList();
+	}
 	
 }

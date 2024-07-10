@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%String ctxPath = request.getContextPath();%>
 
@@ -312,45 +313,24 @@
     </a>
   </div>
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${requestScope.noticedto.nidx}">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">${requestScope.noticedto.title}</h5>
-            <p class="card-text hj_notice_content nanum-n">${requestScope.noticedto.content}</p>
-            <span>${noticedto.writeday}</span>
+  
+	<c:forEach var="ndto" items="${requestScope.ndtoList}">
+		<div class="col hj_cardMb">
+			<div class="hj_noticeitem card">
+				<div class="card-body">
+		            <h5 class="card-title nanum-b">
+		            	<a href="">
+		            		${ndto.title}
+		           		</a>
+		        	</h5>
+            		<p class="card-text hj_notice_content nanum-n">
+            			${ndto.content}
+            		</p>
+            <span>${ndto.writeday}</span>
           </div>
-        </a>
       </div>
     </div>
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-            </p>
-            <span>2024.06.18</span>
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-            </p>
-            <span>2024.06.18</span>
-          </div>
-        </a>
-      </div>
-    </div>
+	</c:forEach>
+    
   </div>
 </session>

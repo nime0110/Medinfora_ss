@@ -14,6 +14,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -163,13 +164,10 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	
+	// 인덱스 화면 공지 불러오기
+	@Override
+	public List<NoticeDTO> getIdxNdtoList() {
+		return sqlsession.selectList("medinfora.getIdxNdtoList");
+	}
 
-	
-	
-	
-	
-
-	
-	
 }
