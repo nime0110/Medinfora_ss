@@ -259,6 +259,9 @@ body>div.homebar {
 	border-bottom: 1px solid #ddd;
 	 position: relative;
 }
+.notice-info2 {
+    margin-left: auto;
+}
 
 .board_title1 {
 	padding-bottom: 27px;
@@ -272,9 +275,18 @@ body>div.homebar {
 }
 
 .notice-info {
-	margin-bottom: 20px;
-	text-align: left;
-	color: gray;
+	 margin-bottom: 20px;
+    text-align: left;
+    color: gray;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.notice-info2 {
+    margin-left: auto; 
+    display: flex;
+    align-items: center;
 }
 
 .notice-info span {
@@ -282,18 +294,27 @@ body>div.homebar {
 }
 
 .notice-content {
-	padding: 50px 0;
+	padding: 20px 0;
 	margin-bottom: 20px;
-	font-size: 1.2em;
-	height: 500px;
+/* 	font-size: 1.2em; */
+	/* height: 700px; */
+ margin-bottom: 39px; 
 }
 
 .notice-attachment {
-	margin-bottom: 20px;
+	/* margin-bottom: 20px;
 	font-size: 1em;
-	text-align: center;
+	text-align: center; */
+	 width: 100%;
+    margin-top: 10px;
+}
+.notice-info2 button:first-child {
+    margin-left: 0;
 }
 
+.notice-info2 button {
+    margin-left: 10px; /* 버튼 사이의 간격 */
+}
 .attachment-label {
 	font-weight: bold;
 }
@@ -311,7 +332,75 @@ body>div.homebar {
 }
 
 .notice-button01:hover, .notice-button02:hover, .notice-button03:hover {
-	background-color: var(- -grey600);
+	background-color: var(--grey600);
+}
+ .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+   /*  background-color: rgba(0, 0, 0, 0.5); semi-transparent background */
+}
+
+.modal-content {
+   /*  background-color: #fefefe; */
+    position: fixed;
+    top: 50%; /* position the modal 50% from the top */
+    left: 50%; /* position the modal 50% from the left */
+    transform: translate(-50%, -50%); /* center the modal precisely */
+    padding: 40px;
+    border: 1px solid #888;
+    width: 300px; /* width of the modal */
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 5px;
+}
+
+.modal-content h2 {
+    margin-top: 6px;
+ font-size: 16px; 
+    text-align: center;
+}
+
+.modal-buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.modal-buttons button {
+    margin: 10px 5px;
+    padding: 15px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.modal-buttons .confirm {
+/*     background-color: #4caf50; */
+    color: white;
+}
+
+.modal-buttons .cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* noticeView.jsp 끝 */
@@ -327,10 +416,12 @@ tr>th {
 	display: flex;
 	justify-content: center;
 	margin-top: 120px;
-	margin-bottom: -20px;
+	/* margin-bottom: -20px; */
 	
 	
 }
+
+
 #wrapper>div>div:nth-child(3)>div>form>table>tbody>tr:nth-child(2)>th {
 
 	margin: 40px auto;

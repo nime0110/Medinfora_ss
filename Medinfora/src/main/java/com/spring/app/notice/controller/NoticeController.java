@@ -156,18 +156,22 @@ public class NoticeController {
     //	@GetMapping("/view.action")
    	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
    	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
-   		String nidx = request.getParameter("nidx");
+   		
+   		try {
+   		int nidx = Integer.parseInt(request.getParameter("nidx"));
    		//System.out.println("확인용 nidx" + nidx);
-   		Map<String, String> paraMap = new HashMap<>();
+   		//Map<String, String> paraMap = new HashMap<>();
    	
-   		paraMap.put("nidx",nidx);
-   		
+   		Map<String, Object> paraMap = new HashMap<>();
+   	   paraMap.put("nidx", String.valueOf(nidx));
    		HttpSession session = request.getSession();
+   			
+   		// 이전글, 다음 글 정보 가져오기 
    		
+   	    NoticeDTO prevNotice = service.getPrevNotice(nidx);
+   	    NoticeDTO nextNotice = service.getNextNotice(nidx);
    		
-   		
-   		
-   		// MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+   		// MemberDTO loginuser =	 (MemberDTO) session.getAttribute("loginuser");
    		
    		
    		
@@ -175,8 +179,12 @@ public class NoticeController {
    		NoticeDTO n = service.getView(paraMap,session);
    		
    		mav.addObject("noticedto", n);// 저장해줄 이름 
+   	    mav.addObject("prevNotice", prevNotice);
+     mav.addObject("nextNotice", nextNotice);
    		mav.setViewName("notice/noticeView.tiles");
-   		
+   		} catch(NumberFormatException e) {
+   	     System.out.println("NumberFormatException occurred: " + e.getMessage());
+   		}
    		return mav;
    		/*
    		 * String seq = ""; String goBackURL = ""; String searchType = ""; String

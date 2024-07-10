@@ -66,8 +66,8 @@ public class NoticeService_imple implements NoticeService {
 	}
 
 	@Override
-	public NoticeDTO getView(Map<String, String> paraMap, HttpSession session) {
-
+	public NoticeDTO getView(Map<String, Object> paraMap, HttpSession session) {
+	  //  System.out.println("확인용: " + paraMap.get("nidx"));
 		MemberDTO mIdx = null;
 		int plz = 1; // 세션값이 있을 때만 값을 가져오려고 만
 		
@@ -127,6 +127,17 @@ public class NoticeService_imple implements NoticeService {
 	        }
 	        return n;
 	    }
+
+	 @Override
+	 public NoticeDTO getPrevNotice(int nidx) {
+	     return dao.getPrevNotice(nidx);
+	 }
+
+	 @Override
+	 public NoticeDTO getNextNotice(int nidx) {
+	     return dao.getNextNotice(nidx);
+	 }
+	  
 	
 
 } // end of public class NoticeService_imple implements NoticeService 

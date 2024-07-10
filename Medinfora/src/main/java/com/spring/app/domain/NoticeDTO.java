@@ -17,7 +17,6 @@ public class NoticeDTO {
     private MultipartFile attach;
 
   
-
     public int getNidx() {
         return nidx;
     }
