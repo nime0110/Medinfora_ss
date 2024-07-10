@@ -84,7 +84,7 @@
 		   // 폼(form)을 전송(submit)
 		   const frm = document.editFrm;
 		   frm.method = "post";
-		   frm.action = "<%= ctxPath%>/editEnd.bibo";
+		   frm.action = "<%= ctxPath%>/notice/editEnd.bibo";
 		   frm.submit();
 	   });
 	   
@@ -125,9 +125,9 @@
         <span class="attach_sh">
         <img src="<%=ctxPath%>/resources/img/sh_attach.png"
 								style="width: 20px; height: 20px;">첨부파일 : </span>
-        <a href="<%= ctxPath %>/download.action?seq=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+        <a href="<%= ctxPath %>/notice/download.action?seq=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
         <c:if test="${noticedto.filename == 'image'}">
-            <img src="<%= ctxPath %>/download.action?seq=${noticedto.nidx}" alt="${noticedto.orgname}" />
+            <img src="<%= ctxPath %>/notice/download.action?seq=${noticedto.nidx}" alt="${noticedto.orgname}" />
         </c:if>
     </c:if>
 </div>

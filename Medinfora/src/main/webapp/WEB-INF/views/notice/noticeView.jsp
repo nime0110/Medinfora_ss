@@ -95,7 +95,7 @@
                     <img src="<%= ctxPath %>/resources/img/sh_attach.png" style="width: 20px; height: 20px;">
                     첨부파일 : 
                 </span>
-                <a href="<%= ctxPath %>/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+                <a href="<%= ctxPath %>/notice/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
                 
             </c:if>
         </div>
@@ -113,7 +113,7 @@
 
     <div class="notice-button text-center mb-5">
         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
-        <c:if test="${sessionScope.loginuser.mIdx}">
+        <c:if test="${sessionScope.loginuser.mIdx == 0}">
             <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">수정하기</button>
             <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
         </c:if>

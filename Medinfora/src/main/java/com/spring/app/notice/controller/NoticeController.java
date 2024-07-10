@@ -41,10 +41,10 @@ public class NoticeController {
     @Autowired
     private FileManager fileManager;
 	
-	@GetMapping("/notice.bibo")
+	@GetMapping("/notice/notice.bibo")
 	public String notice() {
 		
-		return "notice";
+		return "/notice/notice";
 	}
 
     // 공지사항 글 쓰기 폼 페이지 요청
@@ -355,7 +355,7 @@ public class NoticeController {
    	
    	
     //	@GetMapping("/view_2.action")
-   	@PostMapping("/view_2.bibo")
+   	@PostMapping("/notice/view_2.bibo")
    	public ModelAndView view_2(ModelAndView mav, HttpServletRequest request, RedirectAttributes redirectAttr) {
    		
    		// 조회하고자 하는 글번호 받아오기
@@ -421,50 +421,55 @@ public class NoticeController {
    	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
    	    String seq = request.getParameter("seq");
    	    String message = "";
-
    	    try {
    	        System.out.println("seq: " + seq); // 디버깅 로그 추가
    	        Integer.parseInt(seq);
-
    	        Map<String, String> paraMap = new HashMap<>();
    	        paraMap.put("nidx", seq);
-
    	        NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
    	        System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
-
    	        if (noticedto == null) {
    	            message = "글 수정이 불가합니다";
    	            mav.addObject("message", message);
    	            mav.setViewName("redirect:/notice/noticeList.bibo");
-   	            
    	            return mav;
    	        } else {
-   	         HttpSession session = request.getSession();
-   	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-  	
-  	    System.out.println("loginuser: " + loginuser); // 디버깅 로그 추가
-
-   	            if (!loginuser.getUserid().equals(noticedto.getUserid())) {
-   	                message = "다른 사용자의 글은 수정이 불가합니다";
+   	            HttpSession session = request.getSession();
+   	            MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+   	  	
+   	            System.out.println("loginuser: " + loginuser); // 디버깅 로그 추가
    	            
-   	                mav.addObject("message", message);
-   	                
-   	                return mav;
-   	            } else {
+   	         System.out.println("loginuser: " + loginuser);
+   	      if (loginuser != null) {
+   	          System.out.println("loginuser.getMIdx(): " + loginuser.getmIdx());
+   	          System.out.println("loginuser.getUserid(): " + loginuser.getUserid());
+   	      }
+   	      System.out.println("noticedto: " + noticedto);
+   	      if (noticedto != null) {
+   	          System.out.println("noticedto.getUserid(): " + noticedto.getUserid());
+   	      }
+   	            
+   	            // 관리자(mIdx가 0)이거나 글 작성자인 경우 수정 허용
+   	            if (loginuser.getmIdx() == 0 || loginuser.getUserid().equals(noticedto.getUserid())) {
    	                mav.addObject("noticedto", noticedto);
    	                mav.setViewName("notice/noticeEdit.tiles");
+   	                return mav;
+   	                
+   	            } else {
+   	                message = "수정 권한이 없습니다";
+   	                mav.addObject("message", message);
+   	                mav.setViewName("redirect:/notice/noticeList.bibo");
    	                return mav;
    	            }
    	        }
    	    } catch (NumberFormatException e) {
-            message = "유효하지 않은 글 번호입니다. 목록으로 돌아갑니다.";
-            mav.addObject("message", message);
-            mav.setViewName("redirect:/notice/noticeList.bibo");
-            return mav;
-        }
-    }   	
-
-    @PostMapping("/editEnd.bibo")
+   	        message = "유효하지 않은 글 번호입니다. 목록으로 돌아갑니다.";
+   	        mav.addObject("message", message);
+   	        mav.setViewName("redirect:/notice/noticeList.bibo");
+   	        return mav;
+   	    }
+   	}
+    @PostMapping("/notice/editEnd.bibo")
     public ModelAndView editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request, MultipartHttpServletRequest mrequest) {
 
     	   MultipartFile attach = noticedto.getAttach();
@@ -510,7 +515,7 @@ public class NoticeController {
 
         if (n == 1) {
             mav.addObject("message", "글 수정 성공!!");
-            mav.addObject("loc", request.getContextPath() + "/view.bibo?nidx=" + noticedto.getNidx());
+            mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
         } else {
             mav.addObject("message", "글 수정 실패");
             mav.addObject("loc", "javascript:history.back()");
@@ -523,7 +528,7 @@ public class NoticeController {
     
     
     // 첨부파일 다운로드 하기
-    @GetMapping("/download.bibo")
+    @GetMapping("/notice/download.bibo")
     public void download(HttpServletRequest request, HttpServletResponse response) {
         String nidx = request.getParameter("nidx");
         
