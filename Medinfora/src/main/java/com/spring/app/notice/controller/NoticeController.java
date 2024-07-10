@@ -154,8 +154,9 @@ public class NoticeController {
     }
  // === #62. 글1개를 보여주는 페이지 요청 === //
     //	@GetMapping("/view.action")
-   	@RequestMapping("/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
+   	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
    	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
+   		
    		String nidx = request.getParameter("nidx");
    		//System.out.println("확인용 nidx" + nidx);
    		Map<String, String> paraMap = new HashMap<>();
@@ -164,14 +165,6 @@ public class NoticeController {
    		
    		HttpSession session = request.getSession();
    		
-   		
-   		
-   		
-   		// MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-   		
-   		
-   		
-   		//System.out.println("session 확인용 "+ loginuser);
    		NoticeDTO n = service.getView(paraMap,session);
    		
    		mav.addObject("noticedto", n);// 저장해줄 이름 

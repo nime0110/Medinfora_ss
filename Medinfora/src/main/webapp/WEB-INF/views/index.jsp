@@ -237,7 +237,6 @@
   </div>
 
     </div>
-</div>
 
 <!--  승혜 작업 영역 끝 --> 
 <!-- 동혁 작업 영역 시작 -->
@@ -299,7 +298,7 @@
     <div>
       <h2 class="nanum-b hj_h2_flex">
         공지사항&nbsp;
-        <a class="hj_notice_plusicon">
+        <a href= "<%=ctxPath%>/notice/noticeList.bibo" class="hj_notice_plusicon">
           <i class="fa-solid fa-plus hj_plusicon"></i>
         </a>
       </h2>
@@ -315,13 +314,13 @@
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
   
 	<c:forEach var="ndto" items="${requestScope.ndtoList}">
+		
 		<div class="col hj_cardMb">
 			<div class="hj_noticeitem card">
+				<div class="noticeurl" style="display: none; margin: 0;"><%=ctxPath %>/notice/view.bibo?nidx=${ndto.nidx}</div>
 				<div class="card-body">
 		            <h5 class="card-title nanum-b">
-		            	<a href="">
-		            		${ndto.title}
-		           		</a>
+	            		${ndto.title}
 		        	</h5>
             		<p class="card-text hj_notice_content nanum-n">
             			${ndto.content}

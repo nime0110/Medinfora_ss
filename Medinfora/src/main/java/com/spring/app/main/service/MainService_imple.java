@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.common.Myutil;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
@@ -256,7 +257,15 @@ public class MainService_imple implements MainService {
 	// 인덱스 화면 공지 불러오기
 	@Override
 	public List<NoticeDTO> getIdxNdtoList() {
-		return dao.getIdxNdtoList();
+		
+		List<NoticeDTO> orignDTO = dao.getIdxNdtoList();
+		
+		for(NoticeDTO ndto : orignDTO) {
+			ndto.setContent(Myutil.removeHTMLtag(ndto.getContent()));
+			ndto.setWriteday(ndto.getWriteday().substring(0,10));
+		}
+		
+		return orignDTO;
 	}
 
 	// 병원 중복가입 체크
