@@ -196,17 +196,33 @@ public class ReserveController {
 			}catch (Exception e) {
 				// 운영 안하는 경우
 			}
-			
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
-			
+					
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
-			
-			if(cnt != 0 || cnt != reserveCnt) {
+
+			if(today.substring(0, 10).equals(day.substring(0, 10))) {
+				String time = today.substring(11, 13) + today.substring(14, 16);
+				
+				String rEndTime = "";
+				if("00".equals(end.substring(2))) {
+					rEndTime = String.valueOf((Integer.parseInt(end) - 70)); 
+				}
+				else {
+					rEndTime = String.valueOf((Integer.parseInt(end) - 30));
+				}
+				
+				if(Integer.parseInt(time) > Integer.parseInt(rEndTime)) {
+					currentDate.add(Calendar.DATE, 1);
+					continue;
+				}
+			}
+			if(cnt != 0 && cnt != reserveCnt) {
 				availableDayList.add(day.substring(0, 10));
 			}	// end of if---------------------
+			
 			currentDate.add(Calendar.DATE, 1);
 		}	// end of for--------------------------------
 		
@@ -246,7 +262,6 @@ public class ReserveController {
 		String today = dateFormat.format(currentDate.getTime()).substring(0, 10);
 		
 		if(today.equals(day)) {
-			System.out.println("오늘날짜");
 			// 만약 30분 이전이라면 현재 분 00분으로 하고 30분 이후라면 현재시간 30으로 설정
 			int minutes = currentDate.get(Calendar.MINUTE);
 			if (minutes < 30) {
@@ -258,8 +273,14 @@ public class ReserveController {
 		}
 		today = dateFormat.format(currentDate.getTime());
 		
-		String dayOfweek = parseDayofWeek(currentDate,day);
-		
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFmt.parse(day);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        
+		String dayOfweek = parseDayofWeek(calendar,day);
+
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("hidx", hidx);
 		paraMap.put("day", day);
@@ -291,7 +312,7 @@ public class ReserveController {
 		
 		List<String> availableTimeList = new ArrayList<>(); 
 		
-		if(cnt != 0 || cnt != reserveCnt) {	// 예약가능한 경우
+		if(cnt != 0 && cnt != reserveCnt) {	// 예약가능한 경우
 			if(day.equals(today.substring(0, 10))) {	// 선택한 날짜가 오늘일 경우
 				
 				for(int j=0; j<cnt; j++) {
@@ -324,11 +345,6 @@ public class ReserveController {
 			}
 			else {		// 오늘일이 아닌 선택한 날짜 예약가능시간 리스트 가져오기
 				 
-				SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
-	            Date date = dateFmt.parse(day);
-	            
-	            Calendar calendar = Calendar.getInstance();
-	            calendar.setTime(date);
 	            for(int j=0; j<cnt; j++) {
 		            int day_n = calendar.get(Calendar.DATE);
 		            calendar.add(Calendar.MINUTE, 30);
@@ -361,7 +377,6 @@ public class ReserveController {
 			jsonArr.add(availableTime);
 		}
 		
-		System.out.println(jsonArr.toString());
 		return jsonArr.toString();
 	}
 
