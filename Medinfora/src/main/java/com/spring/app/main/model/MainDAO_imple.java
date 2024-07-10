@@ -14,6 +14,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -163,13 +164,25 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	
+	// 인덱스 화면 공지 불러오기
+	@Override
+	public List<NoticeDTO> getIdxNdtoList() {
+		return sqlsession.selectList("medinfora.getIdxNdtoList");
+	}
 
-	
-	
-	
-	
+	// 병원 중복가입 체크
+	@Override
+	public boolean checkhidx(String hidx) {
+		
+		boolean result = true;
+		
+		String userid = sqlsession.selectOne("medinfora.checkhidx",hidx);
+		
+		if(userid != null) {
+			result = false;
+		}
+		
+		return result;
+	}
 
-	
-	
 }

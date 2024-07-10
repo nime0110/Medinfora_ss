@@ -49,76 +49,63 @@ public class NoticeController {
 
     // 공지사항 글 쓰기 폼 페이지 요청
     @GetMapping("/notice/noticeWrite.bibo")
-    public ModelAndView noticeWrite(HttpServletRequest request, HttpServletResponse response,
-            ModelAndView mav) {
+    public ModelAndView noticeWrite(HttpServletRequest request
+    		, HttpServletResponse response, ModelAndView mav) {
 
         mav.setViewName("notice/noticeWrite.tiles");
         return mav;
     }
 
     @PostMapping("/notice/noticeWriteEnd.bibo")
-    public ModelAndView noticeWriteEnd(HttpServletRequest request, ModelAndView mav, NoticeDTO noticedto,
-    		MultipartHttpServletRequest mrequest) {
+    public ModelAndView noticeWriteEnd(HttpServletRequest request, ModelAndView mav
+    		, NoticeDTO noticedto,MultipartHttpServletRequest mrequest) {
 
-		/*
-		 * System.out.println("NoticeDTO Title: " + noticedto.getTitle());
-		 * System.out.println("NoticeDTO Content: " + noticedto.getContent());
-		 * System.out.println("NoticeDTO Filename: " + noticedto.getFilename());
-		 * System.out.println("NoticeDTO Orgname: " + noticedto.getOrgname());
-		 * System.out.println("NoticeDTO Filesize: " + noticedto.getFilesize());
-		 */
+	    MultipartFile attach = noticedto.getAttach();
 
-    	    MultipartFile attach = noticedto.getAttach();
+	    if (attach != null && !attach.isEmpty()) {
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "resources" + File.separator + "files";
+			   
+			    String newFileName = "";
+			
+			try {
+			    byte[] bytes = attach.getBytes();
+			    String originalFilename = attach.getOriginalFilename();
+			    
+			    newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+			    
+			    noticedto.setFilename(newFileName); // 파일 이름을 설정
+			    noticedto.setOrgname(originalFilename); // 원본 파일 이름을 설정
+			    long fileSize = attach.getSize();
+			    noticedto.setFilesize(String.valueOf(fileSize)); // 파일 크기를 설정
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+	    }
 
-    	    if (attach != null && !attach.isEmpty()) {
-    	        HttpSession session = mrequest.getSession();
-    	        String root = session.getServletContext().getRealPath("/");
-    	        String path = root + "resources" + File.separator + "files";
-    	       
-    	        String newFileName = "";
+	    int n;
+	    
+	    HttpSession session = request.getSession();
+	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+	    
+	    noticedto.setUserid(loginuser.getUserid());  
+	    
+	    if(attach == null || attach.isEmpty()) {
+	        n = service.noticeWrite(noticedto);
+	    }else {
+	    	n = service.add_noticeWrite(noticedto);
+	    }
+	    
+	    if(n == 1) {
+	        mav.setViewName("redirect:/notice/noticeList.bibo");
+	    }else {
+	        mav.addObject("message", "공지사항 작성에 실패했습니다.");
+	        mav.setViewName("notice/noticeWrite.tiles");
+	    }
 
-    	        try {
-    	            byte[] bytes = attach.getBytes();
-    	            String originalFilename = attach.getOriginalFilename();
-    	            
-    	            newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-    	            
-    	            noticedto.setFilename(newFileName); // 파일 이름을 설정
-    	            noticedto.setOrgname(originalFilename); // 원본 파일 이름을 설정
-    	            long fileSize = attach.getSize();
-    	            noticedto.setFilesize(String.valueOf(fileSize)); // 파일 크기를 설정
-					/* System.out.println("File Upload Success : " + newFileName); */
-    	        } catch (Exception e) {
-    	            e.printStackTrace();
-    	        }
-    	    }
-
-    	    int n;
-    	    
-    	    HttpSession session = request.getSession();
-    	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-    	    
-    	    noticedto.setUserid(loginuser.getUserid());  
-    	    
-    	  
-    	    
-    	    if (attach == null || attach.isEmpty()) {
-    	        n = service.noticeWrite(noticedto);
-    	    
-    	    } else {
-    	    
-    	    	n = service.add_noticeWrite(noticedto);
-    	    }
-    	    
-    	    if (n == 1) {
-    	        mav.setViewName("redirect:/notice/noticeList.bibo");
-    	    } else {
-    	        mav.addObject("message", "공지사항 작성에 실패했습니다.");
-    	        mav.setViewName("notice/noticeWrite.tiles");
-    	    }
-
-    	    return mav;
-    	}
+	    return mav;
+	}
     
 
     @GetMapping("/notice/noticeList.bibo")
@@ -167,8 +154,9 @@ public class NoticeController {
     }
  // === #62. 글1개를 보여주는 페이지 요청 === //
     //	@GetMapping("/view.action")
-   	@RequestMapping("/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
+   	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
    	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
+   		
    		String nidx = request.getParameter("nidx");
    		//System.out.println("확인용 nidx" + nidx);
    		Map<String, String> paraMap = new HashMap<>();
@@ -177,14 +165,6 @@ public class NoticeController {
    		
    		HttpSession session = request.getSession();
    		
-   		
-   		
-   		
-   		// MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-   		
-   		
-   		
-   		//System.out.println("session 확인용 "+ loginuser);
    		NoticeDTO n = service.getView(paraMap,session);
    		
    		mav.addObject("noticedto", n);// 저장해줄 이름 

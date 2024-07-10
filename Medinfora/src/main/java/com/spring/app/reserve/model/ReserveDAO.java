@@ -35,5 +35,4 @@ public interface ReserveDAO {
 	HospitalDTO dayReserveImpossible(Map<String, String> paraMap);
 
 
-
 }

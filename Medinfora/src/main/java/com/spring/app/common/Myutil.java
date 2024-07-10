@@ -219,35 +219,47 @@ public class Myutil {
 		return holidayList;
 	}
 	
-	 public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
-	        StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
-
-	        int blockSize = 10; // Page block size
-	        int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
-	        int endPage = startPage + blockSize - 1;
-
-	        if (endPage > totalPage) {
-	            endPage = totalPage;
-	        }
-
-	        if (startPage > 1) {
-	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(startPage - 1).append("'>Previous</a></li>");
-	        }
-
-	        for (int i = startPage; i <= endPage; i++) {
-	            if (i == currentShowPageNo) {
-	                pageBar.append("<li class='page-item active'><span class='page-link'>").append(i).append("</span></li>");
-	            } else {
-	                pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(i).append("'>").append(i).append("</a></li>");
-	            }
-	        }
-
-	        if (endPage < totalPage) {
-	            pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(endPage + 1).append("'>Next</a></li>");
-	        }
-
-	        pageBar.append("</ul>");
-	        return pageBar.toString();
-	    }
+	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
+		StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
+		
+		int blockSize = 10; // Page block size
+		int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+		int endPage = startPage + blockSize - 1;
+		
+		if (endPage > totalPage) {
+		    endPage = totalPage;
+		}
+		
+		if (startPage > 1) {
+		    pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(startPage - 1).append("'>Previous</a></li>");
+		}
+		
+		for (int i = startPage; i <= endPage; i++) {
+		    if (i == currentShowPageNo) {
+		        pageBar.append("<li class='page-item active'><span class='page-link'>").append(i).append("</span></li>");
+		    } else {
+		        pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(i).append("'>").append(i).append("</a></li>");
+		    }
+		}
+		
+		if (endPage < totalPage) {
+		    pageBar.append("<li class='page-item'><a class='page-link' href='").append(url).append("?currentShowPageNo=").append(endPage + 1).append("'>Next</a></li>");
+		}
+		
+		pageBar.append("</ul>");
+		return pageBar.toString();
+	}
+	
+	/**
+	 * removeHTMLtag (MADE BY SEO DONGHYEOK)
+	 * @param text
+	 * @return remove HTML tag TEXT
+	 */
+	public static String removeHTMLtag(String text) {
+		
+		String replaceText = text.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		
+		return replaceText;
+	}
 	
 }

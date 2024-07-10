@@ -8,6 +8,7 @@ import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NoticeDTO;
 
 public interface MainDAO {
 
@@ -67,6 +68,12 @@ public interface MainDAO {
 
 	// CLASSMET 입력용
 	public boolean classcodeMetInput(Map<String, String> inputparaMap);
+
+	// 인덱스 화면 공지 불러오기
+	public List<NoticeDTO> getIdxNdtoList();
+
+	// 병원 중복가입 체크
+	public boolean checkhidx(String hidx);
 
 	
 	

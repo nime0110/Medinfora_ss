@@ -39,7 +39,7 @@
   /* height: 700px; */
   /* border: solid 1px red; */
   text-align: center;
-  margin: 10% auto;
+  margin: 10% auto 0 auto;
 }
 
 .borderBlue{
