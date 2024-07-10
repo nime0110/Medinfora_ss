@@ -154,7 +154,7 @@ public class NoticeController {
     }
  // === #62. 글1개를 보여주는 페이지 요청 === //
     //	@GetMapping("/view.action")
-   	@RequestMapping("/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
+   	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.  
    	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
    		String nidx = request.getParameter("nidx");
    		//System.out.println("확인용 nidx" + nidx);
@@ -411,7 +411,7 @@ public class NoticeController {
    		redirectAttr.addFlashAttribute("redirect_map", redirect_map);
    		// redirectAttr.addFlashAttribute("키", 밸류값); 으로 사용하는데 오로지 1개의 데이터만 담을 수 있으므로 여러개의 데이터를 담으려면 Map 을 사용해야 한다. 
    		
-   		mav.setViewName("redirect:/noticeView.bibo"); // 실제로 redirect:/view.action 은 POST 방식이 아닌 GET 방식이다.
+   		mav.setViewName("redirect:/notice/noticeView.bibo"); // 실제로 redirect:/view.action 은 POST 방식이 아닌 GET 방식이다.
            /////////////////////////////////////////////////////////////////////////////////
    		// ==== redirect(GET방식임) 시 데이터를 넘길때 GET 방식이 아닌 POST 방식처럼 데이터를 넘기려면 RedirectAttributes 를 사용하면 된다. 끝 ==== //
    		

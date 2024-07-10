@@ -64,7 +64,7 @@
             $("#deleteModal").show();
         });
 
-        // Close the modal
+        
         $(".close, #btnCancel").click(function() {
             $("#deleteModal").hide();
         });
@@ -113,7 +113,7 @@
 
     <div class="notice-button text-center mb-5">
         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
-        <c:if test="${sessionScope.loginuser.mIdx == 0}">
+        <c:if test="${sessionScope.loginuser.mIdx}">
             <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">수정하기</button>
             <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
         </c:if>
