@@ -240,8 +240,6 @@ public class ReserveController {
 		String hidx = request.getParameter("hidx");
 		String day = request.getParameter("date");
 		
-		System.out.println(hidx +" => " + day);
-		
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -323,9 +321,8 @@ public class ReserveController {
 						availableTimeList.add(today.substring(11, 16));
 					}
 				}	// end of for-------------	
-			}	// end of if---------------------
-			else {
-				// 오늘일이 아닌 선택한 날짜 예약가능시간 리스트 가져오기
+			}
+			else {		// 오늘일이 아닌 선택한 날짜 예약가능시간 리스트 가져오기
 				 
 				SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
 	            Date date = dateFmt.parse(day);
@@ -356,9 +353,8 @@ public class ReserveController {
 					if(impossibleTimeCheck == null) {	// 예약가능					
 						availableTimeList.add(day.substring(11, 16));
 					}
-	            }
-			        
-			}
+	            }	// end of for-------------
+			}	// end of if~else---------------
 		}	// end of if-----------		
 		JSONArray jsonArr = new JSONArray();
 		for(String availableTime : availableTimeList) {
@@ -369,16 +365,6 @@ public class ReserveController {
 		return jsonArr.toString();
 	}
 
-
-
-//					
-					
-//				// 오늘 예약가능 시간대 표출
-//				mav.addObject("availableTimeList", availableTimeList);
-//				
-//			}	// end of if---------
-//	mav.addObject("availableDayList",availableDayList);		// 30일 예약가능 여부
-	
 	// 공휴일인지 파악 후 요일 구분
 	private String parseDayofWeek(Calendar currentDate, String day) {
 		
