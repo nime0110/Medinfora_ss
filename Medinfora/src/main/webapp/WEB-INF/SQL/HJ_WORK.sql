@@ -280,3 +280,11 @@ JOIN
     from hospital
 ) H
 ON R.hidx = H.hidx
+
+----------------------------------------------------------------------------------------------------------------------
+-- === 오늘일이 아닌 선택한 날짜 예약불가능시간 리스트 가져오기 === --
+select ridx, userid, reportday, checkin, symptom, rcode, hidx
+		from reserve
+		where hidx = #{hidx}
+			and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(sysdate,'yyyy-mm-dd hh24:mi:ss'))
+		    and checkin = #{day}

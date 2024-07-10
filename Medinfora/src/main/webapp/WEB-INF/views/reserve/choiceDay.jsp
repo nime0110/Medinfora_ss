@@ -35,7 +35,7 @@
 	        
 	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
 
-	        const sendDate = {"hidx":${requestScope.hidx},"date":eventDate};
+	        const sendDate = {"hidx":"${requestScope.hidx}","date":eventDate};
 	        
 	        searchTimes(sendDate);
 	        
@@ -60,7 +60,7 @@
 	    
 	    const date_str = year + "-" + month + "-" + date;
 	   	
-	    // searchTimes({"hidx":"${requestScope.hidx}","date":date_str});
+	    searchTimes({"hidx":"${requestScope.hidx}","date":date_str});
 	   	
 	}) // end of jQuery(function(){})-------------------
 	
