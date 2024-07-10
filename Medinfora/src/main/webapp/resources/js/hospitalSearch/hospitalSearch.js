@@ -13,9 +13,15 @@ const contextPath = window.location.pathname.substring(0, window.location.pathna
 let detailMode = false; // level에 따라 다른 json 파일 사용
 let level = '';
 let polygons = [];
+let areas = []; //지도에 폴리곤으로 표시할 영역데이터 배열 
 
-
+//let polygonOverlay = new kakao.maps.CustomOverlay({}); // 맵위에 행정구역을 표시할 오버레이
 $(function() {
+    /* 비동기 처리 코드 
+    $.ajaxSetup({
+		async : false 
+	});
+    */
     // 로딩 이미지 숨기기
     $("div#loaderArr").hide();     
 
@@ -28,12 +34,13 @@ $(function() {
     let mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(37.566535, 126.9779692), // 초기 중심 좌표 (서울 시청)
-            level: 3 // 초기 확대 레벨
+            level: 12 // 초기 확대 레벨
         };
 
     // 지도 생성 
     map = new kakao.maps.Map(mapContainer, mapOption),
-    customOverlay = new kakao.maps.CustomOverlay({});
+     polyOverlay = new kakao.maps.CustomOverlay({});
+   
 
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
     let mapTypeControl = new kakao.maps.MapTypeControl();
@@ -434,7 +441,7 @@ function searchHospitals(pageNo) {
                     //event.stopImmediatePropagation(); // 즉시 전파 막기
                     
                     var index = $(this).data('index');
-                    console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
+                    //console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
                     map.setCenter(positionArr[index].latlng);
 
                     // 마커 클릭 이벤트 트리거
@@ -586,21 +593,34 @@ function clearAllwithmarker() {
 // 폴리곤 생성
 function init(path) {
     $.getJSON(path, function (geojson) {
-        let areas = geojson.features.map((unit) => {
-            let coordinates = unit.geometry.coordinates[0].map(coord => new kakao.maps.LatLng(coord[1], coord[0]));
-            return {
-                name: unit.properties.SIG_KOR_NM,
-                path: coordinates,
-                location: unit.properties.SIG_CD
-            };
-        });
+        var units = geojson.features; // json key값이 "features"인 것의 value를 통으로 가져온다.
 
-        areas.forEach(area => displayArea(area));
-    });
+        areas = []; // 새로 불러올 때마다 초기화
+        $.each(units, function (index, unit) { // 1개 지역씩 꺼내서 사용. val은 그 1개 지역에 대한 정보를 담는다
+            var coordinates = []; //좌표 저장할 배열
+            var name = ''; // 지역 이름
+            var cd_location = '';
+            coordinates = unit.geometry.coordinates; // 1개 지역의 영역을 구성하는 다각형의 모든 좌표 배열
+            name = unit.properties.SIG_KOR_NM; // 1개 지역의 이름
+            cd_location = unit.properties.SIG_CD;
+
+            var ob = new Object();
+            ob.name = name;
+            ob.path = [];
+            ob.location = cd_location;
+            $.each(coordinates[0], function (index, coordinate) { 
+                ob.path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
+            });
+
+            areas[index] = ob;
+        });//each
+
+        // 지도에 영역데이터를 폴리곤으로 표시
+        for (var i = 0, len = areas.length; i < len; i++) {
+            displayArea(areas[i]);
+        }
+    }); //getJSON
 }   //init
-
-
-
 
 
 // 폴리곤 보여지기
@@ -616,45 +636,64 @@ function displayArea(area) {
     });
     polygons.push(polygon);
 
+
+
     kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+        console.log("mouseover - level:", level);
+
         polygon.setOptions({ fillColor: '#09f' });
-        customOverlay.setContent('<div class="area">' + area.name + '</div>');
-        customOverlay.setPosition(mouseEvent.latLng);
-        customOverlay.setMap(map);
+        
     });
 
-    kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-        customOverlay.setPosition(mouseEvent.latLng);
-    });
 
     kakao.maps.event.addListener(polygon, 'mouseout', function () {
         polygon.setOptions({ fillColor: '#fff' });
-        customOverlay.setMap(null);
     });
 
+
+
     kakao.maps.event.addListener(polygon, 'click', function () {
-        $('#city').val(area.city);
-        $('#local').val(area.local);
-        $('#country').val(area.country);
-        // 병원 검색
-        searchHospitals(1);
-        if (!detailMode) {
-            map.setLevel(10);
-            map.panTo(mouseEvent.latLng);
-        } else {
-            // callFunctionWithRegionCode(area.location);
+
+        if (map.getLevel() > 10) {  
+            console.log("sido시도표시?");
+            console.log(" sido시도표시 area-name:", area.name);//경기도 
+            $('#city').val(area.name); 
+            updateSigunGu();
+        } else if (map.getLevel() <= 10) {
+            console.log(" sig도/ 동구표시?");
+            console.log(" sig도동구 표시 area-name:", area.name);//경기도 
+            $('#local').val(area.name);
+            searchHospitals(1);
         }
+
+        var level = map.getLevel() - 2;
+
+         map.setLevel(level, {
+            anchor: centroid(area.path),
+            animate: { duration: 350 }
+        });
+        removePolygon();
     });
 }
 
+// 폴리곤 중심 좌표 계산 함수
+function centroid(path) {
+    var x = 0, y = 0, area = 0;
 
+    for (var i = 0, len = path.length, j = len - 1; i < len; j = i++) {
+        var p1 = path[i];
+        var p2 = path[j];
+        var f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
+        x += (p1.getLat() + p2.getLat()) * f;
+        y += (p1.getLng() + p2.getLng()) * f;
+        area += f * 3;
+    }
+    return new kakao.maps.LatLng(x / area, y / area);
+}
+ 
 
-
-
-
-
-
-
+// 초기화 함수 호출
+//init(contextPath + "/resources/json/sido.json");
 
 // ================ marker, infowindows end ====================== 
 
@@ -693,9 +732,6 @@ function detailSearch(index) {
             }
             //console.log("json.starttime1:", json.starttime1); // 07시 30분
             //console.log("json.endtime1:", json.endtime1); // 17시 00분
-
-
-            
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
             $('#modal-hpaddr').text(json.hpaddr);   
