@@ -15,9 +15,6 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
-
-	// Service 테스트용 메소드
-	public String test();
 	
 	// 병원API 입력용
 	public int hpApiInputer(HospitalDTO hospitalDTO);

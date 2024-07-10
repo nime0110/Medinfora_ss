@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfoconfig.css">
 <script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
 
-<form style="display: none;margin: 0;" name ="configForm">
+<form style="display: none;margin: 0;" name ="configForm" method="post">
 	<input name="userid" value="${sessionScope.loginuser.userid}" />
 	<input id="mobileIdout"  name="mobile" />
 	<input id="pwdIdout" name="pwd" />

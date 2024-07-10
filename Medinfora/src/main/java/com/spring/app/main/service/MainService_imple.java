@@ -34,11 +34,6 @@ public class MainService_imple implements MainService {
 	
 	@Autowired
     private AES256 aES256;
-
-	@Override
-	public String test() {
-		return dao.daotest();
-	}
 	
 	// 회원가입(중복체크)
 	@Override

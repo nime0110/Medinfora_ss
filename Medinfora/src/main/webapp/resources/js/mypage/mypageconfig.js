@@ -15,8 +15,9 @@ function infoChange(ctxPath){
         $("div#mobile_waring").empty();
         $("#mobileIdout").val(mobileVal);
 
+        console.log($("#mobileIdout").val());
+
         const frm = document.configForm;
-        frm.method = "post";
         frm.action = `${ctxPath}/mypage/updatemember.bibo`;
         frm.submit();
     }
