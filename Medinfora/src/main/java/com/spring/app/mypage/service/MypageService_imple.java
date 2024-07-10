@@ -24,7 +24,7 @@ public class MypageService_imple implements MypageService {
 			e.printStackTrace();
 		}
 		
-		System.out.println(paraMap.get("moblie"));
+		System.out.println(paraMap.get("mobile"));
 		
 		return false;
 	}
