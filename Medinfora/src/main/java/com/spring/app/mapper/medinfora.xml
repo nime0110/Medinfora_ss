@@ -239,5 +239,10 @@
 		    order by NIDX desc
 		) where rno between 1 and 3
 	</select>
+	
+	<!-- 병원 중복 확인하기 -->
+	<select id="checkhidx" parameterType="String" resultType="String">
+		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
+	</select>
 
 </mapper>

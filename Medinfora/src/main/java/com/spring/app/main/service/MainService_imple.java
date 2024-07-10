@@ -23,6 +23,8 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
 
+import oracle.net.aso.h;
+
 @Service
 public class MainService_imple implements MainService {
 
@@ -255,6 +257,12 @@ public class MainService_imple implements MainService {
 	@Override
 	public List<NoticeDTO> getIdxNdtoList() {
 		return dao.getIdxNdtoList();
+	}
+
+	// 병원 중복가입 체크
+	@Override
+	public boolean checkhidx(String hidx) {
+		return dao.checkhidx(hidx);
 	}
 	
 }
