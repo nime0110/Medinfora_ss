@@ -1,4 +1,4 @@
-function infoChange(ctxPath){
+function infoChange(){
 
     const mobile = $("#mobileId");
     const mobileVal = mobile.val();
@@ -15,10 +15,8 @@ function infoChange(ctxPath){
         $("div#mobile_waring").empty();
         $("#mobileIdout").val(mobileVal);
 
-        console.log($("#mobileIdout").val());
-
         const frm = document.configForm;
-        frm.action = `${ctxPath}/mypage/updatemember.bibo`;
+        frm.action = `updatemember.bibo`;
         frm.submit();
     }
 

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfoconfig.css">
 <script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
 
-<form style="display: none;margin: 0;" name ="configForm" method="post">
+<form style="margin: 0;" name ="configForm" method="post">
 	<input name="userid" value="${sessionScope.loginuser.userid}" />
 	<input id="mobileIdout"  name="mobile" />
 	<input id="pwdIdout" name="pwd" />
@@ -78,7 +78,7 @@
 			</c:if>
 			
 			<div class="save_liner">
-				<button type="button" class="item_btn" onclick="javascript:infoChange('<%=ctxPath%>');">수정</button>
+				<button type="button" class="item_btn" onclick="javascript:infoChange();">수정</button>
 			</div>
 		</div>
 	</div>
