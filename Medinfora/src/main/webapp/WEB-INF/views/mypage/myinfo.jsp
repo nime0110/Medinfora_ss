@@ -5,6 +5,13 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfoconfig.css">
+<script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
+
+<form style="display: none;margin: 0;" name ="configForm">
+	<input name="userid" value="${sessionScope.loginuser.userid}" />
+	<input id="mobileIdout"  name="mobile" />
+	<input id="pwdIdout" name="pwd" />
+</form>
 
 <div class="infoitem">
 
@@ -50,8 +57,11 @@
 				연락처
 			</div>
 			<div class="item_input">
-				<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
+				<input id="mobileId" type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
 			</div>
+			<div class="item_title">
+				</div>
+				<div class="item_input" id="mobile_waring" style="color: #DC3545;"></div>
 			
 			<c:if test="${sessionScope.loginuser.mIdx==1}">
 				<div class="item_title">
@@ -68,7 +78,7 @@
 			</c:if>
 			
 			<div class="save_liner">
-				<button type="button" class="item_btn">수정</button>
+				<button type="button" class="item_btn" onclick="javascript:infoChange('<%=ctxPath%>');">수정</button>
 			</div>
 		</div>
 	</div>
@@ -100,9 +110,5 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
 
 </div>

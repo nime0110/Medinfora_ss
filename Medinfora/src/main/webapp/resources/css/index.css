@@ -529,6 +529,10 @@ div.hj_noticeitem{
     border: solid 2px var(--object-skyblue-color);
 }
 
+div.hj_noticeitem:hover{
+    cursor: pointer;
+}
+
 .hj_cardEvent{
     z-index: 1000;
     box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.18);
