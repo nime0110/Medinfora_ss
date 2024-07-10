@@ -64,7 +64,7 @@
             $("#deleteModal").show();
         });
 
-        // Close the modal
+        
         $(".close, #btnCancel").click(function() {
             $("#deleteModal").hide();
         });
@@ -95,7 +95,7 @@
                     <img src="<%= ctxPath %>/resources/img/sh_attach.png" style="width: 20px; height: 20px;">
                     첨부파일 : 
                 </span>
-                <a href="<%= ctxPath %>/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+                <a href="<%= ctxPath %>/notice/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
                 
             </c:if>
         </div>
