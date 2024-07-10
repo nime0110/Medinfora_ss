@@ -1,8 +1,14 @@
-function infoChange(){
+function infoChange(midx){
 
     const mobile = $("input:text[name='mobile']");
-    const address = $("#address").val().trim();
-    const detailaddress = $("#detailaddress").val().trim();
+
+    let address = "";
+    let detailaddress = "";
+
+    if(midx=="1"){
+        address = $("#address").val().trim();
+        detailaddress = $("#detailaddress").val().trim();
+    }
 
     const regExp =  new RegExp(/^[0][0-9]{8,10}$/g);
 
@@ -13,8 +19,10 @@ function infoChange(){
         mobile.val("");
         mobile.trigger("focus");
         return;
-    }else if(address == null || address == "" || detailaddress == null || detailaddress == ""){
-        
+    }else if(midx=="1"
+        &&(address == null || address == "" || detailaddress == null || detailaddress == "")){
+        $("address_waring").html("주소를 올바르게 입력해주세요.");
+        return;
     }else{
         const frm = document.configForm;
         frm.action = `updatemember.bibo`;

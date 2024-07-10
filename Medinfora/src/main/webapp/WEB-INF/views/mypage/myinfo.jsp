@@ -10,7 +10,7 @@
 <script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
 
 <form style="margin: 0;" name ="configForm" method="post">
-	<input name="userid" value="${sessionScope.loginuser.userid}" />
+	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />
 	<div class="infoitem">
 	
 		<div class="inneritem">
@@ -58,8 +58,8 @@
 					<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
 				</div>
 				<div class="item_title">
-					</div>
-					<div class="item_input" id="mobile_waring" style="color: #DC3545;"></div>
+				</div>
+				<div class="item_input" id="mobile_waring" style="color: #DC3545;"></div>
 				
 				<c:if test="${sessionScope.loginuser.mIdx==1}">
 					<div class="item_title">
@@ -73,10 +73,13 @@
 					<div class="item_input">
 						<input id="detailaddress" type="text" class="item_inputtag" name="detailaddress" value="${sessionScope.loginuser.detailAddress}" />
 					</div>
+					<div class="item_title">
+					</div>
+					<div class="item_input" id="address_waring" style="color: #DC3545;"></div>
 				</c:if>
 				
 				<div class="save_liner">
-					<button type="button" class="item_btn" onclick="javascript:infoChange();">수정</button>
+					<button type="button" class="item_btn" onclick="javascript:infoChange('${sessionScope.loginuser.mIdx}');">수정</button>
 				</div>
 			</div>
 		</div>

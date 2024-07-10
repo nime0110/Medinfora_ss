@@ -35,6 +35,8 @@ public class MypageController {
 		
 		paraMap.put("userid",request.getParameter("userid"));
 		paraMap.put("mobile",request.getParameter("mobile"));
+		paraMap.put("address",request.getParameter("address"));
+		paraMap.put("detailaddress",request.getParameter("detailaddress"));
 		
 		if(service.updateinfo(paraMap)) {
 			
