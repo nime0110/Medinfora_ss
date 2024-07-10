@@ -113,8 +113,6 @@ function searchMedical_IN(medicalInfo){
 	const addr = medicalInfo.addr;
 	const detailAddr = medicalInfo.detailAddr;
 	
-	
-
 	// Addtional Code START
 	$.ajax({
 		url : "<%=ctxPath%>/register/checkhidx.bibo",
@@ -137,7 +135,7 @@ function searchMedical_IN(medicalInfo){
 		error:function(request){
 			alert("code : " + request.status);
 		}
-	})
+	});
 	
 	return;
 }
