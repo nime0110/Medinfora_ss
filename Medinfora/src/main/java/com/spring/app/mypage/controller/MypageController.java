@@ -55,4 +55,10 @@ public class MypageController {
 		return mav;
 	}
 	
+	@GetMapping("mdreserve.bibo")
+	public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mdreserve.info");
+		return mav;
+	}
+	
 }
