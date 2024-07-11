@@ -214,7 +214,7 @@ public class ReserveController {
 					rEndTime = String.valueOf((Integer.parseInt(end) - 30));
 				}
 				
-				if(Integer.parseInt(time) > Integer.parseInt(rEndTime)) {
+				if(Integer.parseInt(time) >= Integer.parseInt(rEndTime)) {
 					currentDate.add(Calendar.DATE, 1);
 					continue;
 				}

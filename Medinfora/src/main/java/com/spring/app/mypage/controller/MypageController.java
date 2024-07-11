@@ -10,17 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.mypage.service.MypageService;
 
 @Controller
+@RequestMapping(value="/mypage/")
 public class MypageController {
 	
 	@Autowired
 	private MypageService service;
 
-	@GetMapping("/mypage/myinfo.bibo")
+	@GetMapping("myinfo.bibo")
 	public ModelAndView isLogin_myinfo(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("mypage/myinfo.info");
@@ -28,7 +30,7 @@ public class MypageController {
 		return mav;
 	}
 	
-	@PostMapping("/mypage/updatemember.bibo")
+	@PostMapping("updatemember.bibo")
 	public ModelAndView isLogin_updatemember(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		
 		Map<String,String> paraMap = new HashMap<>();
@@ -44,6 +46,12 @@ public class MypageController {
 		
 		mav.setViewName("msg");
 		
+		return mav;
+	}
+	
+	@GetMapping("myreserve.bibo")
+	public ModelAndView isLogin_myreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/myreserve.info");
 		return mav;
 	}
 	
