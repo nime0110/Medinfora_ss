@@ -13,7 +13,7 @@ const contextPath = window.location.pathname.substring(0, window.location.pathna
 let detailMode = false; // level에 따라 다른 json 파일 사용
 let level = '';
 let polygons = [];
-let areas = []; //지도에 폴리곤으로 표시할 영역데이터 배열 
+let polygonOverlays = [];
 
 //let polygonOverlay = new kakao.maps.CustomOverlay({}); // 맵위에 행정구역을 표시할 오버레이
 $(function() {
@@ -218,7 +218,6 @@ function searchHospitals(pageNo) {
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
 
-
     /*
     if (!city ) {
         alert("시/도를 선택하세요");
@@ -287,9 +286,7 @@ function searchHospitals(pageNo) {
                                 <p class="hospital-contact nanum-n">TEL: ${item.hptel} </p>
                                 <p class="hospital-address nanum-n">${item.hpaddr}</p>
                                 <button class="details-button nanum-n" onclick="detailSearch(${index})">상세보기</button>
-                            </div>`;
-
-                                
+                            </div>`;            
                                 
 	            }); //end of forEach -----------------------------------
 
@@ -384,10 +381,7 @@ function searchHospitals(pageNo) {
                                   
                     
                 } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
-                    
-
-
-                
+    
                 //마커가 하나 이상일때 그 마커들의 위경도가 서로 같다면 이진탐색    1,2,3,4 순서로 생성되어있음 
                 if (markers.length > 1) { 
                     for (let i = 0; i < markers.length; i++) {    
@@ -550,7 +544,6 @@ function displayPagination(totalPage, currentPage) {
         $(this).addClass('active');
     });
 }
-
 // ================ marker, infowindows start====================== 
 // 지도에서 모든 마커를 제거하는 함수
 function removeMarkers() {
@@ -586,8 +579,11 @@ function clearAllwithmarker() {
     for (let i = 0; i < polygons.length; i++) {
         polygons[i].setMap(null);
     }
-    areas = [];
+    for (let i = 0; i < overlays.length; i++) {
+        overlays[i].setMap(null);
+    }
     polygons = [];
+    overlays = [];
 }
 
 // 폴리곤 생성
@@ -595,6 +591,7 @@ function init(path) {
     $.getJSON(path, function (geojson) {
         var units = geojson.features; // json key값이 "features"인 것의 value를 통으로 가져온다.
 
+        //console.log("units", units);
         areas = []; // 새로 불러올 때마다 초기화
         $.each(units, function (index, unit) { // 1개 지역씩 꺼내서 사용. val은 그 1개 지역에 대한 정보를 담는다
             var coordinates = []; //좌표 저장할 배열
@@ -604,6 +601,10 @@ function init(path) {
             name = unit.properties.SIG_KOR_NM; // 1개 지역의 이름
             cd_location = unit.properties.SIG_CD;
 
+            console.log("name:", name); // 경기도
+            console.log("cd_location:", cd_location); // 41(경기도 코드
+            console.log("coordinates:", coordinates); // 경기도의 좌표 배열(다각형의 좌표 배열
+            
             var ob = new Object();
             ob.name = name;
             ob.path = [];
@@ -611,6 +612,11 @@ function init(path) {
             $.each(coordinates[0], function (index, coordinate) { 
                 ob.path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
             });
+            console.log("ob.path:", ob.path); // 경기도의 좌표 배열(다각형의 좌표 배열
+            console.log("ob.name:", ob.name); // 경기도
+            console.log("ob.location:", ob.location); // 41(경기도 코드
+            console.log("ob:", ob); // 경기도
+
 
             areas[index] = ob;
         });//each
@@ -636,13 +642,20 @@ function displayArea(area) {
     });
     polygons.push(polygon);
 
+    // 폴리곤 중심 좌표
+    let center = centroid(area.path);
 
+    // 중심에 텍스트 오버레이 추가
+    var customOverlay = new kakao.maps.CustomOverlay({
+        position: center,
+        content: `<div class="label nanum-b size-s" style="background-color: white; border: 1px solid black; border-radius: 3px; font-size:0.8rem;">${area.name}</div>`,
+        yAnchor: 0.5
+    });
+    customOverlay.setMap(map);
+    overlays.push(customOverlay); // 오버레이 배열에 추가
 
     kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-        console.log("mouseover - level:", level);
-
         polygon.setOptions({ fillColor: '#09f' });
-        
     });
 
 
@@ -653,7 +666,6 @@ function displayArea(area) {
 
 
     kakao.maps.event.addListener(polygon, 'click', function () {
-
         if (map.getLevel() > 10) {  
             console.log("sido시도표시?");
             console.log(" sido시도표시 area-name:", area.name);//경기도 
