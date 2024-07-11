@@ -36,9 +36,18 @@ function click_on(nidx){
 		</div>
 	</div>
 
-	<hr style="max-width: 80%; margin: auto;">
+
 	<section class="board-container">
 		<ul class="board-list">
+		<div class="mt-4 px-3 subject">
+			<div class="row text-center py-3 nanum-eb size-s">
+			
+				<span class="col-4">제목</span>
+			
+				<span class="col-2">작성일자</span>
+				<span class="col-1">조회수</span>
+			</div>
+		</div>
 			<c:forEach var="notice" items="${noticeListdto}">
 				<li class="board-item nanum-n">
 					<div class="board-item-body" onclick="click_on('${notice.nidx}')">
