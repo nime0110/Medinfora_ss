@@ -250,4 +250,16 @@ public class Myutil {
 		return pageBar.toString();
 	}
 	
+	/**
+	 * removeHTMLtag (MADE BY SEO DONGHYEOK)
+	 * @param text
+	 * @return remove HTML tag TEXT
+	 */
+	public static String removeHTMLtag(String text) {
+		
+		String replaceText = text.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		
+		return replaceText;
+	}
+	
 }

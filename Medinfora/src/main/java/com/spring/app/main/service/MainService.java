@@ -15,9 +15,6 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
-
-	// Service 테스트용 메소드
-	public String test();
 	
 	// 병원API 입력용
 	public int hpApiInputer(HospitalDTO hospitalDTO);
@@ -74,6 +71,9 @@ public interface MainService {
 
 	// 인덱스 화면 공지 불러오기
 	public List<NoticeDTO> getIdxNdtoList();
+
+	// 병원 중복가입 체크
+	public boolean checkhidx(String hidx);
 	
 	
 	

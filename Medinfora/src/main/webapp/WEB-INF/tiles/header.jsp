@@ -224,7 +224,7 @@
   	<ul class="tog_ul">
   		<li class="tog_li">의료 통계</li>
   		<li class="tog_li">의약품 정보</li>
-  		<li class="tog_li">묻고 답하기</li>
+  		<li class="tog_li"><a href="<%=ctxPath%>/questionList.bibo">묻고 답하기</a></li>
   	</ul>
   </div>
   
@@ -253,7 +253,7 @@
 	<ul class="media_tog_ul">
 		<li class="media_tog_li">의료 통계</li>
 		<li class="media_tog_li">의약품 정보</li>
-		<li class="media_tog_li">묻고 답하기</li>
+		<li class="media_tog_li"><a href="<%=ctxPath%>/questionList.bibo">묻고 답하기</a></li>
 	</ul>
 	
   	<div class="media_tog_sub href_reserve">진료 예약하기</div>
@@ -280,7 +280,7 @@
 			<a href="#"  class="nanum-b size-s">내 답변</a>
 		</c:if>
 		<c:if test="${sessionScope.loginuser.mIdx != 1 and sessionScope.loginuser.mIdx != 2}">
-			<a href="#"  class="nanum-b size-s">Q&A</a>
+			<a href="<%=ctxPath%>/questionList.bibo"  class="nanum-b size-s">Q&A</a>
 		</c:if>
     </li>
     <li>

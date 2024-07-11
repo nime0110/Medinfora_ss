@@ -170,4 +170,19 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.selectList("medinfora.getIdxNdtoList");
 	}
 
+	// 병원 중복가입 체크
+	@Override
+	public boolean checkhidx(String hidx) {
+		
+		boolean result = true;
+		
+		String userid = sqlsession.selectOne("medinfora.checkhidx",hidx);
+		
+		if(userid != null) {
+			result = false;
+		}
+		
+		return result;
+	}
+
 }

@@ -79,18 +79,70 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="hospitalDetailModalLabel">병원 상세정보</h5>
+        <h5 class="modal-title " id="hospitalDetailModalLabel">병·의원 상세정보</h5>
       </div>
       <div class="modal-body">
-        <p><strong>Hospital Name:</strong> <span id="modal-hpname"></span></p>
-        <p><strong>Telephone:</strong> <span id="modal-hptel"></span></p>
-        <p><strong>Address:</strong> <span id="modal-hpaddr"></span></p>
-        <p><strong>Class Name:</strong> <span id="modal-classname"></span></p>
-        <p><strong>Operating Hours:</strong> <span id="modal-operating-hours"></span></p>
-        <p><strong>Status:</strong> <span id="modal-status"></span></p>
+        <span id="modal-hpname" class="nanum-b size-n"></span> <!-- ㅇㅇㅇ의원 -->
+      	
+      	<div class="row-table" data-title="병의원 기본정보">
+	      	<table>
+	      		<!-- 병의원의 주소, 전화번호, 진료과목, 병원종류(종합병원/병원/의원)를 띄워준다 -->
+	      		<tbody>
+	      			<tr>
+	      				<th scope="row">주소</th>
+	      				<td id="modal-hpaddr"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="row">전화번호</th>
+	      				<td id="modal-hptel"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="row">진료과목</th>
+	      				<td id="modal-classname"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="row">종별</th>
+	      				<td id="modal-agency"></td>
+	      			</tr>
+	      		</tbody>
+	      	</table>
+      	</div>
+      	
+      	<div class="row-table" data-title="진료시간">
+      		<span class="nanum-b size-n modal-mini-title">진료 시간</span> 
+	      	<table>
+	      		<tbody>
+	      			<tr>
+	      				<th scope="col">월요일</th>
+	      				<td scope="col" id="modal-daytime1"></td>
+	      				<th scope="col">화요일</th>
+	      				<td scope="col" id="modal-daytime2"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="col">수요일</th>
+	      				<td scope="col" id="modal-daytime3"></td>
+	      				<th scope="col">목요일</th>
+	      				<td scope="col" id="modal-daytime4"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="col">금요일</th>
+	      				<td scope="col" id="modal-daytime5"></td>
+	      				<th scope="col">토요일</th>
+	      				<td scope="col" id="modal-daytime6"></td>
+	      			</tr>
+	      			<tr>
+	      				<th scope="col">일요일</th>
+	      				<td scope="col" id="modal-daytime7"></td>
+	      				<th scope="col">공휴일</th>
+	      				<td scope="col" id="modal-daytime8"></td>
+	      			</tr>
+	      		</tbody>
+	      	</table>
+      	</div>
+      	
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

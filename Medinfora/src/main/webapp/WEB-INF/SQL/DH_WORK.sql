@@ -74,3 +74,4 @@ from(
 select trunc(months_between(sysdate, max(to_date(registerday),'YYYY/MM/DD')) ) as lastlogingap
 from loginlog where USERID ='redtree2379';
 
+select userid from CLASSCODEMET where hidx = 120 group by userid;

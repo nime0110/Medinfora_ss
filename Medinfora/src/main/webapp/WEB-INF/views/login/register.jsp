@@ -20,7 +20,7 @@
 
 
 <script type="text/javascript">
-$(document).ready(function(){
+jQuery(function(){
 	
 	const join = "${requestScope.join}";
 	
@@ -87,9 +87,6 @@ $(document).ready(function(){
       });
 	
 	
-	
-	
-	
 });// end of $(document).ready(fucntion()---
 		
 function goback(){
@@ -115,16 +112,31 @@ function searchMedical_IN(medicalInfo){
 	const hptel = medicalInfo.hptel;
 	const addr = medicalInfo.addr;
 	const detailAddr = medicalInfo.detailAddr;
-
-	console.log("확인용 hidx : "+hidx);
 	
-	$("input:hidden[name='hidx']").val(hidx);
-	$("input:text[name='name']").val(hpname);
-	$("input:hidden[name='hpaddr']").val(hpaddr);
-	$("input:text[name='mobile']").val(hptel);
-	$("input:text[name='address']").val(addr);
-	$("input:text[name='detailAddress']").val(detailAddr);
-
+	// Addtional Code START
+	$.ajax({
+		url : "<%=ctxPath%>/register/checkhidx.bibo",
+		data : {"hidx":hidx},
+		dataType : "json",
+		async : true,
+		success:function(json){
+			if(json.checkHidx){
+				$("p#address_cmt").html("이미 가입된 병원입니다.");
+			}else{
+				$("input:hidden[name='hidx']").val(hidx);
+				$("input:text[name='name']").val(hpname);
+				$("input:hidden[name='hpaddr']").val(hpaddr);
+				$("input:text[name='mobile']").val(hptel);
+				$("input:text[name='address']").val(addr);
+				$("input:text[name='detailAddress']").val(detailAddr);
+				$("p#address_cmt").html("");
+			}
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	});
+	
 	return;
 }
 

@@ -1,9 +1,11 @@
 package com.spring.app.reserve.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -194,17 +196,33 @@ public class ReserveController {
 			}catch (Exception e) {
 				// 운영 안하는 경우
 			}
-			
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
-			
+					
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
-			
-			if(cnt != 0 || cnt != reserveCnt) {
+
+			if(today.substring(0, 10).equals(day.substring(0, 10))) {
+				String time = today.substring(11, 13) + today.substring(14, 16);
+				
+				String rEndTime = "";
+				if("00".equals(end.substring(2))) {
+					rEndTime = String.valueOf((Integer.parseInt(end) - 70)); 
+				}
+				else {
+					rEndTime = String.valueOf((Integer.parseInt(end) - 30));
+				}
+				
+				if(Integer.parseInt(time) > Integer.parseInt(rEndTime)) {
+					currentDate.add(Calendar.DATE, 1);
+					continue;
+				}
+			}
+			if(cnt != 0 && cnt != reserveCnt) {
 				availableDayList.add(day.substring(0, 10));
-			}	// end of if~else---------------------
+			}	// end of if---------------------
+			
 			currentDate.add(Calendar.DATE, 1);
 		}	// end of for--------------------------------
 		
@@ -230,47 +248,138 @@ public class ReserveController {
 		return mav;
 	}	// end of public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {----------
 
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@PostMapping("selectDay.bibo")
+	public String selectDay(HttpServletRequest request) throws ParseException {
+		
+		String hidx = request.getParameter("hidx");
+		String day = request.getParameter("date");
+		
+		Calendar currentDate = Calendar.getInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		String today = dateFormat.format(currentDate.getTime()).substring(0, 10);
+		
+		if(today.equals(day)) {
+			// 만약 30분 이전이라면 현재 분 00분으로 하고 30분 이후라면 현재시간 30으로 설정
+			int minutes = currentDate.get(Calendar.MINUTE);
+			if (minutes < 30) {
+			    currentDate.set(Calendar.MINUTE, 0);
+			} else {
+			    currentDate.set(Calendar.MINUTE, 30);
+			}
+			currentDate.set(Calendar.SECOND, 0);
+		}
+		today = dateFormat.format(currentDate.getTime());
+		
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFmt.parse(day);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        
+		String dayOfweek = parseDayofWeek(calendar,day);
 
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("hidx", hidx);
+		paraMap.put("day", day);
+		
+		// 병원의 오픈시간과 마감시간 파악
+		HospitalDTO hospitalTime = service.hospitalTime(hidx);
+		
+		int start_h=0,start_m=0,end_h=0,end_m=0;
+		String start="",end="";
+		
+		try {
+			Map<String,String> getTimes = getTimes(hospitalTime,dayOfweek);
+			start_h = Integer.parseInt(getTimes.get("start_h"));
+			start_m = Integer.parseInt(getTimes.get("start_m"));
+			end_h = Integer.parseInt(getTimes.get("end_h"));
+			end_m = Integer.parseInt(getTimes.get("end_m"));
+			start = getTimes.get("start");
+			end = getTimes.get("end");
+		}catch (Exception e) {
+			// 운영 안하는 경우
+		}
+		
+		int TotalstartM = start_h * 60 + start_m;
+		int TotalendM = end_h * 60 + end_m;
+		int cnt = (TotalendM - TotalstartM)/30;
+				
+		// 선택한 날의 예약 개수 파악
+		int reserveCnt = service.reserveCnt(paraMap);
+		
+		List<String> availableTimeList = new ArrayList<>(); 
+		
+		if(cnt != 0 && cnt != reserveCnt) {	// 예약가능한 경우
+			if(day.equals(today.substring(0, 10))) {	// 선택한 날짜가 오늘일 경우
+				
+				for(int j=0; j<cnt; j++) {
+					// 현재시간 이후 그리고 오픈시간 이후 부터 시작
+					int today_n = currentDate.get(Calendar.DATE);
+					currentDate.add(Calendar.MINUTE, 30);
+					
+					if(today_n != currentDate.get(Calendar.DATE)){	// 날짜가 바뀔 경우
+						break;
+					}
+					
+					today = dateFormat.format(currentDate.getTime());
+					String day_time = today.substring(11, 13) + today.substring(14, 16);
+					
+					if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
+						j--;
+						continue;
+					}
+					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
+						continue;
+					}
+					paraMap.put("day", today);
+					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
+					HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
+					
+					if(impossibleTimeCheck == null) {	// 예약가능					
+						availableTimeList.add(today.substring(11, 16));
+					}
+				}	// end of for-------------	
+			}
+			else {		// 오늘일이 아닌 선택한 날짜 예약가능시간 리스트 가져오기
+				 
+	            for(int j=0; j<cnt; j++) {
+		            int day_n = calendar.get(Calendar.DATE);
+		            calendar.add(Calendar.MINUTE, 30);
+					
+					if(day_n != calendar.get(Calendar.DATE)){	// 날짜가 바뀔 경우
+						break;
+					}
+					day = dateFormat.format(calendar.getTime());
+					String day_time = day.substring(11, 13) + day.substring(14, 16);
+					
+					if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
+						j--;
+						continue;
+					}
+					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
+						continue;
+					}
+					paraMap.put("day", day);
+					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
+					HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
+					
+					if(impossibleTimeCheck == null) {	// 예약가능					
+						availableTimeList.add(day.substring(11, 16));
+					}
+	            }	// end of for-------------
+			}	// end of if~else---------------
+		}	// end of if-----------		
+		JSONArray jsonArr = new JSONArray();
+		for(String availableTime : availableTimeList) {
+			jsonArr.add(availableTime);
+		}
+		
+		return jsonArr.toString();
+	}
 
-//			
-//			if(day.equals(today)) {
-//				
-//				List<String> availableTimeList = new ArrayList<>(); 
-//				for(int j=0; j<cnt; j++) {
-//					// 현재시간 이후 그리고 오픈시간 이후 부터 시작
-//					int today_n = currentDate.get(Calendar.DATE);
-//					currentDate.add(Calendar.MINUTE, 30);
-//					
-//					if(today_n != currentDate.get(Calendar.DATE)){	// 날짜가 바뀔 경우
-//						break;
-//					}
-//					
-//					day = dateFormat.format(currentDate.getTime());
-//					String day_time = day.substring(11, 13) + day.substring(14, 16);
-//					
-//					if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
-//						j--;
-//						continue;
-//					}
-//					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
-//						continue;
-//					}
-//					paraMap.put("day", day);
-//					
-//					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
-//					HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
-//					
-//					if(impossibleTimeCheck == null) {	// 예약가능					
-//						availableTimeList.add(day.substring(11, 16));
-//						System.out.println("예약가능 시간대" + day.substring(11, 16));
-//					}
-//				}	// end of for-------------
-//				// 오늘 예약가능 시간대 표출
-//				mav.addObject("availableTimeList", availableTimeList);
-//				
-//			}	// end of if---------
-//	mav.addObject("availableDayList",availableDayList);		// 30일 예약가능 여부
-	
 	// 공휴일인지 파악 후 요일 구분
 	private String parseDayofWeek(Calendar currentDate, String day) {
 		

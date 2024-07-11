@@ -72,6 +72,9 @@ public interface MainDAO {
 	// 인덱스 화면 공지 불러오기
 	public List<NoticeDTO> getIdxNdtoList();
 
+	// 병원 중복가입 체크
+	public boolean checkhidx(String hidx);
+
 	
 	
 	
