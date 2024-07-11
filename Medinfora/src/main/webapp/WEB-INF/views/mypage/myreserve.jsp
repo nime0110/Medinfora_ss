@@ -3,7 +3,7 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/myinfo/myreserve.css">
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/myreserve.css">
 
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/myreserve.js"></script>
 

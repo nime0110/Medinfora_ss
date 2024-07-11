@@ -6,8 +6,8 @@
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-<link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfoconfig.css">
-<script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
+<link rel="stylesheet" href="<%=ctxPath%>/resources/css/mypage/myinfo.css">
+<script src="<%=ctxPath%>/resources/js/mypage/myinfo.js"></script>
 
 <form style="margin: 0;" name ="configForm" method="post">
 	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />

@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="<%= ctxPath%>/resources/node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	
-	<link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfo.css">
+	<link rel="stylesheet" href="<%=ctxPath%>/resources/css/mypage/index.css">
 	
 	<%-- Google Font --%>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
