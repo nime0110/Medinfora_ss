@@ -315,5 +315,48 @@ where userid = 'user001';
 
 commit;
 
+update member set midx = 0
+where userid = 'jhkvng9546';
+
+commit;
+
+-- 디폴드값 보기
+select COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE, DATA_DEFAULT
+from user_tab_columns
+where table_name = 'MEDIQ';
+
+alter table mediq
+add subject number(1) not null;
+
+commit;
+
+-- 시퀀스 생성한거조회
+SELECT sequence_name, min_value, max_value, increment_by, last_number
+FROM user_sequences;
+
+
+-- 질문테이블 시퀀스 생성
+create sequence seq_qidx
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_aidx
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+select *
+from mediq;
+
+delete from mediq where userid = 'user001';
+commit;
 
 
