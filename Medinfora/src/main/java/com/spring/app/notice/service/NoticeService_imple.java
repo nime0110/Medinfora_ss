@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.common.AES256;
+import com.spring.app.common.FileManager;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.notice.model.NoticeDAO;
@@ -17,7 +19,21 @@ public class NoticeService_imple implements NoticeService {
 
 	@Autowired
 	private NoticeDAO dao;
+	
+	// === #186. 첨부파일 삭제를 위한 것 === //
+	 	@Autowired  // Type에 따라 알아서 Bean 을 주입해준다.
+		private FileManager fileManager;
 
+		// === #45. 양방향 암호화 알고리즘인 AES256 를 사용하여 복호화 하기 위한 클래스 의존객체 주입하기(DI: Dependency Injection) ===
+	 	@Autowired
+	 	private AES256 aES256;
+	    // Type 에 따라 Spring 컨테이너가 알아서 bean 으로 등록된 com.spring.board.common.AES256 의 bean 을  aES256 에 주입시켜준다. 
+	    // 그러므로 aES256 는 null 이 아니다.
+		// com.spring.app.common.AES256 의 bean 은 /webapp/WEB-INF/spring/appServlet/servlet-context.xml 파일에서 bean 으로 등록시켜주었음. 
+		
+	
+		
+	 	
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
 		int n = dao.noticeWrite(noticedto);
@@ -50,8 +66,8 @@ public class NoticeService_imple implements NoticeService {
 	}
 
 	@Override
-	public NoticeDTO getView(Map<String, String> paraMap, HttpSession session) {
-
+	public NoticeDTO getView(Map<String, Object> paraMap, HttpSession session) {
+	  //  System.out.println("확인용: " + paraMap.get("nidx"));
 		MemberDTO mIdx = null;
 		int plz = 1; // 세션값이 있을 때만 값을 가져오려고 만
 		
@@ -66,7 +82,7 @@ public class NoticeService_imple implements NoticeService {
 	if(plz != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
 
 	//if(mIdx.getmIdx() != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
-		int nidx = noticedto.getNidx();
+			int nidx = noticedto.getNidx();
 			int n = dao.increase_readCount(nidx);
 
 			if(n==1) { 
@@ -81,7 +97,8 @@ public class NoticeService_imple implements NoticeService {
 	// 임시 
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
-		NoticeDTO noticedto = dao.getView(paraMap);
+		NoticeDTO noticedto = dao.getView1(paraMap); // 글 1개 조회하기
+	
 		return noticedto;
 	}
 
@@ -91,6 +108,37 @@ public class NoticeService_imple implements NoticeService {
 		int n = dao.edit(noticedto);
 		return n;
 	}
+
+	 @Override
+	    public int del(Map<String, String> paraMap) {
+	        int n = dao.del(paraMap.get("nidx"));
+
+	        if (n == 1) {
+	            String path = paraMap.get("path");
+	            String fileName = paraMap.get("fileName");
+
+	            if (fileName != null && !"".equals(fileName)) {
+	                try {
+	                    fileManager.doFileDelete(fileName, path);
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return n;
+	    }
+
+	 @Override
+	 public NoticeDTO getPrevNotice(int nidx) {
+	     return dao.getPrevNotice(nidx);
+	 }
+
+	 @Override
+	 public NoticeDTO getNextNotice(int nidx) {
+	     return dao.getNextNotice(nidx);
+	 }
+	  
+	
 
 } // end of public class NoticeService_imple implements NoticeService 
 

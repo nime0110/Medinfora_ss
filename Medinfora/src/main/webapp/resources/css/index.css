@@ -520,12 +520,17 @@ div.hj_section_noticelist{
     text-underline-offset: 5px;
     color: var(--primary-background-color);
     transition: all 0.3s;
+    cursor: pointer;
 }
 
 div.hj_noticeitem{
     position: relative;
     transition: all 0.3s ease-in-out;
     border: solid 2px var(--object-skyblue-color);
+}
+
+div.hj_noticeitem:hover{
+    cursor: pointer;
 }
 
 .hj_cardEvent{

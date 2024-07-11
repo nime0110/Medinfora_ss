@@ -9,7 +9,7 @@
 	<select id="isExistCheck" parameterType="HashMap" resultType="MemberDTO">
 		select userid, email
 		from member
-		where (midx between 1 and 8)
+		where (midx between 0 and 8)
 		<choose>
 			<when test="type == 'userid'">	<!-- 아이디 중복 체크 -->
 		    	and userid = #{value}
@@ -117,34 +117,47 @@
 	</select>
 	
 	
+	<!-- 회원가입하기 -->
+	<insert id="registerEnd" parameterType="HashMap">
+		insert into member ( userid, pwd, email, name, mobile, address ,
+						     midx, registerday, pwdUpdateday, loginmethod
+		<choose>
+			<when test='join == "1" or join == "3"'>
+				 , detailAddress, birthday, gender
+			</when>
+		</choose>
+		)
+		values( #{userid}, #{pwd}, #{email}, #{name}, #{mobile}, #{address},
+			    to_number(#{midx}), to_char(sysdate, 'yyyymmdd'), to_char(sysdate, 'yyyymmdd'), to_number(#{loginmethod})
+		<choose>
+			<when test='join == "1" or join == "3"'>
+				, #{detailAddress}, #{birthday}, to_number(#{gender})
+			</when>
+		</choose>
+		)
+	</insert>
+	
+	
 	<!-- 로그인 유저 정보 가져오기 -->
 	<select id="getLoginuser" parameterType="HashMap" resultType="MemberDTO">
-		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, M.registerday, midx, hidx
+		SELECT userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 			   , loginmethod
 		       , pwdUpdategap
-		       , NVL(lastlogingap, trunc( months_between(sysdate, M.registerday) )) AS lastlogingap
-		FROM
-		(
-		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx, hidx
+		       , NVL(lastlogingap, trunc(months_between(sysdate, registerday) )) AS lastlogingap
+		FROM (
+		    select userid, email, name, address, detailAddress, birthday, mobile, gender, registerday, midx
 		           , loginmethod
 		           , trunc( months_between(sysdate, pwdupdateday) ) as pwdUpdategap
 		    from member
-		    where (midx between 0 and 8)
-		    <choose>
-		    	<when test="loginmethod eq 0">	<!-- 일반로그인 -->
-		    		and loginmethod = #{loginmethod} and userid = #{userid} and pwd = #{pwd}
-		    	</when>
-		    	<when test="loginmethod eq 1"> <!-- 카카오 로그인  -->
-		    		and loginmethod = #{loginmethod} and userid = #{userid}
-		    	</when>
-		    </choose>
-		)M
-		CROSS JOIN
-		(
-		    select trunc( months_between(sysdate, max(registerday)) ) as lastlogingap
+		    where userid = #{userid}
+		    <if test="loginmethod == 0">	<!-- 일반로그인 -->
+		    		and pwd = #{pwd}
+	    	</if>
+		) cross join (
+		    select trunc(months_between(sysdate,max(to_date(REGISTERDAY,'YYYY-MM-DD HH24:MI:SS')))) as lastlogingap
 		    from loginlog
 		    where userid = #{userid}
-		) L
+		)
 	</select>
 	
 	<!-- 회원코드 변경 (휴먼처리) -->
@@ -155,8 +168,8 @@
 	
 	<!-- 로그인 유저 ip 기록 -->
 	<insert id="insert_log" parameterType="HashMap">
-		insert into loginlog(userid, ip, registerday)
-		values(#{userid}, #{clientip}, sysdate)
+		insert into loginlog(userid, ip)
+		values(#{userid}, #{clientip})
 	</insert>
 	
 	<!-- 병원정보 입력 API -->
@@ -203,8 +216,6 @@
 		INSERT INTO HOLIDAY (SUMMARY, HOLIDAY_DATE)
 		VALUES (#{summary}, #{holiday_date})
 	</insert>
-<<<<<<< Updated upstream
-=======
 	
 	<!-- ClasscodeList 가져오기 -->
 	<select id="getclassCodeList" parameterType="HashMap" resultType="String">
@@ -219,7 +230,19 @@
 		VALUES (#{userid}, #{classcode}, #{hidx})
 	</insert>
 	
+	<!-- Index 공지 불러오기 -->
+	<select id="getIdxNdtoList" resultType="NoticeDTO">
+		select nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
+		from (
+		    select rownum AS rno,nidx,userid,TITLE,CONTENT,VIEWCNT,WRITEDAY
+		    from NOTICE
+		    order by NIDX desc
+		) where rno between 1 and 3
+	</select>
 	
->>>>>>> Stashed changes
+	<!-- 병원 중복 확인하기 -->
+	<select id="checkhidx" parameterType="String" resultType="String">
+		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
+	</select>
 
 </mapper>

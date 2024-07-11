@@ -29,7 +29,7 @@
 	           </div>
 	           <ul class="sidebar_list_ul">
 	               <li class="sidebar_list_li">내 문의사항</li>
-	               <li class="sidebar_list_li">진료 예약 내역</li>
+	               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myreserve.bibo'">진료 예약 내역</li>
 	           </ul>
            </c:if>
            
@@ -50,7 +50,7 @@
            </div>
            <ul class="sidebar_list_ul">
                <li class="sidebar_list_li">회원관리</li>
-               <li class="sidebar_list_li">공지사항 작성</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/notice/noticeWrite.bibo'">공지사항 작성</li>
                <li class="sidebar_list_li">검색 통계</li>
            </ul>
            </c:if>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,9 @@ public class MainController {
 	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
-		//List<NoticeDTO> ndtoList = service.getIndexNoticeList();
+		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
 		return mav;

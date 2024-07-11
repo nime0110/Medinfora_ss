@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -264,6 +266,113 @@ public class LoginController {
 		return jsonObj.toString();
 	}
 	
+	// 회원가입 완료
+	@PostMapping("/register/registerEnd.bibo")
+	public ModelAndView registerEnd(ModelAndView mav, HttpServletRequest request) {
+		
+		// 초기값 설정
+		String userid = "";
+		String pwd = "";
+
+		String address = "";
+		String detailAddress = "";
+		String midx = "";
+		String loginmethod = "";
+		
+		HttpSession session = request.getSession();
+		Map<String, String> kakaoInfo = (Map<String, String>)session.getAttribute("kakaoInfo");
+		
+		String join = request.getParameter("join");
+		
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		
+		
+		// System.out.println(join);
+		// System.out.println(kakaoInfo.get("name"));
+		
+		paraMap.put("join", join);
+		
+		
+		
+		if("1".equals(join) || "2".equals(join)) {
+			userid = request.getParameter("userid");
+			pwd = request.getParameter("pwd");
+			loginmethod = "0";
+			
+		}
+		else {	// 카카오
+			userid = kakaoInfo.get("userid");
+			pwd = userid+"medinfora";
+			loginmethod = "1";
+			
+		}
+		
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		String mobile = request.getParameter("mobile");
+		
+		paraMap.put("userid", userid);
+		paraMap.put("pwd", pwd);
+		paraMap.put("loginmethod", loginmethod);
+		paraMap.put("email", email);
+		paraMap.put("name", name);
+		paraMap.put("mobile", mobile);
+		
+		boolean ismetinsert = true;
+		
+		if("1".equals(join) || "3".equals(join)) {
+			midx = "1";
+			address = request.getParameter("address");
+			detailAddress = request.getParameter("detailAddress");
+			String gender = request.getParameter("gender");
+			
+			String birthday = request.getParameter("birthday");
+			birthday = birthday.replace("-", "");
+			
+			paraMap.put("midx", midx);
+			paraMap.put("address", address);
+			paraMap.put("detailAddress", detailAddress);
+			paraMap.put("gender", gender);
+			paraMap.put("birthday", birthday);
+			
+			
+		}
+		else { // 의료
+			midx = "2";
+			address = request.getParameter("hpaddr");
+			String hidx = request.getParameter("hidx");
+			
+			paraMap.put("midx", midx);
+			paraMap.put("address", address);
+			paraMap.put("hidx", hidx);
+			
+		}
+		
+		int n = service.registerEnd(paraMap);
+		
+		// 저장했던 카카오 정보 삭제
+		session.removeAttribute("kakaoInfo");
+		
+		String message = "";
+		String loc = request.getContextPath()+"/index.bibo";
+		
+		if(n==1&&ismetinsert) {
+			message = "회원가입이 완료되었습니다.";
+		}
+		else {
+			message = "회원가입을 실패하였습니다. 다시 진행해주세요.";
+		}
+		
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
 	
 	// 로그인 창 띄우기
 	@RequestMapping(value="/login/login.bibo")
@@ -366,10 +475,8 @@ public class LoginController {
 		try {
 		
 			String code = request.getParameter("code");
-			// System.out.println(code);
 			
 			String accessToken = KakaoApi.getAccessToken(code);
-			// System.out.println("확인용 accessToken"+accessToken);
 			
 			Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
 			
@@ -383,22 +490,7 @@ public class LoginController {
 			
 			String userid = email.substring(0, email.indexOf("@"))+"_kakao";
 			
-			// System.out.println(userid);
-		
-			
-			// 가정은 다음과 같다
-			/*
-				카카오로 로그인 시 카카오계정(이메일형식)에서 @ 기준으로 id 추출해서 _kakao 추가해서 아이디를 인서트한다.으로 가입한 적이 있는지 확인(loginmethod로 select 조건 추가) 검증한다음
-				없으면, 회원가입 폼으로 넘긴다.
-			*/
-			
 			String birthday = birth_year+"-"+birth_day.substring(0, 2)+"-"+birth_day.substring(2);
-			// System.out.println("확인용 birthday : "+birthday);
-			// 확인용 birthday : 19950406
-			
-	
-			// System.out.println("확인용 카카오 연락처 정보 : "+phone_number);
-			// +82 10-xxxx-xxxx
 			
 			phone_number = phone_number.substring(4);
 			
@@ -412,13 +504,8 @@ public class LoginController {
 					sb.append(mobile_arr[i]);
 				}
 				
-			}// end of for -----
-			
+			}// end of for
 			String mobile = "0"+sb.toString();
-			
-			// System.out.println("확인용 mobile: "+mobile);
-			// 확인용 mobile: 010xxxxxxxx
-			
 			
 			// service 에 넘겨줄 데이터 loginEnd에 mapper 에서 where 문 사용
 			String clientip = request.getRemoteAddr();
@@ -481,11 +568,14 @@ public class LoginController {
 				System.out.println("가입한적 없음");
 				
 				Map<String, String> kakaoInfo = new HashMap<>();
+				kakaoInfo.put("userid", userid);
 				kakaoInfo.put("name", name);
 				kakaoInfo.put("email", email);
 				kakaoInfo.put("birthday", birthday);
 				kakaoInfo.put("mobile", mobile);
 				kakaoInfo.put("gender", gender);
+				
+				// 비밀번호는 암호화로 넣어주기만할거임
 				
 				// 회원가입시 필요한 정보 전달 사용후 삭제할거임
 				HttpSession session = request.getSession();
@@ -509,5 +599,22 @@ public class LoginController {
 		// 이제 넘겨주기만 하면 됨
 		return;
 	}// end of public void kakaoLogin(HttpServletRequest request)
+	
+	@ResponseBody
+	@GetMapping("/register/checkhidx.bibo")
+	public String checkhidx(HttpServletRequest request) {
+		
+		String hidx = request.getParameter("hidx");
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		if(service.checkhidx(hidx)) {
+			jsonObj.put("checkHidx", false);
+		}else {
+			jsonObj.put("checkHidx", true);
+		}
+				
+		return jsonObj.toString();
+	}
 	
 }

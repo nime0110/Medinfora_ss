@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%String ctxPath = request.getContextPath();%>
 
@@ -236,7 +237,6 @@
   </div>
 
     </div>
-</div>
 
 <!--  승혜 작업 영역 끝 --> 
 <!-- 동혁 작업 영역 시작 -->
@@ -298,7 +298,7 @@
     <div>
       <h2 class="nanum-b hj_h2_flex">
         공지사항&nbsp;
-        <a class="hj_notice_plusicon">
+        <a href= "<%=ctxPath%>/notice/noticeList.bibo" class="hj_notice_plusicon">
           <i class="fa-solid fa-plus hj_plusicon"></i>
         </a>
       </h2>
@@ -312,37 +312,24 @@
     </a>
   </div>
   <div class="hj_section_noticelist row row-cols-1 row-cols-md-3 col-lg-10">
-<<<<<<< Updated upstream
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">내용 샬라샬라~~</p>
-            <span>2024.06.18</span>
+  
+	<c:forEach var="ndto" items="${requestScope.ndtoList}">
+		
+		<div class="col hj_cardMb">
+			<div class="hj_noticeitem card">
+				<div class="noticeurl" style="display: none; margin: 0;"><%=ctxPath %>/notice/view.bibo?nidx=${ndto.nidx}</div>
+				<div class="card-body">
+		            <h5 class="card-title nanum-b">
+	            		${ndto.title}
+		        	</h5>
+            		<p class="card-text hj_notice_content nanum-n">
+            			${ndto.content}
+            		</p>
+            <span>${ndto.writeday}</span>
           </div>
-        </a>
       </div>
     </div>
-=======
-    
->>>>>>> Stashed changes
-    <div class="col hj_cardMb">
-      <div class="hj_noticeitem card">
-        <a href="">
-          <div class="card-body">
-            <h5 class="card-title nanum-b">공지사항 제목</h5>
-            <p class="card-text hj_notice_content nanum-n">크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-              크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노크기우짜노
-            </p>
-            <span>2024.06.18</span>
-          </div>
-        </a>
-      </div>
-    </div>
+	</c:forEach>
     
   </div>
-  
 </session>

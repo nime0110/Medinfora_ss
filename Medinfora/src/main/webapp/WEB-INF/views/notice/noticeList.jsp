@@ -19,7 +19,7 @@ function click_on(nidx){
     $("input[name='nidx']").val(nidx);
     const frm = document.goViewFrm;
     frm.method = "post";
-    frm.action = "<%=ctxPath%>/view.bibo";
+    frm.action = "<%=ctxPath%>/notice/view.bibo";
 		frm.submit();
 	}
 </script>

@@ -15,10 +15,16 @@ window.onload = () => {
         $(this).children().children().children("h5").removeClass("pointerNoitice");
         $(this).removeClass("hj_cardEvent");
     });
+    
 
     // 혜정 END
 
     // 동혁 START
+
+    noticeitem.on("click",function(){
+        const url = $(this).find(".noticeurl").text();
+        location.href = url;
+    });
 
     const navitem = $(".dh_nav_item");
 

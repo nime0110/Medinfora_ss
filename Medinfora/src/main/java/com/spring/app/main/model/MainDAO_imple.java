@@ -64,6 +64,13 @@ public class MainDAO_imple implements MainDAO{
 		return hpdto;
 	}
 	
+	// 회원가입하기
+	@Override
+	public int registerEnd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("medinfora.registerEnd", paraMap);
+		return n;
+	}
+	
 	// 로그인 유저 정보
 	@Override
 	public MemberDTO getLoginuser(Map<String, String> paraMap) {
@@ -136,8 +143,6 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.insert("medinfora.holidayInputer",holidayVO);
 	}
 	
-<<<<<<< Updated upstream
-=======
 	// 의료 ClassCode 리스트 추출
 	@Override
 	public List<String> getclassCodeList(Map<String, String> paraMap) {
@@ -159,20 +164,25 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	// 인덱스 공지 리스트 가져오기
+	// 인덱스 화면 공지 불러오기
 	@Override
-	public List<NoticeDTO> getIndexNoticeList() {
-		return sqlsession.selectList("medinfora.getIndexNoticeList");
+	public List<NoticeDTO> getIdxNdtoList() {
+		return sqlsession.selectList("medinfora.getIdxNdtoList");
 	}
 
-	
+	// 병원 중복가입 체크
+	@Override
+	public boolean checkhidx(String hidx) {
+		
+		boolean result = true;
+		
+		String userid = sqlsession.selectOne("medinfora.checkhidx",hidx);
+		
+		if(userid != null) {
+			result = false;
+		}
+		
+		return result;
+	}
 
-	
->>>>>>> Stashed changes
-	
-	
-	
-
-	
-	
 }

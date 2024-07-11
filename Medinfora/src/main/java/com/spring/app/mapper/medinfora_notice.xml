@@ -8,7 +8,7 @@
 	 <insert id="noticeWrite" parameterType="NoticeDTO">
         insert into notice (nidx, userid, title, content, viewcnt)
         values (seq_notice.nextval, #{userid}, #{title}, #{content}, #{viewcnt})
-    </insert>
+    </insert> 
     
     <insert id="add_noticeWrite" parameterType="NoticeDTO">
         insert into notice (nidx, userid, title, content, viewcnt, filename, orgname, filesize)
@@ -16,31 +16,27 @@
     </insert>
     
     <select id="noticeListSearch_withPaging" parameterType="HashMap" resultType="NoticeDTO">
-		SELECT nidx, userid, title, content, viewcnt, 
-               TO_CHAR(TO_DATE(writeday, 'YYYY-MM-DD HI24:MI:SS'), 'yyyy-mm-dd') AS writeday,
-               filename, orgname, filesize
-        FROM (
-            SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
-            FROM notice
-            WHERE 1=1
-            ORDER BY nidx DESC
-        )
-     WHERE rno BETWEEN #{startRno} AND #{endRno}
+		SELECT nidx, userid, title, content, viewcnt,
+		       substr(WRITEDAY,1,10) as writeday,
+		       filename, orgname, filesize
+		FROM (
+		    SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		    FROM notice
+		    WHERE 1=1
+		    ORDER BY nidx DESC
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
     </select>
     
     <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
     <select id="getTotalCount" parameterType="HashMap" resultType="int">
         SELECT COUNT(*)
         FROM notice
-        WHERE 1=1
-        <!-- <if test="searchType != null and searchType != ''">
-            AND ${searchType} LIKE '%' || #{searchWord} || '%'
-        </if> -->
     </select>
 
     <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
-               TO_CHAR(TO_DATE(writeday, 'YYYY-MM-DD HI24:MI:SS'), 'yyyy-mm-dd') AS writeday, 
+               substr(WRITEDAY,1,10) as writeday, 
                filename, orgname, filesize
         FROM notice
         WHERE nidx = #{nidx}
@@ -52,5 +48,49 @@
         WHERE nidx = #{nidx}
     </update>
 	
+	 
+    <!-- === 1개글 수정하기 === -->
+	<update id="edit" parameterType="NoticeDTO">
+	    update notice
+	    set title = #{title},
+	        content = #{content},
+	        filename = #{filename},
+	        orgname = #{orgname},
+	        filesize = #{filesize}
+	    where nidx = #{nidx}
+	</update>
 	
+	<select id="getView1" parameterType="HashMap" resultType="com.spring.app.domain.NoticeDTO">
+	        SELECT nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+	        FROM notice
+	        WHERE nidx = #{nidx}
+	</select>
+  
+    <!-- === 1개글 삭제하기 === -->
+    <delete id="del" parameterType="String">
+        delete from notice
+        where nidx = #{nidx}
+    </delete>
+    
+    
+    <select id="getPrevNotice" parameterType="int" resultType="com.spring.app.domain.NoticeDTO">
+    SELECT nidx, title
+    FROM notice
+    WHERE nidx = (
+        SELECT MAX(nidx)
+        FROM notice
+        WHERE nidx &lt; #{nidx}
+    )
+</select>
+
+<select id="getNextNotice" parameterType="int" resultType="com.spring.app.domain.NoticeDTO">
+    SELECT nidx, title
+    FROM notice
+    WHERE nidx = (
+        SELECT MIN(nidx)
+        FROM notice
+        WHERE nidx &gt; #{nidx}
+    )
+</select>
+
 </mapper>

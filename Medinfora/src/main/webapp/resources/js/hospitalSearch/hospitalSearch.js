@@ -9,18 +9,38 @@ let openInfowindow = null; // 열려있는 인포윈도우를 추적
 let openOverlay = null; // 열려있는 오버레이를 추적
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 
+// 폴리곤 관련 변수
+let detailMode = false; // level에 따라 다른 json 파일 사용
+let level = '';
+let polygons = [];
+let areas = []; //지도에 폴리곤으로 표시할 영역데이터 배열 
 
+//let polygonOverlay = new kakao.maps.CustomOverlay({}); // 맵위에 행정구역을 표시할 오버레이
 $(function() {
+    /* 비동기 처리 코드 
+    $.ajaxSetup({
+		async : false 
+	});
+    */
+    // 로딩 이미지 숨기기
     $("div#loaderArr").hide();     
+
+    // 모달 닫기 버튼 클릭 이벤트
+    $('#closeModalButton').click(function(){
+        $('#hospitalDetailModal').modal('hide');
+    });
+
     // 지도 컨테이너와 옵션 설정
     let mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(37.566535, 126.9779692), // 초기 중심 좌표 (서울 시청)
-            level: 3 // 초기 확대 레벨
+            level: 12 // 초기 확대 레벨
         };
-    
+
     // 지도 생성 
-    map = new kakao.maps.Map(mapContainer, mapOption);
+    map = new kakao.maps.Map(mapContainer, mapOption),
+     polyOverlay = new kakao.maps.CustomOverlay({});
+   
 
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성함.    
     let mapTypeControl = new kakao.maps.MapTypeControl();
@@ -32,6 +52,23 @@ $(function() {
     // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 지도에 표시함.
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+    //폴리곤 ---
+    init( contextPath + "/resources/json/sido.json") // 초기 시작
+
+    kakao.maps.event.addListener(map, 'zoom_changed', function () {
+        level = map.getLevel()
+        if (!detailMode && level <= 10) { // level 에 따라 다른 json 파일을 사용한다.
+            detailMode = true;
+            removePolygon();
+            init(contextPath +"/resources/json/sig.json")
+        } else if (detailMode && level > 10) { // level 에 따라 다른 json 파일을 사용한다.
+            detailMode = false;
+            removePolygon();
+            init(contextPath +"/resources/json/sido.json")
+        }
+    });
+
+    
                   
     clusterer = new kakao.maps.MarkerClusterer({
         map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
@@ -172,9 +209,10 @@ var currentPage = 1; // 현재 페이지를 추적
 function searchHospitals(pageNo) {
     clearAllwithmarker(); // 인포윈도우와 오버레이 초기화
     clearClusterer(); // 클러스터러 초기화
-    let city = '경기도' //$('#city').val();
-    let local = '고양시 일산동구' //$('#local').val();
-    let country = '백석동' //$('#country').val();
+    //테스트용 리터럴값 경기도 고양시 일산동구 백석동
+    let city = $('#city').val();
+    let local = $('#local').val();
+    let country = $('#country').val();
     let classcode = $('#classcode').val();
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
@@ -403,7 +441,7 @@ function searchHospitals(pageNo) {
                     //event.stopImmediatePropagation(); // 즉시 전파 막기
                     
                     var index = $(this).data('index');
-                    console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
+                    //console.log('커스텀 오버레이 병원 이름 클릭됨:', index); // 로그 추가
                     map.setCenter(positionArr[index].latlng);
 
                     // 마커 클릭 이벤트 트리거
@@ -543,6 +581,120 @@ function clearAllwithmarker() {
 }
 
 
+// 모든 폴리곤을 지우는 함수
+    function removePolygon() { 
+    for (let i = 0; i < polygons.length; i++) {
+        polygons[i].setMap(null);
+    }
+    areas = [];
+    polygons = [];
+}
+
+// 폴리곤 생성
+function init(path) {
+    $.getJSON(path, function (geojson) {
+        var units = geojson.features; // json key값이 "features"인 것의 value를 통으로 가져온다.
+
+        areas = []; // 새로 불러올 때마다 초기화
+        $.each(units, function (index, unit) { // 1개 지역씩 꺼내서 사용. val은 그 1개 지역에 대한 정보를 담는다
+            var coordinates = []; //좌표 저장할 배열
+            var name = ''; // 지역 이름
+            var cd_location = '';
+            coordinates = unit.geometry.coordinates; // 1개 지역의 영역을 구성하는 다각형의 모든 좌표 배열
+            name = unit.properties.SIG_KOR_NM; // 1개 지역의 이름
+            cd_location = unit.properties.SIG_CD;
+
+            var ob = new Object();
+            ob.name = name;
+            ob.path = [];
+            ob.location = cd_location;
+            $.each(coordinates[0], function (index, coordinate) { 
+                ob.path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
+            });
+
+            areas[index] = ob;
+        });//each
+
+        // 지도에 영역데이터를 폴리곤으로 표시
+        for (var i = 0, len = areas.length; i < len; i++) {
+            displayArea(areas[i]);
+        }
+    }); //getJSON
+}   //init
+
+
+// 폴리곤 보여지기
+function displayArea(area) {
+    var polygon = new kakao.maps.Polygon({
+        map: map,
+        path: area.path,
+        strokeWeight: 2,
+        strokeColor: '#004c80',
+        strokeOpacity: 0.8,
+        fillColor: '#fff',
+        fillOpacity: 0.7
+    });
+    polygons.push(polygon);
+
+
+
+    kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+        console.log("mouseover - level:", level);
+
+        polygon.setOptions({ fillColor: '#09f' });
+        
+    });
+
+
+    kakao.maps.event.addListener(polygon, 'mouseout', function () {
+        polygon.setOptions({ fillColor: '#fff' });
+    });
+
+
+
+    kakao.maps.event.addListener(polygon, 'click', function () {
+
+        if (map.getLevel() > 10) {  
+            console.log("sido시도표시?");
+            console.log(" sido시도표시 area-name:", area.name);//경기도 
+            $('#city').val(area.name); 
+            updateSigunGu();
+        } else if (map.getLevel() <= 10) {
+            console.log(" sig도/ 동구표시?");
+            console.log(" sig도동구 표시 area-name:", area.name);//경기도 
+            $('#local').val(area.name);
+            searchHospitals(1);
+        }
+
+        var level = map.getLevel() - 2;
+
+         map.setLevel(level, {
+            anchor: centroid(area.path),
+            animate: { duration: 350 }
+        });
+        removePolygon();
+    });
+}
+
+// 폴리곤 중심 좌표 계산 함수
+function centroid(path) {
+    var x = 0, y = 0, area = 0;
+
+    for (var i = 0, len = path.length, j = len - 1; i < len; j = i++) {
+        var p1 = path[i];
+        var p2 = path[j];
+        var f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
+        x += (p1.getLat() + p2.getLat()) * f;
+        y += (p1.getLng() + p2.getLng()) * f;
+        area += f * 3;
+    }
+    return new kakao.maps.LatLng(x / area, y / area);
+}
+ 
+
+// 초기화 함수 호출
+//init(contextPath + "/resources/json/sido.json");
+
 // ================ marker, infowindows end ====================== 
 
 // 상세보기 함수
@@ -556,22 +708,37 @@ function detailSearch(index) {
         success: function (json) {
             console.log(JSON.stringify(json));
             /* 
-            {"agency":"의원","hidx":77937,"hpname":"의료법인마리아의료재단마리아의원","endtime4":"1700","endtime5":"1700","endtime6":"1200","endtime1":"1700","hpaddr":"경기도 고양시 일산동구 중앙로 1060, 2,3층,4(일부)층 (백석동)","endtime2":"1700","endtime3":"1700","starttime5":"0730","starttime6":"0730","starttime3":"0730","starttime4":"0730","starttime1":"0730","hptel":"031-924-6555","starttime2":"0730"}
-hospitalSearch.js:557 Uncaught 
-            
-            
+            {"agency":"의원","hidx":77937,"hpname":"의료법인마리아의료재단마리아의원",
+            "endtime4":"1700","endtime5":"1700","endtime6":"1200","endtime1":"1700",
+            "hpaddr":"경기도 고양시 일산동구 중앙로 1060, 2,3층,4(일부)층 (백석동)",
+            "endtime2":"1700","endtime3":"1700","starttime5":"0730","starttime6":"0730",
+            "starttime3":"0730","starttime4":"0730","starttime1":"0730","hptel":"031-924-6555",
+            "starttime2":"0730"}
             */
+            // 시작시간과 종료시간을 시간 형식으로 변환
+            for (let i = 1; i <= 8; i++) {
+                let startkey = 'starttime' + i;
+                let endkey = 'endtime' + i;
+                // 존재하는 starttime 필드만 포맷팅
+                // hasOwnProperty(key) => json 객체에 key 속성이 있는지 확인
+                // json[key] => : json 객체의 key 속성의 값을 가져옴
+                if (json.hasOwnProperty(startkey) && json[startkey]) { //시작시간존재시 끝나는시간 무조건 존재
+                    json[startkey] = json[startkey].substring(0, 2) + "시 " + json[startkey].substring(2, 4) + "분";
+                    json[endkey] = json[endkey].substring(0, 2) + "시 " + json[endkey].substring(2, 4) + "분";
+                    $('#modal-daytime' + i).text(json[startkey] + " ~ " + json[endkey]);
+                } else {
+                    $('#modal-daytime' + i).text("휴진");
+                }
+            }
+            //console.log("json.starttime1:", json.starttime1); // 07시 30분
+            //console.log("json.endtime1:", json.endtime1); // 17시 00분
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
+            $('#modal-hpaddr').text(json.hpaddr);   
             $('#modal-hptel').text(json.hptel);
-            $('#modal-hpaddr').text(json.hpaddr);
             $('#modal-classname').text(json.classname);
-            $('#modal-operating-hours').text(json.operatingHours);
+            $('#modal-agency').text(json.agency);
 
-            // 진료 시간 비교
-            let now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
 
             // 모달 표시
             $('#hospitalDetailModal').modal('show');

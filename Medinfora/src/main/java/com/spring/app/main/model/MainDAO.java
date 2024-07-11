@@ -32,6 +32,9 @@ public interface MainDAO {
 	
 	// 회원가입(병원찾기 병원정보 입력)
 	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap);
+	
+	// 회원가입하기
+	public int registerEnd(Map<String, String> paraMap);
 
 	// 로그인 유저 정보 가져오기
 	public MemberDTO getLoginuser(Map<String, String> paraMap);
@@ -59,8 +62,6 @@ public interface MainDAO {
 
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
-<<<<<<< Updated upstream
-=======
 
 	// 의료 CLASSCODE 리스트 추출
 	public List<String> getclassCodeList(Map<String, String> paraMap);
@@ -68,11 +69,13 @@ public interface MainDAO {
 	// CLASSMET 입력용
 	public boolean classcodeMetInput(Map<String, String> inputparaMap);
 
-	// 인덱스 공지 리스트 가져오기
-	public List<NoticeDTO> getIndexNoticeList();
+	// 인덱스 화면 공지 불러오기
+	public List<NoticeDTO> getIdxNdtoList();
+
+	// 병원 중복가입 체크
+	public boolean checkhidx(String hidx);
 
 	
->>>>>>> Stashed changes
 	
 	
 	

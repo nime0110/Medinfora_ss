@@ -7,101 +7,96 @@
 	
 	<!-- (진료예약-병원선택)회원가입된 병원 개수  -->
 	<select id="getTotalCnt" resultType="int" parameterType="HashMap">
-		SELECT count(*) 
-		FROM
-		(
-		    select hidx
-		    from member
-		    where midx = 2
-		) M
-		JOIN
-		(
-		    SELECT hidx, hpname, hpaddr, hptel, H.classcode
-		    FROM
-		    (
-		        select hidx, hpname, hpaddr, hptel, classcode
-		        from hospital
-		        where 1=1
-		       <choose>
-					<when test='city != "" '>
-				    	and hpaddr like '%' || #{city} || '%'
-				    </when>
-				    <when test='local != "" '>
-				    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
-				    </when>
-				    <when test='hpname != "" '>
-				    	and hpname like '%' || #{hpname} || '%'
-				    </when>
-				    <when test='classcode != "" '>
-				    	and classcode = #{classcode}
-				    </when>
-			    </choose>
-		    ) H
-		    JOIN
-		    (
-		        select classcode, classname
-		        from classcode
-		    ) C
-		    ON H.classcode = C.classcode
-		) HC
-		ON M.hidx = HC.hidx
+		select count(*)
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where 1=1
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+		)
+	</select>
+	
+	<!-- (진료예약-병원선택)회원가입된 병원 개수 (classcode가 있는경우)  -->
+	<select id="getTotalCntClass" resultType="int" parameterType="HashMap">
+		select count(*)
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+			from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX 
+			where CLASSCODEMET.CLASSCODE = #{classcode}
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		)
 	</select>
 	
 	<!-- (진료예약-병원선택)회원가입된 병원 리스트 가져오기  -->
 	<select id="mbHospitalList" resultType="HospitalDTO" parameterType="HashMap">
-		SELECT hidx, hpname, hpaddr, hptel, classcode
-		FROM
-		(
-		    SELECT row_number() over(order by HC.hidx desc) AS rno
-		        , HC.hidx as hidx, hpname, hpaddr, hptel, classcode
-		    FROM
-		    (
-		        select hidx
-		        from member
-		        where midx = 2
-		    ) M
-		    JOIN
-		    (
-		        SELECT hidx, hpname, hpaddr, hptel, H.classcode
-		        FROM
-		        (
-		            select hidx, hpname, hpaddr, hptel, classcode
-		            from hospital
-		            where 1=1
-		           	<if test='city != "" '>
-				    	and hpaddr like '%' || #{city} || '%'
-				    </if>
-				    <if test='local != "" '>
-				    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
-				    </if>
-				    <if test='hpname != "" '>
-				    	and hpname like '%' || #{hpname} || '%'
-				    </if>
-				    <if test='classcode != "" '>
-				    	and classcode = #{classcode}
-				    </if>
-		        ) H
-		        JOIN
-		        (
-		            select classcode, classname
-		            from classcode
-		        ) C
-		        ON H.classcode = C.classcode
-		    ) HC
-		    ON M.hidx = HC.hidx
-		    order by hidx
+		select  hidx, hpname, HPADDR, HPTEL
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where 1=1
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
+		    group by HPNAME,HPADDR,CLASSCODEMET.HIDX,HPTEL
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+	</select>
+	
+	<!-- (진료예약-병원선택)회원가입된 병원 리스트 가져오기 (classcode가 있는경우) -->
+	<select id="mbHospitalListClass" resultType="HospitalDTO" parameterType="HashMap">
+		select  hidx, hpname, HPADDR, HPTEL
+		from(
+		    select CLASSCODEMET.HIDX as hidx,hpname,HPADDR,
+		    HPTEL,row_number() over(order by CLASSCODEMET.hidx desc) AS rno
+			from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX 
+			where CLASSCODEMET.CLASSCODE = #{classcode}
+		    <if test='city != "" '>
+		    	and hpaddr like '%' || #{city} || '%'
+		    </if>
+		    <if test='local != "" '>
+		    	and hpaddr like '%' || #{city} || '%' || #{local} || '%'
+		    </if>
+		    <if test='hpname != "" '>
+		    	and hpname like '%' || #{hpname} || '%'
+		    </if>
 		)
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
 	</select>
 
-	<!-- 날짜가 공휴일인지 체크 -->
+	<!-- (진료예약-진료일시선택) 날짜가 공휴일인지 체크 -->
 	<select id="holidayCheck" resultType="int" parameterType="String">
 		select count(*)
 		from holiday
 		where holiday_date = #{day}
 	</select>
 	
-	<!-- 병원의 오픈시간과 마감시간 파악  -->
+	<!-- (진료예약-진료일시선택) 병원의 오픈시간과 마감시간 파악  -->
 	<select id="hospitalTime" resultType="HospitalDTO" parameterType="String">
 		select hidx
 	        , nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3
@@ -114,7 +109,7 @@
 		where hidx = #{hidx}
 	</select>
 	
-	<!-- 선택한 날의 예약 개수 파악  -->
+	<!-- (진료예약-진료일시선택) 선택한 날의 예약 개수 파악  -->
 	<select id="reserveCnt" resultType="int" parameterType="HashMap">
 		select count(*)
 		from reserve
@@ -122,12 +117,18 @@
 			and hidx = #{hidx}
 	</select>
 	
-	<!-- 현재시간 이후, 선택한 날짜와 예약일이 같은 경우  -->
+	<!-- (진료예약-진료일시선택) 현재시간 이후, 선택한 날짜와 예약일이 같은 경우  -->
 	<select id="dayReserveImpossible" resultType="HospitalDTO" parameterType="HashMap">
-		select ridx, userid, reportday, checkin, symptom, rcode, hidx
+		select ridx, userid, reportday, checkin, rcode, hidx
 		from reserve
 		where hidx = #{hidx}
 			and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(sysdate,'yyyy-mm-dd hh24:mi:ss'))
 		    and checkin = #{day}
 	</select>
+	
+	<!-- (진료예약-진료일시선택) 예약접수  -->
+	<insert id="insertReserve" parameterType="HashMap">
+		insert into reserve(ridx, userid, checkin, hidx)
+		values (seq_ridx.nextval, #{userid}, to_char(to_date(#{day}, 'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss'), #{hidx})
+	</insert>
 </mapper>

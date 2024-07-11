@@ -15,9 +15,6 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
-
-	// Service 테스트용 메소드
-	public String test();
 	
 	// 병원API 입력용
 	public int hpApiInputer(HospitalDTO hospitalDTO);
@@ -39,6 +36,9 @@ public interface MainService {
 	
 	// 회원가입(병원찾기 병원정보 입력)
 	public HospitalDTO searchMedicalEnd(Map<String, String> paraMap);
+	
+	// 회원가입하기
+	public int registerEnd(Map<String, String> paraMap);
 	
 	// 로그인 처리
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request);
@@ -69,8 +69,11 @@ public interface MainService {
 	// 공휴일 입력용
 	public int holidayInputer(HolidayVO holidayVO);
 
-	// 인덱스 공지 리스트 가져오기
-	public List<NoticeDTO> getIndexNoticeList();
+	// 인덱스 화면 공지 불러오기
+	public List<NoticeDTO> getIdxNdtoList();
+
+	// 병원 중복가입 체크
+	public boolean checkhidx(String hidx);
 	
 	
 	

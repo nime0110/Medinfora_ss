@@ -1,5 +1,8 @@
 package com.spring.app.main.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.common.Myutil;
+import com.spring.app.common.Sha256;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
@@ -18,6 +23,8 @@ import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
+
+import oracle.net.aso.h;
 
 @Service
 public class MainService_imple implements MainService {
@@ -27,15 +34,19 @@ public class MainService_imple implements MainService {
 	
 	@Autowired
     private AES256 aES256;
-
-	@Override
-	public String test() {
-		return dao.daotest();
-	}
 	
 	// 회원가입(중복체크)
 	@Override
 	public MemberDTO isExistCheck(Map<String, String> paraMap) {
+		
+		if("email".equalsIgnoreCase(paraMap.get("type"))) {
+			try {
+				paraMap.put("value",aES256.encrypt(paraMap.get("value")));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		MemberDTO isExist = dao.isExistCheck(paraMap);
 		return isExist;
 	}
@@ -68,10 +79,53 @@ public class MainService_imple implements MainService {
 		return hpdto;
 	}
 	
+	// 회원가입하기
+	@Override
+	public int registerEnd(Map<String, String> paraMap) {
+		
+		String pwd = paraMap.get("pwd");
+		String email = paraMap.get("email");
+		String mobile = paraMap.get("mobile");
+		try {
+			paraMap.put("pwd", Sha256.encrypt(pwd));
+			paraMap.put("email", aES256.encrypt(email));
+			paraMap.put("mobile", aES256.encrypt(mobile));
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		
+		int n = dao.registerEnd(paraMap);
+		
+		if(paraMap.get("midx").equals("2")) {
+			Map<String,String> classCodeListParaMap = new HashMap<String, String>();
+			
+			classCodeListParaMap.put("hpname",paraMap.get("name"));
+			classCodeListParaMap.put("hpaddr",paraMap.get("address"));
+			
+			List<String> classCodeList = dao.getclassCodeList(classCodeListParaMap);
+			
+			for(String classcode : classCodeList) {
+				Map<String,String> inputparaMap = new HashMap<String, String>();
+				
+				inputparaMap.put("userid",paraMap.get("userid"));
+				inputparaMap.put("classcode",classcode);
+				inputparaMap.put("hidx",paraMap.get("hidx"));
+				
+				dao.classcodeMetInput(inputparaMap);
+			}
+		}
+		
+		return n;
+	}
+	
 	
 	// 로그인 처리
 	@Override
 	public MemberDTO loginEnd(Map<String, String> paraMap, HttpServletRequest request) {
+		
+		if(paraMap.get("loginmethod") == "0") {
+			paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
+		}
 		
 		MemberDTO loginuser = dao.getLoginuser(paraMap);
 		
@@ -113,6 +167,10 @@ public class MainService_imple implements MainService {
 						loginuser.setMobile(mobile);
 					}
 					*/
+					
+					loginuser.setEmail(aES256.decrypt(loginuser.getEmail()));
+					loginuser.setMobile(aES256.decrypt(loginuser.getMobile()));
+					
 					HttpSession sesstion =  request.getSession();
 					sesstion.setAttribute("loginuser", loginuser);
 				}
@@ -158,7 +216,6 @@ public class MainService_imple implements MainService {
 		return dao.areaInputer(koreaAreaVO);
 	}
 
-
 	// 행정구역 리스트 추출
 	@Override
 	public List<String> getcityinfo() {
@@ -198,11 +255,24 @@ public class MainService_imple implements MainService {
 		return dao.getIndexNoticeList();
 	}
 
-	
+	// 인덱스 화면 공지 불러오기
+	@Override
+	public List<NoticeDTO> getIdxNdtoList() {
+		
+		List<NoticeDTO> orignDTO = dao.getIdxNdtoList();
+		
+		for(NoticeDTO ndto : orignDTO) {
+			ndto.setContent(Myutil.removeHTMLtag(ndto.getContent()));
+			ndto.setWriteday(ndto.getWriteday().substring(0,10));
+		}
+		
+		return orignDTO;
+	}
 
-	
-
-	
-
+	// 병원 중복가입 체크
+	@Override
+	public boolean checkhidx(String hidx) {
+		return dao.checkhidx(hidx);
+	}
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% String ctxPath = request.getContextPath(); %>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/notice/notice.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/notice/noticeMedia.css" />
 
@@ -42,8 +43,7 @@ $(document).ready(function(){
         const fileInput = $("input[name='attach']")[0];
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
-            console.log("Filename: " + file.name);
-            console.log("Filesize: " + file.size);
+        
             $("input[name='filename']").val(file.name);
             $("input[name='orgname']").val(file.name);
             $("input[name='filesize']").val(file.size);
@@ -59,7 +59,7 @@ $(document).ready(function(){
 
 <div class="board_wrap">
     <div class="board_title11">
-        <p class="nanum-eb size-b">글 등록하기</p>
+        <p class="nanum-eb size-b">등록하기</p>
     </div>
     <br>
     <div style="display: flex;">
@@ -82,9 +82,9 @@ $(document).ready(function(){
                         <th style="width: 15%;">파일첨부</th>
                         <td>
                               <input id="attach" type="file" name="attach" />
-                            <input type="text" name="filename" />
-                            <input type="text" name="orgname" />
-                            <input type="text" name="filesize" />
+                            <input type="hidden" name="filename" />
+                            <input type="hidden" name="orgname" />
+                            <input type="hidden" name="filesize" />
                         </td>
                     </tr>
                 </table>
