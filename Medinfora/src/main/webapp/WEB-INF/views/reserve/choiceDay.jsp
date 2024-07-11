@@ -73,6 +73,17 @@
         	, dataType:"json"
         	, success:function(json){
         		console.log(json)
+        		$("h3.selectDay").text(sendDate.date);
+        		let v_html = ``;
+        		$.each(json, function(index, item){
+        			
+        			v_html +=`<button type="button" class="timebtn mb-3 btn btn-lg col-3">
+                        			<span class="exTimebtn">\${item}</span>
+                        		</button>`;
+        		})	// end of $.each(json, function(index, item){-----------
+        			
+        		$("div.choiceTime").html(v_html);
+        			
         	}
         	, error: function(request, status, error){
 	        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -105,32 +116,11 @@
                	 </div>
             </div>
             <div class="choiceTimediv col-md-6 pt-3 pl-5">
-                <h3 class="nanum-b size-n">${requestScope.today_str}</h3>
+                <h3 class="selectDay nanum-b size-n">
+                	<%-- 선택한 날짜 --%>
+                </h3>
                 <div class="choiceTime row mt-3">
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">09:00</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">09:30</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">10:00</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">10:30</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">11:00</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">11:30</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">12:00</span>
-                    </button>
-                    <button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        <span class="exTimebtn">12:30</span>
-                    </button>
+					<%-- 예약가능한 시간대 --%>
                 </div>
             </div>
         </div>

@@ -237,11 +237,7 @@ public class ReserveController {
 			jsonArr.add(availableDay);
 		}
 
-		String today_str = today.substring(0, 11);		// 추후에 없앨 예정
-		today_str = today_str.replaceAll("-", ".");		// 추후에 없앨 예정
-
 		mav.addObject("hidx",hidx);
-		mav.addObject("today_str",today_str);			// 추후에 없앨 예정
 		mav.addObject("dateList",jsonArr.toString());
 		mav.setViewName("reserve/choiceDay.tiles");
 		
