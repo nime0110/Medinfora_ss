@@ -109,20 +109,21 @@
 	            </li>
 	        </ul>
 	    </div>
-	    <%-- 달력에서 선택한 데이터를 어떻게 보내줄지 생각해야함(캘린더?) --%>
-        <div class="div_choiceDay row mt-5">
-            <div class="reserve_day col-md-6">
-               	 <div id='calendar'>
-               	 </div>
-            </div>
-            <div class="choiceTimediv col-md-6 pt-3 pl-5">
-                <h3 class="selectDay nanum-b size-n">
-                	<%-- 선택한 날짜 --%>
-                </h3>
-                <div class="choiceTime row mt-3">
-					<%-- 예약가능한 시간대 --%>
-                </div>
-            </div>
+	    <div>
+	        <div class="div_choiceDay row mt-5">
+	            <div class="reserve_day col-lg-6">
+	               	 <div id='calendar'>
+	               	 </div>
+	            </div>
+	            <div class="choiceTimediv col-lg-6 pt-3 pl-5">
+	                <h3 class="selectDay nanum-b size-n">
+	                	<%-- 선택한 날짜 --%>
+	                </h3>
+	                <div class="choiceTime row mt-3">
+						<%-- 예약가능한 시간대 --%>
+	                </div>
+	            </div>
+	        </div>
         </div>
         <div class="div_proc text-center mb-5">
 	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">뒤로</button>
