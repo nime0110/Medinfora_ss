@@ -330,6 +330,7 @@ public class ReserveController {
 					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
 						continue;
 					}
+					System.out.println("오늘날 : " + today);
 					paraMap.put("day", today);
 					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
 					HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
@@ -349,6 +350,7 @@ public class ReserveController {
 						break;
 					}
 					day = dateFormat.format(calendar.getTime());
+					System.out.println("오늘이 아닌 다른날들 : " + day);
 					String day_time = day.substring(11, 13) + day.substring(14, 16);
 					
 					if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
@@ -492,4 +494,30 @@ public class ReserveController {
 		return resultMap;
 	}
 	
+	@PostMapping("insertReserve.bibo")
+	public ModelAndView insertReserve(ModelAndView mav, HttpServletRequest request) {
+		
+		String hidx = request.getParameter("hidx");
+		String day = request.getParameter("day");
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("hidx", hidx);
+		paraMap.put("day", day);
+		paraMap.put("userid", userid);
+		
+		int n = service.insertReserve(paraMap);
+		String message = "", loc = "";
+		if(n==1) {
+			message = "예약이 접수되었습니다.";
+			loc = request.getContextPath() + "/index.bibo";
+		}
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		mav.setViewName("msg");
+		return mav;
+	}
 }

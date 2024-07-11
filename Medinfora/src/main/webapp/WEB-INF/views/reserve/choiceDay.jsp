@@ -33,6 +33,7 @@
 	      locale: "ko",
 	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
 	        
+	    	  $("form[name='choiceFrm'] > input[name='time']").val("");
 	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
 
 	        const sendDate = {"hidx":"${requestScope.hidx}","date":eventDate};
@@ -72,13 +73,12 @@
         	, data: sendDate
         	, dataType:"json"
         	, success:function(json){
-        		console.log(json)
         		$("h3.selectDay").text(sendDate.date);
         		let v_html = ``;
         		$.each(json, function(index, item){
         			
         			v_html +=`<button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        			<span class="exTimebtn">\${item}</span>
+                        			<span class="exTimebtn nanum-n">\${item}</span>
                         		</button>`;
         		})	// end of $.each(json, function(index, item){-----------
         			
@@ -88,9 +88,9 @@
         	, error: function(request, status, error){
 	        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		    }
-        })
+        })		//  end of $.ajax({------------------------------
 		
-	}
+	}	// end of function searchTimes(sendDate){--------------------------------
 
 </script>
 
@@ -129,4 +129,8 @@
 	        <button type="button" class="reservationbtn btn_proc btn btn-lg">예약</button>
 	    </div>
     </div>
+    <form name ="choiceFrm">
+    	<input type="hidden" name="hidx" value="${requestScope.hidx}"/>
+    	<input type="hidden" name="day" />
+    </form>
 </div>
