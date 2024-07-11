@@ -6,7 +6,6 @@ MANIFEST.MF
 *.classpath
 *.prefs
 *.class
-.metadata
 bin/
 tmp/
 *.tmp
