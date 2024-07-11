@@ -66,7 +66,7 @@
             if(confirm("정말로 글을 삭제하시겠습니까?")) {
                 const frm = document.delFrm;
                 frm.method = "post";
-                frm.action = "<%= ctxPath %>/delEnd.bibo";
+                frm.action = "<%= ctxPath %>/notice/delEnd.bibo";
                 frm.submit();   
             }
         });

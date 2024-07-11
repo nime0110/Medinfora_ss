@@ -71,5 +71,26 @@
         delete from notice
         where nidx = #{nidx}
     </delete>
+    
+    
+    <select id="getPrevNotice" parameterType="int" resultType="com.spring.app.domain.NoticeDTO">
+    SELECT nidx, title
+    FROM notice
+    WHERE nidx = (
+        SELECT MAX(nidx)
+        FROM notice
+        WHERE nidx &lt; #{nidx}
+    )
+</select>
+
+<select id="getNextNotice" parameterType="int" resultType="com.spring.app.domain.NoticeDTO">
+    SELECT nidx, title
+    FROM notice
+    WHERE nidx = (
+        SELECT MIN(nidx)
+        FROM notice
+        WHERE nidx &gt; #{nidx}
+    )
+</select>
 
 </mapper>

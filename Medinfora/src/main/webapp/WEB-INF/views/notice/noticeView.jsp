@@ -10,52 +10,46 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/header.css" />
 <script type="text/javascript" src="<%= ctxPath %>/resources/js/notice/notice.js"></script>
 
-<style type="text/css">
-     .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-    }
+<style>
+        #nextBoard {
+       margin-top:20px;
+            border-top: 1px solid #dbdbdb;
+            border-bottom: 1px solid #dbdbdb;
+          width: 1180px; 
+            margin-left: 8%;
+        }
 
-    .modal-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fefefe;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 500px;
-    }
+        #nextBoard tr {
+            height: 60px;
+        }
 
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
+        #nextBoard td:nth-child(1) {
+            width: 120px;
+            font-size: 14px;
+            line-height: 1.07;
+            text-align: center;
+            color: #767676;
+        }
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+        #nextBoard td:nth-child(2) {
+            width: 880px;
+            font-size: 16px;
+            padding: 17px 98px 17px 32px;
+        }
 
-    .notice-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-</style>
+        #nextBoard a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        #nextBoard a:hover {
+            text-decoration: underline;
+        }
+
+        #nextBoard span {
+            color: #767676;
+        }
+    </style>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -64,7 +58,7 @@
             $("#deleteModal").show();
         });
 
-        // Close the modal
+        
         $(".close, #btnCancel").click(function() {
             $("#deleteModal").hide();
         });
@@ -88,14 +82,19 @@
     <div class="notice-info">
         <span class="notice-date">날짜: ${noticedto.writeday}</span>
         <span class="notice-viewcount">조회수: ${noticedto.viewcnt}</span>
-
+        <div class="notice-info2">
+ <c:if test="${sessionScope.loginuser.mIdx == 0}">
+            <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">수정하기</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
+        </c:if>
+        </div>
          <div class="notice-attachment">
             <c:if test="${noticedto.filename != null}">
                 <span class="attach_sh">
                     <img src="<%= ctxPath %>/resources/img/sh_attach.png" style="width: 20px; height: 20px;">
                     첨부파일 : 
                 </span>
-                <a href="<%= ctxPath %>/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
+                <a href="<%= ctxPath %>/notice/download.bibo?nidx=${noticedto.nidx}" class="attachment-filename">${noticedto.orgname}</a>
                 
             </c:if>
         </div>
@@ -107,19 +106,45 @@
     <div class="nanum-n notice-content" style="height: auto;">
         <p>${noticedto.content}</p>
         <c:if test="${noticedto.filename.endsWith('.jpg') || noticedto.filename.endsWith('.jpeg') || noticedto.filename.endsWith('.png') || noticedto.filename.endsWith('.gif')}">
-                    <img src="<%= ctxPath %>/resources/files/${noticedto.filename}" alt="${noticedto.orgname}" style="max-width: 100%; height: auto;" />
+                    <img src="<%= ctxPath %>/resources/files/${noticedto.filename}" alt="${noticedto.orgname}"  style="max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;" />
                 </c:if>
     </div>
 
-    <div class="notice-button text-center mb-5">
-        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
-        <c:if test="${sessionScope.loginuser.mIdx == 0}">
-            <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="location.href='<%= ctxPath %>/notice/noticeEdit.bibo?seq=${noticedto.nidx}'">수정하기</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
-        </c:if>
+    <div class="notice-button text-center">
+        <button type="button" class="notice-btn" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
+           
+           </div>
+              <div class="prev-next-links">
+        <table id="nextBoard">
+            <tr>
+                <td>이전</td>
+                <td>
+                    <c:if test="${not empty prevNotice}">
+                        <a href="<c:url value='/notice/view.bibo?nidx=${prevNotice.nidx}'/>" class="prev-link">${prevNotice.title}</a>
+                    </c:if>
+                    <c:if test="${empty prevNotice}">
+                        <span>이전글이 없습니다.</span>
+                    </c:if>
+                </td>
+            </tr>
+            <tr style="border-top: 1px solid #dbdbdb;">
+                <td>다음</td>
+                <td>
+                    <c:if test="${not empty nextNotice}">
+                        <a href="<c:url value='/notice/view.bibo?nidx=${nextNotice.nidx}'/>" class="next-link">${nextNotice.title}</a>
+                    </c:if>
+                    <c:if test="${empty nextNotice}">
+                        <span>다음글이 없습니다.</span>
+                    </c:if>
+                </td>
+            </tr>
+        </table>
     </div>
+       
+    
+    
 
-    <!-- The Modal -->
+   
     <div id="deleteModal" class="modal modal-dialog">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -139,5 +164,5 @@
     <input type="hidden" name="seq" />
     <input type="hidden" name="goBackURL" />
 </form>
-</div>
+
 </body>
