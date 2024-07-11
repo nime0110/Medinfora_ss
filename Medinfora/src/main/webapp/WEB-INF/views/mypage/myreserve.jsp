@@ -53,10 +53,10 @@
 				<span class="col-2">02-1234-5678</span>
 				<span class="col-2">2024-07-07 17:00</span>
 				<span class="col-2">
-					<span class="p-1 nanum-b rscode">접수완료</span>
+					<span class="rscode p-1 nanum-b">접수완료</span>
 				</span>
 				<span class="col-2">
-					<button class="nanum-eb size-s btn-sm" type="button">취소</button>
+					<button class="rscancle nanum-eb size-s" type="button">취소</button>
 				</span>
 			</div>
 		</div>
