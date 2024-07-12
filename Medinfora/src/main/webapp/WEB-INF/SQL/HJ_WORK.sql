@@ -346,19 +346,13 @@ JOIN
 ON RM.rcode = RC.rcode
 
 -- === 선택한 진료현황의 예약코드 가져오기 === --
+select rcode
+from reservecode 
+where rstatus = '접수완료'
 
-SELECT R.rcode
-FROM
-(
-    select rcode
-    from reserve
-) R
-JOIN
-(
-    select rcode, rstatus
-    from reservecode 
-    where rstatus = '접수완료'
-) RS
-ON R.rcode = RS.rcode
-update employees set first_name = '혜정', last_name = '양', hire_date = sysdate
-    where employee_id = 100;
+select *
+from reserve
+
+-- === 진료현황 변경해주기 === --
+update reserve set rcode = 2
+where ridx = 1;
