@@ -14,10 +14,20 @@ public interface MypageDAO {
 	// (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기
 	String Searchhospital(String userid);
 
-	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(검색포함)
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색)
+	List<ReserveDTO> PatientNameList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색)
+	List<ReserveDTO> ReserveStatusList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색)
+	List<ReserveDTO> ReserveDateList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명, 진료현황)
 	List<ReserveDTO> reserveList(Map<String, String> paraMap);
 
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetPatientInfo(String patient_id);
+
 
 }
