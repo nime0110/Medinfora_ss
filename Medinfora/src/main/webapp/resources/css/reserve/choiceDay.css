@@ -117,7 +117,8 @@ a.fc-event:hover{
     margin: 50px 50px;
     border: solid 1px var(--grey100);
     border-radius: 10px;
-    height: 450px;
+    min-height: 300px;
+    height: auto;
 }
 
 .selectDay{
@@ -130,6 +131,8 @@ a.fc-event:hover{
     padding: 24px 24px;
     display: flex;
     flex-wrap: wrap;
+    gap : 5px 30px;
+    transition: all 0.3s;
 }
 
 .timebtn{
@@ -144,7 +147,7 @@ a.fc-event:hover{
 }
 
 .exTimebtn{
-    padding: 0px 24px;
+    padding: 0px 48px;
     transition: all 0.3s;
 }
 
@@ -187,7 +190,39 @@ a.fc-event:hover{
 	font-weight: bold;
 }
 
+@media (max-width: 1400px) {
+	
+    .div_choiceDay{
+        display: block;
+    }
+    
+    .reserve_day{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .choiceTimediv{
+        width: 100%;
+    }
+
+    .choiceTimedivineer{
+        margin: 50px 0;
+    }
+
+}
+
 @media (max-width: 768px) {
+
+    .hj_container{
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .reserveContent{
+        margin: 0;
+        width: 100%;
+    }
 
     .reserve_title{
         font-size: 2.5rem !important;
@@ -208,6 +243,40 @@ a.fc-event:hover{
     
     .choiceday{
     	width: 100%;
+    }
+
+    #calendar{
+        height: 350px;
+    }
+
+    .fc-day{
+        height: 25px !important;
+    }
+
+    .fc-col-header-cell-cushion{
+        font-size: 8pt;
+    }
+
+    .fc-daygrid-day-number{
+        font-size: 8pt;
+    }
+
+    .fc-event-main{
+        height: 15px !important;
+    }
+
+    .fc-event-title-container{
+        height: 10px;
+        font-size: 8px;
+        padding-top: 1.5px;
+    }
+
+    .choiceTime{
+        gap : 3px 10px;
+    }
+
+    .exTimebtn{
+        padding: 0px 12px;
     }
 
 }
