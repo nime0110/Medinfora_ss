@@ -33,95 +33,97 @@
 	<script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<style>
-
-/* 스타일 clear 공통 코드 start */
-
-	body {
-	    font-family: 'Nanum Gothic', sans-serif;
-	    margin: 0;
-	    padding: 0;
-	}
 	
-	li {
-	    list-style: none;
-	}
+	/* 스타일 clear 공통 코드 start */
 	
-	a {
-	    text-decoration: none;
-	    color: black;
-	}
-	
-	.viewtoggle{
-		display:none;
-		padding-left: 24px;
-	}
-	
-	.tog_ico{
-		display: block;
-		font-size: 20pt;
-		background-color: var(--navy700);
-		border-radius: 50%;
-		width: 40px;
-		height: 40px;
-		text-align: center;
-		color: var(--grey50);
-        position: absolute;
-        z-index: 50;
-	}
-	
-	.tog_ico:hover{
-		background-color: var(--navy500);
-		cursor: pointer;
-	}
-	
-	@media (max-width: 768px) {
-    .viewtoggle{
-        display: block;
-    }
-
-}
-	
-</style>
-
-<script type="text/javascript">
-
-	let togStatus = 0;
-
-	function toggleOn(){
-		
-		if(togStatus === 0){
-
-			$("#info_sidebar").show();
-			togStatus = 1;
-			$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
-			
-		}else{
-			
-			$("#info_sidebar").hide();
-			togStatus = 0;
-			$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
-			
+		body {
+		    font-family: 'Nanum Gothic', sans-serif;
+		    margin: 0;
+		    padding: 0;
 		}
 		
-	}// end of function toggleOn()
-	
-	window.onresize = function() {
-		
-		const width = window.innerWidth;	
-		  
-		if(width>768){
-			$("#info_sidebar").show();
-			togStatus = 1;
-			$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
-		}else{
-			$("#info_sidebar").hide();
-			togStatus = 0;
-			$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
+		li {
+		    list-style: none;
 		}
-		  
+		
+		a {
+		    text-decoration: none;
+		    color: black;
+		}
+		
+		.viewtoggle{
+			display:none;
+			padding-left: 24px;
+		}
+		
+		.tog_ico{
+			display: block;
+			font-size: 20pt;
+			background-color: var(--navy700);
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			text-align: center;
+			color: var(--grey50);
+	        position: absolute;
+	        z-index: 50;
+		}
+		
+		.tog_ico:hover{
+			background-color: var(--navy500);
+			cursor: pointer;
+		}
+		
+		@media (max-width: 768px) {
+	    .viewtoggle{
+	        display: block;
+	    }
+	
 	}
+		
+	</style>
+	
+	<script type="text/javascript">
+	
+		let togStatus = 0;
+	
+		function toggleOn(){
+			
+			if(togStatus === 0){
+	
+				$("#info_sidebar").show();
+				togStatus = 1;
+				$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
+				
+			}else{
+				
+				$("#info_sidebar").hide();
+				togStatus = 0;
+				$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
+				
+			}
+			
+		}// end of function toggleOn()
+		
+		// window의 크기 변경 감지 해주는 이벤트
+		window.onresize = function() {
+			
+			const width = window.innerWidth;	
+			  
+			if(width>768){
+				$("#info_sidebar").show();
+				togStatus = 1;
+				$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
+			}else{
+				$("#info_sidebar").hide();
+				togStatus = 0;
+				$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
+			}
+			  
+		} // window.onresize
+	
+	</script>
 
-</script>
 </head>
 <body>
 	<tiles:insertAttribute name="header" />
