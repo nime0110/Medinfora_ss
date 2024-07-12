@@ -5,6 +5,15 @@
 
 <mapper namespace="com.spring.app.question.model.QuestionDAO">
 	
+	<!-- 질문등록 -->
+	<insert id="questionWriteEnd" parameterType="MediQDTO">
+		insert into mediq(qidx, userid, subject, title, content, writeday, imgsrc, open
+		<if test='open == "2"'>, pwd</if>
+		)
+		values(seq_qidx.nextval, #{userid}, #{subject}, #{title}, #{content}, default, #{imgsrc}, to_number(#{open})
+		<if test='open == "2"'>, #{pwd}</if>
+		)
+	</insert>
 	
 
 </mapper>
