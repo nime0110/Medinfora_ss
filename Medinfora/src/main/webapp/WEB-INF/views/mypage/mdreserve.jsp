@@ -3,8 +3,8 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/myreserve.css">
-<script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/myreserve.js"></script>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/mdreserve.css">
+<script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/mdreserve.js"></script>
 
 <div class="hj_container">
 	<div class="py-4" align="center">
@@ -24,7 +24,7 @@
 					</select>
 				</span>
 				<span>
-					<input class="search_ch sel_1 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
+					<input class="search_ch sel_2 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
 				</span>
 				<span>
 					<button class="jh_btn_design search nanum-eb size-s" type="button">검색</button>

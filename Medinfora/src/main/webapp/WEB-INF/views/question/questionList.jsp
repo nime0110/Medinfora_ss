@@ -98,6 +98,10 @@ $(document).ready(function(){
 	
 });
 
+function gowrite(){
+	location.href="<%=ctxPath%>/questionWrite.bibo";
+}
+
 
 </script>
 
@@ -176,6 +180,6 @@ $(document).ready(function(){
 	</div>
 	
 	<div class="py-5 text-center">
-		<button class="write nanum-eb size-s" type="button">등록</button>
+		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>
 	</div>
 </div>

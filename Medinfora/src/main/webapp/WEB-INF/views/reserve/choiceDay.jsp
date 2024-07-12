@@ -4,8 +4,6 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDay.css">
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/choiceDayMedia.css">
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/reserve/fullCalendar.css">
 
 <script src='<%= ctxPath%>/resources/node_modules/fullcalendar/dist/index.global.min.js'></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDay.js"></script>
@@ -46,6 +44,8 @@
 	    });
 
 	    calendar.render();
+	    
+	    replaceDay();
 	    
 	    const day = new Date();
 	    const year = day.getFullYear();
@@ -92,6 +92,18 @@
 		
 	}	// end of function searchTimes(sendDate){--------------------------------
 
+	function replaceDay(){
+		
+	    $('.fc-daygrid-day-number').each((index,element) => {
+	    	
+	        let day = element.innerText;
+
+	        element.innerText = day.replace("일","");
+	        
+	    });
+
+	}
+	
 </script>
 
 <div class="hj_container">

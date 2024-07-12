@@ -55,23 +55,24 @@
     margin: 0;
 }
 
-.reserve_day{
-    width: 50%;
-}
-
-/* 캘린더 영역 START */
+/* 캘린더 영역 */
 
 .reserve_day{
-    width: 50%;
+    width: 620px;
 }
 
 #calendar {
-  max-width: 1100px;
-  margin: 0 auto;
+    width: 95%;
+    margin: 0 auto;
 }
 
-.fc-daygrid-day-frame{
-  height: 50px !important;
+a.fc-event{
+    background-color: var(--blue200) !important;
+    border: none !important;
+}
+
+.fc-event-main{
+    height: 30px !important;
 }
 
 .fc-event-title-container{
@@ -81,14 +82,14 @@
   transition: all 0.5s;
 }
 
-.fc-event-title-container:hover{
-  background-color: blue;
-  cursor: pointer;
+.fc-day-today{
+    background-color : var(--blue100) !important;
 }
-/* 캘린더 영역 END */
+
+/* 시간 셀랙 영역 */
 
 .choiceTimediv{
-    width: 50%;
+    width: calc(100% - 620px);
 }
 
 .exTimebtn{
