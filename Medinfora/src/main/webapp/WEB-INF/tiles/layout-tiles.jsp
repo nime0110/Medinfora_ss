@@ -59,16 +59,16 @@
 	
 	#wrap_container{
 		height: auto;
-		min-height: 100%;
+		min-height: 76.8vh;
 		padding-bottom: 120px;
 	}
 	
 </style>
 
 <body>
-	
-	<tiles:insertAttribute name="header" />
+
 	<div id="wrap_container">
+	<tiles:insertAttribute name="header" />
 		<div style="margin-top: 75px;"></div>
 		<tiles:insertAttribute name="content" />
 	</div>
