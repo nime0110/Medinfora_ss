@@ -194,6 +194,7 @@ public class MypageController {
 		return jsonArr.toString();
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
+	// === 진료현황 변경 모달창 정보 === //
 	@ResponseBody
 	@GetMapping(value="getRdto.bibo", produces="text/plain;charset=UTF-8")
 	public String getRdto(HttpServletRequest request) {
@@ -222,6 +223,7 @@ public class MypageController {
 		return jsonObj.toString();
 	}
 	
+	// === 진료현황 변경 === //
 	@PostMapping("ChangeRstatus.bibo")
 	public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		String rStatus = request.getParameter("rStatus");
@@ -240,13 +242,14 @@ public class MypageController {
 		
 		String message = "", loc = "";
 		if(n==1) {
-			message = "진료현황이 " + rStatus + "로 변경되었습니다.";
+			message = "진료현황이 " + rStatus + "으(로) 변경되었습니다.";
 			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
 		}
 		mav.addObject("message",message);
 		mav.addObject("loc",loc);
 		mav.setViewName("msg");
 		return mav;
-	}
+	}	// end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {----------
+	
 	
 }
