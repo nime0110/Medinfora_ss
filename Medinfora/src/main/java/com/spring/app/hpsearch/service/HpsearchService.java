@@ -13,4 +13,7 @@ public interface HpsearchService {
 	// 상세정보 불러오기
 	HospitalDTO getHpDetail(String hidx);
 
+	//시를 넣어서 도 불러오기
+	List<String> putSiGetdo(String local);
+
 }

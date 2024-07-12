@@ -3,7 +3,7 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css?after" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css" />
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/hospitalSearch/hospitalSearch.js"></script>
@@ -21,7 +21,7 @@
 		<select id="local">
 		  <option value="">시/군/구 선택</option>
 		  <!-- 시/군/구 데이터 -->
-		</select>
+		</select> 
 		
 		<select id="country">
 		  <option value="">읍/면/동 선택</option>
