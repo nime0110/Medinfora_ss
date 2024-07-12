@@ -20,4 +20,13 @@ public interface MypageService {
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetPatientInfo(String patient_id);
 
+	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
+	ReserveDTO getRdto(String ridx);
+
+	// (의료인- 진료예약 열람) 선택한 진료현황의 예약코드 가져오기
+	String GetRcode(String rStatus);
+
+	// (의료인- 진료예약 열람) 진료현황 변경해주기
+	int ChangeRstatus(Map<String, String> paraMap);
+
 }

@@ -38,3 +38,65 @@
 	<%-- 페이징바 --%>
 	<div id="ReserveHP_PageBar" class="w-100 d-flex justify-content-center pt-3"></div>
 </div>
+
+<%-- 모달 --%>
+<div class="modal fade" id="ChangeRcodeModal" tabindex="-1" role="dialog" aria-labelledby="ChangeRcodeModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title" id="ChangeRcodeModalLabel">접수 정보</h5>
+      			<button type="button" class="btn" id="closeModalButton" data-dismiss="modal">
+      				<i class="fa-solid fa-xmark"></i>
+      			</button>
+      		</div>
+      		<div class="modal-body">
+      			<span id="modal-name" class="nanum-b size-n"></span>
+  				<div class="row-table" data-title="진료예약 정보">
+	   				<table>
+	   					<%-- 접수번호, 성명, 연락처, 현재 진료현황, 예약일시, 진료일시를 띄워준다. --%>
+	   					<tbody>
+	    					<tr>
+	    						<th scope="row">접수번호</th>
+	    						<td id="modal-ridx"></td>
+	    					</tr>
+	    					<tr>
+			      				<th scope="row">연락처</th>
+			      				<td id="modal-mobile"></td>
+			      			</tr>
+			      			<tr>
+			      				<th scope="row">진료 현황</th>
+			      				<td id="modal-rStatus"></td>
+			      			</tr>
+			      			<tr>
+			      				<th scope="row">예약 일시</th>
+			      				<td id="modal-reportday"></td>
+			      			</tr>
+			      			<tr>
+			      				<th scope="row">진료 일시</th>
+			      				<td id="modal-checkin"></td>
+			      			</tr>
+	   					</tbody>
+	   				</table>
+  				</div>
+  				<div class="row-table" data-title="진료현황 변경">
+  					<span class="nanum-b size-n modal-mini-title">진료현황 변경</span> 
+  					<div>
+				      	<select class="changers search_ch nanum-b">
+							<option>접수신청</option>
+							<option>접수완료</option>
+							<option>진료완료</option>
+						</select>	
+					</div>
+  				</div>
+  				<div class="row-table" data-title="진료현황 변경 버튼">
+  					<button type="button" class="btn btnStyle" data-dismiss="modal">변경</button>
+  				</div>
+   			</div>
+   		</div>
+  	</div>
+</div>
+<%-- 모달 끝 --%>
+<form name="ChangeRstatus">
+	<input type="hidden" name="rStatus" value="" />
+	<input type="hidden" name="ridx" value="" />
+</form>

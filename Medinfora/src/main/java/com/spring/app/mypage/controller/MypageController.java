@@ -97,7 +97,7 @@ public class MypageController {
 		
 		mav.setViewName("mypage/mdreserve.info");
 		return mav;
-	}
+	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
 	
 	// === 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
@@ -180,6 +180,7 @@ public class MypageController {
 		        jsonObj.put("mobile", rsdto.getMobile());
 		        jsonObj.put("reportday", rsdto.getReportday());
 		        jsonObj.put("rcode", rsdto.getRcode());
+		        jsonObj.put("ridx", rsdto.getRidx());
 		        
 		        jsonObj.put("totalCnt", totalCnt);
 				jsonObj.put("sizePerPage", sizePerPage);
@@ -191,6 +192,61 @@ public class MypageController {
 		}
 
 		return jsonArr.toString();
+	}	// end of public String mdreserveList(HttpServletRequest request) {-----
+	
+	@ResponseBody
+	@GetMapping(value="getRdto.bibo", produces="text/plain;charset=UTF-8")
+	public String getRdto(HttpServletRequest request) {
+		String ridx = request.getParameter("ridx");
+		
+		ReserveDTO rsdto = null;
+		if(ridx != null) {
+			// ridx 를 통해 예약 정보 가져오기
+			rsdto = service.getRdto(ridx);
+		}
+		
+		JSONObject jsonObj = new JSONObject();	// {}
+		if(rsdto != null) {
+			try {
+				rsdto.setMobile(aES256.decrypt(rsdto.getMobile()));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			jsonObj.put("ridx", rsdto.getRidx());
+			jsonObj.put("name", rsdto.getName());
+			jsonObj.put("mobile", rsdto.getMobile());
+			jsonObj.put("rStatus", rsdto.getrStatus());
+			jsonObj.put("reportday", rsdto.getReportday());
+			jsonObj.put("checkin", rsdto.getCheckin());
+		}
+		return jsonObj.toString();
+	}
+	
+	@PostMapping("ChangeRstatus.bibo")
+	public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		String rStatus = request.getParameter("rStatus");
+		String ridx = request.getParameter("ridx");
+		
+		// 선택한 진료현황의 예약코드 가져오기
+		String rcode = service.GetRcode(rStatus);
+		
+		Map<String,String> paraMap = new HashMap<>();
+		
+		paraMap.put("ridx", ridx);
+		paraMap.put("rcode", rcode);
+		
+		// 진료현황 변경해주기
+		int n = service.ChangeRstatus(paraMap);
+		
+		String message = "", loc = "";
+		if(n==1) {
+			message = "진료현황이 " + rStatus + "로 변경되었습니다.";
+			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
+		}
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		mav.setViewName("msg");
+		return mav;
 	}
 	
 }

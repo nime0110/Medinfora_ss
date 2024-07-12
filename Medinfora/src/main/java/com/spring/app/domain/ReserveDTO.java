@@ -14,6 +14,7 @@ public class ReserveDTO {
 	// === Select 용 === //
 	private String name;			// 환자이름
 	private String mobile;			// 환자번호
+	private String rStatus;			// 예약상태
 	
 	/////////////////////////////////////////////////////
 
@@ -83,6 +84,13 @@ public class ReserveDTO {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+	public String getrStatus() {
+		return rStatus;
+	}
+
+	public void setrStatus(String rStatus) {
+		this.rStatus = rStatus;
 	}
 	
 }

@@ -78,6 +78,27 @@ public class MypageService_imple implements MypageService {
 	public List<MemberDTO> GetPatientInfo(String patient_id) {
 		List<MemberDTO> memberList = dao.GetPatientInfo(patient_id);
 		return memberList;
+	}
+
+	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
+	@Override
+	public ReserveDTO getRdto(String ridx) {
+		ReserveDTO rsdto = dao.getRdto(ridx);
+		return rsdto;
+	}
+
+	// (의료인- 진료예약 열람) 선택한 진료현황의 예약코드 가져오기
+	@Override
+	public String GetRcode(String rStatus) {
+		String rcode = dao.GetRcode(rStatus);
+		return rcode;
+	}
+
+	// (의료인- 진료예약 열람) 진료현황 변경해주기
+	@Override
+	public int ChangeRstatus(Map<String, String> paraMap) {
+		int n = dao.ChangeRstatus(paraMap);
+		return n;
 	}	
 	
 }

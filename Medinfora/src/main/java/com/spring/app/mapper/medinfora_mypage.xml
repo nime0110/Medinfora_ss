@@ -173,4 +173,44 @@
 		from member
 		where userid = #{patient_id}
 	</select>
+	
+	<!-- (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기  -->
+	<select id="getRdto" resultType="ReserveDTO" parameterType="String">
+		SELECT ridx, reportday, checkin, name, mobile, rstatus
+		FROM
+		(
+		    SELECT ridx, reportday, checkin, rcode, name, mobile
+		    FROM
+		    (
+		        select ridx, userid, reportday, checkin, rcode
+		        from reserve
+		        where ridx = #{ridx}
+		    )R
+		    JOIN
+		    (
+		        select userid, name, mobile
+		        from member
+		    )M
+		    ON R.userid = M.userid
+		) RM
+		JOIN
+		(
+		    select rcode, rstatus
+		    from reservecode    
+		) RC
+		ON RM.rcode = RC.rcode
+	</select>
+	
+	<!-- (의료인- 진료예약 열람) 선택한 진료현황의 예약코드 가져오기  -->
+	<select id="GetRcode" resultType="String" parameterType="String">
+		select rcode
+		from reservecode 
+		where rstatus = #{rStatus}
+	</select>
+	
+	<!-- (의료인- 진료예약 열람) 진료현황 변경해주기  -->
+	<update id="ChangeRstatus" parameterType="HashMap">
+		update reserve set rcode = #{rcode}
+		where ridx = #{ridx}
+	</update>
 </mapper>

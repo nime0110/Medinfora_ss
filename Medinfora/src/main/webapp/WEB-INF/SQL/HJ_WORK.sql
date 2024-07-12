@@ -319,39 +319,46 @@ FROM
 )
 WHERE rno between 1 and 10
 
----------------------------------------------------------------------------
-SELECT ridx, userid, reportday, checkin, rcode, hidx
+
+-- === ridx 를 통해 예약 정보 가져오기 === --
+SELECT ridx, reportday, checkin, name, mobile, rstatus
 FROM
 (
-    SELECT row_number() over(order by ridx desc) as rno 
-        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+    SELECT ridx, reportday, checkin, rcode, name, mobile
     FROM
     (
-        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
-        FROM
-        (
-            select ridx, userid, reportday, checkin, rcode, hidx
-            from reserve
-            where hidx = '318'  -- 병원인덱스
-                and to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = '20240712'
-                or  to_char(to_date(reportday,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = '20240710'
-            order by checkin desc
-        )R
-        JOIN
-        (
-            select userid, name
-            from member
-            where name like '%' || '양혜정' || '%'  -- 환자명
-        )M
-        ON R.userid = M.userid
-    ) RM
+        select ridx, userid, reportday, checkin, rcode
+        from reserve
+        where ridx = '1'
+    )R
     JOIN
     (
-        select rcode, rstatus
-        from reservecode
-        where rstatus = '접수신청'     -- 접수현황
-    ) RC
-    ON RM.rcode = RC.rcode
-)
-WHERE rno between 1 and 10
-    
+        select userid, name, mobile
+        from member
+    )M
+    ON R.userid = M.userid
+) RM
+JOIN
+(
+    select rcode, rstatus
+    from reservecode    
+) RC
+ON RM.rcode = RC.rcode
+
+-- === 선택한 진료현황의 예약코드 가져오기 === --
+
+SELECT R.rcode
+FROM
+(
+    select rcode
+    from reserve
+) R
+JOIN
+(
+    select rcode, rstatus
+    from reservecode 
+    where rstatus = '접수완료'
+) RS
+ON R.rcode = RS.rcode
+update employees set first_name = '혜정', last_name = '양', hire_date = sysdate
+    where employee_id = 100;
