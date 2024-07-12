@@ -123,6 +123,9 @@ public class MypageController {
 		if(inputsc != null) {
 			inputsc = inputsc.trim();
 		}
+		else {
+			inputsc = "";
+		}
 		
 		int sizePerPage = 10;	// 한 페이지당 보여줄 개수
 		

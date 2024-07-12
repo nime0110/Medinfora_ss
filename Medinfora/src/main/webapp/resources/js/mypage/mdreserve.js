@@ -19,6 +19,11 @@ $(document).on('change','.sclist',(e) => {
     else if(sclist == "환자명"){
         $("input.inputsc").attr('placeholder','환자명을 입력해주세요.');
     }
+    else{
+        $("input.inputsc").val("");
+        $("input.inputsc").attr('placeholder','검색어를 입력해주세요.');
+        RESearch();
+    }
     
 
 })  // end of $(document).on('change','.search_ch',(e) => {---------------
@@ -35,10 +40,19 @@ function RESearch(){
             alert("검색 내용이 존재하지 않습니다.");
             return;
         }
-        
-        if(sclist == "진료현황"){
-            if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료"){
-                alert("접수신청, 접수완료, 진료완료 중 하나를 입력하세요.");
+    }
+    if(sclist == "진료현황"){
+        if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료"){
+            alert("접수신청, 접수완료, 진료완료 중 하나를 입력하세요.");
+            return;
+        }
+    }
+    
+    if(inputsc != ""){
+        if (!isNaN(inputsc)) {  // 입력한 값이 숫자인 경우
+            const length = inputsc.length;
+            if(length != 8){
+                alert("진료예약일시나 예약신청일은 숫자만 8글자로 입력해주세요.");
                 return;
             }
         }
