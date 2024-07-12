@@ -25,6 +25,7 @@ $(document).on('click','.resulthp',(e) => {
     }
 
     $("input[name='hidx']").val(closeset.find('.hidx').text());
+    $("input[name='hpname'").val(closeset.find(".hospital_name").text());
 });
 
 $(document).on("mouseover",$(".resulthp"),(e)=>{
