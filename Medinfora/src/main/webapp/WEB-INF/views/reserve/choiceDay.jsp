@@ -44,14 +44,23 @@
 	    	    };
 	      },
 	      locale: "ko",
+	      fixedWeekCount : false,
 	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
 	        
 	    	$("form[name='choiceFrm'] > input[name='time']").val("");
 	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
 	        
-	        const eventDateHtml = arg.el.parentNode.parentNode.parentNode.querySelector("a.fc-daygrid-day-number");
+	        const DateNode = arg.el.parentNode.parentNode.parentNode.querySelector("a.fc-daygrid-day-number").childNodes[0];
 	        
-	        console.log(eventDateHtml);
+	        const DateAllNode = $("a.fc-daygrid-day-number");
+	        
+	        DateAllNode.each((idx,item)=>{
+	        	
+	        	item.classList.remove("checkbold");
+	        	
+	        });
+	        
+	        DateNode.classList.add("checkbold");
 	        
 	        const sendDate = {"hidx":"${requestScope.hidx}","date":eventDate};
 	        
@@ -63,7 +72,16 @@
 	    });
 
 	    calendar.render();
+	    
+	    // 첫로딩 셀랙트 START
+	    
 	    replaceTitle();
+	    
+	    const todayDate = $('.fc-day-today').find("a.fc-daygrid-day-number").find("a")[0];
+	    
+	    todayDate.classList.add("checkbold");
+	    
+		// 첫로딩 셀랙트 END
 	    
 	    $('.fc-next-button').on("click",function(){
 	    	btnUpreplace();
@@ -103,9 +121,9 @@
         		let v_html = ``;
         		$.each(json, function(index, item){
         			
-        			v_html +=`<button type="button" class="timebtn mb-3 btn btn-lg col-3">
-                        			<span class="exTimebtn nanum-n">\${item}</span>
-                        		</button>`;
+        			v_html +=`<button type="button" class="timebtn">
+                        			<span class="exTimebtn">\${item}</span>
+                        	  </button>`;
         		})	// end of $.each(json, function(index, item){-----------
         			
         		$("div.choiceTime").html(v_html);
@@ -212,11 +230,15 @@
             
             <div class="choiceTimediv">
             
-                <h3 class="selectDay nanum-b size-n">
-                	<%-- 선택한 날짜 --%>
-                </h3>
-                <div class="choiceTime">
-					<%-- 예약가능한 시간대 --%>
+            	<div class="choiceTimedivineer">
+            	
+	                <h3 class="selectDay nanum-b size-n">
+	                	<%-- 선택한 날짜 --%>
+	                </h3>
+	                <div class="choiceTime">
+						<%-- 예약가능한 시간대 --%>
+	                </div>
+	                
                 </div>
                 
             </div>
@@ -232,7 +254,7 @@
     
     <form name ="choiceFrm">
     	<input type="hidden" name="hidx" value="${requestScope.hidx}"/>
-    	<input type="hidden" name="day" />
+    	<input type="text" name="day" />
     </form>
     
 </div>

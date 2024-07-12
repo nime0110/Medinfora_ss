@@ -40,12 +40,22 @@
     font-size: 1.3rem;
 }
 
-/* 선택 영역 */
-
 .choiceday{
     background-color: var(--grey800) !important;
     color : var(--text-white-color) !important;
 }
+
+#hospitaltitle{
+    margin: 0;
+    padding: 50px;
+    font-family: var(--font);
+    font-size: 2rem;
+    color: var(--grey800);
+    text-align: center;
+    border-top: solid 2px var(--grey200);
+}
+
+/* 선택 영역 */
 
 .div_choiceDay{
     padding-top: 48px;
@@ -57,18 +67,29 @@
 
 /* 캘린더 영역 */
 
+.fc-button-primary{
+    border: none !important;
+}
+
 .reserve_day{
     width: 620px;
 }
 
 #calendar {
     width: 95%;
+    height: 500px;
     margin: 0 auto;
 }
 
 a.fc-event{
     background-color: var(--blue200) !important;
     border: none !important;
+    transition: all 0.3s;
+}
+
+a.fc-event:hover{
+    cursor: pointer;
+    background-color: var(--blue400) !important;
 }
 
 .fc-event-main{
@@ -77,7 +98,7 @@ a.fc-event{
 
 .fc-event-title-container{
   text-align: center;
-  padding-top: 2px;
+  padding-top: 3px;
   height: 20px;
   transition: all 0.5s;
 }
@@ -92,23 +113,45 @@ a.fc-event{
     width: calc(100% - 620px);
 }
 
-.exTimebtn{
-    border: solid 1px var(--text-gray-color);
-    border-radius: 5px;
-    padding: 10px 10%;
-    background-color: var(--blue50);
+.choiceTimedivineer{
+    margin: 50px 50px;
+    border: solid 1px var(--grey100);
+    border-radius: 10px;
+    height: 450px;
+}
+
+.selectDay{
+    width: 100%;
+    padding: 24px 24px;
+}
+
+.choiceTime{
+    width: 100%;
+    padding: 24px 24px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .timebtn{
-    padding: 12px 12px;
     justify-content: space-between;
     border: none;
+    background-color: white;
+    height: auto;
+}
+
+.exTimebtn{
+    border: solid 1px var(--blue50);
+    border-radius: 5px;
+    padding: 24px 24px;
+    background-color: var(--blue50);
 }
 
 .exTimebtn:hover{
     background-color: var(--blue200);
     cursor: pointer;
 }
+
+/* 하단 기능 */
 
 .btn_proc{
 	border: none;
@@ -126,6 +169,8 @@ a.fc-event{
     background-color: var(--navy900);
     color:var(--grey50);
 }
+
+/* JS Add Class */
 
 .choiceReserveday{
     background-color: var(--navy600);
