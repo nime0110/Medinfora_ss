@@ -44,7 +44,7 @@
 	    	    };
 	      },
 	      locale: "ko",
-	      fixedWeekCount : false,
+	      fixedWeekCount : false, // 주수 해당 월만 보이게 처리
 	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
 	        
 	    	$("form[name='choiceFrm'] > input[name='time']").val("");
@@ -254,7 +254,7 @@
     
     <form name ="choiceFrm">
     	<input type="hidden" name="hidx" value="${requestScope.hidx}"/>
-    	<input type="text" name="day" />
+    	<input type="hidden" name="day" />
     </form>
     
 </div>
