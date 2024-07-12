@@ -63,4 +63,11 @@
 		ON A.CLASSCODE = B.CLASSCODE
 		WHERE hidx = #{hidx}
 	</select>
+	
+	<select id="putSiGetdo" parameterType="String" resultType="String">
+		select city from KOREAAREA 
+		where local = #{local} 
+		group by city 
+		order by city
+	</select>
 </mapper>

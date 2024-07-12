@@ -32,4 +32,10 @@ public class HpsearchService_imple implements HpsearchService {
 		return hsdao.getHpDetail(hidx);
 	}
 
+	//시를 넣어서 도 불러오기
+	@Override
+	public List<String> putSiGetdo(String local) {
+		return hsdao.putSiGetdo(local);
+	}
+
 }

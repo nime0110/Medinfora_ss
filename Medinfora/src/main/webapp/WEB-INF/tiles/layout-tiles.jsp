@@ -31,6 +31,12 @@
 	<%-- Font Awesome 6 Icons --%>
 	<script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	
+	
+	<%-- 스마트 에디터 관련 --%>
+	<script type="text/javascript" src="<%= ctxPath %>/resources/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+	
+
 </head>
 <style>
 :root {
