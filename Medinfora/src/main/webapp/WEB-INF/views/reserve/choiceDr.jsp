@@ -220,6 +220,7 @@ function Page(currentShowPageNo){
 	           	<div class="name_input">
 	           		<span class="searchoicename">병원명</span>
 	               	<input type="text" class="inputbox" name="hpname" placeholder="병원명을 입력하세요."/>
+	               	<input type="text" style="display: none;"/>		<%-- 전송방지 --%>
 	               	<button type="button" class="searchhpbtn" onclick="HPSearch()">검색</button>
 	           	</div>
         	</div>
@@ -237,7 +238,7 @@ function Page(currentShowPageNo){
 	    </div>
 	    <form name="hpinfo">
 	    	<input type="hidden" name="hidx" value="" />
-	    	<input type="hidden" name="hpname" value="" />
+	    	<input type="hidden" name="sel_hpname" value="" />
 	    </form>
 	</div>
 </div>
