@@ -147,7 +147,7 @@
    
     <div id="deleteModal" class="modal modal-dialog">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" style="text-align: right; margin-bottom: 20px;">&times;</span>
             <h2>정말로 글을 삭제하시겠습니까?</h2>
             <form name="delFrm">
                 <input type="hidden" name="nidx" value="${noticedto.nidx}" />

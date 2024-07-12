@@ -181,7 +181,7 @@ public class NoticeController {
 			mav.addObject("nextNotice", nextNotice);
 			mav.setViewName("notice/noticeView.tiles");
 		} catch (NumberFormatException e) {
-			System.out.println("NumberFormatException occurred: " + e.getMessage());
+			e.getStackTrace();
 		}
 		return mav;
 		/*
@@ -515,48 +515,61 @@ public class NoticeController {
 			return mav;
 		}
 	}
+
 	@PostMapping("/notice/editEnd.bibo")
-	public ModelAndView isadmin_editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request,
-	        MultipartHttpServletRequest mrequest) {
+	public ModelAndView isadmin_editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request, MultipartHttpServletRequest mrequest) {
 	    
+	    // 기존 공지사항 정보 조회
+	    Map<String, String> paraMap = new HashMap<>();
+	    paraMap.put("nidx", String.valueOf(noticedto.getNidx()));
+	    NoticeDTO existingNotice = service.getView_no_increase_readCount(paraMap);
+
+	    // 파일 저장 경로 설정
+	    HttpSession session = mrequest.getSession();
+	    String root = session.getServletContext().getRealPath("/");
+	    String path = root + "resources" + File.separator + "files";
+
+	    // 파일 삭제 여부 설정
+	    String deleteFile = request.getParameter("deleteFile");
+	    boolean isFileDeleted = false;
+	    if ("true".equals(deleteFile)) {
+	        isFileDeleted = true;
+	    }
+
+	    MultipartFile attach = noticedto.getAttach();
+
 	    try {
-	        MultipartFile attach = noticedto.getAttach();
-	        System.out.println("attach " + attach);
-	        
-	        // 기존 게시글 정보 조회
-	        Map<String, String> paraMap = new HashMap<>();
-	        paraMap.put("nidx", String.valueOf(noticedto.getNidx()));
-	        NoticeDTO existingNotice = service.getView_no_increase_readCount(paraMap);
-	        
-	        if (attach != null && !attach.isEmpty()) {
-	            // 새 파일이 첨부된 경우
-	            HttpSession session = mrequest.getSession();
-	            String root = session.getServletContext().getRealPath("/");
-	            String path = root + "resources" + File.separator + "files";
-	            
-	            byte[] bytes = attach.getBytes();
-	            String originalFilename = attach.getOriginalFilename();
-	            String newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-	            
-	            noticedto.setFilename(newFileName);
-	            noticedto.setOrgname(originalFilename);
-	            noticedto.setFilesize(String.valueOf(attach.getSize()));
-	            
+	        // Case 1: 파일 변경 없이 나머지만 바꾸는 경우
+	        if (!isFileDeleted && (attach == null || attach.isEmpty())) {
+	            noticedto.setFilename(existingNotice.getFilename());
+	            noticedto.setOrgname(existingNotice.getOrgname());
+	            noticedto.setFilesize(existingNotice.getFilesize());
+	        } 
+	        // Case 2: 기존에 있던 첨부된 파일만 삭제하는 경우
+	        else if (isFileDeleted) {
+	            if (existingNotice.getFilename() != null) {
+	                fileManager.doFileDelete(existingNotice.getFilename(), path);
+	            }
+	            noticedto.setFilename(null);
+	            noticedto.setOrgname(null);
+	            noticedto.setFilesize(null);
+	        } 
+	        // Case 3: 파일 변경이 있는 경우
+	        else if (attach != null && !attach.isEmpty()) {
 	            // 기존 파일 삭제
 	            if (existingNotice.getFilename() != null) {
 	                fileManager.doFileDelete(existingNotice.getFilename(), path);
 	            }
-	        } else {
-	            // 새 파일이 첨부되지 않은 경우, 기존 파일 정보 유지
-	            noticedto.setFilename(existingNotice.getFilename());
-	            noticedto.setOrgname(existingNotice.getOrgname());
-	            noticedto.setFilesize(existingNotice.getFilesize());
+	            // 새 파일 업로드
+	            String newFileName = fileManager.doFileUpload(attach.getBytes(), attach.getOriginalFilename(), path);
+	            noticedto.setFilename(newFileName);
+	            noticedto.setOrgname(attach.getOriginalFilename());
+	            noticedto.setFilesize(String.valueOf(attach.getSize()));
 	        }
-	        
-	        // 데이터베이스 업데이트
+
+	        // 공지사항 수정
 	        int n = service.edit(noticedto);
-	        System.out.println("Update result: " + n);
-	        
+
 	        if (n == 1) {
 	            mav.addObject("message", "글 수정 성공!!");
 	            mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
@@ -566,10 +579,10 @@ public class NoticeController {
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        mav.addObject("message", "글 수정 중 오류 발생: " + e.getMessage());
+	        mav.addObject("message", "파일 처리 중 오류가 발생했습니다: " + e.getMessage());
 	        mav.addObject("loc", "javascript:history.back()");
 	    }
-	    
+
 	    mav.setViewName("msg");
 	    return mav;
 	}

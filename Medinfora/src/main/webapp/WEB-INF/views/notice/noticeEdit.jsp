@@ -53,7 +53,7 @@
 			   return;
 		   }
 		   
-		 //  let img_val = $("")
+		let img_val = $("")
 		   
 		   const fileInput = $("input[name='attach']").val();
            console.log("fil" , $("input[name='attach']").val());
@@ -66,21 +66,20 @@
 	           $("input[name='filesize']").val(file.size); 
 	       }
 		   */
-		   const frm = document.editFrm;
-		   frm.method = "post";
-		   frm.action = "<%= ctxPath%>/notice/editEnd.bibo";
-		   frm.submit();
+           const frm = document.editFrm;
+           frm.method = "post";
+           frm.action = "<%= ctxPath%>/notice/editEnd.bibo";
+           frm.submit();
 	   });
 
-	// 첨부파일 삭제 버튼 클릭 시
 	   $("#btnDeleteFile").click(function() {
-	       if(confirm("첨부파일을 삭제하시겠습니까?")) {
-	           $("input:hidden[name='deleteFile']").val("true");
-	           $("#currentFile").hide();
-	           $("#attach").val(""); // 파일 입력 필드 초기화
-	       }
-	   });
-	   
+		    if(confirm("첨부파일을 삭제하시겠습니까?")) {
+		        $("input[name='deleteFile']").val("true");
+		        $("#currentFile").hide();
+		        $("#attach").val(""); // 파일 입력 필드 초기화
+		    }
+		});
+
 	   
 	   
 	   
@@ -111,20 +110,23 @@
                 <textarea style="width: 100%; height: 612px;" name="content" id="content">${requestScope.noticedto.content}</textarea>
             </td>
         </tr>
-       <tr>
+    <tr>
     <th style="width: 15%;">파일첨부</th>
     <td>
         <input id="attach" type="file" name="attach" />
         <div id="currentFile" class="notice-attachment">
-            <c:if test="${noticedto.filename != null}">
+            <c:if test="${not empty noticedto.filename}">
                 <span class="attach_sh">
                     <img src="<%=ctxPath%>/resources/img/sh_attach.png" style="width: 20px; height: 20px;">첨부파일 :
                 </span>
                 <p>${noticedto.orgname} <button type="button" id="btnDeleteFile">X</button></p>
             </c:if>
+            
+            
         </div>
+        <input type="hidden" name="deleteFile" value="false" />
     </td>
-</tr>  
+</tr>
     </table>
     <div style="margin: 20px;">
         <button type="button" class="btn btn-secondary btn-sm mr-3" id="btnUpdate">글수정</button>

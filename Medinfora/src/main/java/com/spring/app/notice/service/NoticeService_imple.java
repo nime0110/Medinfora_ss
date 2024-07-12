@@ -141,9 +141,20 @@ public class NoticeService_imple implements NoticeService {
 	@Override
 	public void edit_view(Map<String, Object> paraMap) {
 		dao.edit_view(paraMap);
-		System.out.println(paraMap);
+
 		return ;
 	}
+
+	/*
+	 * @Override public void delFile(NoticeDTO noticedto) {
+	 * 
+	 * dao.deleteFile(noticedto);
+	 * 
+	 * }
+	 */
+
+	
+
 
 	
 

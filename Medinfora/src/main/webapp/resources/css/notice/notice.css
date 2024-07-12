@@ -387,8 +387,8 @@ body>div.homebar {
 }
 
 .modal-content h2 {
-    margin-top: 6px;
- font-size: 16px; 
+    margin-top: 10px;
+ font-size: 12px; 
     text-align: center;
 }
 
@@ -418,7 +418,7 @@ body>div.homebar {
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
     cursor: pointer;
 }
