@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- ==== #29. mapper 기본설정 ==== -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.app.mypage.model.MypageDAO">
 	
+	<!-- (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기  -->
+	<select id="Searchhospital" resultType="String" parameterType="String">
+		SELECT distinct hidx
+		FROM
+		(
+		    select userid
+		    from member
+		) M
+		JOIN
+		(
+		    select userid, hidx
+		    from classcodemet
+		) C
+		ON M.userid = C.userid
+		WHERE M.userid = #{userid}
+	</select>
 	
+	<!-- (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(검색포함)  -->
+	<select id="reserveList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+		    FROM
+		    (
+		        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
+		        FROM
+		        (
+		            select ridx, userid, reportday, checkin, rcode, hidx
+		            from reserve
+		            where hidx = #{hidx}
+		            order by checkin desc
+		        )R
+		        JOIN
+		        (
+		            select userid, name
+		            from member
+		            <if test='sclist == "환자명" and inputsc != ""' >
+		            	where name = #{inputsc}
+		            </if>
+		        )M
+		        ON R.userid = M.userid
+		    ) RM
+		    JOIN
+		    (
+		        select rcode, rstatus
+		        from reservecode
+		        <if test ='sclist == "진료현황"'>
+		       		 where rstatus = #{inputsc}
+		        </if>
+		    ) RC
+		    ON RM.rcode = RC.rcode
+		)
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기  -->
+	<select id="GetPatientInfo" resultType="MemberDTO" parameterType="String">
+		select name, mobile
+		from member
+		where userid = #{patient_id}
+	</select>
 </mapper>

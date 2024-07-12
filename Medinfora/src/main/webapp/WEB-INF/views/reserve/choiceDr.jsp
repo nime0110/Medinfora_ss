@@ -229,8 +229,7 @@ function Page(currentShowPageNo){
 	    </div>
 	    <%-- ================================================================================================== --%>
 	    <%-- == 페이징바 === --%>
-	    <div id="ReserveHP_PageBar" class="w-100 d-flex justify-content-center pt-3">
-	    </div>
+	    <div id="ReserveHP_PageBar" class="w-100 d-flex justify-content-center pt-3"></div>
 	    <%-- ================================================================================================== --%>	    
 	    <div class="div_proc text-center mb-5">
 	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">취소</button>
