@@ -27,3 +27,4 @@ local.properties
 *.MF
 /Medinfora/target
 *.MF
+/Medinfora/.settings
