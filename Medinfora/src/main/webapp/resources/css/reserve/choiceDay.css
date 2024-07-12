@@ -133,6 +133,10 @@ a.fc-event{
     font-weight: bold;
 }
 
+.checkbold{
+	font-weight: bold;
+}
+
 @media (max-width: 768px) {
 
     .reserve_title{

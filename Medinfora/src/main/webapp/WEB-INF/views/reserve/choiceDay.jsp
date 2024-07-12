@@ -9,6 +9,8 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/reserve/choiceDay.js"></script>
 <script>
 
+	let calTitle = "";
+
 	const dateList = ${requestScope.dateList};
 
 	const origindata = [];
@@ -28,12 +30,29 @@
 	        center: 'title',
 	        right: 'next'
 	      },
+	      dayCellContent: function (info) {
+	    	    var number = document.createElement("a");
+	    	    number.classList.add("fc-daygrid-day-number");
+	    	    number.innerHTML = info.dayNumberText.replace("일",'');
+	    	    if(info.view.type === "dayGridMonth"){
+	    	        return {
+	    	            html: number.outerHTML
+	    	        };
+	    	    }
+	    	    return {
+	    	        domNodes: []
+	    	    };
+	      },
 	      locale: "ko",
 	      eventClick: function(arg) { // 이벤트를 클릭했을때 발생하는 함수! 여기서 Ajax처리를 할수있다
 	        
-	    	  $("form[name='choiceFrm'] > input[name='time']").val("");
+	    	$("form[name='choiceFrm'] > input[name='time']").val("");
 	        const eventDate = JSON.stringify(arg.event._instance.range.start).substring(1,11); // 해당 이벤트의 날짜
-
+	        
+	        const eventDateHtml = arg.el.parentNode.parentNode.parentNode.querySelector("a.fc-daygrid-day-number");
+	        
+	        console.log(eventDateHtml);
+	        
 	        const sendDate = {"hidx":"${requestScope.hidx}","date":eventDate};
 	        
 	        searchTimes(sendDate);
@@ -44,8 +63,15 @@
 	    });
 
 	    calendar.render();
+	    replaceTitle();
 	    
-	    replaceDay();
+	    $('.fc-next-button').on("click",function(){
+	    	btnUpreplace();
+	    });
+	    
+	    $('.fc-prev-button').on("click",function(){
+	    	btnDownreplace();
+	    });
 	    
 	    const day = new Date();
 	    const year = day.getFullYear();
@@ -91,17 +117,65 @@
         })		//  end of $.ajax({------------------------------
 		
 	}	// end of function searchTimes(sendDate){--------------------------------
-
-	function replaceDay(){
+	
+	function replaceTitle(){
 		
-	    $('.fc-daygrid-day-number').each((index,element) => {
-	    	
-	        let day = element.innerText;
+		// Document가 로딩 될때 년월을 -으로 바꾸고 그 값을 저장하는 Function
+		
+		const titleEl = $('.fc-toolbar-title');
+		let titleText = titleEl.text().replace("년"," -").replace("월",'');
+		
+		titleEl.text(titleText);
+		calTitle = titleText;
+			
+	}
+	
+	function btnUpreplace(){
+		
+		// 달력 next 버튼을 눌렀을때 - 으로 재설정 해주는 Function
+		
+		const titleEl = $('.fc-toolbar-title');
+		
+		let year = Number(calTitle.substring(0,4));
+		let month = Number(calTitle.substring(7));
+		
+		if(month == 12){
+			year = year + 1;
+			month = 1;
+		}else{
+			month = month + 1;
+		}
+		
+		const replaceTitle = year+" - "+month;
+		
+		calTitle = replaceTitle;
+		
+		titleEl.text(replaceTitle);
+		
+	}
+	
+	function btnDownreplace(){
+		
+		// 달력 prev 버튼을 눌렀을때 - 으로 재설정 해주는 Function
+		
+		const titleEl = $('.fc-toolbar-title');
+		
+		let year = Number(calTitle.substring(0,4));
+		let month = Number(calTitle.substring(7));
+		
+		if(month == 1){
+			year = year - 1;
+			month = 12;
+		}else{
+			month = month - 1;
+		}
+		
+		const replaceTitle = year+" - "+month;
 
-	        element.innerText = day.replace("일","");
-	        
-	    });
-
+		calTitle = replaceTitle;
+		
+		titleEl.text(replaceTitle);
+		
 	}
 	
 </script>
@@ -122,6 +196,10 @@
 	            	<span class="reserve_licontent nanum-b">진료일시 선택</span>
 	            </li>
 	        </ul>
+	    </div>
+	    
+	    <div id="hospitaltitle">
+	    	간다간다병원
 	    </div>
 	    
         <div class="div_choiceDay">
