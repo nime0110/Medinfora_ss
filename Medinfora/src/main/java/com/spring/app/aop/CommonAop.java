@@ -197,7 +197,7 @@ public class CommonAop {
 			
 		}
 		
-	} // end of public void isMember(JoinPoint joinpoint)
+	} // end of public void isDr(JoinPoint joinpoint)
 	
 	//=== AFTER ☆ ADVICE === //
 
