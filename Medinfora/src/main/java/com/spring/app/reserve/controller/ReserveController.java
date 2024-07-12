@@ -39,27 +39,7 @@ public class ReserveController {
 	
 	// === 병원선택 === //
 	@GetMapping("choiceDr.bibo")
-	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-		
-		if(loginuser != null && loginuser.getmIdx() == 2) {
-			String message = "(단체)병원 회원은 접근 불가능합니다.";
-	 		String loc = request.getContextPath()+"/index.bibo";
-	 		
-	 		request.setAttribute("message", message);
-	 		request.setAttribute("loc", loc);
-	 		
-	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-	 		
-	 		try {
-				dispatcher.forward(request, response);	// /WEB-INF/views/msg.jsp 로 이동
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public ModelAndView isMember_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
@@ -70,7 +50,7 @@ public class ReserveController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
-	public String choiceDrList(HttpServletRequest request) {
+	public String isMember_choiceDrList(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
@@ -152,7 +132,7 @@ public class ReserveController {
 	// === 진료일시 선택 === //
 	@SuppressWarnings("unchecked")
 	@PostMapping("choiceDay.bibo")
-	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView isMember_choiceDay(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		String hidx = request.getParameter("hidx");
 		String sel_hpname = request.getParameter("sel_hpname");
@@ -261,7 +241,7 @@ public class ReserveController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("selectDay.bibo")
-	public String selectDay(HttpServletRequest request) throws ParseException {
+	public String isMember_selectDay(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) throws ParseException {
 		
 		String hidx = request.getParameter("hidx");
 		String day = request.getParameter("date");
