@@ -36,6 +36,12 @@
 	
 	/* 스타일 clear 공통 코드 start */
 	
+		#wrap_container{
+			height: auto;
+			min-height: 100%;
+			padding-bottom: 120px;
+		}
+	
 		body {
 		    font-family: 'Nanum Gothic', sans-serif;
 		    margin: 0;
@@ -126,16 +132,18 @@
 
 </head>
 <body>
-	<tiles:insertAttribute name="header" />
-	<div style="margin-top: 75px;"></div>
-	<div class="viewtoggle">
-		<span class="tog_ico" onclick="toggleOn()"><i class="fa-solid fa-plus"></i></span>
-	</div>
-	<div id="info_container">
-		<tiles:insertAttribute name="sidebar" />
-		<div id="info_content">
-			<tiles:insertAttribute name="content" />
-        </div>
+	<div id="wrap_container">
+		<tiles:insertAttribute name="header" />
+		<div style="margin-top: 75px;"></div>
+		<div class="viewtoggle">
+			<span class="tog_ico" onclick="toggleOn()"><i class="fa-solid fa-plus"></i></span>
+		</div>
+		<div id="info_container">
+			<tiles:insertAttribute name="sidebar" />
+			<div id="info_content">
+				<tiles:insertAttribute name="content" />
+	        </div>
+	    </div>
     </div>
 	<tiles:insertAttribute name="footer" />
 </body>

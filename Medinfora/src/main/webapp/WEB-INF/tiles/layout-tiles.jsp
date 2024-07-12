@@ -57,18 +57,20 @@
 	    color: black;
 	}
 	
-	#wrapper{
-		margin: 0;
-		padding: 0;
+	#wrap_container{
+		height: auto;
 		min-height: 100%;
+		padding-bottom: 120px;
 	}
+	
 </style>
 
 <body>
+	
 	<tiles:insertAttribute name="header" />
-	<div style="margin-top: 75px;"></div>
-	<div id="wrapper">
-	<tiles:insertAttribute name="content" />
+	<div id="wrap_container">
+		<div style="margin-top: 75px;"></div>
+		<tiles:insertAttribute name="content" />
 	</div>
 	<tiles:insertAttribute name="footer" />
 </body>
