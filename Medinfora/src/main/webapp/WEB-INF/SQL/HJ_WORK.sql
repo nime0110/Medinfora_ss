@@ -285,14 +285,15 @@ where userid = 'hemint0520_kakao';
 
 -- === hidx 의 현재 예약리스트 가져오기(검색포함) === --
 -- sclist => 환자명, 진료현황
-SELECT ridx, userid, reportday, checkin, rcode, hidx, name, mobile
+SELECT ridx, userid, reportday, checkin, rcode, hidx
+
 FROM
 (
     SELECT row_number() over(order by ridx desc) as rno 
-        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx, name, mobile
+        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
     FROM
     (
-        SELECT ridx, M.userid, reportday, checkin, rcode, hidx, name, mobile
+        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
         FROM
         (
             select ridx, userid, reportday, checkin, rcode, hidx
@@ -302,9 +303,45 @@ FROM
         )R
         JOIN
         (
-            select userid, name, mobile
+            select userid, name
             from member
-            where name = '양혜정'  -- 환자명
+            where name like '%' || '' || '%' -- 환자명
+        )M
+        ON R.userid = M.userid
+    ) RM
+    JOIN
+    (
+        select rcode, rstatus
+        from reservecode
+        --where rstatus = '접수신청'     -- 접수현황
+    ) RC
+    ON RM.rcode = RC.rcode
+)
+WHERE rno between 1 and 10
+
+---------------------------------------------------------------------------
+SELECT ridx, userid, reportday, checkin, rcode, hidx
+FROM
+(
+    SELECT row_number() over(order by ridx desc) as rno 
+        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+    FROM
+    (
+        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
+        FROM
+        (
+            select ridx, userid, reportday, checkin, rcode, hidx
+            from reserve
+            where hidx = '318'  -- 병원인덱스
+                and to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = '20240712'
+                or  to_char(to_date(reportday,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = '20240710'
+            order by checkin desc
+        )R
+        JOIN
+        (
+            select userid, name
+            from member
+            where name like '%' || '양혜정' || '%'  -- 환자명
         )M
         ON R.userid = M.userid
     ) RM
@@ -317,33 +354,4 @@ FROM
     ON RM.rcode = RC.rcode
 )
 WHERE rno between 1 and 10
-
--- === hidx 의 현재 예약리스트의 개수(검색포함) === --
-SELECT 
-FROM
-(
-    SELECT ridx, M.userid, reportday, checkin, rcode, hidx
-    FROM
-    (
-        select ridx, userid, reportday, checkin, rcode, hidx
-        from reserve
-        where hidx = '318'  -- 병원인덱스
-        order by checkin desc
-    )R
-    JOIN
-    (
-        select userid, name
-        from member
-        where name like '%' || '양혜정' || '%'  -- 환자명
-    )M
-    ON R.userid = M.userid
-) RM
-JOIN
-(
-    select rcode, rstatus
-    from reservecode
-    where rstatus like '%' || '접' || '%'     -- 접수현황
-) RC
-ON RM.rcode = RC.rcode
-
-
+    
