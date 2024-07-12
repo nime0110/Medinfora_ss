@@ -319,35 +319,31 @@ FROM
 WHERE rno between 1 and 10
 
 -- === hidx 의 현재 예약리스트의 개수(검색포함) === --
-SELECT count(*)
+SELECT 
 FROM
 (
-    SELECT row_number() over(order by ridx desc) as rno 
-        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+    SELECT ridx, M.userid, reportday, checkin, rcode, hidx
     FROM
     (
-        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
-        FROM
-        (
-            select ridx, userid, reportday, checkin, rcode, hidx
-            from reserve
-            where hidx = '318'  -- 병원인덱스
-            order by checkin desc
-        )R
-        JOIN
-        (
-            select userid, name
-            from member
-            where name = '양혜정'  -- 환자명
-        )M
-        ON R.userid = M.userid
-    ) RM
+        select ridx, userid, reportday, checkin, rcode, hidx
+        from reserve
+        where hidx = '318'  -- 병원인덱스
+        order by checkin desc
+    )R
     JOIN
     (
-        select rcode, rstatus
-        from reservecode
-        where rstatus = '접수신청'     -- 접수현황
-    ) RC
-    ON RM.rcode = RC.rcode
-)
-WHERE rno between 1 and 10
+        select userid, name
+        from member
+        where name like '%' || '양혜정' || '%'  -- 환자명
+    )M
+    ON R.userid = M.userid
+) RM
+JOIN
+(
+    select rcode, rstatus
+    from reservecode
+    where rstatus like '%' || '접' || '%'     -- 접수현황
+) RC
+ON RM.rcode = RC.rcode
+
+

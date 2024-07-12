@@ -18,12 +18,13 @@
 			<div class="p-4 searchBar" align="center">
 				<span>
 					<select class="sclist search_ch sel_0 nanum-b">
+						<option>전체</option>
 						<option>환자명</option>
 						<option>진료현황</option>
 					</select>
 				</span>
 				<span>
-					<input class="inputsc search_ch sel_1 nanum-b" name="search" type="text" placeholder="환자명을 입력해주세요." />
+					<input class="inputsc search_ch sel_1 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
 					<input type="text" style="display: none;"/>		<%-- 전송방지 --%>
 				</span>
 				<span>

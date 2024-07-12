@@ -119,7 +119,7 @@ public class MypageController {
 		
 		String sclist = request.getParameter("sclist");		// 검색 구분
 		String inputsc = request.getParameter("inputsc");	// 검색한 값
-		
+
 		if(inputsc != null) {
 			inputsc = inputsc.trim();
 		}

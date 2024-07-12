@@ -30,15 +30,17 @@ function RESearch(){
     const sclist = $(".sclist").val();
     const inputsc = $("input.inputsc").val().trim();
 
-    if(inputsc == ""){
-        alert("검색 내용이 존재하지 않습니다.");
-        return;
-    }
-    
-    if(sclist == "진료현황"){
-        if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료"){
-            alert("접수신청, 접수완료, 진료완료 중 하나를 입력하세요.");
+    if(sclist != "전체"){
+        if(inputsc == ""){
+            alert("검색 내용이 존재하지 않습니다.");
             return;
+        }
+        
+        if(sclist == "진료현황"){
+            if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료"){
+                alert("접수신청, 접수완료, 진료완료 중 하나를 입력하세요.");
+                return;
+            }
         }
     }
     Page(1);

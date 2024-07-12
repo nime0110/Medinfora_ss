@@ -42,8 +42,8 @@
 		        (
 		            select userid, name
 		            from member
-		            <if test='sclist == "환자명" and inputsc != ""' >
-		            	where name = #{inputsc}
+		            <if test='sclist == "환자명" or sclist == "전체"' >
+		            	where name like '%' || #{inputsc} || '%'
 		            </if>
 		        )M
 		        ON R.userid = M.userid
