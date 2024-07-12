@@ -8,7 +8,6 @@ public class ReserveDTO {
 	private String reportday;		// 예약신청일
 	private String checkin;			// 예약일
 	private String rcode;			// 예약코드
-	private String symptom;			// 증상
 
 	// === select 용 === //
 	private String rStatus;			// 예약상태
@@ -62,14 +61,6 @@ public class ReserveDTO {
 
 	public void setRcode(String rcode) {
 		this.rcode = rcode;
-	}
-
-	public String getSymptom() {
-		return symptom;
-	}
-
-	public void setSymptom(String symptom) {
-		this.symptom = symptom;
 	}
 
 	public String getrStatus() {

@@ -37,6 +37,7 @@ public class ReserveController {
 	@Autowired
 	private ReserveService service;
 	
+	// === 병원선택 === //
 	@GetMapping("choiceDr.bibo")
 	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
@@ -54,7 +55,7 @@ public class ReserveController {
 	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 	 		
 	 		try {
-				dispatcher.forward(request, response);
+				dispatcher.forward(request, response);	// /WEB-INF/views/msg.jsp 로 이동
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();
 			}
@@ -63,8 +64,9 @@ public class ReserveController {
 		mav.setViewName("reserve/choiceDr.tiles");
 		
 		return mav;
-	}
+	}	// end of public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {---
 	
+	// === 진료예약 - 병원선택에서 검색시 === //
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
@@ -95,7 +97,7 @@ public class ReserveController {
 		
 		int sizePerPage = 6;	// 한 페이지당 보여줄 개수
 		
-		if(currentShowPageNo == null) {
+		if(currentShowPageNo == null) {		// 처음 접속한 경우
 			currentShowPageNo = "1";
 		}
 		
@@ -137,21 +139,23 @@ public class ReserveController {
 			}	// end of for---------
 		}
 		return jsonArr.toString();
-	}
+	}	// end of public String choiceDrList(HttpServletRequest request) {----------------
 	
+	// === 진료일시 선택(병원선택 후 이동이 아닌 경우) === //
 	@GetMapping("choiceDay.bibo")
 	public ModelAndView choiceDay(ModelAndView mav) {
 		mav.setViewName("redirect:/index.bibo");
 		return mav;
-	}
+	}	// end of public ModelAndView choiceDay(ModelAndView mav) {--------------
 	
+	// === 진료일시 선택 === //
 	@SuppressWarnings("unchecked")
 	@PostMapping("choiceDay.bibo")
 	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
 		String hidx = request.getParameter("hidx");
 		
-		Calendar currentDate = Calendar.getInstance();
+		Calendar currentDate = Calendar.getInstance();	// 현재시간
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -173,6 +177,7 @@ public class ReserveController {
 			
 			String day = dateFormat.format(currentDate.getTime());
 			
+			// 공휴일인지 파악 후 요일 구분 메소드(parseDayofWeek)
 			String dayOfweek = parseDayofWeek(currentDate,day);
 			
 			Map<String, String> paraMap = new HashMap<>();
@@ -182,20 +187,22 @@ public class ReserveController {
 			// 병원의 오픈시간과 마감시간 파악
 			HospitalDTO hospitalTime = service.hospitalTime(hidx);
 			
+			// 시작시간과 마감시간 사이 30분단위로 몇개 존재하는지 파악
 			int start_h=0,start_m=0,end_h=0,end_m=0;
-			String start="",end="";
+			String end="";
 			
 			try {
+				// 요일별 시간 파악 메소드(getTimes)
 				Map<String,String> getTimes = getTimes(hospitalTime,dayOfweek);
 				start_h = Integer.parseInt(getTimes.get("start_h"));
 				start_m = Integer.parseInt(getTimes.get("start_m"));
 				end_h = Integer.parseInt(getTimes.get("end_h"));
 				end_m = Integer.parseInt(getTimes.get("end_m"));
-				start = getTimes.get("start");
 				end = getTimes.get("end");
 			}catch (Exception e) {
 				// 운영 안하는 경우
 			}
+			
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
@@ -203,9 +210,10 @@ public class ReserveController {
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
 
-			if(today.substring(0, 10).equals(day.substring(0, 10))) {
+			if(today.substring(0, 10).equals(day.substring(0, 10))) {	// 날짜가 같을 경우(오늘일 경우)
 				String time = today.substring(11, 13) + today.substring(14, 16);
 				
+				// 마감시간이 00 으로 끝나는것과 30으로 끝날 때 빼주기 -> 아래 마감시간 30분이전을 비교하기 위해
 				String rEndTime = "";
 				if("00".equals(end.substring(2))) {
 					rEndTime = String.valueOf((Integer.parseInt(end) - 70)); 
@@ -214,12 +222,14 @@ public class ReserveController {
 					rEndTime = String.valueOf((Integer.parseInt(end) - 30));
 				}
 				
-				if(Integer.parseInt(time) > Integer.parseInt(rEndTime)) {
+				// 마감시간 이후거나 30분 이전일 경우
+				if(Integer.parseInt(time) >= Integer.parseInt(rEndTime)) {
 					currentDate.add(Calendar.DATE, 1);
 					continue;
 				}
 			}
-			if(cnt != 0 && cnt != reserveCnt) {
+			if(cnt != 0 && cnt != reserveCnt) {	// 예약이 가능한 경우
+				// [참고] cnt == 0 => 휴무 / cnt !=0 || cnt == reserveCnt => 예약가득참
 				availableDayList.add(day.substring(0, 10));
 			}	// end of if---------------------
 			
@@ -237,17 +247,14 @@ public class ReserveController {
 			jsonArr.add(availableDay);
 		}
 
-		String today_str = today.substring(0, 11);		// 추후에 없앨 예정
-		today_str = today_str.replaceAll("-", ".");		// 추후에 없앨 예정
-
 		mav.addObject("hidx",hidx);
-		mav.addObject("today_str",today_str);			// 추후에 없앨 예정
 		mav.addObject("dateList",jsonArr.toString());
 		mav.setViewName("reserve/choiceDay.tiles");
 		
 		return mav;
 	}	// end of public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {----------
 
+	// 풀캘린더에서 날짜를 선택한 경우
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("selectDay.bibo")
@@ -279,6 +286,7 @@ public class ReserveController {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         
+        // 공휴일인지 파악 후 요일 구분 메소드(parseDayofWeek)
 		String dayOfweek = parseDayofWeek(calendar,day);
 
 		Map<String, String> paraMap = new HashMap<>();
@@ -292,6 +300,7 @@ public class ReserveController {
 		String start="",end="";
 		
 		try {
+			// 요일별 시간 파악 메소드(getTimes)
 			Map<String,String> getTimes = getTimes(hospitalTime,dayOfweek);
 			start_h = Integer.parseInt(getTimes.get("start_h"));
 			start_m = Integer.parseInt(getTimes.get("start_m"));
@@ -331,9 +340,10 @@ public class ReserveController {
 						j--;
 						continue;
 					}
-					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
-						continue;
+					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {	// 현재 시간이 마감시간 이후일 경우
+						break;
 					}
+
 					paraMap.put("day", today);
 					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
 					HospitalDTO impossibleTimeCheck = service.dayReserveImpossible(paraMap);	
@@ -353,14 +363,15 @@ public class ReserveController {
 						break;
 					}
 					day = dateFormat.format(calendar.getTime());
+
 					String day_time = day.substring(11, 13) + day.substring(14, 16);
 					
 					if(Integer.parseInt(day_time) < Integer.parseInt(start)) {	// 현재시간이 오픈시간 이전일 경우
 						j--;
 						continue;
 					}
-					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {
-						continue;
+					else if(Integer.parseInt(day_time) >= Integer.parseInt(end)) {	// 현재 시간이 마감시간 이후일 경우
+						break;
 					}
 					paraMap.put("day", day);
 					// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
@@ -378,7 +389,7 @@ public class ReserveController {
 		}
 		
 		return jsonArr.toString();
-	}
+	}	// end of public String selectDay(HttpServletRequest request) throws ParseException {
 
 	// 공휴일인지 파악 후 요일 구분
 	private String parseDayofWeek(Calendar currentDate, String day) {
@@ -387,7 +398,8 @@ public class ReserveController {
 		
 		// 날짜가 공휴일인지 확인
 		int check = service.holidayCheck(day);
-		if(check == 1) {
+		
+		if(check == 1) {	// 공휴일 이라면
 			n = 0;
 		}
 		
@@ -421,7 +433,7 @@ public class ReserveController {
 		}
 		
 		return dayOfweek;
-	}
+	}	// end of private String parseDayofWeek(Calendar currentDate, String day) {-------------
 	
 	// 요일별 시간 파악
 	private Map<String, String> getTimes(HospitalDTO hospitalTime,String dayOfweek) throws Exception {
@@ -494,6 +506,34 @@ public class ReserveController {
 		}
 		
 		return resultMap;
-	}
+	}	// end of private Map<String, String> getTimes(HospitalDTO hospitalTime,String dayOfweek) throws Exception {--------
 	
+	// === 진료예약 === //
+	@PostMapping("insertReserve.bibo")
+	public ModelAndView insertReserve(ModelAndView mav, HttpServletRequest request) {
+		
+		String hidx = request.getParameter("hidx");
+		String day = request.getParameter("day");
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("hidx", hidx);
+		paraMap.put("day", day);
+		paraMap.put("userid", userid);
+		
+		// 예약접수
+		int n = service.insertReserve(paraMap);
+		String message = "", loc = "";
+		if(n==1) {
+			message = "예약이 접수되었습니다.";
+			loc = request.getContextPath() + "/index.bibo";
+		}
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		mav.setViewName("msg");
+		return mav;
+	}	// end of public ModelAndView insertReserve(ModelAndView mav, HttpServletRequest request) {-------------
 }

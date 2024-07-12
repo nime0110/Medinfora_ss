@@ -1,19 +1,26 @@
 package com.spring.app.main.controller;
 
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.NoticeDTO;
@@ -24,6 +31,9 @@ public class MainController {
 
 	@Autowired
 	private MainService service;
+	
+	@Autowired
+	private FileManager fileManager;
 	
 	@RequestMapping(value="/")
 	public ModelAndView commom(ModelAndView mav) {
@@ -122,5 +132,88 @@ public class MainController {
 		
 		return jsonarr.toString();
 	}// end of public String getclasscode()
+	
+	
+	
+	// 스마트에디터 드래그앤드롭을 이용한 다중 사진 파일 업로드(공지사항, Q&A 공통 적용)
+	@PostMapping("/image/multiplePhotoUpload.bibo")
+	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
+		
+		// WAS 의 webapp 의 절대경로
+		HttpSession session = request.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "resources"+File.separator+"photo_upload";
+		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다
+
+		System.out.println("스마트에디터 사진추가 : "+path);
+		
+		File dir = new File(path);
+
+		if(!dir.exists()) {	// 폴더가 존재하지 않으면
+			dir.mkdirs();	// 서브폴더 까지 만든다. 이게더 좋데
+		}
+
+
+		try {
+			String filename = request.getHeader("file-name"); // 파일명(문자열)을 받는다 - 일반 원본파일명
+			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
+			/*
+	             	[참고]
+	             	HttpServletRequest의 getHeader() 메소드를 통해 클라이언트 사용자의 정보를 알아올 수 있다. 
+
+		            request.getHeader("referer");           // 접속 경로(이전 URL)
+		            request.getHeader("user-agent");        // 클라이언트 사용자의 시스템 정보
+		            request.getHeader("User-Agent");        // 클라이언트 브라우저 정보 
+		            request.getHeader("X-Forwarded-For");   // 클라이언트 ip 주소 
+		            request.getHeader("host");              // Host 네임  예: 로컬 환경일 경우 ==> localhost:9090    
+			*/
+			// System.out.println(">>> 확인용 filename ==> " + filename);
+			// >>> 확인용 filename ==> berkelekle%EB%8B%A8%EA%B0%80%EB%9D%BC%ED%8F%AC%EC%9D%B8%ED%8A%B803.jpg 
+
+			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
+
+			String newFilename = fileManager.doFileUpload(is, filename, path);
+			   
+			String ctxPath = request.getContextPath(); //  
+			System.out.println("ctxPath : "+ctxPath);
+
+			String strURL = "";
+			strURL += "&bNewLine=true&sFileName="+newFilename; 
+			// strURL += "&sWidth="+width;
+			strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+
+			// === 웹브라우저 상에 사진 이미지를 쓰기 === //
+			PrintWriter out = response.getWriter();
+			out.print(strURL);
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

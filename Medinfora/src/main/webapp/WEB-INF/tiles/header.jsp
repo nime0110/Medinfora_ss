@@ -271,7 +271,18 @@
     </li>
     <li>
     	<div class="icon">
-				<i class="fa-solid fa-circle-question setcon"></i>
+    		<c:if test="${sessionScope.loginuser.mIdx == 1}">
+				<a href="#">
+			</c:if>
+			<c:if test="${sessionScope.loginuser.mIdx == 2}">
+				<a href="#">
+			</c:if>
+			<c:if test="${sessionScope.loginuser.mIdx != 1 and sessionScope.loginuser.mIdx != 2}">
+				<a href="<%=ctxPath%>/questionList.bibo">
+			</c:if>
+					<i class="fa-solid fa-circle-question setcon"></i>
+				</a>
+			
 		</div>
 		<c:if test="${sessionScope.loginuser.mIdx == 1}">
 			<a href="#"  class="nanum-b size-s">내 질문</a>
