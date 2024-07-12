@@ -57,29 +57,33 @@
     background-color: (--text-black-color);
    
     align-items: center;
+    
   
     
 }
 
 .board-list {
-	cursor:pointer;
+/* 	cursor:pointer; */
 	gap: 10px;
 	margin-top: 40px;
 	width: 80vw;
 	margin: auto;
+
 }
 
 .board-item {
-	padding: 20px 20px;
+	cursor:pointer;
+	padding: 20px 18px;
 	transition: 0s;
 	border-bottom: solid 1px #eee;
-	border-radius: 25px;
+	border-radius: 4px;
 	text-overflow: ellipsis;
+	
 }
 
 .board-item:hover {
 	background-color: #f0f0f0;
-	opacity: 0.6;
+	opacity: 0.4;
 	text-overflow: ellipsis;
 }
 
@@ -101,8 +105,24 @@ body>div.homebar {
 }
 
 .board-container {
-	padding: 20px;
+	/* padding: 20px; */
 	position: relative;
+	
+}
+.b_border{
+	border-bottom: solid 1px rgb(163, 163, 163);
+
+}
+.b_border:hover{
+		background-color: #f0f0f0;
+	opacity: 0.6;
+	text-overflow: ellipsis;
+}
+
+.subject{
+	border-top: 3px solid black;
+	border-bottom: 1px solid black;
+	border-bottom: none;
 }
 
 .notice-1 {
@@ -173,7 +193,7 @@ body>div.homebar {
 } */
 .board-item-date {
 	display: inline-block;
-	padding-top: 10px;
+	/* padding-top: 10px; */
 	font-size: 14px;
 	color: rgb(139, 149, 161);
 }
@@ -242,10 +262,17 @@ body>div.homebar {
 	border: 1px solid #dee2e6;
 }
 
+
+.subject {
+
+		border-top: 3px solid black;
+	border-bottom: 1px solid black;
+}
+
 .page-item.active .page-link {
 	z-index: 1;
-	color: #fff;
-	background-color: #007bff;
+	color: #000000;
+	background-color: #ffffff;
 	border-color: #007bff;
 }
 /* === noticeList.jsp css 끝 == */

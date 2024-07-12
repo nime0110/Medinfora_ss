@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/resources/css/notice/notice.css" />
 <link rel="stylesheet" type="text/css"
-	href="<%=ctxPath%>/resources/css/notice/noticeMedia.css" />
+	href="<%=ctxPath%>/resources/css/notice/noticeMedia.css" />S
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/header.css" /> 
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/resources/css/footer.css" />
@@ -38,33 +38,43 @@ function click_on(nidx){
 
 
 	<section class="board-container">
+		
 		<ul class="board-list">
-		<div class="mt-4 px-3 subject">
+		
+			<div style="border-bottom: 1px solid black;">
+			<div class="mt-4 px-3  text-center subject">
 			<div class="row text-center py-3 nanum-eb size-s">
-			
-				<span class="col-4">제목</span>
-			
-				<span class="col-2">작성일자</span>
-				<span class="col-1">조회수</span>
+			<span class="col-8">제목</span>
+			<span class="col-2">작성일자</span>
+			<span class="col-2">조회수</span>
 			</div>
-		</div>
+			</div>
 			<c:forEach var="notice" items="${noticeListdto}">
-				<li class="board-item nanum-n">
-					<div class="board-item-body" onclick="click_on('${notice.nidx}')">
-						<span class="board-item-title nanum-n" style="font-weight: bold;align-items: center; font-size: 20px; color: rgb(78, 89, 104); text-overflow: ellipsis;">
-							<p style="display:flex; align-items: center; height:auto; padding-top: 10px;">${notice.title}</p>
-						</span>
-						<c:if test="${notice.filename != null}">
+				<li class="board-item nanum-eb size-s ">
+					<div class="row board-item-body" onclick="click_on('${notice.nidx}')">
+						<span class="col-6 board-item-title nanum-n text-center " style="font-weight: bold; font-size: 20px; color: rgb(78, 89, 104); text-overflow: ellipsis;">
+							<p style="padding-top: 10px;">${notice.title}</p>
+							<c:if test="${notice.filename != null}">
 							<span class="attach_sh"> <img
 								src="<%=ctxPath%>/resources/img/sh_attach.png"
 								style="width: 20px; height: 20px;">
 							</span>
 						</c:if>
-						<span class="board-item-date size-s">${notice.writeday}</span>
+						
+						</span>
+						<span class="col-2 board-item-date size-s ">${notice.writeday}</span>
+					
+						  <span class="col-1 notice-viewcount">${notice.viewcnt}</span>
+							
 					</div>
+					
 				</li>
 			</c:forEach>
+		
 		</ul>
+		
+		</div>
+		</div>
 	</section>
 
 	<form name="goViewFrm">

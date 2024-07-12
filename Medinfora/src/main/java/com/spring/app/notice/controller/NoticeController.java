@@ -437,22 +437,34 @@ public class NoticeController {
 		// redirectAttr.addFlashAttribute("키", 밸류값); 으로 사용하는데 오로지 1개의 데이터만 담을 수 있으므로
 		// 여러개의 데이터를 담으려면 Map 을 사용해야 한다.
 
-		mav.setViewName("redirect:/notice/noticeView.bibo"); // 실제로 redirect:/view.action 은 POST 방식이 아닌 GET 방식이다.
-		/////////////////////////////////////////////////////////////////////////////////
-		// ==== redirect(GET방식임) 시 데이터를 넘길때 GET 방식이 아닌 POST 방식처럼 데이터를 넘기려면
-		///////////////////////////////////////////////////////////////////////////////// RedirectAttributes
-		///////////////////////////////////////////////////////////////////////////////// 를
-		///////////////////////////////////////////////////////////////////////////////// 사용하면
-		///////////////////////////////////////////////////////////////////////////////// 된다.
-		///////////////////////////////////////////////////////////////////////////////// 끝
-		///////////////////////////////////////////////////////////////////////////////// ====
-		///////////////////////////////////////////////////////////////////////////////// //
+		mav.setViewName("redirect:/notice/noticeView.bibo");
 
 		return mav;
 	}
 
 	@GetMapping("/notice/noticeEdit.bibo")
-	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView edit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		if(loginuser == null) {
+			String message = "관리자만 접근 가능합니다";
+			String loc = "javascript:history.back()";
+			mav.addObject("message",message);
+			mav.addObject("loc",loc);
+			mav.setViewName("msg");
+			return mav;
+		}
+		
+		if(loginuser.getmIdx() != 0) {
+			String message = "관리자만 접근 가능합니다";
+			String loc = "javascript:history.back()";
+			mav.addObject("message",message);
+			mav.addObject("loc",loc);
+			mav.setViewName("msg");
+			return mav;
+		}
 		String seq = request.getParameter("seq");
 		String message = "";
 		try {
@@ -468,20 +480,20 @@ public class NoticeController {
 				mav.setViewName("redirect:/notice/noticeList.bibo");
 				return mav;
 			} else {
-				HttpSession session = request.getSession();
-				MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-
-				System.out.println("loginuser: " + loginuser); // 디버깅 로그 추가
-
-				System.out.println("loginuser: " + loginuser);
-				if (loginuser != null) {
-					System.out.println("loginuser.getMIdx(): " + loginuser.getmIdx());
-					System.out.println("loginuser.getUserid(): " + loginuser.getUserid());
-				}
-				System.out.println("noticedto: " + noticedto);
-				if (noticedto != null) {
-					System.out.println("noticedto.getUserid(): " + noticedto.getUserid());
-				}
+//				HttpSession session = request.getSession();
+//				MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+//
+//				System.out.println("loginuser: " + loginuser); // 디버깅 로그 추가
+//
+//				System.out.println("loginuser: " + loginuser);
+//				if (loginuser != null) {
+//					System.out.println("loginuser.getMIdx(): " + loginuser.getmIdx());
+//					System.out.println("loginuser.getUserid(): " + loginuser.getUserid());
+//				}
+//				System.out.println("noticedto: " + noticedto);
+//				if (noticedto != null) {
+//					System.out.println("noticedto.getUserid(): " + noticedto.getUserid());
+//				}
 
 				// 관리자(mIdx가 0)이거나 글 작성자인 경우 수정 허용
 				if (loginuser.getmIdx() == 0 || loginuser.getUserid().equals(noticedto.getUserid())) {
@@ -503,63 +515,70 @@ public class NoticeController {
 			return mav;
 		}
 	}
-
 	@PostMapping("/notice/editEnd.bibo")
-	public ModelAndView editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request,
-			MultipartHttpServletRequest mrequest) {
-
-		MultipartFile attach = noticedto.getAttach();
-
-		if (attach != null && !attach.isEmpty()) {
-			HttpSession session = mrequest.getSession();
-			String root = session.getServletContext().getRealPath("/");
-			String path = root + "resources" + File.separator + "files";
-
-			String newFileName = "";
-
-			try {
-				byte[] bytes = attach.getBytes();
-				String originalFilename = attach.getOriginalFilename();
-
-				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-
-				noticedto.setFilename(newFileName); // 파일 이름을 설정
-				noticedto.setOrgname(originalFilename); // 원본 파일 이름을 설정
-				long fileSize = attach.getSize();
-				noticedto.setFilesize(String.valueOf(fileSize)); // 파일 크기를 설정
-				/* System.out.println("File Upload Success : " + newFileName); */
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		/*
-		 * System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
-		 * System.out.println("nidx: " + noticedto.getNidx());
-		 * System.out.println("NoticeController.editEnd() called"); // 디버깅 로그 추가
-		 * System.out.println("title: " + noticedto.getTitle());
-		 * System.out.println("content: " + noticedto.getContent());
-		 * System.out.println("filename: " + noticedto.getFilename());
-		 * System.out.println("orgname: " + noticedto.getOrgname());
-		 * System.out.println("filesize: " + noticedto.getFilesize());
-		 */
-
-		int n = service.edit(noticedto);
-
-		System.out.println("Update result: " + n); // 디버깅 로그 추가
-
-		if (n == 1) {
-			mav.addObject("message", "글 수정 성공!!");
-			mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
-		} else {
-			mav.addObject("message", "글 수정 실패");
-			mav.addObject("loc", "javascript:history.back()");
-		}
-
-		mav.setViewName("msg");
-		return mav;
+	public ModelAndView isadmin_editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request,
+	        MultipartHttpServletRequest mrequest) {
+	    
+	    try {
+	        MultipartFile attach = noticedto.getAttach();
+	        System.out.println("attach " + attach);
+	        
+	        // 기존 게시글 정보 조회
+	        Map<String, String> paraMap = new HashMap<>();
+	        paraMap.put("nidx", String.valueOf(noticedto.getNidx()));
+	        NoticeDTO existingNotice = service.getView_no_increase_readCount(paraMap);
+	        
+	        if (attach != null && !attach.isEmpty()) {
+	            // 새 파일이 첨부된 경우
+	            HttpSession session = mrequest.getSession();
+	            String root = session.getServletContext().getRealPath("/");
+	            String path = root + "resources" + File.separator + "files";
+	            
+	            byte[] bytes = attach.getBytes();
+	            String originalFilename = attach.getOriginalFilename();
+	            String newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+	            
+	            noticedto.setFilename(newFileName);
+	            noticedto.setOrgname(originalFilename);
+	            noticedto.setFilesize(String.valueOf(attach.getSize()));
+	            
+	            // 기존 파일 삭제
+	            if (existingNotice.getFilename() != null) {
+	                fileManager.doFileDelete(existingNotice.getFilename(), path);
+	            }
+	        } else {
+	            // 새 파일이 첨부되지 않은 경우, 기존 파일 정보 유지
+	            noticedto.setFilename(existingNotice.getFilename());
+	            noticedto.setOrgname(existingNotice.getOrgname());
+	            noticedto.setFilesize(existingNotice.getFilesize());
+	        }
+	        
+	        // 데이터베이스 업데이트
+	        int n = service.edit(noticedto);
+	        System.out.println("Update result: " + n);
+	        
+	        if (n == 1) {
+	            mav.addObject("message", "글 수정 성공!!");
+	            mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
+	        } else {
+	            mav.addObject("message", "글 수정 실패");
+	            mav.addObject("loc", "javascript:history.back()");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.addObject("message", "글 수정 중 오류 발생: " + e.getMessage());
+	        mav.addObject("loc", "javascript:history.back()");
+	    }
+	    
+	    mav.setViewName("msg");
+	    return mav;
 	}
-
+	
+	
+	
+	
+	
+	
 	// 첨부파일 다운로드 하기
 	@GetMapping("/notice/download.bibo")
 	public void download(HttpServletRequest request, HttpServletResponse response) {

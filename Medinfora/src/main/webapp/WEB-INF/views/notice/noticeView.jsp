@@ -105,9 +105,9 @@
 
     <div class="nanum-n notice-content" style="height: auto;">
         <p>${noticedto.content}</p>
-        <c:if test="${noticedto.filename.endsWith('.jpg') || noticedto.filename.endsWith('.jpeg') || noticedto.filename.endsWith('.png') || noticedto.filename.endsWith('.gif')}">
-                    <img src="<%= ctxPath %>/resources/files/${noticedto.filename}" alt="${noticedto.orgname}"  style="max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;" />
-                </c:if>
+<%--         <c:if test="${noticedto.filename.endsWith('.jpg') || noticedto.filename.endsWith('.jpeg') || noticedto.filename.endsWith('.png') || noticedto.filename.endsWith('.gif')}">
+                    <img src="<%= ctxPath %>/resources/files/${noticedto.filename}" alt="${noticedto.filename}"  style="max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;" />
+                </c:if> --%>
     </div>
 
     <div class="notice-button text-center">

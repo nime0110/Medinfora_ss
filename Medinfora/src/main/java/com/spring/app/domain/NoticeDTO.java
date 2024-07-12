@@ -99,5 +99,7 @@ public class NoticeDTO {
     }
 
 	
+
+	
 	
 } // end of public class NoticeDTO

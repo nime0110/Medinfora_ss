@@ -51,13 +51,24 @@
 	 
     <!-- === 1개글 수정하기 === -->
 	<update id="edit" parameterType="NoticeDTO">
-	    update notice
+	      UPDATE notice
+    SET title = #{title},
+        content = #{content},
+        filename = #{filename},
+        orgname = #{orgname},
+        filesize = #{filesize}
+    WHERE nidx = #{nidx}
+	</update>
+	
+	<update id="edit_view" parameterType="HashMap">
+	    	update notice
 	    set title = #{title},
 	        content = #{content},
 	        filename = #{filename},
 	        orgname = #{orgname},
 	        filesize = #{filesize}
 	    where nidx = #{nidx}
+	
 	</update>
 	
 	<select id="getView1" parameterType="HashMap" resultType="com.spring.app.domain.NoticeDTO">

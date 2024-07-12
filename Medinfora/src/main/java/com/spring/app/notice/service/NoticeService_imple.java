@@ -137,7 +137,17 @@ public class NoticeService_imple implements NoticeService {
 	 public NoticeDTO getNextNotice(int nidx) {
 	     return dao.getNextNotice(nidx);
 	 }
-	  
+
+	@Override
+	public void edit_view(Map<String, Object> paraMap) {
+		dao.edit_view(paraMap);
+		System.out.println(paraMap);
+		return ;
+	}
+
+	
+
+	
 	
 
 } // end of public class NoticeService_imple implements NoticeService 
