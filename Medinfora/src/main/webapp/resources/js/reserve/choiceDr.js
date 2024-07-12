@@ -1,3 +1,11 @@
+$(function() {
+    $("input.inputbox").bind("keydown", function(e){
+		if(e.keyCode == 13){ // 엔터를 했을 경우
+			HPSearch();
+		}
+	});
+})      // end of $(function() {---------------
+
 $(document).on('click','.resulthp',(e) => {
 
     const closeset = $(e.target).closest(".resulthp");
@@ -25,7 +33,7 @@ $(document).on('click','.resulthp',(e) => {
     }
 
     $("input[name='hidx']").val(closeset.find('.hidx').text());
-    $("input[name='hpname'").val(closeset.find(".hospital_name").text());
+    $("input[name='sel_hpname'").val(closeset.find(".hospital_name").text());
 });
 
 $(document).on("mouseover",$(".resulthp"),(e)=>{

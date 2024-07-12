@@ -217,7 +217,7 @@
 	    </div>
 	    
 	    <div id="hospitaltitle">
-	    	간다간다병원
+	    	${requestScope.hpname}
 	    </div>
 	    
         <div class="div_choiceDay">
