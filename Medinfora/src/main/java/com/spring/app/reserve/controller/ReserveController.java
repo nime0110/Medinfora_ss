@@ -155,6 +155,7 @@ public class ReserveController {
 	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
 		
 		String hidx = request.getParameter("hidx");
+		String hpname = request.getParameter("hpname");
 		
 		Calendar currentDate = Calendar.getInstance();	// 현재시간
 
@@ -249,6 +250,7 @@ public class ReserveController {
 		}
 
 		mav.addObject("hidx",hidx);
+		mav.addObject("hpname",hpname);
 		mav.addObject("dateList",jsonArr.toString());
 		mav.setViewName("reserve/choiceDay.tiles");
 		

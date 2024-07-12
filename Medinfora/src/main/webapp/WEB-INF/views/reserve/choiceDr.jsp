@@ -237,6 +237,7 @@ function Page(currentShowPageNo){
 	    </div>
 	    <form name="hpinfo">
 	    	<input type="hidden" name="hidx" value="" />
+	    	<input type="hidden" name="hpname" value="" />
 	    </form>
 	</div>
 </div>
