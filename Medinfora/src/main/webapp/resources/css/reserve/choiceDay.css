@@ -135,18 +135,20 @@ a.fc-event:hover{
 .timebtn{
     justify-content: space-between;
     border: none;
-    background-color: white;
+    background-color: var(--blue50);
+    border: solid 1px var(--blue50);
+    border-radius: 5px;
     height: auto;
+    display: block;
+    transition: all 0.3s;
 }
 
 .exTimebtn{
-    border: solid 1px var(--blue50);
-    border-radius: 5px;
-    padding: 24px 24px;
-    background-color: var(--blue50);
+    padding: 0px 24px;
+    transition: all 0.3s;
 }
 
-.exTimebtn:hover{
+.timebtn:hover{
     background-color: var(--blue200);
     cursor: pointer;
 }
@@ -173,9 +175,12 @@ a.fc-event:hover{
 /* JS Add Class */
 
 .choiceReserveday{
-    background-color: var(--navy600);
     color : var(--blue50) !important;
     font-weight: bold;
+}
+
+.choiceReserveday2{
+    background-color: var(--navy600);
 }
 
 .checkbold{

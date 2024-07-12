@@ -254,7 +254,7 @@
     
     <form name ="choiceFrm">
     	<input type="hidden" name="hidx" value="${requestScope.hidx}"/>
-    	<input type="text" name="day" />
+    	<input type="hidden" name="day" />
     </form>
     
 </div>

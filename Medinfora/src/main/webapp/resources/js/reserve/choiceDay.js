@@ -1,7 +1,8 @@
 $(document).on('click','.timebtn',(e) => {
     $("span.exTimebtn").removeClass("choiceReserveday");
+    $("button.timebtn").removeClass("choiceReserveday2");
     $(e.currentTarget).find("span.exTimebtn").addClass("choiceReserveday");
-
+    $(e.currentTarget).addClass("choiceReserveday2");
     const day = $("h3.selectDay").text();
 
     const time = $(e.currentTarget).children("span.exTimebtn").text();
