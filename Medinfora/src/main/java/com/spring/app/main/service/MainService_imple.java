@@ -248,6 +248,12 @@ public class MainService_imple implements MainService {
 		System.out.print(" | 확인용 holiday_date : "+holidayVO.getHoliday_date());
 		return dao.holidayInputer(holidayVO);
 	}
+	
+	// 인덱스 공지 리스트 가져오기
+	@Override
+	public List<NoticeDTO> getIndexNoticeList() {
+		return dao.getIndexNoticeList();
+	}
 
 	// 인덱스 화면 공지 불러오기
 	@Override
