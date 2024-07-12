@@ -136,7 +136,7 @@ public class MainController {
 	
 	
 	// 스마트에디터 드래그앤드롭을 이용한 다중 사진 파일 업로드(공지사항, Q&A 공통 적용)
-	@PostMapping("/image/multiplePhotoUpload.bibo")
+	@PostMapping("/images/multiplePhotoUpload.bibo")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 		
 		// WAS 의 webapp 의 절대경로
@@ -145,7 +145,7 @@ public class MainController {
 		String path = root + "resources"+File.separator+"photo_upload";
 		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다
 
-		System.out.println("스마트에디터 사진추가 : "+path);
+		System.out.println("메디의 스마트에디터 사진추가 : "+path);
 		
 		File dir = new File(path);
 
