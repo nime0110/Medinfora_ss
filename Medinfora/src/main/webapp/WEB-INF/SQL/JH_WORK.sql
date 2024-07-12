@@ -356,6 +356,9 @@ nocache;
 select *
 from mediq;
 
+select *
+from notice;
+
 delete from mediq where userid = 'user001';
 commit;
 

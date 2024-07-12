@@ -4,8 +4,6 @@
 	String ctxPath = request.getContextPath();
 %>
 
-<script type="text/javascript" src="<%= ctxPath %>/resources/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
-
 <style>
 
 
