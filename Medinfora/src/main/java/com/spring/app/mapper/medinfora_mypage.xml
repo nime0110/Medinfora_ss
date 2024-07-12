@@ -173,4 +173,30 @@
 		from member
 		where userid = #{patient_id}
 	</select>
+	
+	
+	<!-- (내정보수정) 내정보 수정하기 (통합) -->
+	<update id="updateinfo" parameterType="Map">
+		UPDATE MEMBER
+		SET mobile = #{mobile}
+		<if test='address != ""'>
+			,address = #{address}, detailaddress = #{detailaddress}
+		</if>
+		WHERE USERID = #{userid}
+	</update>
+	
+	<!-- (비밀번호변경) 사용중인 비밀번호 확인하기 -->
+	<select id="nowpwdCheck" parameterType="Map" resultType="String">
+		select userid
+		from MEMBER 
+		where userid = #{userid} and PWD = #{pwd}
+	</select>
+	
+	<!-- (비밀번호변경) 비밀번호 변경하기 -->
+	<update id="updatepwd" parameterType="Map">
+		UPDATE MEMBER
+		SET pwd = #{pwd}, PWDUPDATEDAY = default
+		WHERE userid = #{userid}
+	</update>
+	
 </mapper>

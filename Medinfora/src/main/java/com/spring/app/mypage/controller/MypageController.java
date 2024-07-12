@@ -1,5 +1,7 @@
 package com.spring.app.mypage.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -28,6 +30,11 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.mypage.service.MypageService;
 
+import oracle.net.aso.j;
+import oracle.net.aso.l;
+import oracle.net.aso.m;
+import oracle.security.o5logon.d;
+
 @Controller
 @RequestMapping(value="/mypage/")
 public class MypageController {
@@ -51,15 +58,87 @@ public class MypageController {
 		
 		Map<String,String> paraMap = new HashMap<>();
 		
-		paraMap.put("userid",request.getParameter("userid"));
-		paraMap.put("mobile",request.getParameter("mobile"));
-		paraMap.put("address",request.getParameter("address"));
-		paraMap.put("detailaddress",request.getParameter("detailaddress"));
+		String message = "내 정보 변경에 실패하였습니다.";
+ 		String loc = "myinfo.bibo";
 		
-		if(service.updateinfo(paraMap)) {
-			
+		String userid = request.getParameter("userid");
+		String mobile = request.getParameter("mobile");
+		String address = request.getParameter("address");
+		String detailaddress = request.getParameter("detailaddress");
+		
+		if(address == null) {
+			address = "";
+			detailaddress = "";
 		}
 		
+		paraMap.put("userid",userid);
+		paraMap.put("mobile",mobile);
+		paraMap.put("address",address);
+		paraMap.put("detailaddress",detailaddress);
+		
+		
+		if(service.updateinfo(paraMap)) {
+			message = "내 정보를 변경하였습니다.";
+			HttpSession session = request.getSession();
+			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+			loginuser.setMobile(mobile);
+			if(address!="") {
+				loginuser.setAddress(address);
+				loginuser.setDetailAddress(detailaddress);
+			}
+		}
+		
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
+		
+		mav.setViewName("msg");
+		
+		return mav;
+	}
+	
+	@ResponseBody
+	@PostMapping("nowpwdCheck.bibo")
+	public String nowpwdCheck(HttpServletRequest request) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		
+		String userid = request.getParameter("userid");
+		String pwd = request.getParameter("pwd");
+		
+		paraMap.put("userid",userid);
+		paraMap.put("pwd",pwd);
+		
+		if(service.nowpwdCheck(paraMap)) {
+			jsonObj.put("isPwd", true);
+		}else {
+			jsonObj.put("isPwd", false);
+		}
+		
+		return jsonObj.toString();
+	}
+	
+	@PostMapping("updatepwd.bibo")
+	public ModelAndView isLogin_updatepwd(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		
+		String message = "비밀번호 변경을 실패하였습니다.";
+ 		String loc = "myinfo.bibo";
+		
+		String userid = request.getParameter("userid");
+		String pwd = request.getParameter("pwd");
+		
+		paraMap.put("userid",userid);
+		paraMap.put("pwd",pwd);
+		
+		if(service.updatepwd(paraMap)==1) {
+			message = "비밀번호를 변경하였습니다.";
+		}
+		
+		mav.addObject("message",message);
+		mav.addObject("loc",loc);
 		mav.setViewName("msg");
 		
 		return mav;

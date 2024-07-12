@@ -20,4 +20,10 @@ public interface MypageService {
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetPatientInfo(String patient_id);
 
+	// (비밀번호변경) 현 비밀번호 확인
+	boolean nowpwdCheck(Map<String, String> paraMap);
+
+	// (비밀번호변경) 비밀번호 변경하기
+	int updatepwd(Map<String, String> paraMap);
+
 }

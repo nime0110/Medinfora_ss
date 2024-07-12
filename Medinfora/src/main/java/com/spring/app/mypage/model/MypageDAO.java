@@ -29,5 +29,14 @@ public interface MypageDAO {
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetPatientInfo(String patient_id);
 
+	// (내정보수정) 내정보 수정하기 (통합)
+	int updateinfo(Map<String, String> paraMap);
+
+	// (비밀번호변경) 사용중인 비밀번호 확인하기
+	String nowpwdCheck(Map<String, String> paraMap);
+
+	// (비밀번호변경) 비밀번호 변경하기
+	int updatepwd(Map<String, String> paraMap);
+
 
 }
