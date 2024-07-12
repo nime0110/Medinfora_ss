@@ -113,6 +113,7 @@ public class ReserveController {
 		paraMap.put("classcode", classcode);
 		paraMap.put("hpname", hpname);
 
+		// === 회원가입된 병원 리스트 가져오기 === //
         List<HospitalDTO> mbHospitalList = service.mbHospitalList(paraMap);
         
 		int totalCnt = service.getmbHospitalCnt(paraMap);	// 회원가입된 병원 개수
