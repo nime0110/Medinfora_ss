@@ -1,6 +1,5 @@
 package com.spring.app.reserve.controller;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,27 +36,7 @@ public class ReserveController {
 	
 	// === 병원선택 === //
 	@GetMapping("choiceDr.bibo")
-	public ModelAndView isLogin_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-		
-		if(loginuser != null && loginuser.getmIdx() == 2) {
-			String message = "(단체)병원 회원은 접근 불가능합니다.";
-	 		String loc = request.getContextPath()+"/index.bibo";
-	 		
-	 		request.setAttribute("message", message);
-	 		request.setAttribute("loc", loc);
-	 		
-	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-	 		
-	 		try {
-				dispatcher.forward(request, response);	// /WEB-INF/views/msg.jsp 로 이동
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public ModelAndView isMember_choiceDr(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("reserve/choiceDr.tiles");
 		
@@ -70,7 +47,7 @@ public class ReserveController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value="choiceDrList.bibo", produces="text/plain;charset=UTF-8")
-	public String choiceDrList(HttpServletRequest request) {
+	public String isMember_choiceDrList(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
@@ -113,6 +90,7 @@ public class ReserveController {
 		paraMap.put("classcode", classcode);
 		paraMap.put("hpname", hpname);
 
+		// === 회원가입된 병원 리스트 가져오기 === //
         List<HospitalDTO> mbHospitalList = service.mbHospitalList(paraMap);
         
 		int totalCnt = service.getmbHospitalCnt(paraMap);	// 회원가입된 병원 개수
@@ -151,9 +129,10 @@ public class ReserveController {
 	// === 진료일시 선택 === //
 	@SuppressWarnings("unchecked")
 	@PostMapping("choiceDay.bibo")
-	public ModelAndView choiceDay(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView isMember_choiceDay(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		String hidx = request.getParameter("hidx");
+		String sel_hpname = request.getParameter("sel_hpname");
 		
 		Calendar currentDate = Calendar.getInstance();	// 현재시간
 
@@ -248,6 +227,7 @@ public class ReserveController {
 		}
 
 		mav.addObject("hidx",hidx);
+		mav.addObject("hpname",sel_hpname);
 		mav.addObject("dateList",jsonArr.toString());
 		mav.setViewName("reserve/choiceDay.tiles");
 		
@@ -258,7 +238,7 @@ public class ReserveController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("selectDay.bibo")
-	public String selectDay(HttpServletRequest request) throws ParseException {
+	public String isMember_selectDay(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) throws ParseException {
 		
 		String hidx = request.getParameter("hidx");
 		String day = request.getParameter("date");
