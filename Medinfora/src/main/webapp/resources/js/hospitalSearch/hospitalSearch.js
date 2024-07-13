@@ -47,22 +47,28 @@ $(function() {
     let zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
-    //폴리곤 생성
-    init( contextPath + "/resources/json/sido.json") 
-
+    
     kakao.maps.event.addListener(map, 'zoom_changed', function () {
-        level = map.getLevel()
+        level = map.getLevel();
+
+        console.log("level:", level);
         if (!detailMode && level <= 10) {
             detailMode = true;
             removePolygon();
-            init(contextPath +"/resources/json/sig.json")
-        } else if (detailMode && level > 10) { 
+            init(contextPath + "/resources/json/sig.json");
+        } else if (detailMode && level > 10) {
             detailMode = false;
             removePolygon();
-            init(contextPath +"/resources/json/sido.json")
+            init(contextPath + "/resources/json/sido.json");
+        } else if (level <= 6) {
+            removePolygon();
+        } else if (level > 6 && level <= 9) {
+            init(contextPath + "/resources/json/sig.json");
         }
     });    
-                  
+    //폴리곤 생성
+    init( contextPath + "/resources/json/sido.json") 
+    
     clusterer = new kakao.maps.MarkerClusterer({
         map: map, 
         averageCenter: true, 
@@ -175,6 +181,10 @@ function updateDong() {
                 }
             }	// end of for---------
             $("select#country").html(v_html);
+            
+            $("select#country").off('change').on('change', function() {
+                searchHospitals(1);
+            });
         },
         error: function(request) {
             alert("code : " + request.status + "\nmessage : " + request.responseText);
@@ -198,13 +208,12 @@ function updateCityFromLocal(local) {
                     v_html += `<option value="${json[i].sido}">${json[i].sido}</option>`;
                 }	
                 $("select#city").html(v_html);
+                
                 $('#city').on('change', function() {
                     $('#local').val(local);
                     searchHospitals(1);
                 });
-                $('#local').on('change', function() {
-                    updateDong();
-                });
+
             }  else {
                 json.forEach(item => {  
                     $('#city').val(item.sido);
@@ -235,7 +244,15 @@ function searchHospitals(pageNo) {
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
+
+    console.log("country:", country);
+    const localOptionLength = $('#local').find('option').length;
+
+    if (localOptionLength > 1 && !country) { 
+        updateDong();
+    }
     
+
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -570,7 +587,6 @@ function init(path) {
         }
     }); //getJSON
 }   //init
-s
 
 // 폴리곤 보여지기
 function displayArea(area) {
@@ -606,12 +622,14 @@ function displayArea(area) {
 
     kakao.maps.event.addListener(polygon, 'click', function () {
 
-        var optionValues = new Array;
+        let optionValues = new Array;
         let localExist = false;
+        let level = map.getLevel(); 
 
         if (map.getLevel() > 10) {
             $('#city').val(area.name); 
             updateSigunGu();
+            level = 8;
         } else if (map.getLevel() <= 10) {
             let local = area.name;
             $('#local option').each(function() {
@@ -629,9 +647,10 @@ function displayArea(area) {
                 console.log("local:", local);
                 updateCityFromLocal(local);
             }
+            level = 6;
         }
 
-        var level = map.getLevel() - 2;
+
 
         map.setLevel(level, {
             anchor: centroid(area.path),
@@ -666,8 +685,7 @@ function detailSearch(index) {
         data: {hidx: hidx},
         dataType: "json",
         success: function (json) {
-            console.log(JSON.stringify(json));
-            // 시작시간과 종료시간을 시간 형식으로 변환
+            //console.log(JSON.stringify(json));
             for (let i = 1; i <= 8; i++) {
                 let startkey = 'starttime' + i;
                 let endkey = 'endtime' + i;
