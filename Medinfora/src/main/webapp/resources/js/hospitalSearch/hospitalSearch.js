@@ -644,7 +644,6 @@ function displayArea(area) {
                 $('#local').val(local);
                 searchHospitals(1);
             } else { 
-                console.log("local:", local);
                 updateCityFromLocal(local);
             }
             level = 6;
@@ -685,19 +684,7 @@ function detailSearch(index) {
         data: {hidx: hidx},
         dataType: "json",
         success: function (json) {
-            //console.log(JSON.stringify(json));
-            for (let i = 1; i <= 8; i++) {
-                let startkey = 'starttime' + i;
-                let endkey = 'endtime' + i;
-                // 존재하는 starttime 필드만 포맷팅
-                if (json.hasOwnProperty(startkey) && json[startkey]) { 
-                    json[startkey] = json[startkey].substring(0, 2) + "시 " + json[startkey].substring(2, 4) + "분";
-                    json[endkey] = json[endkey].substring(0, 2) + "시 " + json[endkey].substring(2, 4) + "분";
-                    $('#modal-daytime' + i).text(json[startkey] + " ~ " + json[endkey]);
-                } else {
-                    $('#modal-daytime' + i).text("휴진");
-                }
-            }
+            console.log(JSON.stringify(json));
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
             $('#modal-hpaddr').text(json.hpaddr);   
@@ -706,6 +693,9 @@ function detailSearch(index) {
             $('#modal-agency').text(json.agency);
             // 모달 표시
             $('#hospitalDetailModal').modal('show');
+            for (let i = 1; i <= 8; i++) {
+                $('#modal-daytime' + i).text(json['time' + i]);
+			}	
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
