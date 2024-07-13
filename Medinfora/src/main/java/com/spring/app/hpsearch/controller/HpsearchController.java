@@ -1,23 +1,18 @@
 package com.spring.app.hpsearch.controller;
 
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -62,6 +57,7 @@ public class HpsearchController {
 		}
 		int sizePerPage = 10;//한 페이지당 10개의 병원  
 		
+		int currentPage = Integer.parseInt(currentShowPageNo);
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; 
         int endRno = startRno + sizePerPage - 1; 
 		
@@ -84,8 +80,9 @@ public class HpsearchController {
 		
 		List<HospitalDTO> hospitalList = service.getHospitalList(paraMap);
 		int totalCount = service.getHpListTotalCount(paraMap); //전체개수 
-		
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 	
+		//진료상태 구하기 
         LocalDate currentDate = LocalDate.now();
            
         DayOfWeek dayOfWeek = currentDate.getDayOfWeek();                
@@ -246,6 +243,7 @@ public class HpsearchController {
 				jsonObj.put("totalCount", totalCount);
 				jsonObj.put("currentShowPageNo", currentShowPageNo);
 				jsonObj.put("sizePerPage", sizePerPage);
+				jsonObj.put("totalPage", totalPage);
 				
 				jsonArr.put(jsonObj);
 			}//end of for---------------------------
@@ -330,7 +328,6 @@ public class HpsearchController {
 	}
 	
 	//도를 넣으면 시를 반환하는 메소드
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value="putSiGetdo.bibo", produces="text/plain;charset=UTF-8")
 	public String putSiGetdo(HttpServletRequest request) {

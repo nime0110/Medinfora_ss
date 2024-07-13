@@ -15,7 +15,6 @@ let level = '';
 let polygons = [];
 let polygonOverlays = [];
 
-
 $(function() {
     /* 비동기 처리 코드 
     $.ajaxSetup({
@@ -47,7 +46,6 @@ $(function() {
     let zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
-    
     kakao.maps.event.addListener(map, 'zoom_changed', function () {
         level = map.getLevel();
 
@@ -230,8 +228,7 @@ function updateCityFromLocal(local) {
     });
 }
 
-
-var currentPage = 1; // 현재 페이지를 추적
+let currentPage = 1; // 현재 페이지를 추적
 
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수
 function searchHospitals(pageNo) {
@@ -251,7 +248,6 @@ function searchHospitals(pageNo) {
     if (localOptionLength > 1 && !country) { 
         updateDong();
     }
-    
 
     if (!city ) {
         alert("시/도를 선택하세요");
@@ -283,7 +279,7 @@ function searchHospitals(pageNo) {
 			let v_html = "";
 			if(json.length > 0) {
 	           json.forEach((item, index) => { 
-	           		var position = {};
+                    let position = {};
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon);
 	                position.content = `<div class='mycontent' data-index="${index}">
 									    	<div class="title"> ${item.hpname} </div>
@@ -292,12 +288,10 @@ function searchHospitals(pageNo) {
 									    			<strong>${item.classname}</strong>
 									    		</div>
 									    		<p class="tel">
-									    			<span>${item.hptel}</span>
-									    		</p>
-									    		<p class="addr">								    		
-										    		${item.hpaddr} 
-									    		</p>
-                                                <button class="details-button"  onclick="detailSearch(${index})">상세보기</button>
+                                                    <span>${item.hptel}</span>
+                                                </p>
+									    		<p class="addr">${item.hpaddr}</p>
+                                                <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
                     				    </div>`;
                     position.hpname = item.hpname;
@@ -348,7 +342,7 @@ function searchHospitals(pageNo) {
                     map.setBounds(bounds);
 
                     // 마커에 표시할 인포윈도우를 생성하기
-                    var infowindow = new kakao.maps.InfoWindow({
+                    let infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content, 
                         removable: true
                     });
@@ -356,7 +350,7 @@ function searchHospitals(pageNo) {
                     infowindows.push(infowindow);
                     
                     kakao.maps.event.addListener(marker, 'click', function() { 
-                        var level = map.getLevel() - 2;
+                        let level = map.getLevel() - 2;
                         map.setLevel(level, {anchor: this.getPosition()});
 
                         if (openInfowindow) {
@@ -429,11 +423,10 @@ function searchHospitals(pageNo) {
                         }
                     });
                 }
-                
 
                 $(document).on('click', '.cb-content', function(event) {
                     
-                    var index = $(this).data('index');
+                    let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
 
                     kakao.maps.event.trigger(markers[index], 'click');
@@ -465,7 +458,7 @@ function searchHospitals(pageNo) {
                 });
                     
                 $('#hospitalList').on('click', '.hospital-details', function() {
-                    var index = $(this).data('index');
+                    let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
                     kakao.maps.event.trigger(markers[index], 'click');
                 });
@@ -490,32 +483,44 @@ function searchHospitals(pageNo) {
 
 function displayPagination(totalPage, currentPage) {
     clearAllwithmarker(); 
-    var paginationDiv = $('#rpageNumber');
+    let paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
-    if (totalPage > 0) {
-        // 처음 페이지로 이동
-        paginationDiv.append('<span class="page-link" data-page="1">[맨처음]</span>');
+    let pageGroup = Math.ceil(currentPage / 10);
+    let lastPage = pageGroup * 10;
+    let firstPage = lastPage - 9;
 
-        for (var i = 1; i <= totalPage; i++) {
-            var link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
+    if (lastPage > totalPage) {
+        lastPage = totalPage;
+    }
+
+    if (totalPage > 0) {
+        // 이전 페이지 그룹으로 이동
+        if (firstPage > 1) {
+            paginationDiv.append('<span class="page-link" data-page="' + (firstPage - 1) + '">[이전]</span>');
+        }
+
+        for (let i = firstPage; i <= lastPage; i++) {
+            let link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
             if (i === currentPage) {
                 link.addClass('active');
             }
             paginationDiv.append(link);
         }
-        // 마지막 페이지로 이동
-        paginationDiv.append('<span class="page-link" data-page="' + totalPage + '">[마지막]</span>');
+
+        // 다음 페이지 그룹으로 이동
+        if (lastPage < totalPage) {
+            paginationDiv.append('<span class="page-link" data-page="' + (lastPage + 1) + '">[다음]</span>');
+        }
+
+        $('#rpageNumber .page-link').on('click', function(e) {
+            e.preventDefault();
+            let page = $(this).data('page');
+            searchHospitals(page);
+            $('#rpageNumber .page-link').removeClass('active');
+            $(this).addClass('active');
+        });
     }
-
-    $('#rpageNumber .page-link').on('click', function(e) {
-        e.preventDefault();
-        var page = $(this).data('page');
-        searchHospitals(page);
-
-        $('#rpageNumber .page-link').removeClass('active');
-        $(this).addClass('active');
-    });
 }
 
 // 지도에서 모든 마커를 제거하는 함수
@@ -582,7 +587,7 @@ function init(path) {
             areas[index] = ob;
         });
         // 지도에 영역데이터를 폴리곤으로 표시
-        for (var i = 0, len = areas.length; i < len; i++) {
+        for (let i = 0, len = areas.length; i < len; i++) {
             displayArea(areas[i]);
         }
     }); //getJSON
@@ -590,7 +595,7 @@ function init(path) {
 
 // 폴리곤 보여지기
 function displayArea(area) {
-    var polygon = new kakao.maps.Polygon({
+    let polygon = new kakao.maps.Polygon({
         map: map,
         path: area.path,
         strokeWeight: 2,
@@ -649,8 +654,6 @@ function displayArea(area) {
             level = 6;
         }
 
-
-
         map.setLevel(level, {
             anchor: centroid(area.path),
             animate: { duration: 350 }
@@ -661,12 +664,12 @@ function displayArea(area) {
 
 // 폴리곤 중심 좌표 계산 함수
 function centroid(path) {
-    var x = 0, y = 0, area = 0;
+    let x = 0, y = 0, area = 0;
 
-    for (var i = 0, len = path.length, j = len - 1; i < len; j = i++) {
-        var p1 = path[i];
-        var p2 = path[j];
-        var f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
+    for (let i = 0, len = path.length, j = len - 1; i < len; j = i++) {
+        let p1 = path[i];
+        let p2 = path[j];
+        let f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
         x += (p1.getLat() + p2.getLat()) * f;
         y += (p1.getLng() + p2.getLng()) * f;
         area += f * 3;
@@ -674,7 +677,6 @@ function centroid(path) {
     return new kakao.maps.LatLng(x / area, y / area);
 }
  
-
 // 상세보기 함수
 function detailSearch(index) {
     let hidx = $('#hospitalList').children().eq(index).find('input').attr('name');
