@@ -366,45 +366,53 @@ function searchHospitals(pageNo) {
                     });
                                   
                 } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
-    
-                if (markers.length > 1) { 
-                    for (let i = 0; i < markers.length; i++) {    
-                         for(let j=i+1; j<markers.length; j++){
-                            //두 마커의 위경도가 같다면
-                            if(markers[i].getPosition().equals(markers[j].getPosition())){
-                                let combinedContent = `<div class="cb-box">`;
-                                combinedContent += `<div class="title cb-content" data-index="${i}"> ${positionArr[i].hpname} </div>`; // 첫번째 중복 마커 병원명 추가
-                                for (let k = j; k < markers.length; k++) { 
-                                    if(markers[i].getPosition().equals(markers[k].getPosition())){
-                                        combinedContent += `<div class="title cb-content" data-index="${k}"> ${positionArr[k].hpname} </div>`;
-                                    }
-                                }
-                                combinedContent += `</div>`;
-
-                                let customOverlay = new kakao.maps.CustomOverlay({
-                                    content: `<div class="custom-overlay">${combinedContent}</div>`,
-                                    position: markers[i].getPosition(),
-                                    yAnchor: 1, 
-                                    clickable: true 
-                                });
-
-                                overlays.push(customOverlay);
-
+                if (markers.length > 1) {
+                    // 중복 마커 위치를 저장하기 위한 Map 객체 생성
+                    let markerPositions = new Map();
+                
+                    for (let i = 0; i < markers.length; i++) {
+                        let position = markers[i].getPosition().toString(); // 마커 위치를 문자열로 변환
+                        if (!markerPositions.has(position)) {
+                            markerPositions.set(position, []); // 새로운 위치인 경우 배열 생성
+                        }
+                        markerPositions.get(position).push(i); // 해당 위치에 마커 인덱스 추가
+                    }
+                
+                    // 각 위치에 대해 중복 마커 확인
+                    markerPositions.forEach((indices, position) => {
+                        if (indices.length > 1) { // 중복 마커가 있는 경우
+                            let combinedContent = `<div class="cb-box">`;
+                            indices.forEach(index => {
+                                combinedContent += `<div class="title cb-content" data-index="${index}"> ${positionArr[index].hpname} </div>`;
+                            });
+                            combinedContent += `</div>`;
+                
+                            // 중복 마커에 대한 오버레이 생성
+                            let customOverlay = new kakao.maps.CustomOverlay({
+                                content: `<div class="custom-overlay">${combinedContent}</div>`,
+                                position: markers[indices[0]].getPosition(),
+                                yAnchor: 1,
+                                clickable: true
+                            });
+                
+                            overlays.push(customOverlay);
+                
+                            // 중복 마커에 대해 클릭 이벤트 추가
+                            indices.forEach(index => {
                                 (function(marker, customOverlay) {
-
-                                    kakao.maps.event.addListener(marker, 'click', function() { 
+                                    kakao.maps.event.addListener(marker, 'click', function() {
                                         if (openOverlay) {
                                             openOverlay.setMap(null);
                                         }
-                                        customOverlay.setMap(map);        
-                                        openOverlay = customOverlay;  
+                                        customOverlay.setMap(map);
+                                        openOverlay = customOverlay;
                                     });
-                                })(markers[j], customOverlay);
-
-                            }
-                        }   
-                    }
+                                })(markers[index], customOverlay);
+                            });
+                        }
+                    });
                 }
+                
 
                 $(document).on('click', '.cb-content', function(event) {
                     

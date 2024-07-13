@@ -112,25 +112,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .map_wrap {
     position: relative;
     overflow: hidden;
@@ -163,7 +144,8 @@ body {
 
 .custom-overlay {
     position: relative;
-    top: 9vh;
+    top: -8vh;
+    left: 16.5rem;
     background-color: white;
     border: 1px solid black;
     border-radius: 5px;
