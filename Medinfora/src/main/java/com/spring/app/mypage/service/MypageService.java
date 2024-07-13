@@ -25,5 +25,13 @@ public interface MypageService {
 
 	// (비밀번호변경) 비밀번호 변경하기
 	int updatepwd(Map<String, String> paraMap);
+	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
+	ReserveDTO getRdto(String ridx);
+
+	// (의료인- 진료예약 열람) 선택한 진료현황의 예약코드 가져오기
+	String GetRcode(String rStatus);
+
+	// (의료인- 진료예약 열람) 진료현황 변경해주기
+	int ChangeRstatus(Map<String, String> paraMap);
 
 }

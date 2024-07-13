@@ -2,6 +2,7 @@ package com.spring.app.mypage.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,9 @@ public class MypageService_imple implements MypageService {
 			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
 			reserveList.clear();	// 기존에 있는 값 비우기
 			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			
+			// === 진료일시 기준으로 내림차순 === //
+			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
 		}
 		else {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명, 진료현황)
@@ -109,6 +113,27 @@ public class MypageService_imple implements MypageService {
 		paraMap.put("pwd",Sha256.encrypt(paraMap.get("pwd")));
 		
 		return dao.updatepwd(paraMap);
+	}
+	
+	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
+	@Override
+	public ReserveDTO getRdto(String ridx) {
+		ReserveDTO rsdto = dao.getRdto(ridx);
+		return rsdto;
+	}
+
+	// (의료인- 진료예약 열람) 선택한 진료현황의 예약코드 가져오기
+	@Override
+	public String GetRcode(String rStatus) {
+		String rcode = dao.GetRcode(rStatus);
+		return rcode;
+	}
+
+	// (의료인- 진료예약 열람) 진료현황 변경해주기
+	@Override
+	public int ChangeRstatus(Map<String, String> paraMap) {
+		int n = dao.ChangeRstatus(paraMap);
+		return n;
 	}	
 	
 }
