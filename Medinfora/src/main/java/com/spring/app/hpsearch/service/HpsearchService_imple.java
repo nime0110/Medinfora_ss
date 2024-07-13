@@ -1,5 +1,6 @@
 package com.spring.app.hpsearch.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,12 @@ public class HpsearchService_imple implements HpsearchService {
 	@Override
 	public List<String> putSiGetdo(String local) {
 		return hsdao.putSiGetdo(local);
+	}
+
+	@Override
+	public int holidatCheck(LocalDate currentDate) {
+		// TODO Auto-generated method stub
+		return hsdao.holidatCheck(currentDate);
 	}
 
 }

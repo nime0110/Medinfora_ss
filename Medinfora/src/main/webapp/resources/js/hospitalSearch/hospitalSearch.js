@@ -202,6 +202,9 @@ function updateCityFromLocal(local) {
                     $('#local').val(local);
                     searchHospitals(1);
                 });
+                $('#local').on('change', function() {
+                    updateDong();
+                });
             }  else {
                 json.forEach(item => {  
                     $('#city').val(item.sido);
@@ -232,7 +235,7 @@ function searchHospitals(pageNo) {
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
-
+    
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -274,7 +277,7 @@ function searchHospitals(pageNo) {
 									    		<p class="tel">
 									    			<span>${item.hptel}</span>
 									    		</p>
-									    		<p class="add">								    		
+									    		<p class="addr">								    		
 										    		${item.hpaddr} 
 									    		</p>
                                                 <button class="details-button"  onclick="detailSearch(${index})">상세보기</button>
@@ -290,6 +293,7 @@ function searchHospitals(pageNo) {
                                 <p class="hospital-type nanum-n">${item.classname}</p>
                                 <p class="hospital-contact nanum-n">TEL: ${item.hptel} </p>
                                 <p class="hospital-address nanum-n">${item.hpaddr}</p>
+                                <p class="status">${item.status}</p>
                                 <button class="details-button nanum-n" onclick="detailSearch(${index})">상세보기</button>
                             </div>`;            
                                 
@@ -521,11 +525,11 @@ function removePolygon() {
     for (let i = 0; i < polygons.length; i++) {
         polygons[i].setMap(null);
     }
-    for (let i = 0; i < overlays.length; i++) {
-        overlays[i].setMap(null);
+    for (let i = 0; i < polygonOverlays.length; i++) {
+        polygonOverlays[i].setMap(null);
     }
     polygons = [];
-    overlays = [];
+    polygonOverlays = [];
 }
 
 // 폴리곤 생성
@@ -558,7 +562,7 @@ function init(path) {
         }
     }); //getJSON
 }   //init
-
+s
 
 // 폴리곤 보여지기
 function displayArea(area) {
@@ -576,15 +580,15 @@ function displayArea(area) {
     // 폴리곤 중심 좌표
     let center = centroid(area.path);
 
-    var customOverlay = new kakao.maps.CustomOverlay({
+    let polygonOverlay = new kakao.maps.CustomOverlay({
         position: center,
         content: `<div class="label nanum-b size-s" style="background-color: white; border: 1px solid black; border-radius: 3px; font-size:0.8rem;">${area.name}</div>`,
         yAnchor: 0.5
     });
-    customOverlay.setMap(map);
-    overlays.push(customOverlay); 
+    polygonOverlay.setMap(map);
+    polygonOverlays.push(polygonOverlay); 
 
-    kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+    kakao.maps.event.addListener(polygon, 'mouseover', function () {
         polygon.setOptions({ fillColor: '#09f' });
     });
 
