@@ -7,6 +7,10 @@ $(function() {
 		}
 	});
 
+    $('#closeModalButton').click(function(){
+        $('#ChangeRcodeModal').modal('hide');
+    });
+
 })      // end of $(function() {---------------
 
 $(document).on('change','.sclist',(e) => {
@@ -24,8 +28,29 @@ $(document).on('change','.sclist',(e) => {
         $("input.inputsc").attr('placeholder','검색어를 입력해주세요.');
         RESearch();
     }
-    
 
+})  // end of $(document).on('change','.search_ch',(e) => {---------------
+
+$(document).on('click','.btnStyle',() => {
+
+    // 기존 진료현황
+    const orgin_rStatus = $('#modal-rStatus').text();
+
+    // 선택한 진료현황
+    const rStatus = $("select.changers").val();
+
+    if(orgin_rStatus == rStatus){
+        alert("기존 진료현황과 동일합니다.");
+        return;
+    }
+
+    $("input[name='rStatus']").val(rStatus);
+
+    const frm = document.ChangeRstatus;
+    frm.action = "ChangeRstatus.bibo";
+    frm.method = "post";
+    frm.submit();
+    
 })  // end of $(document).on('change','.search_ch',(e) => {---------------
 
 ///////////////////////////////////////////////////////////////
@@ -107,7 +132,9 @@ function Page(currentShowPageNo){
                         v_html += `     </span>
                                     </span> 
                                     <span class="col-2">
-                                        <button class="rschange nanum-eb size-s" type="button">변경</button>
+                                        <button class="rschange nanum-eb size-s" type="button" onclick="ChangeRcode(${item.ridx})">
+                                            변경
+                                        </button>
                                     </span>
                                 </div>`;
                 })  // end of $.each(json, function(index, item){---------
@@ -164,10 +191,41 @@ function Page(currentShowPageNo){
                 $("div#ReserveHP_PageBar").html(pageBar);
             }   // end of if~else----------
         }
-        , error:function(request,status,error){
+        , error:function(request){
 			alert("code: "+request.status);
 		}
 
     })  // end of $.ajax({--------------------------
 
 }   // end of function Page(currentShowPageNo){-----------------
+
+// 접수현황 변경
+function ChangeRcode(ridx){
+
+    $.ajax({
+
+        url:"getRdto.bibo"
+        , data: {ridx:ridx}
+        , dataType:"json"
+        , success: function(json){
+            console.log(json);
+            // 모달 내용 업데이트
+            $('#modal-ridx').text(json.ridx);
+            $('#modal-name').text(json.name);
+            $('#modal-mobile').text(json.mobile);
+            $('#modal-rStatus').text(json.rStatus);
+            $('#modal-reportday').text(json.reportday);
+            $('#modal-checkin').text(json.checkin);
+
+            $("select.changers").val(json.rStatus);
+            $("input[name='ridx']").val(json.ridx);
+
+            $('#ChangeRcodeModal').modal('show');
+        }
+        , error:function(request){
+			alert("code: "+request.status);
+		}
+
+    })  // end of $.ajax({---------------
+
+}   // end of function ChangeRcode(ridx){---------------

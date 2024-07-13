@@ -9,7 +9,6 @@
     display: flex;
     justify-content: space-around;
     width: 80%;
-    min-width: 800px;
     padding-bottom: 48px;
     margin: 0 auto;
 }
@@ -51,7 +50,7 @@
 .item_inputtag{
     width: 80%;
     border: none;
-    background-color: var(--grey50);
+    background-color: var(--grey100);
 }
 
 .save_liner{
@@ -75,4 +74,42 @@
 
 .item_btn:hover{
     background-color: var(--navy600);
+}
+
+@media (max-width: 1280px) {
+
+	.inneritem{
+		width:100%;
+	}
+	
+	.sidetitle{
+		width:20%;
+	    padding-left: 24px;
+	}
+	
+	.main_contain{
+		width:80%;
+	}
+	
+}
+
+@media (max-width: 768px) {
+	
+	.inneritem{
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	
+	.sidetitle{
+		width:100%;
+	}
+	
+	.item_inputtag{
+		width:100%;
+	}
+	
+	.save_liner{
+		padding-right: 0px;
+	}
+	
 }

@@ -139,3 +139,11 @@
 	}
 }
 
+@media (max-width: 768px) {
+
+	#info_container{
+		width: 100%;
+	}
+	
+}
+
