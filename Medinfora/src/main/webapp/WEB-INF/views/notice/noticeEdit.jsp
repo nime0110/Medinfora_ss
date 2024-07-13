@@ -128,7 +128,7 @@
     </td>
 </tr>
     </table>
-    <div style="margin: 20px;">
+    <div class="--font" style="margin: 20px;">
         <button type="button" class="btn btn-secondary btn-sm mr-3" id="btnUpdate">글수정</button>
         <button type="button" class="btn btn-secondary btn-sm" onclick="javascript:history.back()">취소</button>  
     </div>

@@ -11,44 +11,7 @@
 <script type="text/javascript" src="<%= ctxPath %>/resources/js/notice/notice.js"></script>
 
 <style>
-        #nextBoard {
-       margin-top:20px;
-            border-top: 1px solid #dbdbdb;
-            border-bottom: 1px solid #dbdbdb;
-          width: 1180px; 
-            margin-left: 8%;
-        }
-
-        #nextBoard tr {
-            height: 60px;
-        }
-
-        #nextBoard td:nth-child(1) {
-            width: 120px;
-            font-size: 14px;
-            line-height: 1.07;
-            text-align: center;
-            color: #767676;
-        }
-
-        #nextBoard td:nth-child(2) {
-            width: 880px;
-            font-size: 16px;
-            padding: 17px 98px 17px 32px;
-        }
-
-        #nextBoard a {
-            text-decoration: none;
-            color: #000;
-        }
-
-        #nextBoard a:hover {
-            text-decoration: underline;
-        }
-
-        #nextBoard span {
-            color: #767676;
-        }
+      
     </style>
 
 <script type="text/javascript">
@@ -117,18 +80,18 @@
               <div class="prev-next-links">
         <table id="nextBoard">
             <tr>
-                <td>이전</td>
+                <td class="--font">이전</td>
                 <td>
                     <c:if test="${not empty prevNotice}">
                         <a href="<c:url value='/notice/view.bibo?nidx=${prevNotice.nidx}'/>" class="prev-link">${prevNotice.title}</a>
                     </c:if>
                     <c:if test="${empty prevNotice}">
-                        <span>이전글이 없습니다.</span>
+                        <span class="--font">이전글이 없습니다.</span>
                     </c:if>
                 </td>
             </tr>
-            <tr style="border-top: 1px solid #dbdbdb;">
-                <td>다음</td>
+            <tr class="--font" style="border-top: 1px solid #dbdbdb;">
+                <td class="--font">다음</td>
                 <td>
                     <c:if test="${not empty nextNotice}">
                         <a href="<c:url value='/notice/view.bibo?nidx=${nextNotice.nidx}'/>" class="next-link">${nextNotice.title}</a>
@@ -146,14 +109,19 @@
 
    
     <div id="deleteModal" class="modal modal-dialog">
-        <div class="modal-content">
-            <span class="close" style="text-align: right; margin-bottom: 20px;">&times;</span>
+        <div class="modal-content nanum-n">
+            <span class="close nanum-n" style="text-align: right;">&times;</span>
             <h2>정말로 글을 삭제하시겠습니까?</h2>
-            <form name="delFrm">
+            <form name="delFrm" style=" display: inline-block; text-align: center;">
+                <div>
+              
                 <input type="hidden" name="nidx" value="${noticedto.nidx}" />
-                <div class="notice-buttons">
-                    <button type="button" class="btn btn-secondary" id="btnDelete">삭제완료</button>
+                 <br>
+                 <div class="nanum-n notice-buttons">
+                    <button type="button" class="btn btn-secondary" id="btnDelete">삭제</button>
                     <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
+                </div>
+                
                 </div>
             </form>
         </div>
