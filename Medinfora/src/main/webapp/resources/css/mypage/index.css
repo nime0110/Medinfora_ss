@@ -116,7 +116,19 @@
 @media (max-width: 768px) {
 	#info_container{
 		width: 100%;
+        margin: 0 0;
 	}
+
+    #info_sidebar{
+        display: none;
+        position: absolute;
+        top : 60px;
+    }
+
+    #info_content{
+        padding: 0;
+    }
+
 }
 
 /* 반응형 예외 (필요시에만 작성)*/
@@ -125,5 +137,13 @@
 	#info_container{
 		width: 90%;
 	}
+}
+
+@media (max-width: 768px) {
+
+	#info_container{
+		width: 100%;
+	}
+	
 }
 

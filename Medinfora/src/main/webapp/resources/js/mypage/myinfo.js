@@ -2,13 +2,8 @@ function infoChange(midx){
 
     const mobile = $("input:text[name='mobile']");
 
-    let address = "";
-    let detailaddress = "";
-
-    if(midx=="1"){
-        address = $("#address").val().trim();
-        detailaddress = $("#detailaddress").val().trim();
-    }
+    const address = $("input:text[name='address']").val();
+    const detailaddress = $("input:text[name='detailaddress']").val();
 
     const regExp =  new RegExp(/^[0][0-9]{8,10}$/g);
 
@@ -19,15 +14,67 @@ function infoChange(midx){
         mobile.val("");
         mobile.trigger("focus");
         return;
-    }else if(midx=="1"
-        &&(address == null || address == "" || detailaddress == null || detailaddress == "")){
-        $("address_waring").html("주소를 올바르게 입력해주세요.");
-        return;
+    }else if(midx == "1"){
+        if(address == "" || detailaddress == ""){
+            $("div#address_waring").html("주소를 올바르게 입력해주세요.");
+            return;
+        }else{
+        	const frm = document.configForm;
+	        frm.action = `updatemember.bibo`;
+	        frm.submit();
+        }
     }else{
         const frm = document.configForm;
         frm.action = `updatemember.bibo`;
         frm.submit();
     }
+
+}
+
+function pwdChange(){
+
+    const userid = $("input:hidden[name='userid']").val();
+    const nowpwd = $("input:password[name='Nowpwd']").val();
+    const pwd = $("input:password[name='pwd']").val();
+    const pwdRepect = $("input:password[name='pwdRepect']").val();
+
+    const regExp = new RegExp(/^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*].*$/g);
+    const bool = regExp.test(pwd);
+
+    $.ajax({
+        url : "nowpwdCheck.bibo",
+        method : "post",
+        dataType : "json",
+        async : true,
+        data : {"userid":userid,"pwd":nowpwd},
+        success : function(json){
+        
+            if(!json.isPwd){
+                $("div#pwd_waring").html("");
+                $("div#pwdRepect_waring").html("");
+                $("div#Nowpwd_waring").html("틀린 비밀번호 입니다.");
+                return;
+            }else if(!bool){
+                $("div#Nowpwd_waring").html("");
+                $("div#pwdRepect_waring").html("");
+                $("div#pwd_waring").html("비밀번호 형식에 맞지 않습니다.");
+                return;
+            }else if(pwd != pwdRepect){
+                $("div#Nowpwd_waring").html("");
+                $("div#pwd_waring").html("");
+                $("div#pwdRepect_waring").html("비밀번호가 일치하지 않습니다.");
+                return;
+            }else{
+                const frm = document.configForm;
+                frm.action = `updatepwd.bibo`;
+                frm.submit();
+            }
+
+        },
+        error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+    });
 
 }
 

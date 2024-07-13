@@ -253,3 +253,106 @@ ON R.hidx = H.hidx
 -- === 진료예약 === --
 insert into reserve(ridx, userid, checkin, hidx)
 values (seq_ridx.nextval, #{userid}, to_char(to_date(#{day}, 'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss'), #{hidx});
+
+
+---------------------------------------------------------------------------
+
+-- === 아이디를 통해 병원인덱스 값 찾기 === --
+SELECT distinct hidx
+FROM
+(
+    select userid
+    from member
+) M
+JOIN
+(
+    select userid, hidx
+    from classcodemet
+) C
+ON M.userid = C.userid
+WHERE M.userid = 'md20395'
+
+-- === hidx 의 현재 예약리스트 가져오기 === --
+select ridx, userid, reportday, checkin, rcode, hidx
+from reserve
+where hidx = '318'
+order by checkin desc
+
+-- === 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기 === --
+select *
+from member
+where userid = 'hemint0520_kakao';
+
+-- === hidx 의 현재 예약리스트 가져오기(검색포함) === --
+-- sclist => 환자명, 진료현황
+SELECT ridx, userid, reportday, checkin, rcode, hidx
+
+FROM
+(
+    SELECT row_number() over(order by ridx desc) as rno 
+        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+    FROM
+    (
+        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
+        FROM
+        (
+            select ridx, userid, reportday, checkin, rcode, hidx
+            from reserve
+            where hidx = '318'  -- 병원인덱스
+            order by checkin desc
+        )R
+        JOIN
+        (
+            select userid, name
+            from member
+            where name like '%' || '' || '%' -- 환자명
+        )M
+        ON R.userid = M.userid
+    ) RM
+    JOIN
+    (
+        select rcode, rstatus
+        from reservecode
+        --where rstatus = '접수신청'     -- 접수현황
+    ) RC
+    ON RM.rcode = RC.rcode
+)
+WHERE rno between 1 and 10
+
+
+-- === ridx 를 통해 예약 정보 가져오기 === --
+SELECT ridx, reportday, checkin, name, mobile, rstatus
+FROM
+(
+    SELECT ridx, reportday, checkin, rcode, name, mobile
+    FROM
+    (
+        select ridx, userid, reportday, checkin, rcode
+        from reserve
+        where ridx = '1'
+    )R
+    JOIN
+    (
+        select userid, name, mobile
+        from member
+    )M
+    ON R.userid = M.userid
+) RM
+JOIN
+(
+    select rcode, rstatus
+    from reservecode    
+) RC
+ON RM.rcode = RC.rcode
+
+-- === 선택한 진료현황의 예약코드 가져오기 === --
+select rcode
+from reservecode 
+where rstatus = '접수완료'
+
+select *
+from reserve
+
+-- === 진료현황 변경해주기 === --
+update reserve set rcode = 2
+where ridx = 1;

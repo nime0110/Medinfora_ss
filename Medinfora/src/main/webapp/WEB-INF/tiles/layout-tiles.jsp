@@ -39,32 +39,8 @@
 
 </head>
 <style>
-:root {
-    --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
-    --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
 
-     /* div background 색상 등 object 컬럼 색상입니다 */
-    --object-lightpurple-color : #e5e2ff;
-    --object-lightyello-color : #fff6d8;
-    --object-lightgreen-color : #DFF9F2;
-    --object-clearblue-color : #f2f4f8;
-    --object-skyblue-color : #d8eaff;
-
-    /* object 컬럼 색상별 text 진한 컬러 - 오브젝트색상 계열의 진한 fontcolor 로 매칭시켜서 사용하시면됨 */
-    --object-lightgreen-font-color: #23C197;
-    --object-lightyello-font-color: #f46d19;
-    --object-lightpurple-font-color: #2614F3;
-
-    /* 포인트 컬러 */
-    
-    /* 기본 텍스트 컬러 */
-    --text-black-color: #0e0e0e; 
-    --text-white-color: #fff; 
-    --text-gray-color: #222; 
-
-}
-
-/* 스타일 clear 공통 코드 start */
+	/* 스타일 clear 공통 코드 start */
 
 	body {
 	    font-family: 'Nanum Gothic', sans-serif;
@@ -81,18 +57,20 @@
 	    color: black;
 	}
 	
-	#wrapper{
-		margin: 0;
-		padding: 0;
-		min-height: 100%;
+	#wrap_container{
+		height: auto;
+		min-height: 76.8vh;
+		padding-bottom: 120px;
 	}
+	
 </style>
 
 <body>
+
+	<div id="wrap_container">
 	<tiles:insertAttribute name="header" />
-	<div style="margin-top: 75px;"></div>
-	<div id="wrapper">
-	<tiles:insertAttribute name="content" />
+		<div style="margin-top: 75px;"></div>
+		<tiles:insertAttribute name="content" />
 	</div>
 	<tiles:insertAttribute name="footer" />
 </body>
