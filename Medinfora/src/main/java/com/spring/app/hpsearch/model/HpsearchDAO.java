@@ -1,5 +1,6 @@
 package com.spring.app.hpsearch.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ public interface HpsearchDAO {
 	
 	//시를 넣어서 도 불러오기
 	List<String> putSiGetdo(String local);
+
+	int holidatCheck(LocalDate currentDate);
 
 
 }
