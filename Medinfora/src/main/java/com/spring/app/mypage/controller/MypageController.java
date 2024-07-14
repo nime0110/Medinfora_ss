@@ -144,35 +144,16 @@ public class MypageController {
 		return mav;
 	}
 	
+	// === (일반회원) 진료예약 열람 === //
 	@GetMapping("myreserve.bibo")
 	public ModelAndView isLogin_myreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/myreserve.info");
 		return mav;
 	}
 	
-	// === 진료예약 열람 === //
+	// === (의료인) 진료예약 열람 === //
 	@GetMapping("mdreserve.bibo")
-	public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-		
-		if(loginuser != null && loginuser.getmIdx() != 2) {
-			String message = "(단체)병원 회원으로 로그인 후 접근 가능합니다.";
-	 		String loc = "javascript:history.back()";
-	 		
-	 		request.setAttribute("message", message);
-	 		request.setAttribute("loc", loc);
-	 		
-	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-	 		
-	 		try {
-				dispatcher.forward(request, response);	// /WEB-INF/views/msg.jsp 로 이동
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public ModelAndView isDr_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("mypage/mdreserve.info");
 		return mav;
