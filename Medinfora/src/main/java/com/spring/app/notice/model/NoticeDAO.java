@@ -38,5 +38,10 @@ public interface NoticeDAO {
 
 	public NoticeDTO getNextNotice(int nidx);
 
+	public int deleteFile(int nidx);
+
+//	public Object deletefilelist(int nidx);
+
+	public void edit_view(Map<String, Object> paraMap);
 
 }

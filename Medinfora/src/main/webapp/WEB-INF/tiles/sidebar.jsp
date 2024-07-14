@@ -10,8 +10,13 @@
        <hr class="sidebar_divideline">
        <div class="sidebar_list">
            <div class="sidebar_intro">
-               <span class="sideber_username">사용자</span>&nbsp;님,<br>
-               반갑습니다!
+           	   <c:if test="${sessionScope.loginuser.mIdx == 0}">
+               		<span class="sideber_username">관리자</span>&nbsp;님,<br>
+           	   </c:if>
+           	   <c:if test="${sessionScope.loginuser.mIdx != 0}">
+               		<span class="sideber_username">${sessionScope.loginuser.name}</span>&nbsp;님,<br>
+           	   </c:if>
+				반갑습니다!
            </div>
            
            <div class="sidebar_list_title">

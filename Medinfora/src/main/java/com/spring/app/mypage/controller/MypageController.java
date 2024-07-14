@@ -1,7 +1,5 @@
 package com.spring.app.mypage.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -144,41 +142,21 @@ public class MypageController {
 		return mav;
 	}
 	
+	// === (일반회원) 진료예약 열람 === //
 	@GetMapping("myreserve.bibo")
 	public ModelAndView isLogin_myreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/myreserve.info");
 		return mav;
 	}
 	
-	// === 진료예약 열람 === //
+	// === (의료인) 진료예약 열람 === //
 	@GetMapping("mdreserve.bibo")
-	public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-		
-		if(loginuser != null && loginuser.getmIdx() != 2) {
-			String message = "(단체)병원 회원으로 로그인 후 접근 가능합니다.";
-	 		String loc = "javascript:history.back()";
-	 		
-	 		request.setAttribute("message", message);
-	 		request.setAttribute("loc", loc);
-	 		
-	 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-	 		
-	 		try {
-				dispatcher.forward(request, response);	// /WEB-INF/views/msg.jsp 로 이동
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
+	public ModelAndView isDr_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/mdreserve.info");
 		return mav;
 	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
 	
-	// === 진료예약열람(페이징, 검색 처리) === //
+	// === (의료인) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
 	@GetMapping(value="mdreserveList.bibo", produces="text/plain;charset=UTF-8")
 	public String mdreserveList(HttpServletRequest request) {
@@ -229,7 +207,7 @@ public class MypageController {
 		// hidx 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.reserveList(paraMap);
 		
-		int totalCnt = reserveList.size();	// 리스트 총 결과 개수
+		int totalCnt = service.reserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
 		JSONArray jsonArr = new JSONArray();
@@ -273,7 +251,7 @@ public class MypageController {
 		return jsonArr.toString();
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
-	// === 진료현황 변경 모달창 정보 === //
+	// === (의료인) 진료현황 변경 모달창 정보 === //
 	@ResponseBody
 	@GetMapping(value="getRdto.bibo", produces="text/plain;charset=UTF-8")
 	public String getRdto(HttpServletRequest request) {
@@ -330,5 +308,94 @@ public class MypageController {
 		return mav;
 	}	// end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {----------
 	
+	// === (일반) 진료예약열람(페이징, 검색 처리) === //
+	@ResponseBody
+	@GetMapping(value="myreserveList.bibo", produces="text/plain;charset=UTF-8")
+	public String myreserveList(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		String userid = loginuser.getUserid();
+
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		String sclist = request.getParameter("sclist");		// 검색 구분
+		String inputsc = request.getParameter("inputsc");	// 검색한 값
+
+		if(inputsc != null) {
+			inputsc = inputsc.trim();
+		}
+		else {
+			inputsc = "";
+		}
+		
+		int sizePerPage = 10;	// 한 페이지당 보여줄 개수
+		
+		if(currentShowPageNo == null) {		// 처음 접속한 경우
+			currentShowPageNo = "1";
+		}
+		
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; // 시작 행번호 
+		int endRno = startRno + sizePerPage - 1; // 끝 행번호
+		
+		Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		paraMap.put("sclist",sclist);
+		paraMap.put("inputsc",inputsc);
+		
+		paraMap.put("userid",userid);
+		
+		List<ReserveDTO> reserveList = null;
+		
+		// userid 의 현재 예약리스트 가져오기(검색포함)
+		reserveList = service.UserReserveList(paraMap);
+		
+		int totalCnt = service.UserReserveListCnt(paraMap);	// 리스트 총 결과 개수
+		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
+		
+		JSONArray jsonArr = new JSONArray();
+		List<MemberDTO> memberList = null;
+		
+		if(reserveList != null) {	// 예약리스트가 존재하는 경우
+			for(ReserveDTO rsdto: reserveList) {
+				String hidx = rsdto.getHidx();
+				
+				// 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
+				memberList = service.GetHidxInfo(hidx);
+				if(memberList != null) {
+					for(MemberDTO mdto: memberList) {
+						try {
+							// select 용으로 사용되는 값에 담기
+							rsdto.setName(mdto.getName());
+							rsdto.setMobile(aES256.decrypt(mdto.getMobile()));
+						} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+							e.printStackTrace();
+						}
+					}	// end of for---------------
+				}
+				
+				JSONObject jsonObj = new JSONObject();
+		        jsonObj.put("checkin", rsdto.getCheckin());
+		        jsonObj.put("name", rsdto.getName());
+		        jsonObj.put("mobile", rsdto.getMobile());
+		        jsonObj.put("reportday", rsdto.getReportday());
+		        jsonObj.put("rcode", rsdto.getRcode());
+		        jsonObj.put("ridx", rsdto.getRidx());
+		        
+		        jsonObj.put("totalCnt", totalCnt);
+				jsonObj.put("sizePerPage", sizePerPage);
+				jsonObj.put("totalPage", totalPage);
+				
+		        jsonArr.put(jsonObj);
+		        
+			}	// end of for------------------
+		}
+
+		return jsonArr.toString();
+	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
 }

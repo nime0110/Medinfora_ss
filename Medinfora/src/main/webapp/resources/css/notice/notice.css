@@ -31,7 +31,8 @@
 	font-size: 3rem;
 }
 
-/* noticeList.jsp css 시작 */
+/*============== noticeList.jsp 시작 =========== */
+
 .notice0000 {
 	/* padding: 10px; */
 /* 	margin-top: 50px; */
@@ -42,6 +43,7 @@
 	margin: auto;
 	height: 30px;
 }
+
 
 .board_title {
 	margin: auto;
@@ -57,37 +59,44 @@
     background-color: (--text-black-color);
    
     align-items: center;
+    
   
     
 }
-
 .board-list {
-	cursor:pointer;
+ 	/* cursor:pointer;  */
 	gap: 10px;
 	margin-top: 40px;
 	width: 80vw;
 	margin: auto;
+
 }
 
+
 .board-item {
-	padding: 20px 20px;
-	transition: 0s;
+	cursor:pointer;
+	padding: 10px;
+	transition: 0.3s;
 	border-bottom: solid 1px #eee;
-	border-radius: 25px;
+	border-radius: 4px;
 	text-overflow: ellipsis;
+	
+	
 }
 
 .board-item:hover {
 	background-color: #f0f0f0;
-	opacity: 0.6;
+	padding: 10px;
+	opacity: 0.4;
 	text-overflow: ellipsis;
 }
-
 .board-item-title {
-/* 	font-wight: bold;
+	font-wight: bold;
+	display: block;
+/* 	
 	font-size: 24px;
 	color: rgb(78, 89, 104);
-	display: block;
+	
 	text-overflow: ellipsis; */
 display:flex;
 }
@@ -95,34 +104,31 @@ display:flex;
 
 
 body>div.homebar {
-	margin-top: 20px;
+	margin-top: 10px;
 	text-align: center;
 	margin-bottom: 10px;
 }
-
 .board-container {
-	padding: 20px;
+ 	padding: 20px;
 	position: relative;
+	
 }
 
-.notice-1 {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	/* 
-	 justify-content: center;
-     */
-	height: 10px;
-}
-/* .notice-1 {
- display: flex;
- align-items: center;
- justify-content: center;
 
- 
-}
+.b_border{
+	border-bottom: solid 1px rgb(163, 163, 163);
 
- */
+}
+.b_border:hover{
+		background-color: #f0f0f0;
+	opacity: 0.6;
+	text-overflow: ellipsis;
+}
+.subject{
+	border-top: 3px solid black;
+	border-bottom: 1px solid black;
+	border-bottom: none;
+}
 
 .notice-btn{
  padding:5px;
@@ -133,7 +139,6 @@ body>div.homebar {
  border-radius: 5px;
 
 } 
-
  .notice-btn:hover{
 	background-color: var(--grey600);
 }
@@ -151,33 +156,17 @@ body>div.homebar {
     font-size: 1rem;
     border-radius: 4px; */
 }
+
 /* .notice-btn:hover{
 	background-color: var(--grey600);
 } */
 
-/* .df {
-	position: absolute;
-	bottom: 13px;
-	right: 83px;
-	width: 90px;
-	height: 30px;
-	background-color: var(--sub-background-color);
-	 text-align: center;
-        line-height: 20px;
-        padding-top: 39px;
-        height: 96px;
-        border-radius: 80px;
-        box-shadow: 2px 3px 3px 0px;
-        
-	
-} */
 .board-item-date {
 	display: inline-block;
-	padding-top: 10px;
+	/* padding-top: 10px; */
 	font-size: 14px;
 	color: rgb(139, 149, 161);
 }
-
 .board-item-title {
 	flex: 1;
 	font-size: 1rem;
@@ -188,7 +177,6 @@ body>div.homebar {
 	align-items: center;
 	gap: 10px;
 }
-
 .board-item-title a {
 	color: var(- -text-black-color);
 	display: inline-block;
@@ -197,21 +185,25 @@ body>div.homebar {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-
 .attachment-icon img {
 	vertical-align: middle;
-}
-
-.board-item-body {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 }
 
 .attach_sh {
 	padding-right: 10px;
 }
 
+.board-item-title, .board-item-date, .notice-viewcount {
+  text-align: left;
+  padding: 0 10px;
+}
+
+
+.board-item-body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 .page-link {
 	border: none !important;
 	color: black;
@@ -220,7 +212,6 @@ body>div.homebar {
 .nowPage {
 	font-weight: bold;
 }
-
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -232,37 +223,52 @@ body>div.homebar {
 	margin: 0 5px;
 }
 
+
 .page-link {
 	display: block;
 	padding: 0.5rem 0.75rem;
 	margin-left: -1px;
 	line-height: 1.25;
-	color: #007bff;
+	color: #000000;
 	background-color: #fff;
 	border: 1px solid #dee2e6;
 }
 
-.page-item.active .page-link {
-	z-index: 1;
-	color: #fff;
-	background-color: #007bff;
-	border-color: #007bff;
+.subject {
+
+		border-top: 3px solid black;
+	border-bottom: 1px solid black;
 }
-/* === noticeList.jsp css 끝 == */
+.page-item.active .page-link {
+
+	z-index: 1;
+	color: #000000;
+	background-color: #ffffff;
+	border-color: #000000;
+}
+/*============== noticeList.jsp 끝 =========== */
 
 /* noticeView.jsp 시작 */
+
 .notice-container {
 	width: 80vw;
 	margin: auto;
-	padding: 30px 0;
+/* 	padding: 70px 0; */
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	 position: relative;
 }
+
 .notice-info2 {
-    margin-left: auto;
+  
+       margin-left: auto; 
+    display: flex;
+    align-items: center;
 }
 
+.notice-info span {
+	margin: 0 10px;
+}
 .board_title1 {
 	padding-bottom: 27px;
 	width: 80vw;
@@ -283,15 +289,6 @@ body>div.homebar {
     align-items: center;
     justify-content: space-between;
 }
-.notice-info2 {
-    margin-left: auto; 
-    display: flex;
-    align-items: center;
-}
-
-.notice-info span {
-	margin: 0 10px;
-}
 
 .notice-content {
 	padding: 20px 0;
@@ -300,11 +297,10 @@ body>div.homebar {
 	/* height: 700px; */
  margin-bottom: 39px; 
 }
-
 .notice-attachment {
-	/* margin-bottom: 20px;
+	 margin-bottom: 20px;
 	font-size: 1em;
-	text-align: center; */
+
 	 width: 100%;
     margin-top: 10px;
 }
@@ -313,17 +309,17 @@ body>div.homebar {
 }
 
 .notice-info2 button {
-    margin-left: 10px; /* 버튼 사이의 간격 */
+    margin-left: 10px; 
 }
+
 .attachment-label {
 	font-weight: bold;
 }
-
 .notice-button01, .notice-button02, .notice-button03 {
 	border: none;
 	border-radius: 0;
 	background-color: var(- -navy700);
-	color: var(- -blue50);
+	color: var(--blue50);
 	height: 38px;
 	transition: all 0.5s;
 	font-family: 'Nanum Gothic', sans-serif !important;
@@ -333,14 +329,16 @@ body>div.homebar {
 
 .notice-button01:hover, .notice-button02:hover, .notice-button03:hover {
 	background-color: var(--grey600);
+	
 }
+
  .modal {
     display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 120%;
     height: 100%;
     overflow: auto;
    /*  background-color: rgba(0, 0, 0, 0.5); semi-transparent background */
@@ -349,33 +347,38 @@ body>div.homebar {
 .modal-content {
    /*  background-color: #fefefe; */
     position: fixed;
-    top: 50%; /* position the modal 50% from the top */
-    left: 50%; /* position the modal 50% from the left */
-    transform: translate(-50%, -50%); /* center the modal precisely */
-    padding: 40px;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    padding: 60px;
     border: 1px solid #888;
-    width: 300px; /* width of the modal */
+    width: 450px;
      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     border-radius: 5px;
 }
 
 .modal-content h2 {
-    margin-top: 6px;
- font-size: 16px; 
+    margin-top: 10px;
+ font-size: 20px; 
     text-align: center;
+     
 }
+
 
 .modal-buttons {
     text-align: center;
-    margin-top: 30px;
+    margin-bottom: 20px;
+
 }
 
 .modal-buttons button {
-    margin: 10px 5px;
-    padding: 15px 15px;
+    margin: 20x 15px;
+    padding: 15px 29px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+     margin-left: 10px;
+       
 }
 
 .modal-buttons .confirm {
@@ -391,8 +394,12 @@ body>div.homebar {
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
+  position: absolute; 
+    top: 10px;         
+    right: 15px;         
+    line-height: 1;     
     cursor: pointer;
 }
 
@@ -421,9 +428,52 @@ tr>th {
 	
 }
 
-
 #wrapper>div>div:nth-child(3)>div>form>table>tbody>tr:nth-child(2)>th {
 
 	margin: 40px auto;
 	vertical-align: middle;
 }
+
+  #nextBoard {
+     
+       margin-top:20px;
+            border-top: 1px solid #dbdbdb;
+            border-bottom: 1px solid #dbdbdb;
+          width: 100%;
+            margin-left: 0%;
+        }
+
+        #nextBoard tr {
+            height: 60px;
+        }
+
+        #nextBoard td:nth-child(1) {
+            width: 120px;
+            font-size: 14px;
+            line-height: 3;
+            text-align: center;
+            color: #767676;
+        }
+
+        #nextBoard td:nth-child(2) {
+          /*   width: 880px; */
+              width: auto;
+            font-size: 16px;
+            /* padding: 17px 98px 17px 32px; */
+              padding: 17px 20px; 
+        }
+
+        #nextBoard a {
+            text-decoration: none;
+        
+            color: #000;
+        }
+
+        #nextBoard a:hover {
+            text-decoration: underline;
+        }
+
+        #nextBoard span {
+            color: #767676;
+        }
+/* noticeView.jsp 끝 */

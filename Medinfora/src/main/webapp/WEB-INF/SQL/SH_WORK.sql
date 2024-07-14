@@ -118,13 +118,15 @@ FILESIZE          NUMBER
         values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, default, default, #{filename}, #{orgname}, #{filesize})
 
 
-select *
-from notice
+    select *
+    from notice
 
      insert into notice (nidx, userid, title, content, viewcnt, writeday, status, filename, orgname, filesize)
         values (#{nidx}, #{userid}, #{title}, #{content}, #{viewcnt}, default, default, #{filename}, #{orgname}, #{filesize})
   
     
+    select *
+    from mediq
     
        update notice set title = '두번째입니다'
             , content = '두번째 글입니다!!'

@@ -15,13 +15,23 @@ public class NoticeDTO {
     private String filesize; // 파일크기
 
     private MultipartFile attach;
+    
+    private boolean isFileDeleted;
+ 
 
-  
-    public int getNidx() {
+	public int getNidx() {
         return nidx;
     }
 
-    public void setNidx(int nidx) {
+    public boolean isFileDeleted() {
+		return isFileDeleted;
+	}
+
+	public void setFileDeleted(boolean isFileDeleted) {
+		this.isFileDeleted = isFileDeleted;
+	}
+
+	public void setNidx(int nidx) {
         this.nidx = nidx;
     }
 
@@ -97,6 +107,8 @@ public class NoticeDTO {
     public void setAttach(MultipartFile attach) {
         this.attach = attach;
     }
+
+	
 
 	
 	
