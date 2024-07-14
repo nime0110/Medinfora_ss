@@ -229,7 +229,7 @@ public class MypageController {
 		// hidx 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.reserveList(paraMap);
 		
-		int totalCnt = reserveList.size();	// 리스트 총 결과 개수
+		int totalCnt = service.reserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
 		JSONArray jsonArr = new JSONArray();

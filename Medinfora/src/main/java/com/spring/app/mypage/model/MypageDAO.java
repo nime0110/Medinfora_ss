@@ -11,6 +11,15 @@ import com.spring.app.domain.ReserveDTO;
 @Mapper
 public interface MypageDAO {
 
+	// (내정보수정) 내정보 수정하기 (통합)
+	int updateinfo(Map<String, String> paraMap);
+
+	// (비밀번호변경) 사용중인 비밀번호 확인하기
+	String nowpwdCheck(Map<String, String> paraMap);
+
+	// (비밀번호변경) 비밀번호 변경하기
+	int updatepwd(Map<String, String> paraMap);
+	
 	// (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기
 	String Searchhospital(String userid);
 
@@ -26,17 +35,20 @@ public interface MypageDAO {
 	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명, 진료현황)
 	List<ReserveDTO> reserveList(Map<String, String> paraMap);
 
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색 / 페이징 X)
+	List<ReserveDTO> TotalPatientNameList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X)
+	List<ReserveDTO> TotalReserveStatusList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X)
+	List<ReserveDTO> TotalReserveDateList(Map<String, String> paraMap);
+	
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트의 개수(환자명, 진료현황)
+	int reserveListCnt(Map<String, String> paraMap);
+	
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetPatientInfo(String patient_id);
-
-	// (내정보수정) 내정보 수정하기 (통합)
-	int updateinfo(Map<String, String> paraMap);
-
-	// (비밀번호변경) 사용중인 비밀번호 확인하기
-	String nowpwdCheck(Map<String, String> paraMap);
-
-	// (비밀번호변경) 비밀번호 변경하기
-	int updatepwd(Map<String, String> paraMap);
 
 	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
 	ReserveDTO getRdto(String ridx);
