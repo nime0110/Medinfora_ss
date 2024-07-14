@@ -52,6 +52,7 @@ public class MainController {
 	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
+		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
 		mav.addObject("ndtoList",ndtoList);
@@ -65,6 +66,7 @@ public class MainController {
 	@RequestMapping(value="/getcityinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getareainfo() {
 		
+		// city Jsonarr으로 파싱
 		List<String> citylist = service.getcityinfo();
 		
 		JSONArray jsonarr = new JSONArray();
@@ -82,6 +84,7 @@ public class MainController {
 	@RequestMapping(value="/getlocalinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getlocalinfo(HttpServletRequest request) {
 		
+		// local Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		
 		List<String> locallist = service.getlocalinfo(city);
@@ -101,6 +104,7 @@ public class MainController {
 	@RequestMapping(value="/getcountryinfo.bibo", produces = "text/plain;charset=UTF-8")
 	public String getcountryinfo(HttpServletRequest request) {
 		
+		// country Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		String local = request.getParameter("local");
 		
@@ -123,6 +127,7 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
+		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
@@ -205,10 +210,17 @@ public class MainController {
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
-		String userid = loginuser.getUserid();
+		String userid = "Anonymous";
 		
-		if(userid == null) {
-			userid = "Anonymous";
+		if(loginuser != null) {
+			userid = loginuser.getUserid();
+		}
+		
+		if(search == "") {
+			mav.addObject("nosearch",1);
+			mav.setViewName("search.tiles");
+			
+			return mav;
 		}
 		
 		Map<String,String> paraMap = new HashMap<>();
@@ -216,8 +228,7 @@ public class MainController {
 		paraMap.put("serach", search);
 		paraMap.put("userid", userid);
 		
-		
-		
+		mav.addObject("nosearch",0);
 		mav.addObject("search",search);
 		mav.setViewName("search.tiles");
 		

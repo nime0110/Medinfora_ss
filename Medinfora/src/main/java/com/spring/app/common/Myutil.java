@@ -159,7 +159,7 @@ public class Myutil {
 					}
 					
 					local = newLocal;
-				}
+				} // Local 사이 간격 벌리기
 				
 				KoreaAreaVO areavo = new KoreaAreaVO((String)jsonObj.get("city"), local, (String)jsonObj.get("country"));
 				
