@@ -20,7 +20,7 @@ public interface MypageService {
 	// (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기
 	String Searchhospital(String userid);
 
-	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기
+	// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기 (검색포함)
 	List<ReserveDTO> reserveList(Map<String, String> paraMap);
 
 	// (의료인- 진료예약 열람) 리스트 총 결과 개수
@@ -37,5 +37,14 @@ public interface MypageService {
 
 	// (의료인- 진료예약 열람) 진료현황 변경해주기
 	int ChangeRstatus(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(검색포함)
+	List<ReserveDTO> UserReserveList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) 리스트 총 결과 개수
+	int UserReserveListCnt(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
+	List<MemberDTO> GetHidxInfo(String hidx);
 
 }

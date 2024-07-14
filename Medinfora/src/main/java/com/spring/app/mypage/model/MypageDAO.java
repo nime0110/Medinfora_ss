@@ -1,5 +1,6 @@
 package com.spring.app.mypage.model;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -59,4 +60,31 @@ public interface MypageDAO {
 	// (의료인- 진료예약 열람) 진료현황 변경해주기
 	int ChangeRstatus(Map<String, String> paraMap);
 
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)
+	List<ReserveDTO> HospitalNameList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색)
+	List<ReserveDTO> UserReserveStatusList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색)
+	List<ReserveDTO> UserReserveDateList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(	병원명, 진료현황)
+	List<ReserveDTO> UserreserveList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색 / 페이징 X)
+	List<ReserveDTO> TotalReserveHospitalNameList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X)
+	List<ReserveDTO> TotalUserReserveStatusList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X)
+	List<ReserveDTO> TotalUserReserveDateList(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트의 개수(병원명, 진료현황)
+	int UserreserveListCnt(Map<String, String> paraMap);
+
+	// (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
+	List<MemberDTO> GetHidxInfo(String hidx);
+	
 }

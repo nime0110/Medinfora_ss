@@ -18,7 +18,7 @@
 				<span>
 					<select class="sclist search_ch sel_0 nanum-b">
 						<option>전체</option>
-						<option>환자명</option>
+						<option>병원명</option>
 						<option>진료현황</option>
 					</select>
 				</span>
@@ -33,33 +33,7 @@
 		</fieldset>
 	</form>
 	<%-- 진료예약 리스트 --%>
-	<div class="reserveBox">
-		<div class="mt-4 px-3 subject">
-			<div class="row text-center py-3 nanum-eb size-s">
-				<span class="col-3 col-lg-2">진료예약일시</span>
-				<span class="col-3 col-lg-2">병원명</span>
-				<span class="col-3 col-lg-2">전화번호</span>
-				<span class="col-3 col-lg-2">예약신청일</span>
-				<span class="col-3 col-lg-2">진료현황</span>
-				<span class="col-3 col-lg-2">접수취소</span>
-			</div>
-		</div>
-		<%-- 진료예약 리스트 값 --%>
-		<div class="mb-5 px-3">
-			<div class="row text-center py-3 nanum-n size-s b_border">
-				<span class="col-3 col-lg-2">2024-07-11 14:00</span>
-				<span class="col-3 col-lg-2">행복한재활의학과의원</span>
-				<span class="col-3 col-lg-2">02-1234-5678</span>
-				<span class="col-3 col-lg-2">2024-07-07 17:00</span>
-				<span class="col-3 col-lg-2">
-					<span class="rscode p-1 nanum-b">접수완료</span>
-				</span>
-				<span class="col-2">
-					<button class="rscancle nanum-eb size-s" type="button">취소</button>
-				</span>
-			</div>
-		</div>
-	</div>
+	<div class="reserveBox"></div>
 	<%-- 페이징바 --%>
 	<div id="ReserveHP_PageBar" class="w-100 d-flex justify-content-center pt-3"></div>
 </div>

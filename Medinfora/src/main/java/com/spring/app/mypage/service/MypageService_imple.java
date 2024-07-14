@@ -167,5 +167,76 @@ public class MypageService_imple implements MypageService {
 		int n = dao.ChangeRstatus(paraMap);
 		return n;
 	}
+
+	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(검색포함)
+	@Override
+	public List<ReserveDTO> UserReserveList(Map<String, String> paraMap) {
+		List<ReserveDTO> reserveList = null;
+		if("전체".equals(paraMap.get("sclist"))) {
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)
+			reserveList = dao.HospitalNameList(paraMap);
+			
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색)
+			reserveList.addAll(dao.UserReserveStatusList(paraMap));
+			
+			try {
+				Integer.parseInt(paraMap.get("inputsc"));
+				// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색)
+				reserveList.addAll(dao.UserReserveDateList(paraMap));
+			} catch (NumberFormatException e) {
+			}
+
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
+			reserveList.clear();	// 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			
+			// === 진료일시 기준으로 내림차순 === //
+			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
+		}
+		else {
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명, 진료현황)
+			reserveList = dao.UserreserveList(paraMap);
+		}
+		return reserveList;
+	}
+
+	// (일반회원- 진료예약 열람) 리스트 총 결과 개수
+	@Override
+	public int UserReserveListCnt(Map<String, String> paraMap) {
+		int n = 0;
+		List<ReserveDTO> reserveList = null;
+		if("전체".equals(paraMap.get("sclist"))) {
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색 / 페이징 X)
+			reserveList = dao.TotalReserveHospitalNameList(paraMap);
+			
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X)
+			reserveList.addAll(dao.TotalUserReserveStatusList(paraMap));
+			
+			try {
+				Integer.parseInt(paraMap.get("inputsc"));
+				// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X)
+				reserveList.addAll(dao.TotalUserReserveDateList(paraMap));
+			} catch (NumberFormatException e) {
+			}
+
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
+			reserveList.clear();	// 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			
+			n = reserveList.size();
+		}
+		else {
+			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트의 개수(병원명, 진료현황)
+			n = dao.UserreserveListCnt(paraMap);
+		}
+		return n;
+	}
+
+	// (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
+	@Override
+	public List<MemberDTO> GetHidxInfo(String hidx) {
+		List<MemberDTO> memberList = dao.GetHidxInfo(hidx);
+		return memberList;
+	}
 	
 }
