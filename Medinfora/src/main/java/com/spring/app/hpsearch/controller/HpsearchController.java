@@ -55,9 +55,8 @@ public class HpsearchController {
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
-		int sizePerPage = 10;//한 페이지당 10개의 병원  
+		int sizePerPage = 5;//한 페이지당 5개의 병원  
 		
-		int currentPage = Integer.parseInt(currentShowPageNo);
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; 
         int endRno = startRno + sizePerPage - 1; 
 		
@@ -96,12 +95,10 @@ public class HpsearchController {
     
         int n = service.holidatCheck(currentDate);
         
-        System.out.println("n : " + n);
         
         if(n > 0) {
         	str_dayOfWeek = "공휴일";
         }
-        System.out.println("str_dayOfWeek2 : " + str_dayOfWeek);
         
 
 		JSONArray jsonArr = new JSONArray(); 
@@ -241,8 +238,6 @@ public class HpsearchController {
 				jsonObj.put("wgs84lat", hpdto.getWgs84lat());
 				jsonObj.put("status", status);
 				jsonObj.put("totalCount", totalCount);
-				jsonObj.put("currentShowPageNo", currentShowPageNo);
-				jsonObj.put("sizePerPage", sizePerPage);
 				jsonObj.put("totalPage", totalPage);
 				
 				jsonArr.put(jsonObj);
@@ -259,7 +254,7 @@ public class HpsearchController {
 	public String hpsearchDetail(HttpServletRequest request) {
 		
 		String hidx = request.getParameter("hidx");
-		//System.out.println("~~~ hidx:" + hidx );
+
 		HospitalDTO hpdetail = null;
 		if(hidx != null) {
 			hpdetail = service.getHpDetail(hidx);			
@@ -323,7 +318,6 @@ public class HpsearchController {
 			jsonObj.put("time7", sunTime);
 			jsonObj.put("time8", holyTime);
 		}
-		System.out.println(jsonObj.toString());
 		return jsonObj.toString();
 	}
 	
@@ -331,7 +325,6 @@ public class HpsearchController {
 	@ResponseBody
 	@RequestMapping(value="putSiGetdo.bibo", produces="text/plain;charset=UTF-8")
 	public String putSiGetdo(HttpServletRequest request) {
-
 
 	    String local = request.getParameter("local");
 

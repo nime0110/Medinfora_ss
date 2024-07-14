@@ -10,8 +10,8 @@
 
 
 <!-- 중앙 div -->
-<div align="center">
-    <h1 class="nanum-b size-b">우리동네 근처 병원 찾기</h1>
+<div id="container">
+<h1 class="nanum-b size-n">우리동네 근처 병원 찾기</h1>
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="city">
@@ -27,8 +27,7 @@
 		  <option value="">읍/면/동 선택</option>
 		  <!-- 읍/면/동 데이터 -->
 		</select>
-	</div>
-	<div class="dropdown_hpsearch">
+		<br>
 		<select id="classcode">
 		  <!-- 진료과목 데이터 -->
 	    </select>
@@ -37,19 +36,23 @@
 			<option value="종합병원">종합병원</option>
 			<option value="병원">병원</option>
 			<option value="의원">의원</option>
-		</select>
-
-	   
-	<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
-	<button onclick="searchHospitals()">검색</button>
-
+		</select>  
+		<br> 
+		<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
+		<button onclick="searchHospitals(1)">검색</button>
 	</div>
+	
+	<div id="tabs" class="mobile-only">
+	    <button class="tab-button active" data-tab="map_box">지도</button>
+	    <button class="tab-button" data-tab="hplist">리스트</button>
+	</div>
+	
 	<!-- 카카오맵 / 리스트설정  -->
 	<div id="flexbox_map">
-		<div class="map_wrap">
+		<div id="map_box" class="map_wrap tab-content">
 		    <div id="map"></div>
 		</div>
-		<div id="hplist">
+		<div id="hplist" class="tab-content">
 		    <ul id="hospitalList">
 		        <!-- Sample List Items -->
 		        <li>

@@ -28,6 +28,21 @@ $(function() {
         $('#hospitalDetailModal').modal('hide');
     });
 
+    const tabButtons = $('.tab-button');
+    const tabContents = $('.tab-content');
+
+    $('#map_box').addClass('active');
+
+    tabButtons.on('click', function() {
+        const tab = $(this).data('tab');
+
+        tabButtons.removeClass('active');
+        $(this).addClass('active');
+
+        tabContents.removeClass('active');
+        $(`#${tab}`).addClass('active');
+    });
+
     // 지도 컨테이너와 옵션 설정
     let mapContainer = document.getElementById('map'),
         mapOption = {
@@ -48,8 +63,6 @@ $(function() {
 	
     kakao.maps.event.addListener(map, 'zoom_changed', function () {
         level = map.getLevel();
-
-        console.log("level:", level);
         if (!detailMode && level <= 10) {
             detailMode = true;
             removePolygon();
@@ -61,6 +74,7 @@ $(function() {
         } else if (level <= 6) {
             removePolygon();
         } else if (level > 6 && level <= 9) {
+            removePolygon();
             init(contextPath + "/resources/json/sig.json");
         }
     });    
@@ -232,6 +246,7 @@ let currentPage = 1; // 현재 페이지를 추적
 
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수
 function searchHospitals(pageNo) {
+
     clearAllwithmarker(); 
     clearClusterer(); 
     let city = $('#city').val();
@@ -241,8 +256,6 @@ function searchHospitals(pageNo) {
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
-
-    console.log("country:", country);
     const localOptionLength = $('#local').find('option').length;
 
     if (localOptionLength > 1 && !country) { 
@@ -281,15 +294,13 @@ function searchHospitals(pageNo) {
 	           json.forEach((item, index) => { 
                     let position = {};
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon);
+                    // 인포윈도우
 	                position.content = `<div class='mycontent' data-index="${index}">
 									    	<div class="title"> ${item.hpname} </div>
 									    	<div class="content"> 
 									    		<div class="info">
 									    			<strong>${item.classname}</strong>
 									    		</div>
-									    		<p class="tel">
-                                                    <span>${item.hptel}</span>
-                                                </p>
 									    		<p class="addr">${item.hpaddr}</p>
                                                 <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
@@ -297,17 +308,22 @@ function searchHospitals(pageNo) {
                     position.hpname = item.hpname;
                     positionArr.push(position);	
                     const alphabetIndex = String.fromCharCode(65 + index); 
+                    // 리스트 부분
                     v_html += `<div class="hospital-details" data-index="${index}">
                                 <input type="hidden" name="${item.hidx}"></input>
-                                <div class="hospital-label nanum-n">${alphabetIndex}</div>
-                                <h2 class="hospital-name">${item.hpname}</h2>
-                                <p class="hospital-type nanum-n">${item.classname}</p>
-                                <p class="hospital-contact nanum-n">TEL: ${item.hptel} </p>
+                                <div class="index-name-flexbox">
+                                    <div class="hospital-label nanum-n">${alphabetIndex}</div>
+                                    <h2 class="hospital-name">${item.hpname}</h2>
+                                    <p class="hospital-type">${item.classname}</p>
+                                </div>
+                                <div class="status-flexbox">
+                                    ${item.status === "진료중" ? '<div class="day-on-circle"></div>' : ''}
+                                    <p class="status ${item.status === "진료중" ? 'day-on' : 'day-off'}">${item.status}</p>
+                                </div>
                                 <p class="hospital-address nanum-n">${item.hpaddr}</p>
-                                <p class="status">${item.status}</p>
                                 <button class="details-button nanum-n" onclick="detailSearch(${index})">상세보기</button>
-                            </div>`;            
-                                
+                                </div>`;            
+                    
 	            }); //end of forEach -----------------------------------
 
                 let imageArr = []; 
@@ -350,7 +366,7 @@ function searchHospitals(pageNo) {
                     infowindows.push(infowindow);
                     
                     kakao.maps.event.addListener(marker, 'click', function() { 
-                        let level = map.getLevel() - 2;
+                        let level = map.getLevel() - 4;
                         map.setLevel(level, {anchor: this.getPosition()});
 
                         if (openInfowindow) {
@@ -468,12 +484,13 @@ function searchHospitals(pageNo) {
 		        		<span>😥</span>
 		            	<p>검색된 의료기관이 없습니다.</p>
 		        	</div>`;
+                removedisplayPagination();
             } // end of if(json.length > 0) -------------------------------
             
             $('#hospitalList').append(v_html);
-            const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
-            
-            displayPagination(totalPage, pageNo);
+
+            displayPagination(json[0].totalPage, pageNo);
+            removePolygon();
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -481,14 +498,19 @@ function searchHospitals(pageNo) {
     });   
 }
 
+function removedisplayPagination() {
+    $('#rpageNumber').empty();
+}
+
+
 function displayPagination(totalPage, currentPage) {
     clearAllwithmarker(); 
     let paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
-    let pageGroup = Math.ceil(currentPage / 10);
-    let lastPage = pageGroup * 10;
-    let firstPage = lastPage - 9;
+    let pageGroup = Math.ceil(currentPage / 5);
+    let lastPage = pageGroup * 5;
+    let firstPage = lastPage - 4;
 
     if (lastPage > totalPage) {
         lastPage = totalPage;
@@ -647,6 +669,7 @@ function displayArea(area) {
             });
             if (localExist) {
                 $('#local').val(local);
+                $('#country').val('');
                 searchHospitals(1);
             } else { 
                 updateCityFromLocal(local);
@@ -680,13 +703,11 @@ function centroid(path) {
 // 상세보기 함수
 function detailSearch(index) {
     let hidx = $('#hospitalList').children().eq(index).find('input').attr('name');
-    //console.log("hidx:", hidx); 37516
     $.ajax({
         url: contextPath + '/hpsearch/hpsearchDetail.bibo',
         data: {hidx: hidx},
         dataType: "json",
         success: function (json) {
-            console.log(JSON.stringify(json));
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
             $('#modal-hpaddr').text(json.hpaddr);   

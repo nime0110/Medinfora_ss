@@ -1,92 +1,68 @@
 @charset "UTF-8";
 
-
-
-
+.mobile-only {
+	display: none;
+}
+    
 p {
 	margin: 0;
 }
-#map {
-    width: 95%;
-    height: 600px;
-    margin: 20px auto;
-}
-#searchBox {
-    text-align: center;
-    margin-bottom: 28vh;
-}
-#searchBox > select, 
-#searchBox > input[type="text"], 
-#searchBox > button { 
-    margin: 10px; 
-    padding: 10px; 
-    font-size: 14px; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-}
-#searchBox button { 
-    background-color: #4CAF50; 
-    color: white; 
-    cursor: pointer; 
-}
-#searchBox button:hover { 
-    background-color: #45a049; 
+
+
+h1 {
+	font-size: 24px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
 }
 
-.dropdown_hpsearch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+#container {
+	width: 96rem;
+    height: 73vh;
+    margin: 17vh auto 29vh auto;
 }
-.dropdown_hpsearch select {
-    width: 150px;
-    margin-right: 10px;
-}      
+
+#wrap_container {
+	padding-bottom: 30vh;
+}
+
+
+#map {
+	width: 100%;
+	height: 100%;
+	position:relative;
+	overflow:hidden;
+	margin:0;
+}
+  
 #flexbox_map {
 	display: flex;
 	align-items: center;
 	width: 96rem;
-	height: 73vh;
+	height: 80vh;
     margin: 0 auto;
 	
 }
-
-
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
+.map_wrap {
+    position: relative;
+    overflow: hidden;
+    width: 50%;
+    height: inherit;
 }
 
-.nanum-b.size-b {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
 
-#searchBox {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
 
 .dropdown_hpsearch {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 20px;
+	background-color: #fff;
+    margin-top: 55px;
+    margin-bottom: 28px;
 }
 
 .dropdown_hpsearch select, .dropdown_hpsearch input, .dropdown_hpsearch button {
-    margin: 0 10px;
+	width: 25%;
+    margin: 5px 10px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
@@ -100,11 +76,17 @@ body {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+#searchHpname {
+    width: 45.6%;
+}
+
 .dropdown_hpsearch button {
+	width: 5%;
     background-color: #007BFF;
     color: #fff;
     cursor: pointer;
     border: none;
+    margin: 0;
 }
 
 .dropdown_hpsearch button:hover {
@@ -112,19 +94,7 @@ body {
 }
 
 
-.map_wrap {
-    position: relative;
-    overflow: hidden;
-    width: 50%;
-    height: inherit;
-}
-#map {
-	width: 100%;
-	height: 100%;
-	position:relative;
-	overflow:hidden;
-	margin:0;
-}
+
 
 /* 인포윈도우 커스텀 start */
 .mycontent {
@@ -242,10 +212,6 @@ div.loader {
 
 
 
-
-
-
-
 ul#hospitalList {
     list-style-type: none;
     padding: 0;
@@ -254,6 +220,9 @@ ul#hospitalList {
 
 ul#hospitalList div#no_searchList {
 	margin-top: 27vh;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 div#no_searchList > span {
@@ -278,6 +247,7 @@ div#no_searchList > span {
     margin-right: 10px;
     height: 31px;
     border-radius: 50%;
+    text-align: center;
 }
 
 .click-maker {
@@ -285,6 +255,36 @@ div#no_searchList > span {
 	color: var(--grey50);
 }
 
+.hospital-type {
+    color: var(--grey600);
+    background: var(--grey100);
+    border-radius: 4px;
+    padding: 4px;
+    margin-left: 0.6em;
+}
+
+/* status start */
+.day-on {
+	color:rgb(55, 178, 77);
+}
+.day-on-circle {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgb(81, 207, 102);
+    margin-right: 4px;
+}
+.status-flexbox {
+	margin-top: 1.0vh;
+	display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 18px;
+}
+.day-off {
+	color: var(--bs-gray-600);
+} 
+/*  status end */
 
 .hospital-details {
 	border-bottom: 1px solid var(--grey200);
@@ -293,18 +293,23 @@ div#no_searchList > span {
     flex-direction: column;
     flex-wrap: wrap;
     align-items: flex-start;
+    padding: 20px;
+}
+.index-name-flexbox {
+	display: flex;
+	align-items: center;
 }
 
 .hospital-name {
-	margin-top: 0.5vh;
+	margin: 0px;
     font-size: 22px;
     font-weight: bold;
 }
 
-.hospital-type,
 .hospital-contact,
 .hospital-address {
     margin-top: 5px;
+    margin-bottom: 11px;
 }
 
 .details-button {
@@ -324,6 +329,7 @@ div#no_searchList > span {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    align-items: center;
 }
 
 .page-link {
@@ -441,4 +447,358 @@ div#no_searchList > span {
     margin: 30px auto;
 }
 /* 모달 css end */
+
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+
+@media (max-width: 1200px) {
+    #container {
+        width: 90%;
+        margin: 10vh auto 20vh auto;
+    }
+    
+	.mobile-only {
+		display: block;
+		display: flex;
+		width: 100%;
+		margin: 0 auto;
+		margin-bottom: 1vh;
+		margin-top: 4vh;
+    }
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .tab-button {
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        display: inline-block;
+    }
+    
+    .tab-button.active {
+        background-color: #007BFF;
+        color: white;
+    }
+
+
+	.dropdown_hpsearch button {
+		width:7%;
+	}
+	
+    #flexbox_map {
+        flex-direction: column;
+        width: 100%;
+        height: 70vh;
+    }
+
+	#wrap_container {
+		padding-bottom: 1vh;
+	}
+    .map_wrap,
+    #flexbox_map #hplist {
+        width: 100%;
+        height: 50vh;
+    }
+    
+}
+
+@media (max-width: 992px) {
+	
+	.dropdown_hpsearch button {
+		width:7%;
+	}
+	.mobile-only {
+		display: block;
+		display: flex;
+		width: 100%;
+		margin: 0 auto;
+		margin-bottom: 1vh;
+		margin-top: 4vh;
+    }
+    #wrap_container {
+		margin-bottom: 0vh;
+	}
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .tab-button {
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        display: inline-block;
+    }
+    
+    .tab-button.active {
+        background-color: #007BFF;
+        color: white;
+    }
+	
+	ul#hospitalList div#no_searchList {
+		margin-top: 16vh;
+	}
+	
+    #flexbox_map {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .map_wrap,
+    #flexbox_map #hplist {
+        width: 100%;
+        height: 50vh;
+    }
+
+    .dropdown_hpsearch {
+        flex-direction: column;
+        width:100%;
+    }
+
+    .dropdown_hpsearch select,
+    .dropdown_hpsearch input,
+    .dropdown_hpsearch button {
+        margin: 5px 0;
+    }
+}
+
+
+
+
+@media (max-width: 768px) {
+	
+    .dropdown_hpsearch {
+		width: 90%;
+		margin: 0 auto;
+    }
+	.mobile-only {
+		display: block;
+		display: flex;
+		width: 90%;
+		margin: 0 auto;
+		margin-bottom: 1vh;
+		margin-top: 4vh;
+    }
+    #wrap_container {
+		margin-bottom: 24vh; 
+	}
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .tab-button {
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        display: inline-block;
+    }
+    
+    .tab-button.active {
+        background-color: #007BFF;
+        color: white;
+    }
+	
+	
+	h1 {
+        font-size: 20px;
+        text-align: center;
+        border-bottom: none;
+    }
+    #container {
+        width: 100%;
+        margin: 5vh auto 15vh auto;
+    }
+    #searchHpname {
+    	width:100%;
+    }
+
+    .dropdown_hpsearch select,
+    .dropdown_hpsearch input,
+    .dropdown_hpsearch button {
+        width: 100%;
+        margin: 5px auto;
+    }
+  
+     .dropdown_hpsearch {
+     flex-direction: column;
+     align-items: center;
+     }
+     
+    #flexbox_map {
+    	width:90%;
+    }
+    
+}
+
+@media (max-width: 576px) {
+	.dropdown_hpsearch {
+		width: 90%;
+		margin: 0 auto;
+    }
+	.mobile-only {
+		display: block;
+		display: flex;
+		width: 90%;
+		margin: 0 auto;
+		margin-bottom: 1vh;
+		margin-top: 4vh;
+    }
+    #wrap_container {
+		margin-bottom: 19vh;
+	}
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    h1 {
+        font-size: 20px;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .dropdown_hpsearch select,
+    .dropdown_hpsearch input,
+    .dropdown_hpsearch button {
+        width: 100%;
+        margin: 5px auto;
+    }
+
+    .details-button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .hospital-details {
+        padding: 10px;
+    }
+    
+    .hospital-label, .click-marker {
+        font-size: 16px;
+        width: 25px;
+        height: 25px;
+    }
+    
+    .hospital-name {
+        font-size: 18px;
+    }
+    
+    .hospital-type {
+        font-size: 14px;
+    }
+    
+    #flexbox_map {
+    	width:90%;
+    }
+}
+
+@media (max-width: 375px) {
+	.mobile-only {
+		display: block;
+		display: flex;
+		width: 90%;
+		margin: 0 auto;
+		margin-bottom: 1vh;
+		margin-top: 4vh;
+    }
+    
+	#wrap_container {
+		margin-bottom: 34vh;
+	}
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    h1 {
+        font-size: 18px;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    #container {
+        width: 100%;
+        margin: 5vh auto 10vh auto;
+    }
+
+    #flexbox_map {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .map_wrap,
+    #flexbox_map #hplist {
+        width: 100%;
+    }
+
+    .dropdown_hpsearch {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dropdown_hpsearch select,
+    .dropdown_hpsearch input,
+    .dropdown_hpsearch button {
+        width: 100%; 
+        margin: 5px 0;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .details-button {
+        width: 100%;
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .hospital-details {
+        padding: 10px;
+    }
+    
+    .hospital-label, .click-marker {
+        font-size: 14px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .hospital-name {
+        font-size: 16px;
+    }
+    
+    .hospital-type {
+        font-size: 12px;
+    }
+    
+    ul#hospitalList div#no_searchList {
+    	margin-top: 16vh;
+	}
+}
 
