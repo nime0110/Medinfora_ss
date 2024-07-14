@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,8 +18,6 @@ import org.json.simple.parser.ParseException;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
-
-import oracle.net.aso.l;
 
 public class Myutil {
 
@@ -257,7 +256,11 @@ public class Myutil {
 	 */
 	public static String removeHTMLtag(String text) {
 		
-		String replaceText = text.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		String rtnVal = StringEscapeUtils.unescapeHtml4(text);
+		
+		String replaceText = rtnVal.replaceAll("<(/)?([a-zA-Z]*)([0-9]?)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		
+		System.out.println(replaceText);
 		
 		return replaceText;
 	}
