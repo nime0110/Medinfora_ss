@@ -15,7 +15,6 @@ let level = '';
 let polygons = [];
 let polygonOverlays = [];
 
-
 $(function() {
     /* 비동기 처리 코드 
     $.ajaxSetup({
@@ -27,6 +26,21 @@ $(function() {
 
     $('#closeModalButton').click(function(){
         $('#hospitalDetailModal').modal('hide');
+    });
+
+    const tabButtons = $('.tab-button');
+    const tabContents = $('.tab-content');
+
+    $('#map_box').addClass('active');
+
+    tabButtons.on('click', function() {
+        const tab = $(this).data('tab');
+
+        tabButtons.removeClass('active');
+        $(this).addClass('active');
+
+        tabContents.removeClass('active');
+        $(`#${tab}`).addClass('active');
     });
 
     // 지도 컨테이너와 옵션 설정
@@ -47,22 +61,26 @@ $(function() {
     let zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
-    //폴리곤 생성
-    init( contextPath + "/resources/json/sido.json") 
-
     kakao.maps.event.addListener(map, 'zoom_changed', function () {
-        level = map.getLevel()
+        level = map.getLevel();
         if (!detailMode && level <= 10) {
             detailMode = true;
             removePolygon();
-            init(contextPath +"/resources/json/sig.json")
-        } else if (detailMode && level > 10) { 
+            init(contextPath + "/resources/json/sig.json");
+        } else if (detailMode && level > 10) {
             detailMode = false;
             removePolygon();
-            init(contextPath +"/resources/json/sido.json")
+            init(contextPath + "/resources/json/sido.json");
+        } else if (level <= 6) {
+            removePolygon();
+        } else if (level > 6 && level <= 9) {
+            removePolygon();
+            init(contextPath + "/resources/json/sig.json");
         }
     });    
-                  
+    //폴리곤 생성
+    init( contextPath + "/resources/json/sido.json") 
+    
     clusterer = new kakao.maps.MarkerClusterer({
         map: map, 
         averageCenter: true, 
@@ -175,6 +193,10 @@ function updateDong() {
                 }
             }	// end of for---------
             $("select#country").html(v_html);
+            
+            $("select#country").off('change').on('change', function() {
+                searchHospitals(1);
+            });
         },
         error: function(request) {
             alert("code : " + request.status + "\nmessage : " + request.responseText);
@@ -198,13 +220,12 @@ function updateCityFromLocal(local) {
                     v_html += `<option value="${json[i].sido}">${json[i].sido}</option>`;
                 }	
                 $("select#city").html(v_html);
+                
                 $('#city').on('change', function() {
                     $('#local').val(local);
                     searchHospitals(1);
                 });
-                $('#local').on('change', function() {
-                    updateDong();
-                });
+
             }  else {
                 json.forEach(item => {  
                     $('#city').val(item.sido);
@@ -221,13 +242,21 @@ function updateCityFromLocal(local) {
     });
 }
 
-
-var currentPage = 1; // 현재 페이지를 추적
+let currentPage = 1; // 현재 페이지를 추적
 
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수
 function searchHospitals(pageNo) {
     clearAllwithmarker(); 
     clearClusterer(); 
+
+    let checkbox = $('#check-status');
+    let checkbox_val = ' ';
+    if(checkbox.is(':checked')) { 
+        checkbox_val = checkbox.val();
+    }
+
+    console.log(checkbox_val);
+
     let city = $('#city').val();
     let local = $('#local').val();
     let country = $('#country').val();
@@ -235,7 +264,12 @@ function searchHospitals(pageNo) {
     let agency = $('#agency').val();
 	let hpname = $('#searchHpname').val();
 	let addr = city + " " + local;
-    
+    const localOptionLength = $('#local').find('option').length;
+
+    if (localOptionLength > 1 && !country) { 
+        updateDong();
+    }
+
     if (!city ) {
         alert("시/도를 선택하세요");
         return;
@@ -254,6 +288,7 @@ function searchHospitals(pageNo) {
         		classcode: classcode, 
         		agency: agency,
         		hpname: hpname,
+                checkStatus: checkbox_val,
         		currentShowPageNo: pageNo
         	   },
         dataType: "json",
@@ -266,37 +301,38 @@ function searchHospitals(pageNo) {
 			let v_html = "";
 			if(json.length > 0) {
 	           json.forEach((item, index) => { 
-	           		var position = {};
+                    let position = {};
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon);
+                    // 인포윈도우
 	                position.content = `<div class='mycontent' data-index="${index}">
 									    	<div class="title"> ${item.hpname} </div>
 									    	<div class="content"> 
 									    		<div class="info">
 									    			<strong>${item.classname}</strong>
 									    		</div>
-									    		<p class="tel">
-									    			<span>${item.hptel}</span>
-									    		</p>
-									    		<p class="addr">								    		
-										    		${item.hpaddr} 
-									    		</p>
-                                                <button class="details-button"  onclick="detailSearch(${index})">상세보기</button>
+									    		<p class="addr">${item.hpaddr}</p>
+                                                <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
                     				    </div>`;
                     position.hpname = item.hpname;
                     positionArr.push(position);	
                     const alphabetIndex = String.fromCharCode(65 + index); 
+                    // 리스트 부분
                     v_html += `<div class="hospital-details" data-index="${index}">
                                 <input type="hidden" name="${item.hidx}"></input>
-                                <div class="hospital-label nanum-n">${alphabetIndex}</div>
-                                <h2 class="hospital-name">${item.hpname}</h2>
-                                <p class="hospital-type nanum-n">${item.classname}</p>
-                                <p class="hospital-contact nanum-n">TEL: ${item.hptel} </p>
+                                <div class="index-name-flexbox">
+                                    <div class="hospital-label nanum-n">${alphabetIndex}</div>
+                                    <h2 class="hospital-name">${item.hpname}</h2>
+                                    <p class="hospital-type">${item.classname}</p>
+                                </div>
+                                <div class="status-flexbox">
+                                    ${item.status === "진료중" ? '<div class="day-on-circle"></div>' : ''}
+                                    <p class="status ${item.status === "진료중" ? 'day-on' : 'day-off'}">${item.status}</p>
+                                </div>
                                 <p class="hospital-address nanum-n">${item.hpaddr}</p>
-                                <p class="status">${item.status}</p>
                                 <button class="details-button nanum-n" onclick="detailSearch(${index})">상세보기</button>
-                            </div>`;            
-                                
+                                </div>`;            
+                    
 	            }); //end of forEach -----------------------------------
 
                 let imageArr = []; 
@@ -331,7 +367,7 @@ function searchHospitals(pageNo) {
                     map.setBounds(bounds);
 
                     // 마커에 표시할 인포윈도우를 생성하기
-                    var infowindow = new kakao.maps.InfoWindow({
+                    let infowindow = new kakao.maps.InfoWindow({
                         content: positionArr[i].content, 
                         removable: true
                     });
@@ -339,7 +375,7 @@ function searchHospitals(pageNo) {
                     infowindows.push(infowindow);
                     
                     kakao.maps.event.addListener(marker, 'click', function() { 
-                        var level = map.getLevel() - 2;
+                        let level = map.getLevel() - 4;
                         map.setLevel(level, {anchor: this.getPosition()});
 
                         if (openInfowindow) {
@@ -366,49 +402,56 @@ function searchHospitals(pageNo) {
                     });
                                   
                 } //end of for (let i = 0; i < positionArr.length; i++) ------------- 
-    
-                if (markers.length > 1) { 
-                    for (let i = 0; i < markers.length; i++) {    
-                         for(let j=i+1; j<markers.length; j++){
-                            //두 마커의 위경도가 같다면
-                            if(markers[i].getPosition().equals(markers[j].getPosition())){
-                                let combinedContent = `<div class="cb-box">`;
-                                combinedContent += `<div class="title cb-content" data-index="${i}"> ${positionArr[i].hpname} </div>`; // 첫번째 중복 마커 병원명 추가
-                                for (let k = j; k < markers.length; k++) { 
-                                    if(markers[i].getPosition().equals(markers[k].getPosition())){
-                                        combinedContent += `<div class="title cb-content" data-index="${k}"> ${positionArr[k].hpname} </div>`;
-                                    }
-                                }
-                                combinedContent += `</div>`;
-
-                                let customOverlay = new kakao.maps.CustomOverlay({
-                                    content: `<div class="custom-overlay">${combinedContent}</div>`,
-                                    position: markers[i].getPosition(),
-                                    yAnchor: 1, 
-                                    clickable: true 
-                                });
-
-                                overlays.push(customOverlay);
-
+                if (markers.length > 1) {
+                    // 중복 마커 위치를 저장하기 위한 Map 객체 생성
+                    let markerPositions = new Map();
+                
+                    for (let i = 0; i < markers.length; i++) {
+                        let position = markers[i].getPosition().toString(); // 마커 위치를 문자열로 변환
+                        if (!markerPositions.has(position)) {
+                            markerPositions.set(position, []); // 새로운 위치인 경우 배열 생성
+                        }
+                        markerPositions.get(position).push(i); // 해당 위치에 마커 인덱스 추가
+                    }
+                
+                    // 각 위치에 대해 중복 마커 확인
+                    markerPositions.forEach((indices, position) => {
+                        if (indices.length > 1) { // 중복 마커가 있는 경우
+                            let combinedContent = `<div class="cb-box">`;
+                            indices.forEach(index => {
+                                combinedContent += `<div class="title cb-content" data-index="${index}"> ${positionArr[index].hpname} </div>`;
+                            });
+                            combinedContent += `</div>`;
+                
+                            // 중복 마커에 대한 오버레이 생성
+                            let customOverlay = new kakao.maps.CustomOverlay({
+                                content: `<div class="custom-overlay">${combinedContent}</div>`,
+                                position: markers[indices[0]].getPosition(),
+                                yAnchor: 1,
+                                clickable: true
+                            });
+                
+                            overlays.push(customOverlay);
+                
+                            // 중복 마커에 대해 클릭 이벤트 추가
+                            indices.forEach(index => {
                                 (function(marker, customOverlay) {
-
-                                    kakao.maps.event.addListener(marker, 'click', function() { 
+                                    kakao.maps.event.addListener(marker, 'click', function() {
                                         if (openOverlay) {
                                             openOverlay.setMap(null);
                                         }
-                                        customOverlay.setMap(map);        
-                                        openOverlay = customOverlay;  
+                                        customOverlay.setMap(map);
+                                        openOverlay = customOverlay;
                                     });
-                                })(markers[j], customOverlay);
-
-                            }
-                        }   
-                    }
+                                })(markers[index], customOverlay);
+                            });
+                        }
+                    });
                 }
 
                 $(document).on('click', '.cb-content', function(event) {
                     
-                    var index = $(this).data('index');
+                    let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
 
                     kakao.maps.event.trigger(markers[index], 'click');
@@ -440,22 +483,24 @@ function searchHospitals(pageNo) {
                 });
                     
                 $('#hospitalList').on('click', '.hospital-details', function() {
-                    var index = $(this).data('index');
+                    let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
                     kakao.maps.event.trigger(markers[index], 'click');
                 });
-     
+                
             } else {
                 v_html += `<div id="no_searchList">
-		        		<span>😥</span>
-		            	<p>검색된 의료기관이 없습니다.</p>
-		        	</div>`;
+                <span>😥</span>
+                <p>검색된 의료기관이 없습니다.</p>
+                </div>`;
+                removedisplayPagination();
             } // end of if(json.length > 0) -------------------------------
             
             $('#hospitalList').append(v_html);
-            const totalPage = Math.ceil(json[0].totalCount / json[0].sizePerPage); 
-            
-            displayPagination(totalPage, pageNo);
+            if(json.length > 0) {
+                displayPagination(json[0].totalPage, pageNo);
+            }
+            removePolygon();
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -463,34 +508,51 @@ function searchHospitals(pageNo) {
     });   
 }
 
+function removedisplayPagination() {
+    $('#rpageNumber').empty();
+}
+
+
 function displayPagination(totalPage, currentPage) {
     clearAllwithmarker(); 
-    var paginationDiv = $('#rpageNumber');
+    let paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
-    if (totalPage > 0) {
-        // 처음 페이지로 이동
-        paginationDiv.append('<span class="page-link" data-page="1">[맨처음]</span>');
+    let pageGroup = Math.ceil(currentPage / 5);
+    let lastPage = pageGroup * 5;
+    let firstPage = lastPage - 4;
 
-        for (var i = 1; i <= totalPage; i++) {
-            var link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
+    if (lastPage > totalPage) {
+        lastPage = totalPage;
+    }
+
+    if (totalPage > 0) {
+        // 이전 페이지 그룹으로 이동
+        if (firstPage > 1) {
+            paginationDiv.append('<span class="page-link" data-page="' + (firstPage - 1) + '">[이전]</span>');
+        }
+
+        for (let i = firstPage; i <= lastPage; i++) {
+            let link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
             if (i === currentPage) {
                 link.addClass('active');
             }
             paginationDiv.append(link);
         }
-        // 마지막 페이지로 이동
-        paginationDiv.append('<span class="page-link" data-page="' + totalPage + '">[마지막]</span>');
+
+        // 다음 페이지 그룹으로 이동
+        if (lastPage < totalPage) {
+            paginationDiv.append('<span class="page-link" data-page="' + (lastPage + 1) + '">[다음]</span>');
+        }
+
+        $('#rpageNumber .page-link').on('click', function(e) {
+            e.preventDefault();
+            let page = $(this).data('page');
+            searchHospitals(page);
+            $('#rpageNumber .page-link').removeClass('active');
+            $(this).addClass('active');
+        });
     }
-
-    $('#rpageNumber .page-link').on('click', function(e) {
-        e.preventDefault();
-        var page = $(this).data('page');
-        searchHospitals(page);
-
-        $('#rpageNumber .page-link').removeClass('active');
-        $(this).addClass('active');
-    });
 }
 
 // 지도에서 모든 마커를 제거하는 함수
@@ -557,16 +619,15 @@ function init(path) {
             areas[index] = ob;
         });
         // 지도에 영역데이터를 폴리곤으로 표시
-        for (var i = 0, len = areas.length; i < len; i++) {
+        for (let i = 0, len = areas.length; i < len; i++) {
             displayArea(areas[i]);
         }
     }); //getJSON
 }   //init
-s
 
 // 폴리곤 보여지기
 function displayArea(area) {
-    var polygon = new kakao.maps.Polygon({
+    let polygon = new kakao.maps.Polygon({
         map: map,
         path: area.path,
         strokeWeight: 2,
@@ -598,12 +659,14 @@ function displayArea(area) {
 
     kakao.maps.event.addListener(polygon, 'click', function () {
 
-        var optionValues = new Array;
+        let optionValues = new Array;
         let localExist = false;
+        let level = map.getLevel(); 
 
         if (map.getLevel() > 10) {
             $('#city').val(area.name); 
             updateSigunGu();
+            level = 8;
         } else if (map.getLevel() <= 10) {
             let local = area.name;
             $('#local option').each(function() {
@@ -616,14 +679,13 @@ function displayArea(area) {
             });
             if (localExist) {
                 $('#local').val(local);
+                $('#country').val('');
                 searchHospitals(1);
             } else { 
-                console.log("local:", local);
                 updateCityFromLocal(local);
             }
+            level = 6;
         }
-
-        var level = map.getLevel() - 2;
 
         map.setLevel(level, {
             anchor: centroid(area.path),
@@ -635,12 +697,12 @@ function displayArea(area) {
 
 // 폴리곤 중심 좌표 계산 함수
 function centroid(path) {
-    var x = 0, y = 0, area = 0;
+    let x = 0, y = 0, area = 0;
 
-    for (var i = 0, len = path.length, j = len - 1; i < len; j = i++) {
-        var p1 = path[i];
-        var p2 = path[j];
-        var f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
+    for (let i = 0, len = path.length, j = len - 1; i < len; j = i++) {
+        let p1 = path[i];
+        let p2 = path[j];
+        let f = p1.getLng() * p2.getLat() - p2.getLng() * p1.getLat();
         x += (p1.getLat() + p2.getLat()) * f;
         y += (p1.getLng() + p2.getLng()) * f;
         area += f * 3;
@@ -648,30 +710,14 @@ function centroid(path) {
     return new kakao.maps.LatLng(x / area, y / area);
 }
  
-
 // 상세보기 함수
 function detailSearch(index) {
     let hidx = $('#hospitalList').children().eq(index).find('input').attr('name');
-    //console.log("hidx:", hidx); 37516
     $.ajax({
         url: contextPath + '/hpsearch/hpsearchDetail.bibo',
         data: {hidx: hidx},
         dataType: "json",
         success: function (json) {
-            console.log(JSON.stringify(json));
-            // 시작시간과 종료시간을 시간 형식으로 변환
-            for (let i = 1; i <= 8; i++) {
-                let startkey = 'starttime' + i;
-                let endkey = 'endtime' + i;
-                // 존재하는 starttime 필드만 포맷팅
-                if (json.hasOwnProperty(startkey) && json[startkey]) { 
-                    json[startkey] = json[startkey].substring(0, 2) + "시 " + json[startkey].substring(2, 4) + "분";
-                    json[endkey] = json[endkey].substring(0, 2) + "시 " + json[endkey].substring(2, 4) + "분";
-                    $('#modal-daytime' + i).text(json[startkey] + " ~ " + json[endkey]);
-                } else {
-                    $('#modal-daytime' + i).text("휴진");
-                }
-            }
             // 모달 내용 업데이트
             $('#modal-hpname').text(json.hpname);
             $('#modal-hpaddr').text(json.hpaddr);   
@@ -680,6 +726,9 @@ function detailSearch(index) {
             $('#modal-agency').text(json.agency);
             // 모달 표시
             $('#hospitalDetailModal').modal('show');
+            for (let i = 1; i <= 8; i++) {
+                $('#modal-daytime' + i).text(json['time' + i]);
+			}	
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);

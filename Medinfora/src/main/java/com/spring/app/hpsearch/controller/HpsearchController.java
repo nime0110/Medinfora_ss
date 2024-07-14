@@ -1,23 +1,18 @@
 package com.spring.app.hpsearch.controller;
 
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,12 +50,13 @@ public class HpsearchController {
 		String classcode = request.getParameter("classcode"); //D004
 		String agency = request.getParameter("agency"); //의원
 		String hpname = request.getParameter("hpname"); //병원이름
+		String checkStatus = request.getParameter("checkStatus"); //병원이름
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
-		int sizePerPage = 10;//한 페이지당 10개의 병원  
+		int sizePerPage = 10;//한 페이지당 5개의 병원  
 		
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; 
         int endRno = startRno + sizePerPage - 1; 
@@ -71,6 +67,7 @@ public class HpsearchController {
 		paraMap.put("classcode", classcode);
 		paraMap.put("agency", agency);
 		paraMap.put("hpname", hpname);
+		paraMap.put("checkStatus", checkStatus);
         paraMap.put("startRno", String.valueOf(startRno));
         paraMap.put("endRno", String.valueOf(endRno));
 				 
@@ -84,8 +81,9 @@ public class HpsearchController {
 		
 		List<HospitalDTO> hospitalList = service.getHospitalList(paraMap);
 		int totalCount = service.getHpListTotalCount(paraMap); //전체개수 
-		
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 	
+		//진료상태 구하기 
         LocalDate currentDate = LocalDate.now();
            
         DayOfWeek dayOfWeek = currentDate.getDayOfWeek();                
@@ -99,12 +97,10 @@ public class HpsearchController {
     
         int n = service.holidatCheck(currentDate);
         
-        System.out.println("n : " + n);
         
         if(n > 0) {
         	str_dayOfWeek = "공휴일";
         }
-        System.out.println("str_dayOfWeek2 : " + str_dayOfWeek);
         
 
 		JSONArray jsonArr = new JSONArray(); 
@@ -232,7 +228,11 @@ public class HpsearchController {
 		                e.printStackTrace();
 		            }
 		        }
-
+		        
+		        if ("진료중".equals(checkStatus) && !"진료중".equals(status)) {
+		            continue;
+		        }
+				
 				JSONObject jsonObj = new JSONObject(); //{}
 								
 				jsonObj.put("hidx", hpdto.getHidx()); 
@@ -244,8 +244,7 @@ public class HpsearchController {
 				jsonObj.put("wgs84lat", hpdto.getWgs84lat());
 				jsonObj.put("status", status);
 				jsonObj.put("totalCount", totalCount);
-				jsonObj.put("currentShowPageNo", currentShowPageNo);
-				jsonObj.put("sizePerPage", sizePerPage);
+				jsonObj.put("totalPage", totalPage);
 				
 				jsonArr.put(jsonObj);
 			}//end of for---------------------------
@@ -261,12 +260,55 @@ public class HpsearchController {
 	public String hpsearchDetail(HttpServletRequest request) {
 		
 		String hidx = request.getParameter("hidx");
-		//System.out.println("~~~ hidx:" + hidx );
+
 		HospitalDTO hpdetail = null;
 		if(hidx != null) {
 			hpdetail = service.getHpDetail(hidx);			
 		}
+		
+		String[] startTimes = new String[8];
+		String[] endTimes = new String[8];
+		String[] timeStrings = new String[8];
 
+		startTimes[0] = hpdetail.getStarttime1();
+		startTimes[1] = hpdetail.getStarttime2();
+		startTimes[2] = hpdetail.getStarttime3();
+		startTimes[3] = hpdetail.getStarttime4();
+		startTimes[4] = hpdetail.getStarttime5();
+		startTimes[5] = hpdetail.getStarttime6();
+		startTimes[6] = hpdetail.getStarttime7();
+		startTimes[7] = hpdetail.getStarttime8();
+
+		endTimes[0] = hpdetail.getEndtime1();
+		endTimes[1] = hpdetail.getEndtime2();
+		endTimes[2] = hpdetail.getEndtime3();
+		endTimes[3] = hpdetail.getEndtime4();
+		endTimes[4] = hpdetail.getEndtime5();
+		endTimes[5] = hpdetail.getEndtime6();
+		endTimes[6] = hpdetail.getEndtime7();
+		endTimes[7] = hpdetail.getEndtime8();
+
+		for (int i = 0; i < startTimes.length; i++) {
+			if(!startTimes[i].equals(" ") && !endTimes[i].equals(" ")) {				
+				startTimes[i] = startTimes[i].substring(0, 2) + "시 " + startTimes[i].substring(2, 4) + "분";			
+				endTimes[i] = endTimes[i].substring(0, 2) + "시 " + endTimes[i].substring(2, 4) + "분";
+				timeStrings[i] = startTimes[i] + " ~ " + endTimes[i];
+			} else {
+				timeStrings[i] = "휴진";
+			}
+		}
+
+		String monTime = timeStrings[0];
+		String tueTime = timeStrings[1];
+		String wedTime = timeStrings[2];
+		String thuTime = timeStrings[3];
+		String friTime = timeStrings[4];
+		String satTime = timeStrings[5];
+		String sunTime = timeStrings[6];
+		String holyTime = timeStrings[7];
+		
+
+		
 		
 		JSONObject jsonObj = new JSONObject(); //{}
 		if(hpdetail != null) {
@@ -276,33 +318,22 @@ public class HpsearchController {
 			jsonObj.put("hptel", hpdetail.getHptel());				
 			jsonObj.put("classname", hpdetail.getClassname());
 			jsonObj.put("agency", hpdetail.getAgency());
-			jsonObj.put("starttime1", hpdetail.getStarttime1());
-			jsonObj.put("starttime2", hpdetail.getStarttime2());
-			jsonObj.put("starttime3", hpdetail.getStarttime3());
-			jsonObj.put("starttime4", hpdetail.getStarttime4());
-			jsonObj.put("starttime5", hpdetail.getStarttime5());
-			jsonObj.put("starttime6", hpdetail.getStarttime6());
-			jsonObj.put("starttime7", hpdetail.getStarttime7());
-			jsonObj.put("starttime8", hpdetail.getStarttime8());
-			jsonObj.put("endtime1", hpdetail.getEndtime1());
-			jsonObj.put("endtime2", hpdetail.getEndtime2());
-			jsonObj.put("endtime3", hpdetail.getEndtime3());
-			jsonObj.put("endtime4", hpdetail.getEndtime4());
-			jsonObj.put("endtime5", hpdetail.getEndtime5());
-			jsonObj.put("endtime6", hpdetail.getEndtime6());
-			jsonObj.put("endtime7", hpdetail.getEndtime7());
-			jsonObj.put("endtime8", hpdetail.getEndtime8());
+			jsonObj.put("time1", monTime);
+			jsonObj.put("time2", tueTime);
+			jsonObj.put("time3", wedTime);
+			jsonObj.put("time4", thuTime);
+			jsonObj.put("time5", friTime);
+			jsonObj.put("time6", satTime);
+			jsonObj.put("time7", sunTime);
+			jsonObj.put("time8", holyTime);
 		}
-		System.out.println(jsonObj.toString());
 		return jsonObj.toString();
 	}
 	
 	//도를 넣으면 시를 반환하는 메소드
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value="putSiGetdo.bibo", produces="text/plain;charset=UTF-8")
 	public String putSiGetdo(HttpServletRequest request) {
-
 
 	    String local = request.getParameter("local");
 
