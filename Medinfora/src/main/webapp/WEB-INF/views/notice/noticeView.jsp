@@ -116,7 +116,7 @@
                 <div>
               
                 <input type="hidden" name="nidx" value="${noticedto.nidx}" />
-                 <br>
+              
                  <div class="nanum-n notice-buttons">
                     <button type="button" class="btn btn-secondary" id="btnDelete">삭제</button>
                     <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>

@@ -56,13 +56,16 @@ public class NoticeController {
 	}
 
 	@PostMapping("/notice/noticeWriteEnd.bibo")
-	public ModelAndView noticeWriteEnd(HttpServletRequest request, ModelAndView mav, NoticeDTO noticedto,
-			MultipartHttpServletRequest mrequest) {
+	public ModelAndView isadmin_noticeWriteEnd(ModelAndView mav, HttpServletRequest request, HttpServletResponse response, 
+	        NoticeDTO noticedto, MultipartHttpServletRequest mrequest)  {
 
+	    HttpSession session = request.getSession();
+	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+	    
 		MultipartFile attach = noticedto.getAttach();
 
 		if (attach != null && !attach.isEmpty()) {
-			HttpSession session = mrequest.getSession();
+		//	HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/");
 			String path = root + "resources" + File.separator + "files";
 
@@ -85,8 +88,8 @@ public class NoticeController {
 
 		int n;
 
-		HttpSession session = request.getSession();
-		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+	//	HttpSession session = request.getSession();
+	//	MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
 		noticedto.setUserid(loginuser.getUserid());
 
@@ -267,30 +270,32 @@ public class NoticeController {
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 		if(loginuser == null) {
 			String message = "관리자만 접근 가능합니다";
-			String loc = "javascript:history.back()";
+			//String loc = "javascript:history.back()";
 			mav.addObject("message",message);
-			mav.addObject("loc",loc);
-			mav.setViewName("msg");
+			mav.setViewName("redirect:/notice/noticeList.bibo");
+			//mav.addObject("loc",loc);
+		//	mav.setViewName("msg");
 			return mav;
 		}
 		
 		if(loginuser.getmIdx() != 0) {
 			String message = "관리자만 접근 가능합니다";
-			String loc = "javascript:history.back()";
+		//	String loc = "javascript:history.back()";
 			mav.addObject("message",message);
-			mav.addObject("loc",loc);
-			mav.setViewName("msg");
+			mav.setViewName("redirect:/notice/noticeList.bibo");
+			//	mav.addObject("loc",loc);
+		//	mav.setViewName("msg");
 			return mav;
 		}
 		String seq = request.getParameter("seq");
 		String message = "";
 		try {
-			System.out.println("seq: " + seq); // 디버깅 로그 추가
+		//	System.out.println("seq: " + seq); // 디버깅 로그 추가
 			Integer.parseInt(seq);
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("nidx", seq);
 			NoticeDTO noticedto = service.getView_no_increase_readCount(paraMap);
-			System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
+			//	System.out.println("noticedto: " + noticedto); // 디버깅 로그 추가
 			if (noticedto == null) {
 				message = "글 수정이 불가합니다";
 				mav.addObject("message", message);

@@ -253,7 +253,7 @@ body>div.homebar {
 .notice-container {
 	width: 80vw;
 	margin: auto;
-	padding: 70px 0;
+/* 	padding: 70px 0; */
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	 position: relative;
