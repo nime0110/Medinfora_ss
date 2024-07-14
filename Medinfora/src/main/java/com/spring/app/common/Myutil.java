@@ -256,9 +256,11 @@ public class Myutil {
 	 */
 	public static String removeHTMLtag(String text) {
 		
-		String rtnVal = StringEscapeUtils.unescapeHtml4(text);
+		String replaceText = StringEscapeUtils.unescapeHtml4(text);
 		
-		String replaceText = rtnVal.replaceAll("<(/)?([a-zA-Z]*)([0-9]?)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		replaceText = replaceText.replaceAll("<(/)?([a-zA-Z]*)([0-9]?)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		
+		replaceText = StringEscapeUtils.escapeHtml4(replaceText);
 		
 		System.out.println(replaceText);
 		
