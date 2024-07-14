@@ -1,10 +1,14 @@
 package com.spring.app.main.controller;
 
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +19,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.service.MainService;
 
@@ -192,28 +198,30 @@ public class MainController {
 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/search.bibo")
+	public ModelAndView serach(ModelAndView mav, HttpServletRequest request) {
+		
+		String search = request.getParameter("search");
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+
+		String userid = loginuser.getUserid();
+		
+		if(userid == null) {
+			userid = "Anonymous";
+		}
+		
+		Map<String,String> paraMap = new HashMap<>();
+		
+		paraMap.put("serach", search);
+		paraMap.put("userid", userid);
+		
+		
+		
+		mav.addObject("search",search);
+		mav.setViewName("search.tiles");
+		
+		return mav;
+	}
 	
 }
