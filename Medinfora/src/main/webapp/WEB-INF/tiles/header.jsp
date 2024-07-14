@@ -161,6 +161,13 @@
 		location.href="<%=ctxPath%>/notice/noticeList.bibo";
 	}
 	
+	function doSearch(){
+		
+		const frm = document.searchFrm;
+		frm.action = "<%=ctxPath%>/search.bibo";
+		frm.submit();
+		
+	}
 	
 
 </script>
@@ -188,10 +195,10 @@
     <div class="input_text">
       <label class="my-auto">
         <form class="dh-section-form" name="searchFrm">
-          <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="store_search" id="store_search" placeholder='검색어를 입력하세요' required="required">
+          <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="search" id="store_search" placeholder='검색어를 입력하세요' required="required" />
         </form>
       </label>
-      <span class="DH-section-searchBtn" id="btnSearch"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i>
+      <span class="DH-section-searchBtn" id="btnSearch" onclick="doSearch()"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i>
       </span>
     </div>
     
