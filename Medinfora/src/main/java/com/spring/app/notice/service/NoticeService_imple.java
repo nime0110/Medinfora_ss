@@ -65,35 +65,46 @@ public class NoticeService_imple implements NoticeService {
 		return n;
 	}
 
+	/*
+	 * @Override public NoticeDTO getView(Map<String, Object> paraMap, HttpSession
+	 * session) { // System.out.println("확인용: " + paraMap.get("nidx")); MemberDTO
+	 * mIdx = null; int plz = 1; // 세션값이 있을 때만 값을 가져오려고 만
+	 * 
+	 * if(session!=null && session.getAttribute("mIdx") != null) { mIdx =
+	 * (MemberDTO) session.getAttribute("mIdx"); if (mIdx != null) { plz =
+	 * mIdx.getmIdx(); } } NoticeDTO noticedto = dao.getView(paraMap);
+	 * //System.out.println("noticedto : " + noticedto.getNidx()); if(plz != 0) { //
+	 * 관리자 외의 계정으로 로그인 했을 경우 //if(mIdx.getmIdx() != 0) { // 관리자 외의 계정으로 로그인 했을 경우
+	 * int nidx = noticedto.getNidx(); int n = dao.increase_readCount(nidx);
+	 * if(n==1) { noticedto.setViewcnt(noticedto.getViewcnt()+1); }// end of if } //
+	 * end of if
+	 * 
+	 * return noticedto; } //end of public NoticeDTO getView(Map<String, String>
+	 * paraMap, HttpSession session)
+	 */
 	@Override
 	public NoticeDTO getView(Map<String, Object> paraMap, HttpSession session) {
-	  //  System.out.println("확인용: " + paraMap.get("nidx"));
-		MemberDTO mIdx = null;
-		int plz = 1; // 세션값이 있을 때만 값을 가져오려고 만
-		
-		if(session!=null && session.getAttribute("mIdx") != null) {
-			mIdx = (MemberDTO) session.getAttribute("mIdx");
-			if (mIdx != null) {
-				plz = mIdx.getmIdx();
-			}
-		}
-		NoticeDTO noticedto = dao.getView(paraMap);
-//System.out.println("noticedto : " + noticedto.getNidx());
-	if(plz != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
+	    MemberDTO loginuser = null;
+	    
+	    // 로그인한 사용자가 있는지 확인
+	    if (session != null && session.getAttribute("loginuser") != null) {
+	        loginuser = (MemberDTO) session.getAttribute("loginuser");
+	    }
+	    
+	    // 공지사항 상세 정보 가져오기
+	    NoticeDTO noticedto = dao.getView(paraMap);
+	    
+	    // 사용자가 로그인하지 않았거나 관리자가 아닌 경우에만 조회수 증가
+	    if (loginuser == null || loginuser.getmIdx() != 0) {
+	        int nidx = noticedto.getNidx();
+	        int n = dao.increase_readCount(nidx);
+	        if (n != 0) { 
+	            noticedto.setViewcnt(noticedto.getViewcnt() + 1);
+	        }
+	    }
 
-	//if(mIdx.getmIdx() != 0) { // 관리자 외의 계정으로 로그인 했을 경우 
-			int nidx = noticedto.getNidx();
-			int n = dao.increase_readCount(nidx);
-
-			if(n==1) { 
-				noticedto.setViewcnt(noticedto.getViewcnt()+1);
-			}// end of if 
-
-		} // end of if
-		
-		return noticedto;
-	} //end of public NoticeDTO getView(Map<String, String> paraMap, HttpSession session)
-
+	    return noticedto;
+	}
 	// 임시 
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
@@ -137,7 +148,28 @@ public class NoticeService_imple implements NoticeService {
 	 public NoticeDTO getNextNotice(int nidx) {
 	     return dao.getNextNotice(nidx);
 	 }
-	  
+
+	@Override
+	public void edit_view(Map<String, Object> paraMap) {
+		dao.edit_view(paraMap);
+
+		return ;
+	}
+
+	/*
+	 * @Override public void delFile(NoticeDTO noticedto) {
+	 * 
+	 * dao.deleteFile(noticedto);
+	 * 
+	 * }
+	 */
+
+	
+
+
+	
+
+	
 	
 
 } // end of public class NoticeService_imple implements NoticeService 

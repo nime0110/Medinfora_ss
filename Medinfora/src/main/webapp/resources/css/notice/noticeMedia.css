@@ -2,6 +2,20 @@
 
 
 @media (max-width: 768px) {
+
+	#wrapper > section > ul > div > div > div {
+	
+	 padding: 10px 6px;
+	 text-align: center;
+	     font-size: 0.9rem;
+	       white-space: nowrap;
+	}
+	
+	#wrapper > section > ul > div > li {
+	white-space: nowrap;
+   
+	}
+	
     .board_wrap {
         width: 90%;
     }
@@ -32,17 +46,30 @@
     }
    .notice-btn {
         display: none;
+        
     }
     .board-item-title {
         flex: 1;
         font-size: 1rem;
         overflow: hidden;
         text-overflow: ellipsis;
+          width: 100%;
+        margin-bottom: 5px;
+        max-width: 100%;
+    }
+    
+    .board-item-body{
+     flex-wrap: wrap;
+    }
+      .board-item-date, .notice-viewcount {
+   
+        text-align: center;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
-    
+    	
     .bt_wrap {
         margin-top: 10px;
         font-size: 1.2rem;
