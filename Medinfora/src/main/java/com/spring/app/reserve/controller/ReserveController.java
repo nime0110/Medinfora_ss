@@ -187,8 +187,6 @@ public class ReserveController {
 				continue;
 			}
 			
-			System.out.println(end);
-			
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
