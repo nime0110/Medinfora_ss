@@ -190,7 +190,7 @@ public class ReserveController {
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
-					
+			
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
 
