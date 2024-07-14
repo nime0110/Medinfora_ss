@@ -217,10 +217,10 @@ where hidx = 1
     and checkin = '2024-07-08 15:00:00'
 
 -- 선택한 날의 예약 개수 파악 
-select ridx, userid, reportday, checkin, symptom, rcode, hidx
+select count(*)
 from reserve
-where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date('2024-07-08','yyyy-mm-dd hh24:mi:ss'))
-    and hidx = 1
+where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') = to_char(to_date('2024-07-15 22:00:00','yyyy-mm-dd hh24:mi:ss'))
+    and hidx = 20395
 
 -- 현재시간 이후, 병원과 요일 파악하여 진료예약 불가능한 업무시간 파악하기
 select ridx, userid, reportday, checkin, rcode, hidx
