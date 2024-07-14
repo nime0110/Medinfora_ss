@@ -38,6 +38,10 @@
 			<option value="의원">의원</option>
 		</select>  
 		<br> 
+	    <div class="form-check">
+	        <input class="form-check-input" type="checkbox" id="check-status" value="진료중">
+	        <label class="form-check-label" for="check-status">진료중인 병원만 보기</label>
+	    </div>
 		<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
 		<button onclick="searchHospitals(1)">검색</button>
 	</div>
@@ -46,8 +50,8 @@
 	    <button class="tab-button active" data-tab="map_box">지도</button>
 	    <button class="tab-button" data-tab="hplist">리스트</button>
 	</div>
-	
 	<!-- 카카오맵 / 리스트설정  -->
+	
 	<div id="flexbox_map">
 		<div id="map_box" class="map_wrap tab-content">
 		    <div id="map"></div>

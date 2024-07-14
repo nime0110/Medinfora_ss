@@ -50,12 +50,13 @@ public class HpsearchController {
 		String classcode = request.getParameter("classcode"); //D004
 		String agency = request.getParameter("agency"); //의원
 		String hpname = request.getParameter("hpname"); //병원이름
+		String checkStatus = request.getParameter("checkStatus"); //병원이름
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
-		int sizePerPage = 5;//한 페이지당 5개의 병원  
+		int sizePerPage = 10;//한 페이지당 5개의 병원  
 		
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1; 
         int endRno = startRno + sizePerPage - 1; 
@@ -66,6 +67,7 @@ public class HpsearchController {
 		paraMap.put("classcode", classcode);
 		paraMap.put("agency", agency);
 		paraMap.put("hpname", hpname);
+		paraMap.put("checkStatus", checkStatus);
         paraMap.put("startRno", String.valueOf(startRno));
         paraMap.put("endRno", String.valueOf(endRno));
 				 
@@ -226,7 +228,11 @@ public class HpsearchController {
 		                e.printStackTrace();
 		            }
 		        }
-
+		        
+		        if ("진료중".equals(checkStatus) && !"진료중".equals(status)) {
+		            continue;
+		        }
+				
 				JSONObject jsonObj = new JSONObject(); //{}
 								
 				jsonObj.put("hidx", hpdto.getHidx()); 
@@ -300,6 +306,9 @@ public class HpsearchController {
 		String satTime = timeStrings[5];
 		String sunTime = timeStrings[6];
 		String holyTime = timeStrings[7];
+		
+
+		
 		
 		JSONObject jsonObj = new JSONObject(); //{}
 		if(hpdetail != null) {

@@ -25,6 +25,16 @@ h1 {
 	padding-bottom: 30vh;
 }
 
+.form-check {
+	display: flex;
+	margin-left: 9px;
+    align-items: center;
+}
+#check-status {
+	width: 1%;
+}
+
+
 
 #map {
 	width: 100%;
@@ -513,7 +523,7 @@ div#no_searchList > span {
 @media (max-width: 992px) {
 	
 	.dropdown_hpsearch button {
-		width:7%;
+		width:9%;
 	}
 	.mobile-only {
 		display: block;
@@ -548,7 +558,9 @@ div#no_searchList > span {
         background-color: #007BFF;
         color: white;
     }
-	
+   	.form-check {
+	    margin-left: 0px; 
+	}
 	ul#hospitalList div#no_searchList {
 		margin-top: 16vh;
 	}
@@ -632,12 +644,13 @@ div#no_searchList > span {
     #searchHpname {
     	width:100%;
     }
-
+   	.form-check {
+	    margin-left: 0px; 
+	}
     .dropdown_hpsearch select,
     .dropdown_hpsearch input,
     .dropdown_hpsearch button {
         width: 100%;
-        margin: 5px auto;
     }
   
      .dropdown_hpsearch {
@@ -685,8 +698,10 @@ div#no_searchList > span {
     .dropdown_hpsearch input,
     .dropdown_hpsearch button {
         width: 100%;
-        margin: 5px auto;
     }
+   	.form-check {
+	    margin-left: 0px; 
+	}
 
     .details-button {
         width: 100%;
@@ -748,7 +763,9 @@ div#no_searchList > span {
         width: 100%;
         margin: 5vh auto 10vh auto;
     }
-
+	.form-check {
+	    margin-left: 0px; 
+	}
     #flexbox_map {
         flex-direction: column;
         height: auto;

@@ -246,9 +246,17 @@ let currentPage = 1; // 현재 페이지를 추적
 
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수
 function searchHospitals(pageNo) {
-
     clearAllwithmarker(); 
     clearClusterer(); 
+
+    let checkbox = $('#check-status');
+    let checkbox_val = ' ';
+    if(checkbox.is(':checked')) { 
+        checkbox_val = checkbox.val();
+    }
+
+    console.log(checkbox_val);
+
     let city = $('#city').val();
     let local = $('#local').val();
     let country = $('#country').val();
@@ -280,6 +288,7 @@ function searchHospitals(pageNo) {
         		classcode: classcode, 
         		agency: agency,
         		hpname: hpname,
+                checkStatus: checkbox_val,
         		currentShowPageNo: pageNo
         	   },
         dataType: "json",
@@ -478,18 +487,19 @@ function searchHospitals(pageNo) {
                     map.setCenter(positionArr[index].latlng);
                     kakao.maps.event.trigger(markers[index], 'click');
                 });
-     
+                
             } else {
                 v_html += `<div id="no_searchList">
-		        		<span>😥</span>
-		            	<p>검색된 의료기관이 없습니다.</p>
-		        	</div>`;
+                <span>😥</span>
+                <p>검색된 의료기관이 없습니다.</p>
+                </div>`;
                 removedisplayPagination();
             } // end of if(json.length > 0) -------------------------------
             
             $('#hospitalList').append(v_html);
-
-            displayPagination(json[0].totalPage, pageNo);
+            if(json.length > 0) {
+                displayPagination(json[0].totalPage, pageNo);
+            }
             removePolygon();
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
