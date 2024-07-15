@@ -1,8 +1,6 @@
 package com.spring.app.main.controller;
 
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,7 +201,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/search.bibo")
-	public ModelAndView serach(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView searach(ModelAndView mav, HttpServletRequest request) {
 		
 		String search = request.getParameter("search");
 		HttpSession session = request.getSession();
@@ -223,11 +220,23 @@ public class MainController {
 			return mav;
 		}
 		
+		Map<String,List<Object>> searchList = service.searach(search);
+		
+		if(searchList == null) {
+			mav.addObject("nosearch",2);
+			mav.addObject("search",search);
+			mav.setViewName("search.tiles");
+			return mav;
+		}
+		
+		// 로그 작성부분
+		
 		Map<String,String> paraMap = new HashMap<>();
 		
 		paraMap.put("serach", search);
 		paraMap.put("userid", userid);
 		
+		mav.addObject("searchlist",searchList);
 		mav.addObject("nosearch",0);
 		mav.addObject("search",search);
 		mav.setViewName("search.tiles");

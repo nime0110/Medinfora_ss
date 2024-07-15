@@ -77,3 +77,40 @@ from loginlog where USERID ='redtree2379';
 select userid from CLASSCODEMET where hidx = 120 group by userid;
 
 select userid from MEMBER where userid = 'redtree' and PWD = '';
+
+select Hpname
+from HOSPITAL
+where Hpname like '%'||'서울'||'%' or HPADDR like '%'||'서울'||'%' group by Hpname, HPADDR;
+
+select TITLE
+from MEDIQ
+where TITLE like '%'||'비타민'||'%' or CONTENT like '%'||'비타민'||'%';
+
+select CONTENT
+from MEDIA
+where CONTENT like '%'||'비타민'||'%';
+
+select TITLE
+from NOTICE
+where TITLE like '%'||'홈'||'%' or CONTENT like '%'||'홈'||'%';
+
+select rno,HPNAME,hpaddr,AGENCY
+from(
+    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY
+    from HOSPITAL
+    where Hpname like '%'||'서울'||'%' group by HPNAME, HPADDR, AGENCY
+)where rno between 1 and 10;
+
+select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+from (
+    select row_number() over (order by WRITEDAY) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+    from MEDIQ
+    where OPEN = 1 and (TITLE like '%'||'비타민'||'%' or CONTENT like '%'||'비타민'||'%')
+)where rno between 1 and 5;
+
+select title, CONTENT, WRITEDAY, acount, viewcount
+from (
+    select row_number() over (order by MEDIA.WRITEDAY) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount
+    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
+    where OPEN = 1 and MEDIA.CONTENT like '%'||'첨부'||'%'
+)where rno between 1 and 5;
