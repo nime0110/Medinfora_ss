@@ -86,6 +86,15 @@ button.write:hover{
 	
 }
 
+
+div.pagebar ul{
+	margin: 0 auto;
+	/*padding: 0;*/
+	display: table;
+	
+
+}
+
 </style>
 
 <script type="text/javascript">
@@ -93,10 +102,22 @@ button.write:hover{
 $(document).ready(function(){
 	
 	// 페이지바 출력
-	const blockSize = ${requestScope.blockSize};
-	let loop = ${requestScope.loop};
-	let pageNo = ${requestScope.pageNo};
-	const totalPage = ${requestScope.totalPage};
+	const blockSize = ${requestScope.qdtoMap.blockSize};
+	let loop = ${requestScope.qdtoMap.loop};
+	let pageNo = ${requestScope.qdtoMap.pageNo};
+	const totalPage = ${requestScope.qdtoMap.totalPage};
+	const currentPageNo = ${requestScope.qdtoMap.currentPageNo};
+	
+	pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo);
+	
+
+});
+
+function gowrite(){
+	location.href="<%=ctxPath%>/questionWrite.bibo";
+}
+
+function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	
 	let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
 	
@@ -135,11 +156,7 @@ $(document).ready(function(){
 	
 	$("div.pagebar").html(pageBar);
 	
-
-});
-
-function gowrite(){
-	location.href="<%=ctxPath%>/questionWrite.bibo";
+	
 }
 
 
@@ -211,7 +228,8 @@ function gowrite(){
 						<c:if test="${qdto.subject eq '3'}">의약정보</c:if>
 					</span>
 					<span class="col-5" align="left">
-						${qdto.title}&nbsp;&nbsp;<c:if test="${qdto.newwrite eq '0'}"><i class="fa-solid fa-face-angry" style="color: #ff8800;"></i></c:if>
+						${qdto.title}&nbsp;<c:if test="${not empty qdto.imgsrc}"><i class="fa-solid fa-paperclip" style="color: #535965;"></i></c:if>&nbsp;
+						<c:if test="${qdto.newwrite eq '0'}"><i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i></c:if>
 					
 					</span>
 					<span class="col-2">
@@ -222,12 +240,12 @@ function gowrite(){
 						</c:if>
 						<c:if test="${qdto.acount ne '0'}">
 							<span class="p-1 nanum-b" style="background-color: blue; border-radius: 10%; color: white;">
-								답변&nbsp;완료
+								완료
 							</span>
 						</c:if>
 					</span>
 					<span class="col-2">${qdto.writeday}</span>
-					<span class="col-1">${qdto.viewcount}</span>
+					<span class="col-1">${qdto.viewCount}</span>
 			
 				</div>
 			</c:forEach>
@@ -237,7 +255,7 @@ function gowrite(){
 	</div>
 	
 	<%-- 페이지 바 --%>
-	<div class="pagebar mb-5 px-3"></div>
+	<div class="pagebar mb-5" style="text-align: center;"></div>
 	
 	<div class="py-5 text-center">
 		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>

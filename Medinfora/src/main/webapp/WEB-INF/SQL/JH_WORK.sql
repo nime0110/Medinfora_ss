@@ -460,3 +460,7 @@ select *
 from MEDIQ Q FULL JOIN MEDIA A
 ON Q.qidx = A.qidx
 
+update MEDIQ set acount = 2
+where qidx = 9;
+
+commit;

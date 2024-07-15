@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,7 +58,7 @@ public class QuestionController {
 		int totalPage = 0;
 		
 		try {
-			totalPage = questionservice.totalquestion(paraMap);
+			totalCount = questionservice.totalquestion(paraMap);
 			
 			System.out.println("확인용 totalCount "+totalCount);
 			totalPage = (int) Math.ceil((double)totalCount/sizePerPage); 
@@ -94,6 +95,7 @@ public class QuestionController {
 					qdtoMap.put("blockSize", blockSize);
 					qdtoMap.put("loop", loop);
 					qdtoMap.put("pageNo", pageNo);
+					qdtoMap.put("currentPageNo", currentPageNo);
 					qdtoMap.put("totalPage", totalPage);
 					
 					mav.addObject("qdtoMap", qdtoMap);
