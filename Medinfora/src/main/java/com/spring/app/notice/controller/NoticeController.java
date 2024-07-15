@@ -162,7 +162,7 @@ public class NoticeController {
 
 	    try {
 	    	int nidx = Integer.parseInt(request.getParameter("nidx"));
-            System.out.println("nidx : " + nidx);
+           // System.out.println("nidx : " + nidx);
             NoticeDTO prevNotice = service.getPrevNotice(nidx);
             NoticeDTO nextNotice = service.getNextNotice(nidx);
             NoticeDTO n = service.getView(nidx);	// 글 조회
