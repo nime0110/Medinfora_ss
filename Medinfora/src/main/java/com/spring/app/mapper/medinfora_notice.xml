@@ -34,7 +34,7 @@
         FROM notice
     </select>
 
-    <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
+    <select id="getView" parameterType="int" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
                substr(WRITEDAY,1,10) as writeday, 
                filename, orgname, filesize
