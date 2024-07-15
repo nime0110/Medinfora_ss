@@ -160,49 +160,49 @@ public class NoticeController {
 	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.
 	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
 
-		try {
-			int nidx = Integer.parseInt(request.getParameter("nidx"));
-			// System.out.println("확인용 nidx" + nidx);
-			// Map<String, String> paraMap = new HashMap<>();
+	    try {
+	    	int nidx = Integer.parseInt(request.getParameter("nidx"));
+            System.out.println("nidx : " + nidx);
+            NoticeDTO prevNotice = service.getPrevNotice(nidx);
+            NoticeDTO nextNotice = service.getNextNotice(nidx);
+            NoticeDTO n = service.getView(nidx);	// 글 조회
 
-			Map<String, Object> paraMap = new HashMap<>();
-			paraMap.put("nidx", String.valueOf(nidx));
-			HttpSession session = request.getSession();
+            if (n == null) {
+                mav.addObject("errorMessage", "해당 글을 찾을 수 없습니다.");
+                mav.setViewName("notice/noticeView.tiles");
+                return mav;
+            }
 
-			// 이전글, 다음 글 정보 가져오기
+            HttpSession session = request.getSession();
+    	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
-			NoticeDTO prevNotice = service.getPrevNotice(nidx);
-			NoticeDTO nextNotice = service.getNextNotice(nidx);
-
-			// MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-
-			// System.out.println("session 확인용 "+ loginuser);
-			NoticeDTO n = service.getView(paraMap, session);
-
-			mav.addObject("noticedto", n);// 저장해줄 이름
-			mav.addObject("prevNotice", prevNotice);
-			mav.addObject("nextNotice", nextNotice);
-			mav.setViewName("notice/noticeView.tiles");
-		} catch (NumberFormatException e) {
-		    
-			 mav.setViewName("redirect:/notice/noticeList.bibo");
-			 
-			 }
-
-			 return mav;
-			}
-		
+    	    if (loginuser == null || loginuser.getmIdx() != 0) {	// 관리자가 로그인 하지 않은 경우
+    	    	service.increase_readCount(nidx);	// 조회수 증가
+    	    }
+    	    
+            mav.addObject("noticedto", n);
+            mav.addObject("prevNotice", prevNotice);
+            mav.addObject("nextNotice", nextNotice);
+            mav.setViewName("notice/noticeView.tiles");
+            
+        } catch (NumberFormatException e) {
+    		String message = "접근 통제";
+    		String loc = "javascript:history.back()";
+    		mav.addObject("message",message);
+    		mav.addObject("loc",loc);
+    		mav.setViewName("msg");
+        }
+        return mav;
+    }	
 	// @GetMapping("/view_2.action")
 	@PostMapping("/notice/view_2.bibo")
 	public ModelAndView view_2(ModelAndView mav, HttpServletRequest request, RedirectAttributes redirectAttr) {
 
 		// 조회하고자 하는 글번호 받아오기
-		String seq = request.getParameter("nidx");
+		String nidx = request.getParameter("nidx");
 
 		// === #141. 이전글제목, 다음글제목 보기 시작 === //
 		String goBackURL = request.getParameter("goBackURL");
-		String searchType = request.getParameter("searchType");
-		String searchWord = request.getParameter("searchWord");
 
 		/*
 		 * redirect:/ 를 할때 "한글데이터는 0에서 255까지의 허용 범위 바깥에 있으므로 인코딩될 수 없습니다" 라는
@@ -211,7 +211,7 @@ public class NoticeController {
 		 */
 
 		try {
-			searchWord = URLEncoder.encode(searchWord, "UTF-8");
+			
 			goBackURL = URLEncoder.encode(goBackURL, "UTF-8");
 
 			// System.out.println("~~~~ view_2.action 의 URLEncoder.encode(searchWord,
@@ -245,19 +245,18 @@ public class NoticeController {
 		// RedirectAttributes 를 사용하면 된다. 시작 ==== //
 		/////////////////////////////////////////////////////////////////////////////////
 		Map<String, String> redirect_map = new HashMap<>();
-		redirect_map.put("seq", seq);
+		redirect_map.put("nidx", nidx);
 
 		// === #142. 이전글제목, 다음글제목 보기 시작 === //
 		redirect_map.put("goBackURL", goBackURL);
-		redirect_map.put("searchType", searchType);
-		redirect_map.put("searchWord", searchWord);
+
 		// === #142. 이전글제목, 다음글제목 보기 끝 === //
 
 		redirectAttr.addFlashAttribute("redirect_map", redirect_map);
 		// redirectAttr.addFlashAttribute("키", 밸류값); 으로 사용하는데 오로지 1개의 데이터만 담을 수 있으므로
 		// 여러개의 데이터를 담으려면 Map 을 사용해야 한다.
 
-		mav.setViewName("redirect:/notice/noticeView.bibo");
+		mav.setViewName("redirect:/notice/view.bibo");
 
 		return mav;
 	}

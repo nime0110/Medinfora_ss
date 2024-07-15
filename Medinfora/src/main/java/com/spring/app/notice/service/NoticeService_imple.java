@@ -37,7 +37,7 @@ public class NoticeService_imple implements NoticeService {
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
 		int n = dao.noticeWrite(noticedto);
-		System.out.println("gc : "+n);
+	//	System.out.println("gc : "+n);
 		return n;
 	}
 
@@ -83,28 +83,19 @@ public class NoticeService_imple implements NoticeService {
 	 * paraMap, HttpSession session)
 	 */
 	@Override
-	public NoticeDTO getView(Map<String, Object> paraMap, HttpSession session) {
-	    MemberDTO loginuser = null;
-	    
-	    // 로그인한 사용자가 있는지 확인
-	    if (session != null && session.getAttribute("loginuser") != null) {
-	        loginuser = (MemberDTO) session.getAttribute("loginuser");
-	    }
+	public NoticeDTO getView(int nidx) {
 	    
 	    // 공지사항 상세 정보 가져오기
-	    NoticeDTO noticedto = dao.getView(paraMap);
+	    NoticeDTO noticedto = dao.getView(nidx);
 	    
-	    // 사용자가 로그인하지 않았거나 관리자가 아닌 경우에만 조회수 증가
-	    if (loginuser == null || loginuser.getmIdx() != 0) {
-	        int nidx = noticedto.getNidx();
-	        int n = dao.increase_readCount(nidx);
-	        if (n != 0) { 
-	            noticedto.setViewcnt(noticedto.getViewcnt() + 1);
-	        }
-	    }
-
 	    return noticedto;
 	}
+	// 조회수 증가
+	@Override
+	public void increase_readCount(int nidx) {
+		dao.increase_readCount(nidx);
+	}
+	
 	// 임시 
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
@@ -156,13 +147,8 @@ public class NoticeService_imple implements NoticeService {
 		return ;
 	}
 
-	/*
-	 * @Override public void delFile(NoticeDTO noticedto) {
-	 * 
-	 * dao.deleteFile(noticedto);
-	 * 
-	 * }
-	 */
+
+
 
 	
 

@@ -22,7 +22,7 @@ public interface NoticeService {
 	 int add_noticeWrite(NoticeDTO noticedto);
 
 	 // 글 조회수 증가와 함께 글 1개를 조회해 오는 것 
-	NoticeDTO getView(Map<String, Object> paraMap, HttpSession session);
+	NoticeDTO getView(int nidx);
 
 	NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap);
 
@@ -37,6 +37,9 @@ public interface NoticeService {
 
 
 	public void edit_view(Map<String,  Object> paraMap);
+
+	// 조회수 증가
+	void increase_readCount(int nidx);
 
 
 
