@@ -1,5 +1,9 @@
 package com.spring.app.domain;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class MediQDTO {
@@ -13,10 +17,35 @@ public class MediQDTO {
 	
 	
 	
-	
+	private String newwrite;	// 0 새로운거  1 오늘날짜보다 지난거
 	
 
-	
+	public String getNewwrite() {
+		
+		try {
+			Date now = new Date(); // 현재시각
+			SimpleDateFormat sdfmt = new SimpleDateFormat("yyyy-MM-dd");
+			String str_now = sdfmt.format(now);
+			
+			now = sdfmt.parse(str_now);
+			Date now_birthday = sdfmt.parse(writeday);
+			
+			if(now_birthday.before(now)) {
+			// 회원의 올해생일이 현재날짜 보다 이전이라면
+				newwrite = "1";
+			}
+			else {
+			// 회원의 올해생일이 현재날짜 보다 이후이라면
+			//	System.out.println("~~~~ 생일 아직 지나지 않음");
+				newwrite = "0";
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return newwrite;
+	}
 	
 
 	public String getSubject() {
