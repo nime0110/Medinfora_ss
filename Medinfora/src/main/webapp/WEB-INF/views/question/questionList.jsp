@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -92,10 +92,50 @@ button.write:hover{
 
 $(document).ready(function(){
 	
+	// 페이지바 출력
+	const blockSize = ${requestScope.blockSize};
+	let loop = ${requestScope.loop};
+	let pageNo = ${requestScope.pageNo};
+	const totalPage = ${requestScope.totalPage};
 	
+	let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
 	
+	if(pageNo != 1) {
+		pageBar += "<li class='page-item'>" 
+				+ " 	<a class='page-link' onclick='goSearch("+(pageNo-1)+")>" 
+				+ "	    	<span aria-hidden='true'>&laquo;</span>" 
+				+ "	    </a>" 
+				+ "</li>";
+	}
 	
+	while(!(loop>blockSize || pageNo > totalPage)) {
+		if(pageNo == currentPageNo) {
+			pageBar += "<li class='page-item'>"
+					+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
+					+ "</li>";
+		}
+		else{
+			pageBar += "<li class='page-item'>"
+					+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>" +pageNo+"</a>" 
+					+ "</li>";
+		}
+		loop++;
+		pageNo++;
+	}
 	
+	if(pageNo <= totalPage) {
+		pageBar += "<li class='page-item'>"
+				+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>"
+				+ "	    	<span aria-hidden='true'>&raquo;</span>"
+				+ "	    </a>"
+				+ "</li>";
+	}
+	
+	pageBar += "</ul>";
+	
+	$("div.pagebar").html(pageBar);
+	
+
 });
 
 function gowrite(){
@@ -107,11 +147,7 @@ function gowrite(){
 
 
 <div class="container" style="margin-top: 100px;">
-	<!-- <div class="row text-center mx-1">
-	<span class="col-6 nanum-eb size-n py-4 subject b_black">자주하는질문</span>
-	<span class="col-6 nanum-eb size-n py-4 subject b_black">묻고답하기</span>
-	</div>  -->
-	
+
 	<div class="py-4" align="center">
 		<h2 class="nanum-eb size-n">묻고 답하기</h2>
 	</div>
@@ -121,19 +157,19 @@ function gowrite(){
 			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
 				<span>
 					<select class="search_ch sel_0 nanum-b">
-						<option>구분</option>
-						<option>건강상담</option>
-						<option>식생활,식습관</option>
-						<option>의약정보</option>
+						<option value='0'>구분</option>
+						<option value='1'>건강상담</option>
+						<option value='2'>식생활,식습관</option>
+						<option value='3'>의약정보</option>
 					</select>
 				</span>
 				
 				<span class="">
 					<select class="search_ch sel_1 nanum-b">
-						<option>전체</option>
-						<option>질문제목</option>
-						<option>질문내용</option>
-						<option>답변내용</option>
+						<option value='z'>전체</option>
+						<option value='Q.title'>질문제목</option>
+						<option value='Q.content'>질문내용</option>
+						<option value='A.content'>답변내용</option>
 					</select>
 				</span>
 				
@@ -156,9 +192,8 @@ function gowrite(){
 		<!-- 목차 ? -->
 		<div class="mt-4 px-3 subject">
 			<div class="row text-center py-3 nanum-eb size-s">
-				<span class="col-1">순서</span>
 				<span class="col-2">구분</span>
-				<span class="col-4">질문제목</span>
+				<span class="col-5">질문제목</span>
 				<span class="col-2">진행상태</span>
 				<span class="col-2">작성일자</span>
 				<span class="col-1">조회수</span>
@@ -167,17 +202,42 @@ function gowrite(){
 		
 		<!-- 여기에 리스트 띄우면 됨 -->
 		<div class="mb-5 px-3">
-			<div class="row text-center py-3 nanum-n size-s b_border">
-				<span class="col-1">6</span>
-				<span class="col-2">증상문의</span>
-				<span class="col-4" align="left">배가 너무 아파요&nbsp;&nbsp;<i class="fa-solid fa-face-angry" style="color: #ff8800;"></i></span>
-				<span class="col-2"><span class="p-1 nanum-b" style="background-color: #f1bd81; border-radius: 10%; color: white;">답변&nbsp;중</span></span>
-				<span class="col-2">2024-12-12</span>
-				<span class="col-1">125</span>
-			</div>
+			<c:forEach var="qdto" items="${requestScope.qdtoMap.qList}"  varStatus="status">
+				<div class="row text-center py-3 nanum-n size-s b_border">
+					<input type="hidden" value="${qdto.qidx}" name="no${status.index}"/>
+					<span class="col-2">
+						<c:if test="${qdto.subject eq '1'}">건강상담</c:if>
+						<c:if test="${qdto.subject eq '2'}">식생활,식습관</c:if>
+						<c:if test="${qdto.subject eq '3'}">의약정보</c:if>
+					</span>
+					<span class="col-5" align="left">
+						${qdto.title}&nbsp;&nbsp;<c:if test="${qdto.newwrite eq '0'}"><i class="fa-solid fa-face-angry" style="color: #ff8800;"></i></c:if>
+					
+					</span>
+					<span class="col-2">
+						<c:if test="${qdto.acount eq '0'}">
+							<span class="p-1 nanum-b" style="background-color: #f1bd81; border-radius: 10%; color: white;">
+								답변&nbsp;중
+							</span>
+						</c:if>
+						<c:if test="${qdto.acount ne '0'}">
+							<span class="p-1 nanum-b" style="background-color: blue; border-radius: 10%; color: white;">
+								답변&nbsp;완료
+							</span>
+						</c:if>
+					</span>
+					<span class="col-2">${qdto.writeday}</span>
+					<span class="col-1">${qdto.viewcount}</span>
+			
+				</div>
+			</c:forEach>
+			
 		</div>
 	
 	</div>
+	
+	<%-- 페이지 바 --%>
+	<div class="pagebar mb-5 px-3"></div>
 	
 	<div class="py-5 text-center">
 		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>

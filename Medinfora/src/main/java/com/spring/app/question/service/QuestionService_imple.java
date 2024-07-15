@@ -1,5 +1,8 @@
 package com.spring.app.question.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,21 @@ public class QuestionService_imple implements QuestionService {
 	public int questionWriteEnd(MediQDTO qdto) {
 		int n = qdao.questionWriteEnd(qdto);
 		return n;
+	}
+	
+	// 전체 수(검색포함)
+	@Override
+	public int totalquestion(Map<String, String> paraMap) {
+		int totalquestion = qdao.totalquestion(paraMap);
+		return totalquestion;
+	}
+	
+	
+	// 전체 리스트(검색포함?)
+	@Override
+	public List<MediQDTO> totalquestionList(Map<String, String> paraMap) {
+		List<MediQDTO> qList = qdao.totalquestionList(paraMap);
+		return qList;
 	}
 
 }

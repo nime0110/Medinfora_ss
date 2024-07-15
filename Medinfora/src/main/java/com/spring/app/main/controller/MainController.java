@@ -144,9 +144,11 @@ public class MainController {
 		String root = session.getServletContext().getRealPath("/");
 		String path = root + "resources"+File.separator+"photo_upload";
 		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다
-
-		System.out.println("메디의 스마트에디터 사진추가 : "+path);
 		
+		if("medinfora".equalsIgnoreCase(root)) {
+			System.out.println("잘못된 루트로 들어감 확인필요");
+		}
+
 		File dir = new File(path);
 
 		if(!dir.exists()) {	// 폴더가 존재하지 않으면
