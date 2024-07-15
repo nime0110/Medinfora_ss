@@ -217,10 +217,10 @@ where hidx = 1
     and checkin = '2024-07-08 15:00:00'
 
 -- 선택한 날의 예약 개수 파악 
-select ridx, userid, reportday, checkin, symptom, rcode, hidx
+select count(*)
 from reserve
-where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date('2024-07-08','yyyy-mm-dd hh24:mi:ss'))
-    and hidx = 1
+where to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd') = to_char(to_date('2024-07-15 22:00:00','yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd')
+    and hidx = 20395
 
 -- 현재시간 이후, 병원과 요일 파악하여 진료예약 불가능한 업무시간 파악하기
 select ridx, userid, reportday, checkin, rcode, hidx
@@ -356,3 +356,37 @@ from reserve
 -- === 진료현황 변경해주기 === --
 update reserve set rcode = 2
 where ridx = 1;
+
+---------------------------------------------------------
+-- === (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색) === --
+SELECT ridx, userid, reportday, checkin, rcode, hidx
+FROM
+(
+    SELECT row_number() over(order by ridx desc) as rno 
+        , ridx, RM.userid, reportday, checkin, RM.rcode, hidx
+    FROM
+    (
+        SELECT ridx, M.userid, reportday, checkin, rcode, hidx
+        FROM
+        (
+            select ridx, userid, reportday, checkin, rcode, hidx
+            from reserve
+            where hidx = #{hidx}
+            order by checkin desc
+        )R
+        JOIN
+        (
+            select userid, name
+            from member
+            where name like '%' || #{inputsc} || '%'
+        )M
+        ON R.userid = M.userid
+    ) RM
+    JOIN
+    (
+        select rcode, rstatus
+        from reservecode
+    ) RC
+    ON RM.rcode = RC.rcode
+)
+WHERE rno between #{startRno} and #{endRno}

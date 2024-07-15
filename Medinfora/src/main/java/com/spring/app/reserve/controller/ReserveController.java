@@ -182,13 +182,18 @@ public class ReserveController {
 				// 운영 안하는 경우
 			}
 			
+			if(end == "") {
+				currentDate.add(Calendar.DATE, 1);
+				continue;
+			}
+			
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
-					
+			
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
-
+			
 			if(today.substring(0, 10).equals(day.substring(0, 10))) {	// 날짜가 같을 경우(오늘일 경우)
 				String time = today.substring(11, 13) + today.substring(14, 16);
 				
@@ -207,9 +212,11 @@ public class ReserveController {
 					continue;
 				}
 			}
+			
 			if(cnt != 0 && cnt != reserveCnt) {	// 예약이 가능한 경우
 				// [참고] cnt == 0 => 휴무 / cnt !=0 || cnt == reserveCnt => 예약가득참
 				availableDayList.add(day.substring(0, 10));
+				System.out.println(day.substring(0, 10));
 			}	// end of if---------------------
 			
 			currentDate.add(Calendar.DATE, 1);

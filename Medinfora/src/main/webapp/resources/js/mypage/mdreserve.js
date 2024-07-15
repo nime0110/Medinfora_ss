@@ -103,22 +103,22 @@ function Page(currentShowPageNo){
                 let v_html = `<div>
                                 <div class="mt-4 px-3 subject">
                                     <div class="row text-center py-3 nanum-eb size-s">
-                                        <span class="col-2">진료예약일시</span>
-                                        <span class="col-2">환자명</span>
-                                        <span class="col-2">전화번호</span>
-                                        <span class="col-2">예약신청일</span>
-                                        <span class="col-2">진료현황</span>
-                                        <span class="col-2">진료현황 변경</span>
+                                        <span class="col-3 col-lg-2">진료예약일</span>
+                                        <span class="col-3 col-lg-2">환자명</span>
+                                        <span class="col-3 col-lg-2 hideinfo">전화번호</span>
+                                        <span class="col-3 col-lg-2 hideinfo">예약신청일</span>
+                                        <span class="col-3 col-lg-2">진료현황</span>
+                                        <span class="col-3 col-lg-2">진료현황 변경</span>
                                     </div>
                                 </div>
                                 <div class="reserveBox mb-5 px-3">`;
                 $.each(json, function(index, item){
                     v_html += `<div class="row text-center py-3 nanum-n size-s b_border">
-						            <span class="col-2">${item.checkin}</span>
-						            <span class="col-2">${item.name}</span>
-						            <span class="col-2">${item.mobile}</span>
-						            <span class="col-2">${item.reportday}</span>
-						            <span class="col-2">
+						            <span class="col-3 col-lg-2">${item.checkin}</span>
+						            <span class="col-3 col-lg-2">${item.name}</span>
+						            <span class="col-3 col-lg-2 hideinfo">${item.mobile}</span>
+						            <span class="col-3 col-lg-2 hideinfo">${item.reportday}</span>
+						            <span class="col-3 col-lg-2">
                                         <span class="rscode p-1 nanum-b">`;
                     if(item.rcode == "1"){
                         v_html +=  `접수 신청`;
@@ -131,7 +131,7 @@ function Page(currentShowPageNo){
                     }
                         v_html += `     </span>
                                     </span> 
-                                    <span class="col-2">
+                                    <span class="col-3 col-lg-2">
                                         <button class="rschange nanum-eb size-s" type="button" onclick="ChangeRcode(${item.ridx})">
                                             변경
                                         </button>
