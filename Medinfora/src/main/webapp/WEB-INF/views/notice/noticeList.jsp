@@ -19,6 +19,8 @@ function click_on(nidx){
     frm.action = "<%=ctxPath%>/notice/view.bibo";
 		frm.submit();
 	}
+	
+	
 </script>
 
 <body>
@@ -79,6 +81,7 @@ function click_on(nidx){
 	</form>
 
 	<div class="w-100 d-flex justify-content-center pt-3">
+
 		<c:out value="${pageBar}" escapeXml="false"/>
 	</div>
 </body>
