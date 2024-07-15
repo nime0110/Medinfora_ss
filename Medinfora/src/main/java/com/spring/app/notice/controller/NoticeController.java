@@ -19,12 +19,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
+
 
 import com.spring.app.common.FileManager;
 import com.spring.app.common.Myutil;
@@ -204,34 +204,13 @@ public class NoticeController {
 		// === #141. 이전글제목, 다음글제목 보기 시작 === //
 		String goBackURL = request.getParameter("goBackURL");
 
-		/*
-		 * redirect:/ 를 할때 "한글데이터는 0에서 255까지의 허용 범위 바깥에 있으므로 인코딩될 수 없습니다" 라는
-		 * java.lang.IllegalArgumentException 라는 오류가 발생한다.
-		 * 이것을 방지하려면 아래와 같이 하면 된다.
-		 */
+		
 
 		try {
 			
 			goBackURL = URLEncoder.encode(goBackURL, "UTF-8");
 
-			// System.out.println("~~~~ view_2.action 의 URLEncoder.encode(searchWord,
-			// \"UTF-8\") : " + searchWord);
-			// ~~~~ view_2.action 의 URLEncoder.encode(searchWord, "UTF-8") :
-			// %EC%84%9C%EC%98%81%ED%95%99
-
-			// System.out.println("~~~~ view_2.action 의 URLEncoder.encode(goBackURL,
-			// \"UTF-8\") : " + goBackURL);
-			// ~~~~ view_2.action 의 URLEncoder.encode(goBackURL, "UTF-8") :
-			// %2Flist.action%3FsearchType%3Dname+searchWord%3D%25EC%2584%259C%25EC%2598%2581%25ED%2595%2599+currentShowPageNo%3D11
-
-			// System.out.println(URLDecoder.decode(searchWord, "UTF-8")); // URL인코딩 되어진 한글을
-			// 원래 한글모양으로 되돌려주는 것임.
-			// 서영학
-
-			// System.out.println(URLDecoder.decode(goBackURL, "UTF-8")); // URL인코딩 되어진 한글을
-			// 원래 한글모양으로 되돌려주는 것임.
-			// /list.action?searchType=name searchWord=%EC%84%9C%EC%98%81%ED%95%99
-			// currentShowPageNo=11
+		
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -301,20 +280,6 @@ public class NoticeController {
 				mav.setViewName("redirect:/notice/noticeList.bibo");
 				return mav;
 			} else {
-//				HttpSession session = request.getSession();
-//				MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-//
-//				System.out.println("loginuser: " + loginuser); // 디버깅 로그 추가
-//
-//				System.out.println("loginuser: " + loginuser);
-//				if (loginuser != null) {
-//					System.out.println("loginuser.getMIdx(): " + loginuser.getmIdx());
-//					System.out.println("loginuser.getUserid(): " + loginuser.getUserid());
-//				}
-//				System.out.println("noticedto: " + noticedto);
-//				if (noticedto != null) {
-//					System.out.println("noticedto.getUserid(): " + noticedto.getUserid());
-//				}
 
 				// 관리자(mIdx가 0)이거나 글 작성자인 경우 수정 허용
 				if (loginuser.getmIdx() == 0 || loginuser.getUserid().equals(noticedto.getUserid())) {
