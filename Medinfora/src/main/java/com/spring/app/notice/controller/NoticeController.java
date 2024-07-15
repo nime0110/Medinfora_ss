@@ -35,7 +35,7 @@ import com.spring.app.notice.service.NoticeService;
 @Controller
 public class NoticeController {
 
-	@Autowired
+	@Autowired // 의존성 
 	private NoticeService service;
 
 	@Autowired
@@ -53,19 +53,22 @@ public class NoticeController {
 
 		mav.setViewName("notice/noticeWrite.tiles");
 		return mav;
-	}
+	} // end of public ModelAndView noticeWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav)
 
-	@PostMapping("/notice/noticeWriteEnd.bibo")
+
+	// 글쓰기 완료 
+	@PostMapping("/notice/noticeWriteEnd.bibo") 
 	public ModelAndView isadmin_noticeWriteEnd(ModelAndView mav, HttpServletRequest request, HttpServletResponse response, 
-	        NoticeDTO noticedto, MultipartHttpServletRequest mrequest)  {
+			NoticeDTO noticedto, MultipartHttpServletRequest mrequest)  {
 
-	    HttpSession session = request.getSession();
-	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-	    
+
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+
 		MultipartFile attach = noticedto.getAttach();
 
 		if (attach != null && !attach.isEmpty()) {
-		//	HttpSession session = mrequest.getSession();
+			//	HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/");
 			String path = root + "resources" + File.separator + "files";
 
@@ -86,20 +89,20 @@ public class NoticeController {
 			}
 		}
 
-		int n;
+		int n; 
 
-	//	HttpSession session = request.getSession();
-	//	MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		//	HttpSession session = request.getSession();
+		//	MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
 		noticedto.setUserid(loginuser.getUserid());
 
-		if (attach == null || attach.isEmpty()) {
-			n = service.noticeWrite(noticedto);
-		} else {
-			n = service.add_noticeWrite(noticedto);
+		if (attach == null || attach.isEmpty()) { // 파일이 없을 때 
+			n = service.noticeWrite(noticedto); // 파일 첨부없이 글 쓰기 
+		} else {	
+			n = service.add_noticeWrite(noticedto); // 파일 첨부가 있는 글쓰기
 		}
 
-		if (n == 1) {
+		if (n == 1) {  // 파일 첨부 한 후 돌아갈 view 
 			mav.setViewName("redirect:/notice/noticeList.bibo");
 		} else {
 			mav.addObject("message", "공지사항 작성에 실패했습니다.");
@@ -107,8 +110,11 @@ public class NoticeController {
 		}
 
 		return mav;
-	}
+	} // end of public ModelAndView isadmin_noticeWriteEnd(ModelAndView mav, HttpServletRequest request, HttpServletResponse response, NoticeDTO noticedto, MultipartHttpServletRequest mrequest) 
 
+	
+	
+	// 공지사항 목록 보여주기 
 	@GetMapping("/notice/noticeList.bibo")
 	public ModelAndView noticeList(ModelAndView mav, HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -153,47 +159,47 @@ public class NoticeController {
 
 		mav.setViewName("notice/noticeList.tiles");
 		return mav;
-	}
+	} // end of public ModelAndView noticeList(ModelAndView mav, HttpServletRequest request)
 
 	// === #62. 글1개를 보여주는 페이지 요청 === //
 	// @GetMapping("/view.action")
 	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.
 	public ModelAndView getView(ModelAndView mav, HttpServletRequest request) {
 
-	    try {
-	    	int nidx = Integer.parseInt(request.getParameter("nidx"));
-           // System.out.println("nidx : " + nidx);
-            NoticeDTO prevNotice = service.getPrevNotice(nidx);
-            NoticeDTO nextNotice = service.getNextNotice(nidx);
-            NoticeDTO n = service.getView(nidx);	// 글 조회
+		try {
+			int nidx = Integer.parseInt(request.getParameter("nidx"));
+			// System.out.println("nidx : " + nidx);
+			NoticeDTO prevNotice = service.getPrevNotice(nidx);
+			NoticeDTO nextNotice = service.getNextNotice(nidx);
+			NoticeDTO n = service.getView(nidx);	// 글 조회
 
-            if (n == null) {
-                mav.addObject("errorMessage", "해당 글을 찾을 수 없습니다.");
-                mav.setViewName("notice/noticeView.tiles");
-                return mav;
-            }
+			if (n == null) {
+				mav.addObject("errorMessage", "해당 글을 찾을 수 없습니다.");
+				mav.setViewName("notice/noticeView.tiles");
+				return mav;
+			}
 
-            HttpSession session = request.getSession();
-    	    MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+			HttpSession session = request.getSession();
+			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
-    	    if (loginuser == null || loginuser.getmIdx() != 0) {	// 관리자가 로그인 하지 않은 경우
-    	    	service.increase_readCount(nidx);	// 조회수 증가
-    	    }
-    	    
-            mav.addObject("noticedto", n);
-            mav.addObject("prevNotice", prevNotice);
-            mav.addObject("nextNotice", nextNotice);
-            mav.setViewName("notice/noticeView.tiles");
-            
-        } catch (NumberFormatException e) {
-    		String message = "접근 통제";
-    		String loc = "javascript:history.back()";
-    		mav.addObject("message",message);
-    		mav.addObject("loc",loc);
-    		mav.setViewName("msg");
-        }
-        return mav;
-    }	
+			if (loginuser == null || loginuser.getmIdx() != 0) {	// 관리자가 로그인 하지 않은 경우
+				service.increase_readCount(nidx);	// 조회수 증가
+			}
+
+			mav.addObject("noticedto", n);
+			mav.addObject("prevNotice", prevNotice);
+			mav.addObject("nextNotice", nextNotice);
+			mav.setViewName("notice/noticeView.tiles");
+
+		} catch (NumberFormatException e) {
+			String message = "접근 통제";
+			String loc = "javascript:history.back()";
+			mav.addObject("message",message);
+			mav.addObject("loc",loc);
+			mav.setViewName("msg");
+		}
+		return mav;
+	} // end of public ModelAndView getView(ModelAndView mav, HttpServletRequest request) 
 	// @GetMapping("/view_2.action")
 	@PostMapping("/notice/view_2.bibo")
 	public ModelAndView view_2(ModelAndView mav, HttpServletRequest request, RedirectAttributes redirectAttr) {
@@ -204,13 +210,13 @@ public class NoticeController {
 		// === #141. 이전글제목, 다음글제목 보기 시작 === //
 		String goBackURL = request.getParameter("goBackURL");
 
-		
+
 
 		try {
-			
+
 			goBackURL = URLEncoder.encode(goBackURL, "UTF-8");
 
-		
+
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -238,13 +244,14 @@ public class NoticeController {
 		mav.setViewName("redirect:/notice/view.bibo");
 
 		return mav;
-	}
+	} // end of public ModelAndView view_2(ModelAndView mav, HttpServletRequest request, RedirectAttributes redirectAttr) 
 
+	// 공지사항 수정하기 
 	@GetMapping("/notice/noticeEdit.bibo")
 	public ModelAndView edit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		
+
 		HttpSession session = request.getSession();
-		
+
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 		if(loginuser == null) {
 			String message = "관리자만 접근 가능합니다";
@@ -252,23 +259,23 @@ public class NoticeController {
 			mav.addObject("message",message);
 			mav.setViewName("redirect:/notice/noticeList.bibo");
 			//mav.addObject("loc",loc);
-		//	mav.setViewName("msg");
+			//	mav.setViewName("msg");
 			return mav;
 		}
-		
+
 		if(loginuser.getmIdx() != 0) {
 			String message = "관리자만 접근 가능합니다";
-		//	String loc = "javascript:history.back()";
+			//	String loc = "javascript:history.back()";
 			mav.addObject("message",message);
 			mav.setViewName("redirect:/notice/noticeList.bibo");
 			//	mav.addObject("loc",loc);
-		//	mav.setViewName("msg");
+			//	mav.setViewName("msg");
 			return mav;
 		}
 		String seq = request.getParameter("seq");
 		String message = "";
 		try {
-		//	System.out.println("seq: " + seq); // 디버깅 로그 추가
+			//	System.out.println("seq: " + seq); // 디버깅 로그 추가
 			Integer.parseInt(seq);
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("nidx", seq);
@@ -302,82 +309,83 @@ public class NoticeController {
 		}
 	}
 
+	// 공지사항 수정하기 완료
 	@PostMapping("/notice/editEnd.bibo")
 	public ModelAndView isadmin_editEnd(ModelAndView mav, NoticeDTO noticedto, HttpServletRequest request, MultipartHttpServletRequest mrequest) {
-	    
-	    // 기존 공지사항 정보 조회
-	    Map<String, String> paraMap = new HashMap<>();
-	    paraMap.put("nidx", String.valueOf(noticedto.getNidx()));
-	    NoticeDTO existingNotice = service.getView_no_increase_readCount(paraMap);
 
-	    // 파일 저장 경로 설정
-	    HttpSession session = mrequest.getSession();
-	    String root = session.getServletContext().getRealPath("/");
-	    String path = root + "resources" + File.separator + "files";
+		// 기존 공지사항 정보 조회
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("nidx", String.valueOf(noticedto.getNidx()));
+		NoticeDTO existingNotice = service.getView_no_increase_readCount(paraMap);
 
-	    // 파일 삭제 여부 설정
-	    String deleteFile = request.getParameter("deleteFile");
-	    boolean isFileDeleted = false;
-	    if ("true".equals(deleteFile)) {
-	        isFileDeleted = true;
-	    }
+		// 파일 저장 경로 설정
+		HttpSession session = mrequest.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "resources" + File.separator + "files";
 
-	    MultipartFile attach = noticedto.getAttach();
+		// 파일 삭제 여부 설정
+		String deleteFile = request.getParameter("deleteFile");
+		boolean isFileDeleted = false;
+		if ("true".equals(deleteFile)) {
+			isFileDeleted = true;
+		}
 
-	    try {
-	        // Case 1: 파일 변경 없이 나머지만 바꾸는 경우
-	        if (!isFileDeleted && (attach == null || attach.isEmpty())) {
-	            noticedto.setFilename(existingNotice.getFilename());
-	            noticedto.setOrgname(existingNotice.getOrgname());
-	            noticedto.setFilesize(existingNotice.getFilesize());
-	        } 
-	        // Case 2: 기존에 있던 첨부된 파일만 삭제하는 경우
-	        else if (isFileDeleted) {
-	            if (existingNotice.getFilename() != null) {
-	                fileManager.doFileDelete(existingNotice.getFilename(), path);
-	            }
-	            noticedto.setFilename(null);
-	            noticedto.setOrgname(null);
-	            noticedto.setFilesize(null);
-	        } 
-	        // Case 3: 파일 변경이 있는 경우
-	        else if (attach != null && !attach.isEmpty()) {
-	            // 기존 파일 삭제
-	            if (existingNotice.getFilename() != null) {
-	                fileManager.doFileDelete(existingNotice.getFilename(), path);
-	            }
-	            // 새 파일 업로드
-	            String newFileName = fileManager.doFileUpload(attach.getBytes(), attach.getOriginalFilename(), path);
-	            noticedto.setFilename(newFileName);
-	            noticedto.setOrgname(attach.getOriginalFilename());
-	            noticedto.setFilesize(String.valueOf(attach.getSize()));
-	        }
+		MultipartFile attach = noticedto.getAttach();
 
-	        // 공지사항 수정
-	        int n = service.edit(noticedto);
+		try {
+			// Case 1: 파일 변경 없이 나머지만 바꾸는 경우
+			if (!isFileDeleted && (attach == null || attach.isEmpty())) {
+				noticedto.setFilename(existingNotice.getFilename());
+				noticedto.setOrgname(existingNotice.getOrgname());
+				noticedto.setFilesize(existingNotice.getFilesize());
+			} 
+			// Case 2: 기존에 있던 첨부된 파일만 삭제하는 경우
+			else if (isFileDeleted) {
+				if (existingNotice.getFilename() != null) {
+					fileManager.doFileDelete(existingNotice.getFilename(), path);
+				}
+				noticedto.setFilename(null);
+				noticedto.setOrgname(null);
+				noticedto.setFilesize(null);
+			} 
+			// Case 3: 파일 변경이 있는 경우
+			else if (attach != null && !attach.isEmpty()) {
+				// 기존 파일 삭제
+				if (existingNotice.getFilename() != null) {
+					fileManager.doFileDelete(existingNotice.getFilename(), path);
+				}
+				// 새 파일 업로드
+				String newFileName = fileManager.doFileUpload(attach.getBytes(), attach.getOriginalFilename(), path);
+				noticedto.setFilename(newFileName);
+				noticedto.setOrgname(attach.getOriginalFilename());
+				noticedto.setFilesize(String.valueOf(attach.getSize()));
+			}
 
-	        if (n == 1) {
-	            mav.addObject("message", "글 수정 성공!!");
-	            mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
-	        } else {
-	            mav.addObject("message", "글 수정 실패");
-	            mav.addObject("loc", "javascript:history.back()");
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        mav.addObject("message", "파일 처리 중 오류가 발생했습니다: " + e.getMessage());
-	        mav.addObject("loc", "javascript:history.back()");
-	    }
+			// 공지사항 수정
+			int n = service.edit(noticedto);
 
-	    mav.setViewName("msg");
-	    return mav;
+			if (n == 1) {
+				mav.addObject("message", "글 수정 성공!!");
+				mav.addObject("loc", request.getContextPath() + "/notice/view.bibo?nidx=" + noticedto.getNidx());
+			} else {
+				mav.addObject("message", "글 수정 실패");
+				mav.addObject("loc", "javascript:history.back()");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mav.addObject("message", "파일 처리 중 오류가 발생했습니다: " + e.getMessage());
+			mav.addObject("loc", "javascript:history.back()");
+		}
+
+		mav.setViewName("msg");
+		return mav;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	// 첨부파일 다운로드 하기
 	@GetMapping("/notice/download.bibo")
 	public void download(HttpServletRequest request, HttpServletResponse response) {
@@ -423,6 +431,7 @@ public class NoticeController {
 		}
 	}
 
+	// 삭제 완료 
 	@PostMapping("/notice/delEnd.bibo")
 	public ModelAndView delEnd(HttpServletRequest request, ModelAndView mav) {
 		String nidx = request.getParameter("nidx");

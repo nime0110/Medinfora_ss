@@ -78,7 +78,7 @@
     <button type="button" id="btnOpenModal" class="btn btn-secondary">삭제하기</button>
 </div>
 
-<!-- The Modal -->
+
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>

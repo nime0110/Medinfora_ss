@@ -28,20 +28,25 @@ public interface NoticeDAO {
 	// 글 조회수 1 증가하기 
 	int increase_readCount(int nidx);
 
+	// 글 수정하기
 	public int edit(NoticeDTO noticedto);
 
+	// 글 조회수 관련 
 	public NoticeDTO getView1(Map<String, String> paraMap);
 
+	// 글 삭제하기
 	public int del(String string);
 
+	// 이전글 다음글 
 	public NoticeDTO getPrevNotice(int nidx);
 
 	public NoticeDTO getNextNotice(int nidx);
 
+	// 글 삭제하기
 	public int deleteFile(int nidx);
 
-//	public Object deletefilelist(int nidx);
 
+	// 글 수정하기 뷰
 	public void edit_view(Map<String, Object> paraMap);
 
 }
