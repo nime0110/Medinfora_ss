@@ -89,7 +89,7 @@ function Page(currentShowPageNo){
                                     </span> 
                                     <span class="col-3 col-lg-2">`;
                                         if(item.rcode == "1"){
-                                            v_html += `<button class="rschange nanum-eb size-s" type="button" onclick="ChangeRcode(${item.ridx})">
+                                            v_html += `<button class="rscancle nanum-eb size-s" type="button" onclick="CancleRcode(${item.ridx})">
                                                             취소
                                                         </button>`;
                                         }
@@ -156,3 +156,7 @@ function Page(currentShowPageNo){
     })  // end of $.ajax({--------------------------
 
 }   // end of function Page(currentShowPageNo){-----------------
+
+function CancleRcode(ridx){
+    alert("취소할예정");
+}   // end of function CancleRcode(ridx){------------
