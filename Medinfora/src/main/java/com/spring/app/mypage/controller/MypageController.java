@@ -398,4 +398,22 @@ public class MypageController {
 		return jsonArr.toString();
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
+	
+	
+	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
+	@GetMapping("memberList.bibo")
+	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response  ) {
+	
+
+		
+		
+		
+		mav.setViewName("mypage/memberList.info");
+		return mav;
+			}
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	
 }
