@@ -45,38 +45,118 @@
     color : var(--text-white-color) !important;
 }
 
+#hospitaltitle{
+    margin: 0;
+    padding: 50px;
+    font-family: var(--font);
+    font-size: 2rem;
+    color: var(--grey800);
+    text-align: center;
+    border-top: solid 2px var(--grey200);
+}
+
+/* 선택 영역 */
+
 .div_choiceDay{
-    border-top: solid 3px var(--grey300);
     padding-top: 48px;
     padding-bottom: 24px;
-    height: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+/* 캘린더 영역 */
+
+.fc-button-primary{
+    border: none !important;
 }
 
 .reserve_day{
-    border: solid 1px black;
+    width: 620px;
 }
+
+#calendar {
+    width: 95%;
+    height: 500px;
+    margin: 0 auto;
+}
+
+a.fc-event{
+    background-color: var(--blue200) !important;
+    border: none !important;
+    transition: all 0.3s;
+}
+
+a.fc-event:hover{
+    cursor: pointer;
+    background-color: var(--blue400) !important;
+}
+
+.fc-event-main{
+    height: 30px !important;
+}
+
+.fc-event-title-container{
+  text-align: center;
+  padding-top: 3px;
+  height: 20px;
+  transition: all 0.5s;
+}
+
+.fc-day-today{
+    background-color : var(--blue100) !important;
+}
+
+/* 시간 셀랙 영역 */
 
 .choiceTimediv{
-    border: solid 1px black;
+    width: calc(100% - 620px);
 }
 
-.exTimebtn{
-    border: solid 1px var(--text-gray-color);
-    border-radius: 5px;
-    padding: 10px 10%;
-    background-color: var(--blue50);
+.choiceTimedivineer{
+    margin: 50px 50px;
+    border: solid 1px var(--grey100);
+    border-radius: 10px;
+    min-height: 300px;
+    height: auto;
+}
+
+.selectDay{
+    width: 100%;
+    padding: 24px 24px;
+}
+
+.choiceTime{
+    width: 100%;
+    padding: 24px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap : 5px 30px;
+    transition: all 0.3s;
 }
 
 .timebtn{
-    padding: 12px 12px;
     justify-content: space-between;
     border: none;
+    background-color: var(--blue50);
+    border: solid 1px var(--blue50);
+    border-radius: 5px;
+    height: auto;
+    display: block;
+    transition: all 0.3s;
 }
 
-.exTimebtn:hover{
+.exTimebtn{
+    padding: 0px 48px;
+    transition: all 0.3s;
+}
+
+.timebtn:hover{
     background-color: var(--blue200);
     cursor: pointer;
 }
+
+/* 하단 기능 */
 
 .btn_proc{
 	border: none;
@@ -95,8 +175,108 @@
     color:var(--grey50);
 }
 
+/* JS Add Class */
+
 .choiceReserveday{
-    background-color: var(--navy600);
     color : var(--blue50) !important;
     font-weight: bold;
+}
+
+.choiceReserveday2{
+    background-color: var(--navy600);
+}
+
+.checkbold{
+	font-weight: bold;
+}
+
+@media (max-width: 1400px) {
+	
+    .div_choiceDay{
+        display: block;
+    }
+    
+    .reserve_day{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .choiceTimediv{
+        width: 100%;
+    }
+
+    .choiceTimedivineer{
+        margin: 50px 0;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .hj_container{
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .reserveContent{
+        margin: 0;
+        width: 100%;
+    }
+
+    .reserve_title{
+        font-size: 2.5rem !important;
+    }
+
+    .reserve_seq{
+		padding: 0;
+	}
+
+    .reserve_licontent{
+        font-size: 1.7rem !important;
+        padding: 5px;
+    }
+
+    .choicedr{
+    	display: none;
+    }
+    
+    .choiceday{
+    	width: 100%;
+    }
+
+    #calendar{
+        height: 350px;
+    }
+
+    .fc-day{
+        height: 25px !important;
+    }
+
+    .fc-col-header-cell-cushion{
+        font-size: 8pt;
+    }
+
+    .fc-daygrid-day-number{
+        font-size: 8pt;
+    }
+
+    .fc-event-main{
+        height: 15px !important;
+    }
+
+    .fc-event-title-container{
+        height: 10px;
+        font-size: 8px;
+        padding-top: 1.5px;
+    }
+
+    .choiceTime{
+        gap : 3px 10px;
+    }
+
+    .exTimebtn{
+        padding: 0px 12px;
+    }
+
 }

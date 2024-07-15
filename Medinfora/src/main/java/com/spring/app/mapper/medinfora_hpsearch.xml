@@ -5,27 +5,33 @@
 <mapper namespace="com.spring.app.hpsearch.model.HpsearchDAO">
 			
 	<select id="getHospitalList" parameterType="HashMap" resultType="HospitalDTO">
-	    SELECT C.HIDX, C.HPNAME, C.HPADDR, C.HPTEL, C.CLASSCODE, C.AGENCY, C.WGS84LON, C.WGS84LAT, C.CLASSNAME
+ 		SELECT HIDX, HPNAME, HPADDR, HPTEL,  AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+			    nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3, 
+			    nvl(starttime4, ' ') as starttime4, nvl(starttime5, ' ') as starttime5, nvl(starttime6, ' ') as starttime6,
+		        nvl(starttime7, ' ') as starttime7, nvl(starttime8,' ') as starttime8,
+		        nvl(endtime1, ' ') as endtime1, nvl(endtime2, ' ') as endtime2, nvl(endtime3, ' ') as endtime3,
+		        nvl(endtime4, ' ') as endtime4, nvl(endtime5, ' ') as endtime5, nvl(endtime6, ' ') as endtime6,
+		        nvl(endtime7, ' ') as endtime7, nvl(endtime8, ' ') as endtime8
  		FROM (
-	        SELECT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, A.CLASSCODE, A.AGENCY, A.WGS84LON, A.WGS84LAT, B.CLASSNAME,
-	               ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
-	        FROM (
-	            SELECT MIN(H.HIDX) AS HIDX, H.HPNAME, H.HPADDR, MAX(H.HPTEL) AS HPTEL,
-	                   MAX(H.CLASSCODE) AS CLASSCODE, MAX(H.AGENCY) AS AGENCY,
-	                   MAX(H.WGS84LON) AS WGS84LON, MAX(H.WGS84LAT) AS WGS84LAT
+	        SELECT HIDX, HPNAME, HPADDR, HPTEL,  AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+	                STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
+				STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8,
+	            ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
+ 			FROM (
+	            SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY,WGS84LON, WGS84LAT, STARTTIME1,  STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
+				STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8
 	            FROM hospital H
 	        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
 	          	AND H.hpaddr LIKE '%' || #{country} || '%' 
-              <if test='classcode != ""'>
-                  AND H.classcode = #{classcode}
-              </if>
-              <if test='agency != ""'>
-                  AND H.agency = #{agency}
-              </if>
-              <if test='hpname != ""'>
-                  AND H.hpname LIKE '%' || #{hpname} || '%'
-              </if>
-	        GROUP BY H.HPNAME, H.HPADDR
+            <if test='classcode != ""'>
+                AND H.classcode = #{classcode}
+            </if>
+            <if test='agency != ""'>
+                AND H.agency = #{agency}
+            </if>
+            <if test='hpname != ""'>
+                AND H.hpname LIKE '%' || #{hpname} || '%'
+            </if>
 	        ) A
 	        JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
 	    ) C
@@ -57,10 +63,30 @@
 	</select>
 	
 	<select id="getHpDetail" parameterType="String" resultType="HospitalDTO">
-		SELECT HIDX, HPNAME, HPADDR, HPTEL, AGENCY, WGS84LON, WGS84LAT, STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
-		       STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8, CLASSNAME
+		SELECT HIDX, HPNAME, HPADDR, HPTEL, AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+		 		nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3, 
+			    nvl(starttime4, ' ') as starttime4, nvl(starttime5, ' ') as starttime5, nvl(starttime6, ' ') as starttime6,
+		        nvl(starttime7, ' ') as starttime7, nvl(starttime8,' ') as starttime8,
+		        nvl(endtime1, ' ') as endtime1, nvl(endtime2, ' ') as endtime2, nvl(endtime3, ' ') as endtime3,
+		        nvl(endtime4, ' ') as endtime4, nvl(endtime5, ' ') as endtime5, nvl(endtime6, ' ') as endtime6,
+		        nvl(endtime7, ' ') as endtime7, nvl(endtime8, ' ') as endtime8
 		FROM hospital A join CLASSCODE B
 		ON A.CLASSCODE = B.CLASSCODE
 		WHERE hidx = #{hidx}
 	</select>
+	
+	<select id="putSiGetdo" parameterType="String" resultType="String">
+		select city from KOREAAREA 
+		where local = #{local} 
+		group by city 
+		order by city
+	</select>
+	
+	<select id="holidatCheck" parameterType="java.time.LocalDate" resultType="int">
+		select count(*)
+		from holiday
+		where holiday_date = #{currentDate}
+	</select>
+	
+	
 </mapper>

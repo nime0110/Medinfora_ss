@@ -244,5 +244,67 @@
 	<select id="checkhidx" parameterType="String" resultType="String">
 		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
 	</select>
-
+	
+	<!-- (검색) 병원 카운트 -->
+	<select id="counthospital" parameterType="String" resultType="String">
+		select Hpname
+		from HOSPITAL
+		where Hpname like '%'||#{search}||'%' group by Hpname, HPADDR
+	</select>
+	
+	<!-- (검색) 질문 카운트 -->
+	<select id="countmediq" parameterType="String" resultType="String">
+		select TITLE
+		from MEDIQ
+		where TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%'
+	</select>
+	
+	<!-- (검색) 답변 카운트 -->
+	<select id="countmedia" parameterType="String" resultType="String">
+		select CONTENT
+		from MEDIA
+		where CONTENT like '%'||#{search}||'%'
+	</select>
+	
+	<!-- (검색) 답변 카운트 -->
+	<select id="countnotice" parameterType="String" resultType="String">
+		select TITLE
+		from NOTICE
+		where TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%'
+	</select>
+	
+	<!-- (검색) 병원 리스트 검색 -->
+	<select id="gethdtolist" parameterType="String" resultType="HospitalDTO">
+		select rno,HPNAME,hpaddr,AGENCY
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY
+		)where rno between 1 and 10
+	</select>
+	
+	<!-- (검색) 질문 리스트 검색 -->
+	<select id="getmqList" parameterType="String" resultType="MediQDTO">
+		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		from (
+		    select row_number() over (order by TITLE) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		    from MEDIQ
+		    where OPEN = 1 and (TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%')
+		)where rno between 1 and 5;
+	</select>
+	
+	<!-- (검색) 답변 리스트 검색 -->
+	<select id="getmaList" parameterType="String" resultType="MediQDTO">
+		select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		from (
+		    select row_number() over (order by MEDIA.WRITEDAY) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount
+		    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
+		    where OPEN = 1 and MEDIA.CONTENT like '%'||#{search}||'%'
+		)where rno between 1 and 5
+	</select>
+	
+	<!-- <select id="getndtoList" par>
+	
+	</select> -->
+	
 </mapper>

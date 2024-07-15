@@ -74,21 +74,8 @@ public interface MainService {
 
 	// 병원 중복가입 체크
 	public boolean checkhidx(String hidx);
-	
-	
-	
-	
-	
-	
-	
 
-	
-
-
-	
-
-	
-	
-
+	// 검색 리스트 불러오기
+	public Map<String,List<Object>> searach(String search);
 	
 }

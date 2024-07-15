@@ -10,8 +10,13 @@
        <hr class="sidebar_divideline">
        <div class="sidebar_list">
            <div class="sidebar_intro">
-               <span class="sideber_username">사용자</span>&nbsp;님,<br>
-               반갑습니다!
+           	   <c:if test="${sessionScope.loginuser.mIdx == 0}">
+               		<span class="sideber_username">관리자</span>&nbsp;님,<br>
+           	   </c:if>
+           	   <c:if test="${sessionScope.loginuser.mIdx != 0}">
+               		<span class="sideber_username">${sessionScope.loginuser.name}</span>&nbsp;님,<br>
+           	   </c:if>
+				반갑습니다!
            </div>
            
            <div class="sidebar_list_title">
@@ -29,7 +34,7 @@
 	           </div>
 	           <ul class="sidebar_list_ul">
 	               <li class="sidebar_list_li">내 문의사항</li>
-	               <li class="sidebar_list_li">진료 예약 내역</li>
+	               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myreserve.bibo'">진료 예약 내역</li>
 	           </ul>
            </c:if>
            
@@ -39,7 +44,7 @@
            </div>
            <ul class="sidebar_list_ul">
                <li class="sidebar_list_li">내 답변내용</li>
-               <li class="sidebar_list_li">진료 예약 열람</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mdreserve.bibo'">진료 예약 열람</li>
                <li class="sidebar_list_li">진료 일정 관리</li>
            </ul>
            </c:if>
@@ -49,7 +54,7 @@
                관리자 메뉴&nbsp;<i class="fa-solid fa-user-tie"></i>
            </div>
            <ul class="sidebar_list_ul">
-               <li class="sidebar_list_li">회원관리</li>
+               <li class="sidebar_list_li"onclick="location.href='<%=ctxPath%>/mypage/memberList.bibo'">회원관리</li>
                <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/notice/noticeWrite.bibo'">공지사항 작성</li>
                <li class="sidebar_list_li">검색 통계</li>
            </ul>

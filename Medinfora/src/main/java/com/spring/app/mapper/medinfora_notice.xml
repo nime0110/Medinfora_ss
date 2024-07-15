@@ -20,12 +20,13 @@
 		       substr(WRITEDAY,1,10) as writeday,
 		       filename, orgname, filesize
 		FROM (
-		    SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		    SELECT row_number() over(order by nidx desc) as rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
 		    FROM notice
 		    WHERE 1=1
 		    ORDER BY nidx DESC
 		)
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		
     </select>
     
     <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
@@ -34,7 +35,7 @@
         FROM notice
     </select>
 
-    <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
+    <select id="getView" parameterType="int" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
                substr(WRITEDAY,1,10) as writeday, 
                filename, orgname, filesize
@@ -51,13 +52,24 @@
 	 
     <!-- === 1개글 수정하기 === -->
 	<update id="edit" parameterType="NoticeDTO">
-	    update notice
+	      UPDATE notice
+    SET title = #{title},
+        content = #{content},
+        filename = #{filename},
+        orgname = #{orgname},
+        filesize = #{filesize}
+    WHERE nidx = #{nidx}
+	</update>
+	
+	<update id="edit_view" parameterType="HashMap">
+	    	update notice
 	    set title = #{title},
 	        content = #{content},
 	        filename = #{filename},
 	        orgname = #{orgname},
 	        filesize = #{filesize}
 	    where nidx = #{nidx}
+	
 	</update>
 	
 	<select id="getView1" parameterType="HashMap" resultType="com.spring.app.domain.NoticeDTO">
@@ -92,5 +104,12 @@
         WHERE nidx &gt; #{nidx}
     )
 </select>
+
+<update id="delFile" parameterType="string">
+	update notice
+	    set title = #{title},
+	        content = #{content},
+	     where nidx = #{nidx}        
+</update>
 
 </mapper>

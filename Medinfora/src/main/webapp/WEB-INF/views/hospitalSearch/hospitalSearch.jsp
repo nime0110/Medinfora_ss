@@ -3,15 +3,15 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css?after" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css" />
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/hospitalSearch/hospitalSearch.js"></script>
 
 
 <!-- 중앙 div -->
-<div align="center">
-    <h1 class="nanum-b size-b">우리동네 근처 병원 찾기</h1>
+<div id="container">
+<h1 class="nanum-b size-n">우리동네 근처 병원 찾기</h1>
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="city">
@@ -21,14 +21,13 @@
 		<select id="local">
 		  <option value="">시/군/구 선택</option>
 		  <!-- 시/군/구 데이터 -->
-		</select>
+		</select> 
 		
 		<select id="country">
 		  <option value="">읍/면/동 선택</option>
 		  <!-- 읍/면/동 데이터 -->
 		</select>
-	</div>
-	<div class="dropdown_hpsearch">
+		<br>
 		<select id="classcode">
 		  <!-- 진료과목 데이터 -->
 	    </select>
@@ -37,19 +36,27 @@
 			<option value="종합병원">종합병원</option>
 			<option value="병원">병원</option>
 			<option value="의원">의원</option>
-		</select>
-
-	   
-	<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
-	<button onclick="searchHospitals()">검색</button>
-
+		</select>  
+		<br> 
+	    <div class="form-check">
+	        <input class="form-check-input" type="checkbox" id="check-status" value="진료중">
+	        <label class="form-check-label" for="check-status">진료중인 병원만 보기</label>
+	    </div>
+		<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
+		<button onclick="searchHospitals(1)">검색</button>
+	</div>
+	
+	<div id="tabs" class="mobile-only">
+	    <button class="tab-button active" data-tab="map_box">지도</button>
+	    <button class="tab-button" data-tab="hplist">리스트</button>
 	</div>
 	<!-- 카카오맵 / 리스트설정  -->
+	
 	<div id="flexbox_map">
-		<div class="map_wrap">
+		<div id="map_box" class="map_wrap tab-content">
 		    <div id="map"></div>
 		</div>
-		<div id="hplist">
+		<div id="hplist" class="tab-content">
 		    <ul id="hospitalList">
 		        <!-- Sample List Items -->
 		        <li>
@@ -147,5 +154,6 @@
     </div>
   </div>
 </div>
+</div> <!-- 이부분 추가함 -->
 <!-- 모달 구조 end -->
 

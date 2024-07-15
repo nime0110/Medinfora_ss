@@ -16,7 +16,6 @@
 		<org.apache.tiles-version>3.0.7</org.apache.tiles-version>
   	</properties>
   	
-  	<!-- ===== #1. 동혁오빠가 이쁜거 찾아준데요~~(네이버 스마트 에디터) =====  -->
   	<repositories> 
 	    <repository>
 		    <id>osgeo</id>
@@ -384,6 +383,13 @@
            <artifactId>jai_codec</artifactId>
            <version>1.1.3</version>
        </dependency>
+       
+       <!-- commons-text StringEscapeUtils HTML 태그제거용 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-text</artifactId>
+		    <version>1.8</version>
+		</dependency>
       	
 	</dependencies>
     <build>

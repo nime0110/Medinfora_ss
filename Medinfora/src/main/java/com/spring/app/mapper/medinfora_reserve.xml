@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- ==== #29. mapper 기본설정 ==== -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.app.reserve.model.ReserveDAO">
@@ -89,14 +88,14 @@
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
 	</select>
 
-	<!-- 날짜가 공휴일인지 체크 -->
+	<!-- (진료예약-진료일시선택) 날짜가 공휴일인지 체크 -->
 	<select id="holidayCheck" resultType="int" parameterType="String">
 		select count(*)
 		from holiday
 		where holiday_date = #{day}
 	</select>
 	
-	<!-- 병원의 오픈시간과 마감시간 파악  -->
+	<!-- (진료예약-진료일시선택) 병원의 오픈시간과 마감시간 파악  -->
 	<select id="hospitalTime" resultType="HospitalDTO" parameterType="String">
 		select hidx
 	        , nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3
@@ -109,20 +108,26 @@
 		where hidx = #{hidx}
 	</select>
 	
-	<!-- 선택한 날의 예약 개수 파악  -->
+	<!-- (진료예약-진료일시선택) 선택한 날의 예약 개수 파악  -->
 	<select id="reserveCnt" resultType="int" parameterType="HashMap">
 		select count(*)
 		from reserve
-		where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(#{day},'yyyy-mm-dd hh24:mi:ss'))
+		where to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd') = to_char(to_date(#{day},'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd')
 			and hidx = #{hidx}
 	</select>
 	
-	<!-- 현재시간 이후, 선택한 날짜와 예약일이 같은 경우  -->
+	<!-- (진료예약-진료일시선택) 현재시간 이후, 선택한 날짜와 예약일이 같은 경우  -->
 	<select id="dayReserveImpossible" resultType="HospitalDTO" parameterType="HashMap">
-		select ridx, userid, reportday, checkin, symptom, rcode, hidx
+		select ridx, userid, reportday, checkin, rcode, hidx
 		from reserve
 		where hidx = #{hidx}
 			and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(sysdate,'yyyy-mm-dd hh24:mi:ss'))
 		    and checkin = #{day}
 	</select>
+	
+	<!-- (진료예약-진료일시선택) 예약접수  -->
+	<insert id="insertReserve" parameterType="HashMap">
+		insert into reserve(ridx, userid, checkin, hidx)
+		values (seq_ridx.nextval, #{userid}, to_char(to_date(#{day}, 'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss'), #{hidx})
+	</insert>
 </mapper>

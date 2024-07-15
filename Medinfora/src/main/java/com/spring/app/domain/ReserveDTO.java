@@ -8,13 +8,16 @@ public class ReserveDTO {
 	private String reportday;		// 예약신청일
 	private String checkin;			// 예약일
 	private String rcode;			// 예약코드
-	private String symptom;			// 증상
-
-	// === select 용 === //
-	private String rStatus;			// 예약상태
 	
 	////////////////////////////////////////////////////
 	
+	// === Select 용 === //
+	private String name;			// 환자이름
+	private String mobile;			// 환자번호
+	private String rStatus;			// 예약상태
+	
+	/////////////////////////////////////////////////////
+
 	// === Getter, Setter === //
 	public String getRidx() {
 		return ridx;
@@ -62,16 +65,26 @@ public class ReserveDTO {
 
 	public void setRcode(String rcode) {
 		this.rcode = rcode;
+	}	
+	
+//////////////////////////////////////////////////////////////////
+	
+	// === Select 용 Getter, Setter === //
+	public String getName() {
+		return name;
 	}
 
-	public String getSymptom() {
-		return symptom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setSymptom(String symptom) {
-		this.symptom = symptom;
+	public String getMobile() {
+		return mobile;
 	}
 
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 	public String getrStatus() {
 		return rStatus;
 	}
@@ -79,6 +92,5 @@ public class ReserveDTO {
 	public void setrStatus(String rStatus) {
 		this.rStatus = rStatus;
 	}
-	
 	
 }

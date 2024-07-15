@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="<%= ctxPath%>/resources/node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	
-	<link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfo.css">
+	<link rel="stylesheet" href="<%=ctxPath%>/resources/css/mypage/index.css">
 	
 	<%-- Google Font --%>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,57 +33,117 @@
 	<script src="https://kit.fontawesome.com/f1e9f47e08.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<style>
-:root {
-    --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
-    --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
-
-     /* div background 색상 등 object 컬럼 색상입니다 */
-    --object-lightpurple-color : #e5e2ff;
-    --object-lightyello-color : #fff6d8;
-    --object-lightgreen-color : #DFF9F2;
-    --object-clearblue-color : #f2f4f8;
-    --object-skyblue-color : #d8eaff;
-
-    /* object 컬럼 색상별 text 진한 컬러 - 오브젝트색상 계열의 진한 fontcolor 로 매칭시켜서 사용하시면됨 */
-    --object-lightgreen-font-color: #23C197;
-    --object-lightyello-font-color: #f46d19;
-    --object-lightpurple-font-color: #2614F3;
-
-    /* 포인트 컬러 */
-    
-    /* 기본 텍스트 컬러 */
-    --text-black-color: #0e0e0e; 
-    --text-white-color: #fff; 
-    --text-gray-color: #222; 
-
-}
-
-/* 스타일 clear 공통 코드 start */
-
-	body {
-	    font-family: 'Nanum Gothic', sans-serif;
-	    margin: 0;
-	    padding: 0;
-	}
 	
-	li {
-	    list-style: none;
-	}
+	/* 스타일 clear 공통 코드 start */
 	
-	a {
-	    text-decoration: none;
-	    color: black;
+		#wrap_container{
+			height: auto;
+			min-height: 76.8vh;
+			padding-bottom: 120px;
+		}
+	
+		body {
+		    font-family: 'Nanum Gothic', sans-serif;
+		    margin: 0;
+		    padding: 0;
+		}
+		
+		li {
+		    list-style: none;
+		}
+		
+		a {
+		    text-decoration: none;
+		    color: black;
+		}
+		
+		.viewtoggle{
+			display:none;
+			padding-left: 24px;
+		}
+		
+		.tog_ico{
+			display: block;
+			font-size: 20pt;
+			background-color: var(--navy700);
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			text-align: center;
+			color: var(--grey50);
+	        position: absolute;
+	        z-index: 50;
+		}
+		
+		.tog_ico:hover{
+			background-color: var(--navy500);
+			cursor: pointer;
+		}
+		
+		@media (max-width: 768px) {
+	    .viewtoggle{
+	        display: block;
+	    }
+	
 	}
-</style>
+		
+	</style>
+	
+	<script type="text/javascript">
+	
+		let togStatus = 0;
+	
+		function toggleOn(){
+			
+			if(togStatus === 0){
+	
+				$("#info_sidebar").show();
+				togStatus = 1;
+				$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
+				
+			}else{
+				
+				$("#info_sidebar").hide();
+				togStatus = 0;
+				$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
+				
+			}
+			
+		}// end of function toggleOn()
+		
+		// window의 크기 변경 감지 해주는 이벤트
+		window.onresize = function() {
+			
+			const width = window.innerWidth;	
+			  
+			if(width>768){
+				$("#info_sidebar").show();
+				togStatus = 1;
+				$(".tog_ico").html('<i class="fa-solid fa-xmark"></i>');
+			}else{
+				$("#info_sidebar").hide();
+				togStatus = 0;
+				$(".tog_ico").html('<i class="fa-solid fa-plus"></i>');
+			}
+			  
+		} // window.onresize
+	
+	</script>
+
 </head>
 <body>
-	<tiles:insertAttribute name="header" />
-	<div style="margin-top: 75px;"></div>
-	<div id="info_container">
-		<tiles:insertAttribute name="sidebar" />
-		<div id="info_content">
-			<tiles:insertAttribute name="content" />
-        </div>
+	<div id="wrap_container">
+		<tiles:insertAttribute name="header" />
+		<div style="margin-top: 75px;"></div>
+		<div class="viewtoggle">
+			<span class="tog_ico" onclick="toggleOn()"><i class="fa-solid fa-plus"></i></span>
+		</div>
+		<div id="info_container">
+			<tiles:insertAttribute name="sidebar" />
+			<div id="info_content">
+				<tiles:insertAttribute name="content" />
+	        </div>
+	    </div>
     </div>
 	<tiles:insertAttribute name="footer" />
 </body>

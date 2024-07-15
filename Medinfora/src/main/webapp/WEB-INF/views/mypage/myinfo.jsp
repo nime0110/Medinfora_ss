@@ -6,8 +6,8 @@
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-<link rel="stylesheet" href="<%=ctxPath%>/resources/css/myinfo/myinfoconfig.css">
-<script src="<%=ctxPath%>/resources/js/mypage/mypageconfig.js"></script>
+<link rel="stylesheet" href="<%=ctxPath%>/resources/css/mypage/myinfo.css">
+<script src="<%=ctxPath%>/resources/js/mypage/myinfo.js"></script>
 
 <form style="margin: 0;" name ="configForm" method="post">
 	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />
@@ -54,9 +54,16 @@
 				<div class="item_title">
 					연락처
 				</div>
-				<div class="item_input">
-					<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
-				</div>
+				<c:if test="${sessionScope.loginuser.mIdx!=2}">
+					<div class="item_input">
+						<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
+					</div>
+				</c:if>
+				<c:if test="${sessionScope.loginuser.mIdx==2}">
+					<div class="item_input">
+						${sessionScope.loginuser.mobile}
+					</div>
+				</c:if>
 				<div class="item_title">
 				</div>
 				<div class="item_input" id="mobile_waring" style="color: #DC3545;"></div>
@@ -78,39 +85,59 @@
 					<div class="item_input" id="address_waring" style="color: #DC3545;"></div>
 				</c:if>
 				
-				<div class="save_liner">
-					<button type="button" class="item_btn" onclick="javascript:infoChange('${sessionScope.loginuser.mIdx}');">수정</button>
-				</div>
+				<c:if test="${sessionScope.loginuser.mIdx==2}">
+					<div class="item_title">
+						주소
+					</div>
+					<div class="item_input">
+						${sessionScope.loginuser.address}
+					</div>
+				</c:if>
+				<c:if test="${sessionScope.loginuser.mIdx!=2}">
+					<div class="save_liner">
+						<button type="button" class="item_btn" onclick="javascript:infoChange('${sessionScope.loginuser.mIdx}');">수정</button>
+					</div>
+				</c:if>
 			</div>
 		</div>
-		<div class="inneritem">
-			<div class="sidetitle">
-				비밀번호 변경
+		<c:if test="${sessionScope.loginuser.loginmethod==0}">
+			<div class="inneritem">
+				<div class="sidetitle">
+					비밀번호 변경
+				</div>
+				<div class="main_contain">
+					<div class="item_title">
+						현재 비밀번호
+					</div>
+					<div class="item_input">
+						<input type="password" class="item_inputtag" name="Nowpwd" />
+					</div>
+					<div class="item_title">
+					</div>
+					<div class="item_input" id="Nowpwd_waring" style="color: #DC3545;"></div>
+					<div class="item_title">
+						새 비밀번호
+					</div>
+					<div class="item_input">
+						<input type="password" class="item_inputtag" name="pwd" />
+					</div>
+					<div class="item_title">
+					</div>
+					<div class="item_input" id="pwd_waring" style="color: #DC3545;"></div>
+					<div class="item_title">
+						새 비밀번호 확인
+					</div>
+					<div class="item_input">
+						<input type="password" class="item_inputtag" name="pwdRepect" />
+					</div>
+					<div class="item_title">
+					</div>
+					<div class="item_input" id="pwdRepect_waring" style="color: #DC3545;"></div>
+					<div class="save_liner">
+						<button type="button" class="item_btn" onclick="javascript:pwdChange()">변경</button>
+					</div>
+				</div>
 			</div>
-			<div class="main_contain">
-				<div class="item_title">
-					현재 비밀번호
-				</div>
-				<div class="item_input">
-					<input type="password" class="item_inputtag" name="Nowpwd" />
-				</div>
-				<div class="item_title">
-					새 비밀번호
-				</div>
-				<div class="item_input">
-					<input type="password" class="item_inputtag" name="pwd" />
-				</div>
-				<div class="item_title">
-					새 비밀번호
-				</div>
-				<div class="item_input">
-					<input type="password" class="item_inputtag" name="pwdRepect" />
-				</div>
-				<div class="save_liner">
-					<button type="button" class="item_btn">수정</button>
-				</div>
-			</div>
-		</div>
-	
+		</c:if>
 	</div>
 </form>

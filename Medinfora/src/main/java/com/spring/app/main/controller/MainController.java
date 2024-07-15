@@ -4,17 +4,19 @@ package com.spring.app.main.controller;
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.service.MainService;
 
@@ -46,6 +49,7 @@ public class MainController {
 	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
+		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
 		mav.addObject("ndtoList",ndtoList);
@@ -59,6 +63,7 @@ public class MainController {
 	@RequestMapping(value="/getcityinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getareainfo() {
 		
+		// city Jsonarr으로 파싱
 		List<String> citylist = service.getcityinfo();
 		
 		JSONArray jsonarr = new JSONArray();
@@ -76,6 +81,7 @@ public class MainController {
 	@RequestMapping(value="/getlocalinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getlocalinfo(HttpServletRequest request) {
 		
+		// local Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		
 		List<String> locallist = service.getlocalinfo(city);
@@ -95,6 +101,7 @@ public class MainController {
 	@RequestMapping(value="/getcountryinfo.bibo", produces = "text/plain;charset=UTF-8")
 	public String getcountryinfo(HttpServletRequest request) {
 		
+		// country Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		String local = request.getParameter("local");
 		
@@ -117,6 +124,7 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
+		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
@@ -194,28 +202,48 @@ public class MainController {
 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/search.bibo")
+	public ModelAndView searach(ModelAndView mav, HttpServletRequest request) {
+		
+		String search = request.getParameter("search");
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+
+		String userid = "Anonymous";
+		
+		if(loginuser != null) {
+			userid = loginuser.getUserid();
+		}
+		
+		if(search == "") {
+			mav.addObject("nosearch",1);
+			mav.setViewName("search.tiles");
+			
+			return mav;
+		}
+		
+		Map<String,List<Object>> searchList = service.searach(search);
+		
+		if(searchList == null) {
+			mav.addObject("nosearch",2);
+			mav.addObject("search",search);
+			mav.setViewName("search.tiles");
+			return mav;
+		}
+		
+		// 로그 작성부분
+		
+		Map<String,String> paraMap = new HashMap<>();
+		
+		paraMap.put("serach", search);
+		paraMap.put("userid", userid);
+		
+		mav.addObject("searchlist",searchList);
+		mav.addObject("nosearch",0);
+		mav.addObject("search",search);
+		mav.setViewName("search.tiles");
+		
+		return mav;
+	}
 	
 }

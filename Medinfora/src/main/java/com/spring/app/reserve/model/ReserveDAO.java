@@ -34,5 +34,7 @@ public interface ReserveDAO {
 	// 현재시간 이후, 선택한 날짜와 예약일이 같은 경우
 	HospitalDTO dayReserveImpossible(Map<String, String> paraMap);
 
+	// 예약 접수
+	int insertReserve(Map<String, String> paraMap);
 
 }
