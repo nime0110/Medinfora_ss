@@ -736,4 +736,21 @@
 		ON C.userid = M.userid
 	</select>
 	
+	
+	<!--  회원 목록 가져오기  -->
+	   <select id="getMemberList" parameterType="map" resultType="MemberDTO">
+        SELECT userid, pwd,  email,  name, address,  detailAddress, 
+            birthday,  mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
+        FROM 
+            member
+        WHERE 
+            1=1
+        <if test="str_mbrId != null and str_mbrId != ''">
+            AND userid LIKE CONCAT('%', #{str_mbrId}, '%')
+        </if>
+        <if test="mbr_division != null and mbr_division != ''">
+            AND loginmethod = #{mbr_division}
+        </if>
+    </select>
+	
 </mapper>

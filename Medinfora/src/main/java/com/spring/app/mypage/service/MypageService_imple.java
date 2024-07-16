@@ -238,5 +238,24 @@ public class MypageService_imple implements MypageService {
 		List<MemberDTO> memberList = dao.GetHidxInfo(hidx);
 		return memberList;
 	}
+
+	// 회원 목록 가져오기
+	@Override
+	public List<MemberDTO> getMemberList(Map<String, Object> paramMap) {
+		List<MemberDTO> selectMemberList = dao.getMemberList(paramMap);
+	
+		
+		// 복호화
+        for (MemberDTO member : selectMemberList) {
+            try {
+                String decryptedMobile = aES256.decrypt(member.getMobile());
+                member.setMobile(decryptedMobile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return selectMemberList;
+	}
 	
 }

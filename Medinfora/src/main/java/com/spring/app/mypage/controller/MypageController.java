@@ -409,11 +409,13 @@ public class MypageController {
 	// requestParam 사용하여 매개변수 사용하기 
 		
 		   Map<String, Object> paramMap = new HashMap<>();
-	        if (!str_mbrId.isEmpty()) {
-	            paramMap.put("str_mbrId", str_mbrId);
+	        if (!str_mbrId.isEmpty()) { // str_mbrId가 비어있지 않으면
+	            paramMap.put("str_mbrId", str_mbrId); // 파라맵으로 추가 
+	            // 회원명
 	        }
-	        if (!mbr_division.isEmpty()) {
+	        if (!mbr_division.isEmpty()) { // mbr_division이 비어있지 않으면 
 	            paramMap.put("mbr_division", mbr_division);
+	            // 회원 구분
 	        }
 
 	        // 회원 목록 가져오기
