@@ -42,6 +42,7 @@ public class QuestionController {
 									,@RequestParam(value="PageNo", defaultValue = "1")String str_currentPageNo) {
 		
 		List<MediQDTO> qList = null;
+		System.out.println(str_currentPageNo);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("readCountMark", "yes");
@@ -67,7 +68,11 @@ public class QuestionController {
 				currentPageNo = 1;
 			}
 			else {
-				currentPageNo = Integer.parseInt(str_currentPageNo);
+				try {
+					currentPageNo = Integer.parseInt(str_currentPageNo);
+				}catch(NumberFormatException e) {
+					currentPageNo = 1;
+				}
 				
 				if(currentPageNo < 1 || currentPageNo > totalPage) {
 					currentPageNo = 1;
