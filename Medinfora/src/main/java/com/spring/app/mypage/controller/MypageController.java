@@ -330,7 +330,7 @@ public class MypageController {
 		return jsonObj.toString();
 	}	// end of public String getRdto(HttpServletRequest request) {---------------
 	
-	// 예얄리스트(페이징, 검색처리) 
+	// 예약리스트(페이징, 검색처리) 
 	private String reserveList(HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
@@ -424,20 +424,17 @@ public class MypageController {
 			@RequestParam(defaultValue = "") String mbr_division) {
 	// requestParam 사용하여 매개변수 사용하기 
 		
-		   Map<String, Object> paramMap = new HashMap<>();
-	        if (!str_mbrId.isEmpty()) {
-	            paramMap.put("str_mbrId", str_mbrId);
-	        }
-	        if (!mbr_division.isEmpty()) {
-	            paramMap.put("mbr_division", mbr_division);
-	        }
+	   Map<String, Object> paramMap = new HashMap<>();
+        if (!str_mbrId.isEmpty()) {
+            paramMap.put("str_mbrId", str_mbrId);
+        }
+        if (!mbr_division.isEmpty()) {
+            paramMap.put("mbr_division", mbr_division);
+        }
 
-	        // 회원 목록 가져오기
-	        List<MemberDTO> memberList = service.getMemberList(paramMap);
-	        mav.addObject("memberList", memberList);
-		
-	
-		
+        // 회원 목록 가져오기
+        //List<MemberDTO> memberList = service.getMemberList(paramMap);
+        //mav.addObject("memberList", memberList);
 		
 		mav.setViewName("mypage/memberList.info");
 		return mav;
