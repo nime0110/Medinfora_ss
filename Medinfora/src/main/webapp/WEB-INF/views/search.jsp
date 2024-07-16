@@ -14,10 +14,10 @@
 			<span>병원검색</span>
 		</div>
 		<div class="sidebaroption">
-			<span>공지검색</span>
+			<span>Q&amp;A</span>
 		</div>
 		<div class="sidebaroption">
-			<span>질문검색</span>
+			<span>공지사항</span>
 		</div>
 	</div>
 	<div id="searchcontents">
@@ -73,7 +73,7 @@
 							<div class="content_place">
 								<div class="content_title">${mqdto.title}</div>
 								<div class="content_content">${mqdto.content}</div>
-								<div class="content_hpmobile">${mqdto.writeday}</div>
+								<div class="content_writeday">${mqdto.writeday}</div>
 							</div>
 						</div>
 					</c:forEach>
@@ -91,6 +91,29 @@
 						<span>검색결과 더보기</span>
 					</div>
 					
+				</div>
+			</c:if>
+			
+			<c:if test="${requestScope.searchlist.ndtolist != null}">
+				<div class="contentsub">
+				
+					<div class="c_subtitle">
+						<span>공지사항</span>
+					</div>
+					<c:forEach var="ndto" items="${requestScope.searchlist.ndtolist}">
+						<div class="content_h">
+							<div class="content_place">
+								<div class="content_title">${ndto.title}</div>
+								<div class="content_content">${ndto.content}</div>
+								<div class="content_writeday">${ndto.writeday}</div>
+							</div>
+						</div>
+					</c:forEach>
+					
+					<div class="showmore">
+						<span>검색결과 더보기</span>
+					</div>
+				
 				</div>
 			</c:if>
 			

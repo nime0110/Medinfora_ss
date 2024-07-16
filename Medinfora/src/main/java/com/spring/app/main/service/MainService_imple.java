@@ -322,20 +322,21 @@ public class MainService_imple implements MainService {
 		
 		if(countmedia != 0) {
 			List<Object> inputer = new ArrayList<Object>();
+			start:
 			for(MediQDTO madto : madtoList) {
 				String content = Myutil.removeHTMLtag(madto.getContent());
 				madto.setContent(content);
 				
-				for(MediQDTO mqdto : mqdtoList) {
-					if(mqdto.getTitle().equals(madto.getTitle())) {
-						continue;
-					}else {
+				for(int i=0;i<mqdtoList.size();i++) {
+					if(mqdtoList.get(i).getTitle().equals(madto.getTitle())) {
+						continue start;
+					}
+					if(i==mqdtoList.size()-1) {
 						inputer.add(madto);
 					}
 				}// 질문 답변 중복 제거
 				
 			}
-			
 			result.put("madtolist",inputer);
 		}
 	
@@ -347,9 +348,10 @@ public class MainService_imple implements MainService {
 			for(NoticeDTO ndto : ndtoList) {
 				String content = Myutil.removeHTMLtag(ndto.getContent());
 				ndto.setContent(content);
+				inputer.add(ndto);
 			}
 			
-			result.put("ndtoList",inputer);
+			result.put("ndtolist",inputer);
 		}
 		
 		totalcount = counthospital + countmediq + countmedia + countnotice;

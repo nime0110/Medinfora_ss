@@ -78,7 +78,7 @@
 
 .content_q{
     display: block;
-    width: 100%;
+    width: 80%;
     padding: 10px 5px;
     border-bottom: solid 1px var(--grey100);
 }
@@ -125,6 +125,12 @@
     padding-bottom: 15px;
     transition: all 0.3s;
     width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp:1;
+    -webkit-box-orient: vertical;
 }
 
 .content_title:hover{
@@ -138,6 +144,20 @@
     font-size: 1.0rem;
     color: var(--grey700);
     word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp:4;
+    -webkit-box-orient: vertical;
+}
+
+.content_writeday{
+    font-family: var(--font);
+    padding-top: 10px;
+    font-size: 0.8rem;
+    color: var(--grey500);
+    text-align: right;
 }
 
 .tool_btn{
