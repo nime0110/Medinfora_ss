@@ -112,16 +112,17 @@ $(document).ready(function(){
 });
 
 function listView(pageNo){
-	
-	const subject = $("select[name='subject']").val();
-	const type = $("select[name='type']").val();
-	const word = $("input:text[name='word']").val().trim();
+	// 검색 조건 없이 그냥 리스트 변경할 경우
 	
 	const frm = document.questionList;
 	frm.PageNo.value = pageNo;
 	
+	frm.subject.value = "";
+	frm.type.value = "";
+	frm.word.value = "";
+	
 	frm.action = "<%=ctxPath%>/questionList.bibo";
-	frm.submit(); 	
+	frm.submit();
 }
 
 
@@ -168,6 +169,152 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 }// end of pageBarAdd()
 
 
+function search(pageNo, subject, type, word){
+	
+	if(pageNo == null){
+		subject = $("select[name='subject']").val();
+		type = $("select[name='type']").val();
+		word = $("input:text[name='word']").val().trim();
+	}
+	
+	
+	$.ajax({
+		url:"<%=ctxPath%>/questionSearch.bibo",
+		data:{"subject":subject
+			 ,"type":type
+			 ,"word":word
+			 ,"PageNo":pageNo},
+		async:"false",
+		dataType:"json",
+		success:function(json){
+			console.log(JSON.stringify(json));
+			
+			<%-- 리스트 띄우는거 ---%>
+			let questionArea = ``;
+			
+			$.each(json.qdtoMap.qList, function(index, item){
+				
+				questionArea += `<div class="row text-center py-3 nanum-n size-s b_border">
+									<input type="hidden" value="\${item.qidx}"/>
+									<input type="hidden" value="\${item.userid}"/>
+									<span class="col-2">`;
+									
+				if(item.subject == "1"){
+					questionArea += `건강상담`;
+				}
+				else if(item.subject == "2"){
+					questionArea += `식생활,식습관`;
+				}
+				else{
+					questionArea += `의약정보`;
+				}
+				
+				questionArea += `</span>
+								 <span class="col-5" align="left">\${item.title}&nbsp;`;
+								 
+				if(item.imgsrc.trim() != ""){
+					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>&nbsp;`;
+				}
+				
+				if(item.newwrite == "0"){
+					questionArea += `<i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i>`;
+				}
+				
+				questionArea += `</span>
+								 <span class="col-2">`;
+								 
+				if(item.acount == 0){
+					questionArea += `<span class="p-1 nanum-b" style="background-color: #f1bd81; border-radius: 10%; color: white;">
+										답변&nbsp;중
+									 </span>`;
+				}
+				else if (item.acount != 0){
+					questionArea += `<span class="p-1 nanum-b" style="background-color: blue; border-radius: 10%; color: white;">
+										완료
+									 </span>`;
+				}
+				
+				questionArea += `	</span>
+								 	<span class="col-2">\${item.writeday}</span>
+								 	<span class="col-1">\${item.viewCount}</span>
+								 </div>`;
+
+
+
+			});
+			
+			
+			$("div#questionArea").html(questionArea);
+			
+			
+			<%-- 망할 페이지바  코드중복...--%>
+			
+			const blockSize = json.qdtoMap.blockSize;
+			let loop = json.qdtoMap.loop;
+			let pageNo = json.qdtoMap.pageNo;
+			const totalPage = json.qdtoMap.totalPage;
+			const currentPageNo = json.qdtoMap.currentPageNo;
+			
+			console.log(blockSize);
+			console.log(loop);
+			console.log(pageNo);
+			console.log(totalPage);
+			console.log(currentPageNo);
+
+			let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
+			
+			if(pageNo != 1) {
+				pageBar += "<li class='page-item'>" 
+						+ " 	<a class='page-link' onclick='search("+(pageNo-1)+","+subject+","+type+","+word+")>" 
+						+ "	    	<span aria-hidden='true'>&laquo;</span>" 
+						+ "	    </a>" 
+						+ "</li>";
+			}
+			
+			while(!(loop>blockSize || pageNo > totalPage)) {
+				if(pageNo == currentPageNo) {
+					pageBar += "<li class='page-item'>"
+							+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
+							+ "</li>";
+				}
+				else{
+					pageBar += "<li class='page-item'>"
+							+ "		<a class='page-link' onclick='search("+pageNo+")'>" +pageNo+"</a>" 
+							+ "</li>";
+				}
+				loop++;
+				pageNo++;
+			}
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li class='page-item'>"
+						+ "		<a class='page-link' onclick='search("+pageNo+")'>"
+						+ "	    	<span aria-hidden='true'>&raquo;</span>"
+						+ "	    </a>"
+						+ "</li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			$("div.pagebar").html(pageBar);
+			
+			
+			
+			
+
+			
+		},
+	 	error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+	});
+	
+}
+
+
+
+
 function gowrite(){
 	location.href="<%=ctxPath%>/questionWrite.bibo";
 }
@@ -209,7 +356,7 @@ function gowrite(){
 					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="검색어를 입력해주세요." />
 				</span>
 				<span>
-					<button class="jh_btn_design search nanum-eb size-s" type="button">검색</button>
+					<button class="jh_btn_design search nanum-eb size-s" type="button" onclick="search()">검색</button>
 				</span>
 			      
 			      
@@ -244,7 +391,7 @@ function gowrite(){
 						<c:if test="${qdto.subject eq '3'}">의약정보</c:if>
 					</span>
 					<span class="col-5" align="left">
-						${qdto.title}&nbsp;<c:if test="${not empty qdto.imgsrc}"><i class="fa-solid fa-paperclip" style="color: #535965;"></i></c:if>&nbsp;
+						${qdto.title}&nbsp;<c:if test="${qdto.imgsrc != ' '}"><i class="fa-solid fa-paperclip" style="color: #535965;"></i></c:if>&nbsp;
 						<c:if test="${qdto.newwrite eq '0'}"><i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i></c:if>
 					
 					</span>
