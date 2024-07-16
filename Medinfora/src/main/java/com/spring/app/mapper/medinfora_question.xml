@@ -15,5 +15,84 @@
 		)
 	</insert>
 	
+	<!-- 전체 리스트 -->
+	<!-- 경우의 수는 다음과 같다. -->
+	<!--
+		모두선택 x
+		모두선택 o
+		구분o 타입o 단어x
+		구분o 타입x 단어o
+		구분o 타입x 단어x
+		구분x 타입o 단어x
+		구분x 타입x 단어o
+		구분x 타입o 단어o
+	 -->
+	<select id="totalquestion" parameterType="HashMap" resultType="int">
+		select count(*) as cnt
+		from MEDIQ Q FULL JOIN MEDIA A
+		ON Q.qidx = A.qidx
+		where 1=1
+		<!-- 모두선택x
+		<if test='searchSubject == "0" && searchType == "z" && searchWord == ""'></if>
+		 -->
+		<if test='searchSubject != "0" and searchType == "z" and searchWord == ""'>
+			and subject = #{searchSubject}
+		</if>
+		<if test='searchSubject != "0" and searchType == "z" and searchWord != ""'>
+			and subject=#{searchSubject} and (lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%');
+		</if>
+		<if test='searchSubject != "0" and searchType != "z" and searchWord != ""'>
+			and subject=#{searchSubject} and lower(#{searchType}) like '%'||lower(#{searchWord})||'%'
+		</if>
+		<if test='searchSubject == "0" and searchType == "z" and searchWord != ""'>
+			and (lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%');
+		</if>
+		<if test='searchSubject == "0" and searchType != "z" and searchWord == ""'>
+			and lower(#{searchType}) like '%'||lower('')||'%'
+		</if>
+		<if test='searchSubject == "0" and searchType != "z" and searchWord != ""'>
+			and lower(#{searchType}) like '%'||lower(#{searchWord})||'%'
+		</if>
+	</select>
+	
+	
+	<!-- 전체리스트(검색포함?) -->
+	<select id="totalquestionList" parameterType="HashMap" resultType="MediQDTO">
+		SELECT distinct qidx, userid, title, writeday, imgsrc, acount, open, viewCount
+     		 , pwd, subject
+	    FROM(
+		select row_number() over(order by Q.qidx) AS rno
+			 , Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+		     , Q.imgsrc, Q.acount, Q.open, Q.viewCount
+		     , Q.pwd, Q.subject
+		from MEDIQ Q FULL JOIN MEDIA A
+		ON Q.qidx = A.qidx
+		where 1=1
+		<!-- 모두선택x
+		<if test='searchSubject == "0" && searchType == "z" && searchWord == ""'></if>
+		 -->
+		<if test='searchSubject != "0" and searchType == "z" and searchWord == ""'>
+			and subject = #{searchSubject}
+		</if>
+		<if test='searchSubject != "0" and searchType == "z" and searchWord != ""'>
+			and subject=#{searchSubject} and (lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%');
+		</if>
+		<if test='searchSubject != "0" and searchType != "z" and searchWord != ""'>
+			and subject=#{searchSubject} and lower(#{searchType}) like '%'||lower(#{searchWord})||'%'
+		</if>
+		<if test='searchSubject == "0" and searchType == "z" and searchWord != ""'>
+			and (lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%');
+		</if>
+		<if test='searchSubject == "0" and searchType != "z" and searchWord == ""'>
+			and lower(#{searchType}) like '%'||lower('')||'%'
+		</if>
+		<if test='searchSubject == "0" and searchType != "z" and searchWord != ""'>
+			and lower(#{searchType}) like '%'||lower(#{searchWord})||'%'
+		</if>
+		)S
+	    WHERE rno between #{startRno} and #{endRno}
+	    ORDER BY qidx DESC
+	</select>
+	
 
 </mapper>

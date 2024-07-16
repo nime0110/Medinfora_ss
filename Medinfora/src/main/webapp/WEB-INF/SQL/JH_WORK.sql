@@ -363,3 +363,104 @@ delete from mediq where userid = 'user001';
 commit;
 
 
+select *
+from media;
+
+
+
+insert into media(aidx, qidx, userid, content, writeday)
+values(seq_aidx.nextval, 9, 'user001', '<p> 글글글 스마트에딩터로 사진 넣고 첨부파일에도 사진파일 넣어보겠습니다.</p>' ,default);
+
+commit;
+
+
+select count(*) as cnt
+from mediq
+where 1=1;
+
+desc mediq;
+
+
+select count(*) as cnt
+from mediq
+where 1=1
+and subject = 1
+and (lower(title) like '%'||lower('글')||'%' or lower(content) like '%'||lower('글')||'%');
+
+WITH Q
+AS (
+select title, content, subject
+from mediq
+)
+SELECT COUNT(*) AS CNT
+FROM media 
+WHERE 1=1
+and subject = 1
+and (lower(title) like '%'||lower('글')||'%' OR lower(Q.content) like '%'||lower('글')||'%' OR lower(A.content) like '%'||lower('글')||'%');
+
+-- 검색을 해보자면
+/*
+구분을 선택안하고, 전체 내용이자면
+먼저 질문테이블에서 글제목이랑, 글내용중에 해당 단어가 있는 컬럼만 구해온다
+
+그다음, 답변테이블에서 질문테이블이랑 조인한 내용중에 해당 단어가 있는 컬럼만 구해온다
+
+그럼 예시로 들자면
+
+질문내용과 제목에 스프링이라는 단어가 포함되어있는 컬럼은 2개가 있다
+답변내용중에 단어가 포함되어있는 컬럼은 1개가 있다. 
+
+답변내용이 있는
+
+경우의 수
+질문제목에만 해당 단어가 있는 경우 > 질문테이블
+질문내용에만 해당 단어가 있는 경우 > 질문테이블
+답변내용에만 해당 단어가 있는 경우 > 답변테이블
+질문제목과 질문내용에 해당 단어가 있는경우 > 질문테이블
+질문제목과 답변내용에 해당 단어가 있는 경우 > 질문, 답변테이블
+질문내용과 답변내용에 해당 단어가 있는 경우 > 질문, 답변테이블
+
+질문수 4개 답변수 2개라 가정
+이 두개테이블을 합칠 수 있는 방법은?
+
+*/
+
+select count(*) as CNT
+from MEDIQ Q FULL JOIN MEDIA A
+ON Q.qidx = A.qidx
+where 1=1 and subject=1 and (lower(Q.title) like '%'||lower('')||'%' or lower(content) like '%'||lower('')||'%'  or lower(A.content) like '%'||lower('')||'%');
+
+
+select Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+     , nvl(Q.imgsrc, ' ') AS imgsrc, Q.acount, Q.open, Q.viewcount
+     , nvl(Q.pwd, ' ') AS pwd, Q.subject
+from MEDIQ Q FULL JOIN MEDIA A
+ON Q.qidx = A.qidx
+where 1=1 and lower(A.content) like '%'||lower('')||'%';
+
+-- 전체검색(검색조건 포함)
+SELECT distinct qidx, userid, title, writeday, imgsrc, acount, open, viewcount
+     , pwd, subject
+FROM(
+select row_number() over(order by Q.qidx) AS rno
+     , Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+     , nvl(Q.imgsrc, ' ') AS imgsrc, Q.acount, Q.open, Q.viewcount
+     , nvl(Q.pwd, ' ') AS pwd, Q.subject
+from MEDIQ Q FULL JOIN MEDIA A
+ON Q.qidx = A.qidx
+where 1=1
+)S
+WHERE rno between 1 and 10
+ORDER BY qidx DESC;
+
+select * from mediq;
+select * from media;
+
+select *
+from MEDIQ Q FULL JOIN MEDIA A
+ON Q.qidx = A.qidx
+
+update MEDIQ set acount = 2
+where qidx = 9;
+
+commit;
