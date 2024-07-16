@@ -73,10 +73,7 @@
                 </c:if> --%>
     </div>
 
-    <div class="notice-button text-center">
-        <button type="button" class="notice-btn" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
-           
-           </div>
+
               <div class="prev-next-links">
         <table id="nextBoard">
             <tr>
@@ -102,8 +99,8 @@
                 </td>
             </tr>
         </table>
+         
     </div>
-       
     
     
 
@@ -128,6 +125,10 @@
     </div>
 </div>
 
+          <div class="notice-button text-center mt-3">
+        <button type="button" class="notice-btn" onclick="location.href='<%= ctxPath %>/notice/noticeList.bibo'">돌아가기</button>
+           
+           </div>
 <form name="goViewFrm" style="display:none;">
     <input type="hidden" name="seq" />
     <input type="hidden" name="goBackURL" />

@@ -20,12 +20,13 @@
 		       substr(WRITEDAY,1,10) as writeday,
 		       filename, orgname, filesize
 		FROM (
-		    SELECT rownum AS rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
+		    SELECT row_number() over(order by nidx desc) as rno, nidx, userid, title, content, viewcnt, writeday, filename, orgname, filesize
 		    FROM notice
 		    WHERE 1=1
 		    ORDER BY nidx DESC
 		)
 		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		
     </select>
     
     <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을 때와 검색이 없을 때로 나뉜다 -->
@@ -34,7 +35,7 @@
         FROM notice
     </select>
 
-    <select id="getView" parameterType="HashMap" resultType="NoticeDTO">
+    <select id="getView" parameterType="int" resultType="NoticeDTO">
         SELECT nidx, userid, title, content, viewcnt, 
                substr(WRITEDAY,1,10) as writeday, 
                filename, orgname, filesize

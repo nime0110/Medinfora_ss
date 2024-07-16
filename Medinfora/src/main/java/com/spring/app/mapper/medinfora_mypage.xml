@@ -4,6 +4,20 @@
 
 <mapper namespace="com.spring.app.mypage.model.MypageDAO">
 	
+	<!-- (비밀번호변경) 사용중인 비밀번호 확인하기 -->
+	<select id="nowpwdCheck" parameterType="Map" resultType="String">
+		select userid
+		from MEMBER 
+		where userid = #{userid} and PWD = #{pwd}
+	</select>
+	
+	<!-- (비밀번호변경) 비밀번호 변경하기 -->
+	<update id="updatepwd" parameterType="Map">
+		UPDATE MEMBER
+		SET pwd = #{pwd}, PWDUPDATEDAY = default
+		WHERE userid = #{userid}
+	</update>
+	
 	<!-- (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기  -->
 	<select id="Searchhospital" resultType="String" parameterType="String">
 		SELECT distinct hidx
@@ -84,7 +98,7 @@
 		    (
 		        select rcode, rstatus
 		        from reservecode
-		        where rstatus = #{inputsc}
+		        where rstatus like '%' || #{inputsc} || '%'
 		    ) RC
 		    ON RM.rcode = RC.rcode
 		)
@@ -327,20 +341,6 @@
 		WHERE USERID = #{userid}
 	</update>
 	
-	<!-- (비밀번호변경) 사용중인 비밀번호 확인하기 -->
-	<select id="nowpwdCheck" parameterType="Map" resultType="String">
-		select userid
-		from MEMBER 
-		where userid = #{userid} and PWD = #{pwd}
-	</select>
-	
-	<!-- (비밀번호변경) 비밀번호 변경하기 -->
-	<update id="updatepwd" parameterType="Map">
-		UPDATE MEMBER
-		SET pwd = #{pwd}, PWDUPDATEDAY = default
-		WHERE userid = #{userid}
-	</update>
-	
 	<!-- (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기  -->
 	<select id="getRdto" resultType="ReserveDTO" parameterType="String">
 		SELECT ridx, reportday, checkin, name, mobile, rstatus
@@ -380,4 +380,366 @@
 		update reserve set rcode = #{rcode}
 		where ridx = #{ridx}
 	</update>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)  -->
+	<select id="HospitalNameList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, H.hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		    JOIN
+		    (
+		        select hidx, hpname, hptel
+		        from hospital
+		        where hpname like '%' || #{inputsc} || '%'
+		    ) H
+		    ON RMC.hidx = H.hidx
+		)
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색) -->
+	<select id="UserReserveStatusList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		            where rstatus like '%' || #{inputsc} || '%'
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		)
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색) -->
+	<select id="UserReserveDateList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		                where (to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = #{inputsc}
+		                		or to_char(to_date(reportday,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = #{inputsc})
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		)
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명, 진료현황) -->
+	<select id="UserreserveList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, H.hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		            <if test ='sclist == "진료현황"'>
+		                where rstatus = #{inputsc}
+		            </if>
+		            
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		    JOIN
+		    (
+		        select hidx, hpname, hptel
+		        from hospital
+		        <if test='sclist == "병원명"' >
+		            where hpname like '%' || #{inputsc} || '%'
+		        </if>
+		    ) H
+		    ON RMC.hidx = H.hidx
+		)
+		WHERE rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색 / 페이징 X)  -->
+	<select id="TotalReserveHospitalNameList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, H.hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		    JOIN
+		    (
+		        select hidx, hpname, hptel
+		        from hospital
+		        where hpname like '%' || #{inputsc} || '%'
+		    ) H
+		    ON RMC.hidx = H.hidx
+		)
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X) -->
+	<select id="TotalUserReserveStatusList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		            where rstatus = #{inputsc}
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		)
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X) -->
+	<select id="TotalUserReserveDateList" resultType="ReserveDTO" parameterType="HashMap">
+		SELECT ridx, userid, reportday, checkin, rcode, hidx
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		                where (to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = #{inputsc}
+		                		or to_char(to_date(reportday,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd') = #{inputsc})
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		)
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) userid 의 현재 예약리스트의 개수(병원명, 진료현황) -->
+	<select id="UserreserveListCnt"  resultType="int" parameterType="HashMap">
+		SELECT count(*)
+		FROM
+		(
+		    SELECT row_number() over(order by ridx desc) as rno 
+		        , ridx, userid, reportday, checkin, rcode, H.hidx as hidx
+		    FROM
+		    (
+		        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
+		        FROM
+		        (
+		            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
+		            FROM
+		            (
+		                select ridx, userid, reportday, checkin, rcode, hidx
+		                from reserve
+		            ) R
+		            JOIN
+		            (
+		                select userid
+		                from member
+		                where userid = #{userid}
+		            )M
+		            ON R.userid = M.userid
+		        )RM
+		        JOIN
+		        (
+		            select rcode, rstatus
+		            from reservecode
+		            <if test ='sclist == "진료현황"'>
+		                where rstatus = #{inputsc}
+		            </if>
+		            
+		        )RC
+		        ON RM.rcode = RC.rcode
+		    ) RMC
+		    JOIN
+		    (
+		        select hidx, hpname, hptel
+		        from hospital
+		        <if test='sclist == "병원명"' >
+		            where hpname like '%' || #{inputsc} || '%'
+		        </if>
+		    ) H
+		    ON RMC.hidx = H.hidx
+		)
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기 -->
+	<select id="GetHidxInfo" resultType="MemberDTO" parameterType="String">
+		select name, mobile
+		FROM
+		(
+		    select userid
+		    from classcodemet
+		    where hidx = #{hidx}
+		) C
+		JOIN
+		(
+		    select userid, name, mobile
+		    from member
+		) M
+		ON C.userid = M.userid
+	</select>
+	
+	<!-- (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기  -->
+	<update id="cancleRdto" parameterType="String">
+		update reserve set rcode = '0'
+		where ridx = #{ridx}
+	</update>
+	
 </mapper>

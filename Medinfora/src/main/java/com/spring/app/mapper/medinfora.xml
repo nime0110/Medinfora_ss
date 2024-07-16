@@ -244,5 +244,51 @@
 	<select id="checkhidx" parameterType="String" resultType="String">
 		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
 	</select>
-
+	
+	<!-- (검색) 병원 리스트 검색 -->
+	<select id="gethdtolist" parameterType="String" resultType="HospitalDTO">
+		select HPNAME,hpaddr,AGENCY, HPTEL
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno between 1 and 10
+	</select>
+	
+	<!-- (검색) 질문 리스트 검색 -->
+	<select id="getmqList" parameterType="String" resultType="MediQDTO">
+		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		from (
+		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		    from MEDIQ
+		    where OPEN = 1 and (TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%')
+		)where rno between 1 and 5
+	</select>
+	
+	<!-- (검색) 답변 리스트 검색 -->
+	<select id="getmaList" parameterType="String" resultType="MediQDTO">
+		select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		from (
+		    select row_number() over (order by MEDIA.WRITEDAY desc) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount
+		    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
+		    where OPEN = 1 and MEDIA.CONTENT like '%'||#{search}||'%'
+		)where rno between 1 and 5
+	</select>
+	
+	<!-- (검색) 공지 리스트 검색 -->
+	<select id="getndtoList" parameterType="String" resultType="NoticeDTO">
+		select TITLE,CONTENT,WRITEDAY,VIEWCNT
+		from (
+		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, VIEWCNT
+		    from NOTICE
+		    where TITLE like '%'||''||'%' or CONTENT like '%'||''||'%'
+		)where rno between 1 and 5
+	</select>
+	
+	<!-- (검색) 검색 로그 작성 -->
+	<insert id="writeSearchlog" parameterType="HashMap">
+		INSERT INTO FINAL_ORAUSER3.SEARCHLOG (USERID, SEARCHWORD)
+		VALUES (#{userid}, #{search})
+	</insert>
+	
 </mapper>
