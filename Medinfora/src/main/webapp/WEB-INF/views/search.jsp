@@ -47,7 +47,9 @@
 								<div class="content_hpmobile">${hdto.hptel}</div>
 							</div>
 							<div class="content_tool">
-								<button class="tool_btn" type="button">예약하기</button>
+								<c:if test="${hdto.member == true}">
+									<button class="tool_btn" type="button">예약하기</button>
+								</c:if>
 							</div>
 						</div>
 					</c:forEach>

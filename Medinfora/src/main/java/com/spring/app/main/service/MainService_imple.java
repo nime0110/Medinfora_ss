@@ -287,7 +287,16 @@ public class MainService_imple implements MainService {
 		if(counthospital != 0) {
 			List<Object> inputer = new ArrayList<Object>();
 			for(HospitalDTO hdto : hdtoList) {
-				inputer.add(hdto);
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("hpname",hdto.getHpname());
+				paraMap.put("hpaddr",hdto.getHpaddr());
+				
+				HospitalDTO finaldto = dao.searchMedicalEnd(paraMap);
+				finaldto.setAgency(hdto.getAgency());
+				finaldto.setMember(dao.isMediMember(finaldto.getHidx()));
+				
+				inputer.add(finaldto);
 			}
 
 			result.put("hdtolist",inputer);
@@ -341,7 +350,6 @@ public class MainService_imple implements MainService {
 		List<Object> cntInputer = new ArrayList<Object>();
 		Map<String,Integer> countmap = new HashMap<String, Integer>();
 		countmap.put("counthospital",counthospital);
-		System.out.println(counthospital);
 		countmap.put("countmediqa",countmediqa);
 		countmap.put("countnotice",countnotice);
 		countmap.put("totalcount",totalcount);

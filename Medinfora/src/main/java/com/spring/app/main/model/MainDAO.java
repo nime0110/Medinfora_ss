@@ -92,6 +92,9 @@ public interface MainDAO {
 	// (검색) 검색 로그 작성하기
 	public void writeSearchlog(Map<String, String> paraMap);
 
+	// (검색) 가입된 병원회원 여부 검사
+	public boolean isMediMember(int hidx);
+
 	
 	
 }

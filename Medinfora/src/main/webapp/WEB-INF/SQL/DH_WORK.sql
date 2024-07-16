@@ -129,11 +129,6 @@ select HPNAME,hpaddr,AGENCY, HPTEL, hidx
 		    where Hpname like '%'||'창원'||'%'
 		)where rno between 1 and 5
 
-SELECT hidx, hpname, hpaddr, hptel
-	    FROM(
-	        select row_number() over(order by hidx) AS rno
-	             , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
-	        from hospital
-	        where hpname = '#{hpname}' and hpaddr = #{hpaddr}
-        )H
-        WHERE rno = 1;
+select USERID
+from CLASSCODEMET
+where HIDX ='';

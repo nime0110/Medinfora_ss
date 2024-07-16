@@ -281,7 +281,7 @@
 		from (
 		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, VIEWCNT
 		    from NOTICE
-		    where TITLE like '%'||''||'%' or CONTENT like '%'||''||'%'
+		    where TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%'
 		)where rno between 1 and 5
 	</select>
 	
@@ -290,5 +290,12 @@
 		INSERT INTO FINAL_ORAUSER3.SEARCHLOG (USERID, SEARCHWORD)
 		VALUES (#{userid}, #{search})
 	</insert>
+	
+	<!-- (검색) 병원회원여부 검색 -->
+	<select id="isMediMember" parameterType="int" resultType="String">
+		select USERID
+		from CLASSCODEMET
+		where HIDX = #{hidx}
+	</select>
 	
 </mapper>
