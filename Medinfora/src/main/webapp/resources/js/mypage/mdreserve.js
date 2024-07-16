@@ -134,11 +134,13 @@ function Page(currentShowPageNo){
                     }
                         v_html += `     </span>
                                     </span> 
-                                    <span class="col-3 col-lg-2">
-                                        <button class="rschange nanum-eb size-s" type="button" onclick="ChangeRcode(${item.ridx})">
-                                            변경
-                                        </button>
-                                    </span>
+                                    <span class="col-3 col-lg-2">`;
+                                        if(item.rcode != "0"){
+                                            v_html += `<button class="rschange nanum-eb size-s" type="button" onclick="ChangeRcode(${item.ridx})">
+                                                            변경
+                                                        </button>`;
+                                        }
+                         v_html += `</span>
                                 </div>`;
                 })  // end of $.each(json, function(index, item){---------
 

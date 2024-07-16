@@ -98,7 +98,7 @@
 		    (
 		        select rcode, rstatus
 		        from reservecode
-		        where rstatus = #{inputsc}
+		        where rstatus like '%' || #{inputsc} || '%'
 		    ) RC
 		    ON RM.rcode = RC.rcode
 		)
@@ -455,7 +455,7 @@
 		        (
 		            select rcode, rstatus
 		            from reservecode
-		            where rstatus = #{inputsc}
+		            where rstatus like '%' || #{inputsc} || '%'
 		        )RC
 		        ON RM.rcode = RC.rcode
 		    ) RMC

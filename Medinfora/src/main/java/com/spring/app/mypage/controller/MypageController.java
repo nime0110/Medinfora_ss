@@ -292,7 +292,7 @@ public class MypageController {
 		
 		String message = "", loc = "";
 		if(n==1) {
-			message = "진료현황이 " + rStatus + "으(로) 변경되었습니다.";
+			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
 			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
 		}
 		mav.addObject("message",message);
