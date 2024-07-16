@@ -187,42 +187,6 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	// (검색) 병원 카운트
-	@Override
-	public int counthospital(String search) {
-		
-		int result = sqlsession.selectList("medinfora.counthospital",search).size();
-		
-		return result;
-	}
-
-	// (검색) 질문 카운트
-	@Override
-	public int countmediq(String search) {
-		
-		int result = sqlsession.selectList("medinfora.countmediq",search).size();
-		
-		return result;
-	}
-
-	// (검색) 답변 카운트
-	@Override
-	public int countmedia(String search) {
-		
-		int result = sqlsession.selectList("medinfora.countmedia",search).size();
-		
-		return result;
-	}
-
-	// (검색) 답변 카운트
-	@Override
-	public int countnotice(String search) {
-		
-		int result = sqlsession.selectList("medinfora.countnotice",search).size();
-		
-		return result;
-	}
-
 	// (검색) 병원 리스트 검색
 	@Override
 	public List<HospitalDTO> gethdtolist(String search) {
@@ -248,6 +212,12 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public List<NoticeDTO> getndtoList(String search) {
 		return sqlsession.selectList("medinfora.getndtoList",search);
+	}
+
+	// (검색) 검색 로그 작성하기
+	@Override
+	public void writeSearchlog(Map<String, String> paraMap) {
+		sqlsession.insert("medinfora.writeSearchlog", paraMap);
 	}
 
 }
