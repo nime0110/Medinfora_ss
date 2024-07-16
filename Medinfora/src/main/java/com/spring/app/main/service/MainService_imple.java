@@ -333,20 +333,20 @@ public class MainService_imple implements MainService {
 			}
 			
 			result.put("ndtoList",inputer);
-			inputer.clear();
 		}
 		
 		countmediqa = countmediq + countmedia;
 		totalcount = counthospital + countmediqa + countnotice;
 		
-		List<Object> inputer = new ArrayList<Object>();
+		List<Object> cntInputer = new ArrayList<Object>();
 		Map<String,Integer> countmap = new HashMap<String, Integer>();
 		countmap.put("counthospital",counthospital);
+		System.out.println(counthospital);
 		countmap.put("countmediqa",countmediqa);
 		countmap.put("countnotice",countnotice);
 		countmap.put("totalcount",totalcount);
-		inputer.add(countmap);
-		result.put("countmap",inputer);
+		cntInputer.add(countmap);
+		result.put("countmap",cntInputer);
 		
 		return result;
 	}

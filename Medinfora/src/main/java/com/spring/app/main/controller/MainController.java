@@ -228,7 +228,7 @@ public class MainController {
 		@SuppressWarnings("unchecked")
 		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
 		
-		if(countlist.get("totalcount") == 5) {
+		if(countlist.get("totalcount") == 0) {
 			mav.addObject("nosearch",2);
 			mav.addObject("search",search);
 			mav.setViewName("search.tiles");
