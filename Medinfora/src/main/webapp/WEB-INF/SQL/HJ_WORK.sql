@@ -514,49 +514,21 @@ FROM
 )
 WHERE rno between 1 and 10
 
-SELECT ridx, userid, reportday, checkin, rcode, hidx
+-- === (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기 === --
+select name, mobile
 FROM
 (
-    SELECT row_number() over(order by ridx desc) as rno 
-        , ridx, userid, reportday, checkin, rcode, H.hidx as hidx
-    FROM
-    (
-        SELECT ridx, RM.userid, reportday, checkin, RM.rcode, hidx, rstatus
-        FROM
-        (
-            SELECT ridx, R.userid, reportday, checkin, rcode, hidx
-            FROM
-            (
-                select ridx, userid, reportday, checkin, rcode, hidx
-                from reserve
-            ) R
-            JOIN
-            (
-                select userid
-                from member
-                where userid = #{userid}
-            )M
-            ON R.userid = M.userid
-        )RM
-        JOIN
-        (
-            select rcode, rstatus
-            from reservecode
-            <if test ='sclist == "진료현황"'>
-                where rstatus = #{inputsc}
-            </if>
-            
-        )RC
-        ON RM.rcode = RC.rcode
-    ) RMC
-    JOIN
-    (
-        select hidx, hpname, hptel
-        from hospital
-        <if test='sclist == "병원명"' >
-            where hpname like '%' || #{inputsc} || '%'
-        </if>
-    ) H
-    ON RMC.hidx = H.hidx
-)
-WHERE rno between #{startRno} and #{endRno}
+    select userid
+    from classcodemet
+    where hidx = '20395'
+) C
+JOIN
+(
+    select userid, name, mobile
+    from member
+) M
+ON C.userid = M.userid
+
+select *
+from reserve
+where userid = 'hemint'
