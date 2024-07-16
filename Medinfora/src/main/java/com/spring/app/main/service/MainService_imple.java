@@ -279,7 +279,7 @@ public class MainService_imple implements MainService {
 		
 		Map<String,List<Object>> result = new HashMap<>();
 		
-		int counthospital,countmediq,countmedia,countmediqa,countnotice,totalcount;
+		int counthospital,countmediq,countmedia,countnotice,totalcount;
 		
 		List<HospitalDTO> hdtoList = dao.gethdtolist(search);
 		counthospital = hdtoList.size();
@@ -325,7 +325,15 @@ public class MainService_imple implements MainService {
 			for(MediQDTO madto : madtoList) {
 				String content = Myutil.removeHTMLtag(madto.getContent());
 				madto.setContent(content);
-				inputer.add(madto);
+				
+				for(MediQDTO mqdto : mqdtoList) {
+					if(mqdto.getTitle().equals(madto.getTitle())) {
+						continue;
+					}else {
+						inputer.add(madto);
+					}
+				}// 질문 답변 중복 제거
+				
 			}
 			
 			result.put("madtolist",inputer);
@@ -344,14 +352,10 @@ public class MainService_imple implements MainService {
 			result.put("ndtoList",inputer);
 		}
 		
-		countmediqa = countmediq + countmedia;
-		totalcount = counthospital + countmediqa + countnotice;
+		totalcount = counthospital + countmediq + countmedia + countnotice;
 		
 		List<Object> cntInputer = new ArrayList<Object>();
 		Map<String,Integer> countmap = new HashMap<String, Integer>();
-		countmap.put("counthospital",counthospital);
-		countmap.put("countmediqa",countmediqa);
-		countmap.put("countnotice",countnotice);
 		countmap.put("totalcount",totalcount);
 		cntInputer.add(countmap);
 		result.put("countmap",cntInputer);

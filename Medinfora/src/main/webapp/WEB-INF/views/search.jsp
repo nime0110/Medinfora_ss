@@ -62,6 +62,37 @@
 				
 			</c:if>
 			
+			<c:if test="${requestScope.searchlist.mqdtolist != null || requestScope.searchlist.madtolist != null}">
+				<div class="contentsub">
+				
+					<div class="c_subtitle">
+						<span>Q&amp;A</span>
+					</div>
+					<c:forEach var="mqdto" items="${requestScope.searchlist.mqdtolist}">
+						<div class="content_q">
+							<div class="content_place">
+								<div class="content_title">${mqdto.title}</div>
+								<div class="content_content">${mqdto.content}</div>
+								<div class="content_hpmobile">${mqdto.writeday}</div>
+							</div>
+						</div>
+					</c:forEach>
+					<c:forEach var="madto" items="${requestScope.searchlist.madtolist}">
+						<div class="content_q">
+							<div class="content_place">
+								<div class="content_title">${madto.title}</div>
+								<div class="content_content">${madto.content}</div>
+								<div class="content_writeday">${madto.writeday}</div>
+							</div>
+						</div>
+					</c:forEach>
+					
+					<div class="showmore">
+						<span>검색결과 더보기</span>
+					</div>
+					
+				</div>
+			</c:if>
 			
 		</c:if>
 	</div>

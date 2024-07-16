@@ -76,6 +76,13 @@
     justify-content: space-between;
 }
 
+.content_q{
+    display: block;
+    width: 100%;
+    padding: 10px 5px;
+    border-bottom: solid 1px var(--grey100);
+}
+
 .content_place{
     min-width: calc(100%-100px);
 }
@@ -108,6 +115,29 @@
     font-family: var(--font);
     font-size: 1.0rem;
     color: var(--grey700);
+}
+
+.content_title{
+    font-family: var(--font);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:var(--blue800);
+    padding-bottom: 15px;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.content_title:hover{
+    cursor: pointer;
+    color:var(--grey800);
+}
+
+.content_content{
+	width:100%;
+    font-family: var(--font);
+    font-size: 1.0rem;
+    color: var(--grey700);
+    word-wrap: break-word;
 }
 
 .tool_btn{
