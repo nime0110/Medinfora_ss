@@ -222,3 +222,66 @@ values (seq_notice.nextval, 'kimsh', '세번째입니다', '내용이 들어갈 
             ORDER BY nidx DESC
         )
         WHERE rno BETWEEN #{startRno} AND #{endRno}
+        
+        
+        
+        select * 
+        from member
+        
+        
+        
+        
+                SELECT 
+            userid, pwd, email, name, address, detailAddress, birthday, mobile, 
+            gender, mIdx, registerday, loginmethod, lastlogingap, pwdchangegap, 
+            requirePwdChange, hdto
+        FROM 
+            members
+        WHERE 
+            1=1
+        <if test="str_mbrId != null and str_mbrId != ''">
+            AND userid LIKE CONCAT('%', #{str_mbrId}, '%')
+        </if>
+        <if test="mbr_division != null and mbr_division != ''">
+            AND division = #{mbr_division}
+        </if>
+        
+        
+                SELECT 
+            userid, pwd, email, name, address, detailAddress, birthday, mobile, 
+            gender, mIdx, registerday, loginmethod, lastlogingap, pwdchangegap, 
+            requirePwdChange, hdto
+        FROM 
+            member
+            
+            
+            desc member
+            
+            
+            
+            
+            
+                SELECT 
+            userid, 
+            pwd, 
+            email, 
+            name, 
+            address, 
+            detailAddress, 
+            birthday, 
+            mobile, 
+            gender, 
+            mIdx, 
+            registerday, 
+            pwdUpdateday, 
+            loginmethod
+        FROM 
+            member
+        WHERE 
+            1=1
+        <if test="str_mbrId != null and str_mbrId != ''">
+            AND userid LIKE CONCAT('%', #{str_mbrId}, '%')
+        </if>
+        <if test="mbr_division != null and mbr_division != ''">
+            AND loginmethod = #{mbr_division}
+        </if>
