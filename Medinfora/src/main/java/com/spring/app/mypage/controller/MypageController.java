@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -417,16 +418,32 @@ public class MypageController {
 	}	// end of private String reserveList(HttpServletRequest request) {---------------------
 	
 	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
-	@GetMapping("memberList.bibo")
-	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response  ) {
-	
-
+	@GetMapping("memberList.bibo") 
+	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(defaultValue = "") String str_mbrId, 
+			@RequestParam(defaultValue = "") String mbr_division) {
+	// requestParam 사용하여 매개변수 사용하기 
 		
+		   Map<String, Object> paramMap = new HashMap<>();
+	        if (!str_mbrId.isEmpty()) {
+	            paramMap.put("str_mbrId", str_mbrId);
+	        }
+	        if (!mbr_division.isEmpty()) {
+	            paramMap.put("mbr_division", mbr_division);
+	        }
+
+	        // 회원 목록 가져오기
+	        List<MemberDTO> memberList = service.getMemberList(paramMap);
+	        mav.addObject("memberList", memberList);
+		
+	
 		
 		
 		mav.setViewName("mypage/memberList.info");
 		return mav;
-			}
+	}
+	
+	
 	
 	
 	
