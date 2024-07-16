@@ -190,10 +190,9 @@ public class ReserveController {
 			int TotalstartM = start_h * 60 + start_m;
 			int TotalendM = end_h * 60 + end_m;
 			int cnt = (TotalendM - TotalstartM)/30;
-					
+			
 			// 선택한 날의 예약 개수 파악
 			int reserveCnt = service.reserveCnt(paraMap);
-
 			
 			if(today.substring(0, 10).equals(day.substring(0, 10))) {	// 날짜가 같을 경우(오늘일 경우)
 				String time = today.substring(11, 13) + today.substring(14, 16);

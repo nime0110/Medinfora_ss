@@ -13,6 +13,8 @@ import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MediADTO;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 
@@ -183,6 +185,39 @@ public class MainDAO_imple implements MainDAO{
 		}
 		
 		return result;
+	}
+
+	// (검색) 병원 리스트 검색
+	@Override
+	public List<HospitalDTO> gethdtolist(String search) {
+		
+		return sqlsession.selectList("medinfora.gethdtolist",search);
+	}
+
+	// (검색) 답변 리스트 검색
+	@Override
+	public List<MediQDTO> getmqList(String search) {
+		
+		return sqlsession.selectList("medinfora.getmqList",search);
+	}
+
+	// (검색) 질문 리스트 검색
+	@Override
+	public List<MediQDTO> getmaList(String search) {
+
+		return sqlsession.selectList("medinfora.getmaList",search);
+	}
+
+	// (검색) 공지 리스트 검색
+	@Override
+	public List<NoticeDTO> getndtoList(String search) {
+		return sqlsession.selectList("medinfora.getndtoList",search);
+	}
+
+	// (검색) 검색 로그 작성하기
+	@Override
+	public void writeSearchlog(Map<String, String> paraMap) {
+		sqlsession.insert("medinfora.writeSearchlog", paraMap);
 	}
 
 }

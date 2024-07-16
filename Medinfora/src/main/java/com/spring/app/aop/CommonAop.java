@@ -79,7 +79,7 @@ public class CommonAop {
 			
 			if(loginuser.getmIdx()!=0) {
 				
-				String message = "관리자외 접근할수 없습니다.";
+				String message = "관리자 외 접근할 수 없습니다.";
 		 		String loc = request.getContextPath()+"/index.bibo";
 		 		
 		 		request.setAttribute("message", message);
@@ -129,7 +129,7 @@ public class CommonAop {
 			
 			if(loginuser.getmIdx()!=2) {
 				
-				String message = "의료인외 접근할수 없습니다.";
+				String message = "의료인 외 접근할 수 없습니다.";
 		 		String loc = request.getContextPath()+"/index.bibo";
 		 		
 		 		request.setAttribute("message", message);
@@ -179,7 +179,7 @@ public class CommonAop {
 			
 			if(loginuser.getmIdx()!=1) {
 				
-				String message = "일반회원외 접근할수 없습니다.";
+				String message = "일반회원 외 접근할 수 없습니다.";
 		 		String loc = request.getContextPath()+"/index.bibo";
 		 		
 		 		request.setAttribute("message", message);

@@ -15,10 +15,14 @@
 function click_on(nidx){
     $("input[name='nidx']").val(nidx);
     const frm = document.goViewFrm;
-    frm.method = "post";
+    frm.method = "get";
     frm.action = "<%=ctxPath%>/notice/view.bibo";
 		frm.submit();
 	}
+function Page(pageNo) {
+    location.href = "<%=ctxPath%>/notice/noticeList.bibo?currentShowPageNo=" + pageNo;
+}
+	
 </script>
 
 <body>
@@ -79,6 +83,7 @@ function click_on(nidx){
 	</form>
 
 	<div class="w-100 d-flex justify-content-center pt-3">
+
 		<c:out value="${pageBar}" escapeXml="false"/>
 	</div>
 </body>

@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+#searchcontainer{
+    padding-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+#searchsidebar{
+    width: 20%;
+    margin: 0;
+}
+
+.sidebaroption{
+    font-family: var(--font);
+    font-size: 1rem;
+    padding: 15px 10px;
+    background-color: var(--navy400);
+    color: var(--blue50);
+    max-width: 95%;
+    text-align: end;
+    border-bottom: solid 1px var(--navy800);
+    border-right: solid 1px var(--navy800);
+    transition: all 0.5s;
+}
+
+.sidebaroption:hover{
+    cursor: pointer;
+    background-color: var(--navy500);
+}
+
+.selectoption{
+    background-color: var(--navy700);
+    font-weight: bold;
+}
+
+#searchcontents{
+    width: 80%;
+    padding: 10px 30px;
+}
+
+.contenttitle{
+    font-family: var(--font);
+    font-size: 1.2rem;
+}
+
+.contentsub{
+    width: 80%;
+    border-radius: 20px;
+    padding : 20px 20px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0;
+    margin-top: 50px;
+}
+
+.c_subtitle{
+    width: 100%;
+    font-family: var(--font);
+    font-size: 1.2rem;
+    text-align: start;
+    font-weight: bold;
+    color: var(--grey800);
+}
+
+.content_h{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    padding: 10px 5px;
+    border-bottom: solid 1px var(--grey100);
+    justify-content: space-between;
+}
+
+.content_place{
+    min-width: calc(100%-100px);
+}
+
+.content_tool{
+    width: 100px;
+}
+
+.content_hpname{
+    font-family: var(--font);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:var(--blue800);
+    padding-bottom: 15px;
+    transition: all 0.3s;
+}
+
+.content_hpname:hover{
+    cursor: pointer;
+    color:var(--grey800);
+}
+
+.content_hpaddress{
+    font-family: var(--font);
+    font-size: 1.0rem;
+    color: var(--grey700);
+}
+
+.content_hpmobile{
+    font-family: var(--font);
+    font-size: 1.0rem;
+    color: var(--grey700);
+}
+
+.tool_btn{
+    border: none;
+    width: 100%;
+    font-family: var(--font);
+    font-size: 1.0rem;
+    padding: 5px 10px;
+    margin-top: 5px;
+    background-color: var(--navy700);
+    color: var(--blue50);
+    transition: all 0.3s;
+}
+
+.tool_btn:hover{
+    background-color: var(--navy500);
+}
+
+.showmore{
+    padding-top: 20px;
+    width: 100%;
+    text-align: end;
+    color: var(--blue600);
+}
+
+.showmore:hover{
+    cursor: pointer;
+    color: var(--blue800);
+}
+
+.showmore span{
+    font-family: var(--font);
+}

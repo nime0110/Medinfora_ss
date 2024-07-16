@@ -54,9 +54,16 @@
 				<div class="item_title">
 					연락처
 				</div>
-				<div class="item_input">
-					<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
-				</div>
+				<c:if test="${sessionScope.loginuser.mIdx!=2}">
+					<div class="item_input">
+						<input type="text" class="item_inputtag" name="mobile" value="${sessionScope.loginuser.mobile}" />
+					</div>
+				</c:if>
+				<c:if test="${sessionScope.loginuser.mIdx==2}">
+					<div class="item_input">
+						${sessionScope.loginuser.mobile}
+					</div>
+				</c:if>
 				<div class="item_title">
 				</div>
 				<div class="item_input" id="mobile_waring" style="color: #DC3545;"></div>
@@ -86,10 +93,11 @@
 						${sessionScope.loginuser.address}
 					</div>
 				</c:if>
-				
-				<div class="save_liner">
-					<button type="button" class="item_btn" onclick="javascript:infoChange('${sessionScope.loginuser.mIdx}');">수정</button>
-				</div>
+				<c:if test="${sessionScope.loginuser.mIdx!=2}">
+					<div class="save_liner">
+						<button type="button" class="item_btn" onclick="javascript:infoChange('${sessionScope.loginuser.mIdx}');">수정</button>
+					</div>
+				</c:if>
 			</div>
 		</div>
 		<c:if test="${sessionScope.loginuser.loginmethod==0}">

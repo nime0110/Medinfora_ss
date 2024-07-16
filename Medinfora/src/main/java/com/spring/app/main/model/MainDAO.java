@@ -7,6 +7,8 @@ import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MediADTO;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 
@@ -75,14 +77,20 @@ public interface MainDAO {
 	// 병원 중복가입 체크
 	public boolean checkhidx(String hidx);
 
-	
-	
-	
-	
-	
+	// (검색) 병원 리스트 검색
+	public List<HospitalDTO> gethdtolist(String search);
 
+	// (검색) 질문 리스트 검색
+	public List<MediQDTO> getmqList(String search);
 
-	
+	// (검색) 답변 리스트 검색
+	public List<MediQDTO> getmaList(String search);
+
+	// (검색) 공지 리스트 검색
+	public List<NoticeDTO> getndtoList(String search);
+
+	// (검색) 검색 로그 작성하기
+	public void writeSearchlog(Map<String, String> paraMap);
 
 	
 	

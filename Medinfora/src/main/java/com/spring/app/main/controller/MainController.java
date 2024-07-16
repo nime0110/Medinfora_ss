@@ -1,8 +1,6 @@
 package com.spring.app.main.controller;
 
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.weaver.ast.Not;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
@@ -52,6 +50,7 @@ public class MainController {
 	@RequestMapping(value="/index.bibo")
 	public ModelAndView index(ModelAndView mav) {
 		
+		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
 		mav.addObject("ndtoList",ndtoList);
@@ -65,6 +64,7 @@ public class MainController {
 	@RequestMapping(value="/getcityinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getareainfo() {
 		
+		// city Jsonarr으로 파싱
 		List<String> citylist = service.getcityinfo();
 		
 		JSONArray jsonarr = new JSONArray();
@@ -82,6 +82,7 @@ public class MainController {
 	@RequestMapping(value="/getlocalinfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getlocalinfo(HttpServletRequest request) {
 		
+		// local Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		
 		List<String> locallist = service.getlocalinfo(city);
@@ -101,6 +102,7 @@ public class MainController {
 	@RequestMapping(value="/getcountryinfo.bibo", produces = "text/plain;charset=UTF-8")
 	public String getcountryinfo(HttpServletRequest request) {
 		
+		// country Jsonarr으로 파싱
 		String city = request.getParameter("city");
 		String local = request.getParameter("local");
 		
@@ -123,6 +125,7 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
+		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
@@ -142,7 +145,7 @@ public class MainController {
 	
 	
 	// 스마트에디터 드래그앤드롭을 이용한 다중 사진 파일 업로드(공지사항, Q&A 공통 적용)
-	@PostMapping("/image/multiplePhotoUpload.bibo")
+	@PostMapping("/images/multiplePhotoUpload.bibo")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 		
 		// WAS 의 webapp 의 절대경로
@@ -150,9 +153,11 @@ public class MainController {
 		String root = session.getServletContext().getRealPath("/");
 		String path = root + "resources"+File.separator+"photo_upload";
 		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다
-
-		System.out.println("스마트에디터 사진추가 : "+path);
 		
+		if("medinfora".equalsIgnoreCase(root)) {
+			System.out.println("잘못된 루트로 들어감 확인필요");
+		}
+
 		File dir = new File(path);
 
 		if(!dir.exists()) {	// 폴더가 존재하지 않으면
@@ -199,25 +204,47 @@ public class MainController {
 	}
 	
 	@GetMapping("/search.bibo")
-	public ModelAndView serach(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView searach(ModelAndView mav, HttpServletRequest request) {
 		
 		String search = request.getParameter("search");
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 
-		String userid = loginuser.getUserid();
+		String userid = "Anonymous";
 		
-		if(userid == null) {
-			userid = "Anonymous";
+		if(loginuser != null) {
+			userid = loginuser.getUserid();
 		}
 		
+		if(search == "") {
+			mav.addObject("nosearch",1);
+			mav.setViewName("search.tiles");
+			
+			return mav;
+		}
+		
+		Map<String,List<Object>> searchList = service.searach(search);
+		
+		@SuppressWarnings("unchecked")
+		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
+		
+		if(countlist.get("totalcount") == 5) {
+			mav.addObject("nosearch",2);
+			mav.addObject("search",search);
+			mav.setViewName("search.tiles");
+			return mav;
+		}
+		
+		// 로그 작성부분
 		Map<String,String> paraMap = new HashMap<>();
 		
-		paraMap.put("serach", search);
+		paraMap.put("search", search);
 		paraMap.put("userid", userid);
 		
+		service.writeSearchlog(paraMap);
 		
-		
+		mav.addObject("searchlist",searchList);
+		mav.addObject("nosearch",0);
 		mav.addObject("search",search);
 		mav.setViewName("search.tiles");
 		

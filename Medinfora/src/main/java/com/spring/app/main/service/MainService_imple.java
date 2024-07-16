@@ -2,6 +2,7 @@ package com.spring.app.main.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,14 @@ import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MediADTO;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
 
 import oracle.net.aso.h;
+import oracle.net.aso.n;
 
 @Service
 public class MainService_imple implements MainService {
@@ -273,6 +277,90 @@ public class MainService_imple implements MainService {
 	@Override
 	public boolean checkhidx(String hidx) {
 		return dao.checkhidx(hidx);
+	}
+
+	// (검색) 리스트 불러오기
+	@Override
+	public Map<String,List<Object>> searach(String search) {
+		
+		Map<String,List<Object>> result = new HashMap<>();
+		
+		int counthospital,countmediq,countmedia,countmediqa,countnotice,totalcount;
+		
+		List<HospitalDTO> hdtoList = dao.gethdtolist(search);
+		counthospital = hdtoList.size();
+		
+		if(counthospital != 0) {
+			List<Object> inputer = new ArrayList<Object>();
+			for(HospitalDTO hdto : hdtoList) {
+				inputer.add(hdto);
+			}
+
+			result.put("hdtolist",inputer);
+		}
+	
+		List<MediQDTO> mqdtoList = dao.getmqList(search);
+		countmediq = mqdtoList.size();
+		
+		if(countmediq != 0) {
+			List<Object> inputer = new ArrayList<Object>();
+			for(MediQDTO mqdto : mqdtoList) {
+				String content = Myutil.removeHTMLtag(mqdto.getContent());
+				mqdto.setContent(content);
+				inputer.add(mqdto);
+			}
+			
+			result.put("mqdtolist",inputer);
+		}
+	
+		List<MediQDTO> madtoList = dao.getmaList(search);
+		// 주의 : MEDIA지만 형식은 MEDIQ로 받는다
+		countmedia = madtoList.size();
+		
+		if(countmedia != 0) {
+			List<Object> inputer = new ArrayList<Object>();
+			for(MediQDTO madto : madtoList) {
+				String content = Myutil.removeHTMLtag(madto.getContent());
+				madto.setContent(content);
+				inputer.add(madto);
+			}
+			
+			result.put("madtolist",inputer);
+		}
+	
+		List<NoticeDTO> ndtoList = dao.getndtoList(search);
+		countnotice = ndtoList.size();
+		
+		if(countnotice != 0) {
+			List<Object> inputer = new ArrayList<Object>();
+			for(NoticeDTO ndto : ndtoList) {
+				String content = Myutil.removeHTMLtag(ndto.getContent());
+				ndto.setContent(content);
+			}
+			
+			result.put("ndtoList",inputer);
+			inputer.clear();
+		}
+		
+		countmediqa = countmediq + countmedia;
+		totalcount = counthospital + countmediqa + countnotice;
+		
+		List<Object> inputer = new ArrayList<Object>();
+		Map<String,Integer> countmap = new HashMap<String, Integer>();
+		countmap.put("counthospital",counthospital);
+		countmap.put("countmediqa",countmediqa);
+		countmap.put("countnotice",countnotice);
+		countmap.put("totalcount",totalcount);
+		inputer.add(countmap);
+		result.put("countmap",inputer);
+		
+		return result;
+	}
+
+	// (검색) 검색 로그 작성하기
+	@Override
+	public void writeSearchlog(Map<String, String> paraMap) {
+		dao.writeSearchlog(paraMap);
 	}
 	
 }

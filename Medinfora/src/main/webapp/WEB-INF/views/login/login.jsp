@@ -182,9 +182,9 @@ div.loader {
 
 
 
-<!-- 카카오 로그인 관련 -->
+<!-- 카카오 로그인 관련 
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
-
+-->
 
 <script type="text/javascript">
 
@@ -242,10 +242,10 @@ function goLogin(){
 }// end of function goLogin()
 
 function loginWithKakao(){
-	$("div#loaderArr").show();
+	// $("div#loaderArr").show();
 	
-	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}";
-	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=400";
+	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}&prompt=login";
+	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=600";
 	
 	window.open(url, 'url', setting);
 	

@@ -33,11 +33,11 @@ public class NoticeService_imple implements NoticeService {
 		
 	
 		
-	 	
+	// 공지사항 글쓰기 	
 	@Override
 	public int noticeWrite(NoticeDTO noticedto) {
 		int n = dao.noticeWrite(noticedto);
-		System.out.println("gc : "+n);
+	//	System.out.println("gc : "+n);
 		return n;
 	}
 
@@ -83,29 +83,20 @@ public class NoticeService_imple implements NoticeService {
 	 * paraMap, HttpSession session)
 	 */
 	@Override
-	public NoticeDTO getView(Map<String, Object> paraMap, HttpSession session) {
-	    MemberDTO loginuser = null;
-	    
-	    // 로그인한 사용자가 있는지 확인
-	    if (session != null && session.getAttribute("loginuser") != null) {
-	        loginuser = (MemberDTO) session.getAttribute("loginuser");
-	    }
+	public NoticeDTO getView(int nidx) {
 	    
 	    // 공지사항 상세 정보 가져오기
-	    NoticeDTO noticedto = dao.getView(paraMap);
+	    NoticeDTO noticedto = dao.getView(nidx);
 	    
-	    // 사용자가 로그인하지 않았거나 관리자가 아닌 경우에만 조회수 증가
-	    if (loginuser == null || loginuser.getmIdx() != 0) {
-	        int nidx = noticedto.getNidx();
-	        int n = dao.increase_readCount(nidx);
-	        if (n != 0) { 
-	            noticedto.setViewcnt(noticedto.getViewcnt() + 1);
-	        }
-	    }
-
 	    return noticedto;
 	}
-	// 임시 
+	// 조회수 증가
+	@Override
+	public void increase_readCount(int nidx) {
+		dao.increase_readCount(nidx);
+	}
+	
+	// 임시로 만든 글 조회수 증가와 함께 글 1개를 조회를 해오는 것
 	@Override
 	public NoticeDTO getView_no_increase_readCount(Map<String, String> paraMap) {
 		NoticeDTO noticedto = dao.getView1(paraMap); // 글 1개 조회하기
@@ -113,6 +104,7 @@ public class NoticeService_imple implements NoticeService {
 		return noticedto;
 	}
 
+	// 공지사항 글 수정하기
 	
 	@Override
 	public int edit(NoticeDTO noticedto) {
@@ -120,6 +112,7 @@ public class NoticeService_imple implements NoticeService {
 		return n;
 	}
 
+	// 공지사항 글 삭제하기
 	 @Override
 	    public int del(Map<String, String> paraMap) {
 	        int n = dao.del(paraMap.get("nidx"));
@@ -139,6 +132,7 @@ public class NoticeService_imple implements NoticeService {
 	        return n;
 	    }
 
+	 /// 이전 글, 다음 글 조회 하기 끝
 	 @Override
 	 public NoticeDTO getPrevNotice(int nidx) {
 	     return dao.getPrevNotice(nidx);
@@ -148,7 +142,9 @@ public class NoticeService_imple implements NoticeService {
 	 public NoticeDTO getNextNotice(int nidx) {
 	     return dao.getNextNotice(nidx);
 	 }
+	/// 이전 글, 다음 글 조회 하기 끝 
 
+	 // 글 수정 
 	@Override
 	public void edit_view(Map<String, Object> paraMap) {
 		dao.edit_view(paraMap);
@@ -156,13 +152,8 @@ public class NoticeService_imple implements NoticeService {
 		return ;
 	}
 
-	/*
-	 * @Override public void delFile(NoticeDTO noticedto) {
-	 * 
-	 * dao.deleteFile(noticedto);
-	 * 
-	 * }
-	 */
+
+
 
 	
 

@@ -147,6 +147,10 @@
 			location.href = "<%=ctxPath%>/hpsearch/hospitalSearch.bibo";
 		})
 		
+		$('.golochpsearch').on("click",function(){
+			location.href = "<%=ctxPath%>/hpsearch/locHospitalSearch.bibo";
+		})
+		
 	});
 	
 	function goregister(){
@@ -221,8 +225,8 @@
   	<div class="tog_title">의료 기관</div>
   	<ul class="tog_ul">
   		<li class="tog_li gohpsearch">병원 찾기</li>
-  		<li class="tog_li">약국 찾기</li>
-  		<li class="tog_li">응급실 찾기</li>
+  		<li class="tog_li golochpsearch">우리동네 병원 찾기</li>
+  		<li class="tog_li">약국/응급실 찾기</li>
   	</ul>
   </div>
   
@@ -252,8 +256,8 @@
   	<div class="media_tog_sub">의료 기관</div>
   	<ul class="media_tog_ul">
 		<li class="media_tog_li gohpsearch">병원 찾기</li>
-		<li class="media_tog_li">약국 찾기</li>
-		<li class="media_tog_li">응급실 찾기</li>
+		<li class="media_tog_li golochpsearch">우리동네 병원 찾기</li>
+		<li class="media_tog_li">약국/응급실 찾기</li>
 	</ul>
 	
   	<div class="media_tog_sub">의료 정보</div>

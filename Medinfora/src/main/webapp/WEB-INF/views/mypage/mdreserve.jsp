@@ -6,7 +6,7 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/mdreserve.css">
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/mdreserveMedia.css">
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/reserveMedia.css">
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/mdreserve.js"></script>
 
 <div class="hj_container">
@@ -86,6 +86,7 @@
 							<option>접수신청</option>
 							<option>접수완료</option>
 							<option>진료완료</option>
+							<option>접수취소</option>
 						</select>	
 					</div>
   				</div>

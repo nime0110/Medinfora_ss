@@ -112,7 +112,7 @@
 	<select id="reserveCnt" resultType="int" parameterType="HashMap">
 		select count(*)
 		from reserve
-		where to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > to_char(to_date(#{day},'yyyy-mm-dd hh24:mi:ss'))
+		where to_char(to_date(checkin,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd') = to_char(to_date(#{day},'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd')
 			and hidx = #{hidx}
 	</select>
 	

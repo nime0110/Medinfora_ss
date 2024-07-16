@@ -63,8 +63,13 @@
 	</select>
 	
 	<select id="getHpDetail" parameterType="String" resultType="HospitalDTO">
-		SELECT HIDX, HPNAME, HPADDR, HPTEL, AGENCY, WGS84LON, WGS84LAT, STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
-		       STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8, CLASSNAME
+		SELECT HIDX, HPNAME, HPADDR, HPTEL, AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+		 		nvl(starttime1, ' ') as starttime1, nvl(starttime2, ' ') as starttime2, nvl(starttime3, ' ') as starttime3, 
+			    nvl(starttime4, ' ') as starttime4, nvl(starttime5, ' ') as starttime5, nvl(starttime6, ' ') as starttime6,
+		        nvl(starttime7, ' ') as starttime7, nvl(starttime8,' ') as starttime8,
+		        nvl(endtime1, ' ') as endtime1, nvl(endtime2, ' ') as endtime2, nvl(endtime3, ' ') as endtime3,
+		        nvl(endtime4, ' ') as endtime4, nvl(endtime5, ' ') as endtime5, nvl(endtime6, ' ') as endtime6,
+		        nvl(endtime7, ' ') as endtime7, nvl(endtime8, ' ') as endtime8
 		FROM hospital A join CLASSCODE B
 		ON A.CLASSCODE = B.CLASSCODE
 		WHERE hidx = #{hidx}
