@@ -216,7 +216,6 @@ public class ReserveController {
 			if(cnt != 0 && cnt != reserveCnt) {	// 예약이 가능한 경우
 				// [참고] cnt == 0 => 휴무 / cnt !=0 || cnt == reserveCnt => 예약가득참
 				availableDayList.add(day.substring(0, 10));
-				System.out.println(day.substring(0, 10));
 			}	// end of if---------------------
 			
 			currentDate.add(Calendar.DATE, 1);

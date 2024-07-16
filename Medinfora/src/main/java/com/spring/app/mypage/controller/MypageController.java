@@ -1,14 +1,12 @@
 package com.spring.app.mypage.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,11 +26,6 @@ import com.spring.app.common.AES256;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.mypage.service.MypageService;
-
-import oracle.net.aso.j;
-import oracle.net.aso.l;
-import oracle.net.aso.m;
-import oracle.security.o5logon.d;
 
 @Controller
 @RequestMapping(value="/mypage/")
@@ -279,7 +272,7 @@ public class MypageController {
 			jsonObj.put("checkin", rsdto.getCheckin());
 		}
 		return jsonObj.toString();
-	}
+	}	// end of public String getRdto(HttpServletRequest request) {---------------
 	
 	// === 진료현황 변경 === //
 	@PostMapping("ChangeRstatus.bibo")
@@ -300,7 +293,7 @@ public class MypageController {
 		
 		String message = "", loc = "";
 		if(n==1) {
-			message = "진료현황이 " + rStatus + "으(로) 변경되었습니다.";
+			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
 			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
 		}
 		mav.addObject("message",message);
@@ -313,6 +306,32 @@ public class MypageController {
 	@ResponseBody
 	@GetMapping(value="myreserveList.bibo", produces="text/plain;charset=UTF-8")
 	public String myreserveList(HttpServletRequest request) {
+		// 예얄리스트(페이징, 검색처리) 
+		return reserveList(request);
+	}	// end of public String mdreserveList(HttpServletRequest request) {-----
+	
+	// === (일반회원) 진료접수 취소 정보 === //
+	@ResponseBody
+	@GetMapping(value="cancleRdto.bibo", produces="text/plain;charset=UTF-8")
+	public String cancleRdto(HttpServletRequest request) {
+		String ridx = request.getParameter("ridx");
+		
+		ReserveDTO rsdto = null;
+		JSONObject jsonObj = new JSONObject();
+		if(ridx != null) {
+			// ridx 를 통해 진료접수 취소하기
+			int n = service.cancleRdto(ridx);
+			if(n==1) {
+				// 예얄리스트(페이징, 검색처리) 
+				return reserveList(request);
+			}
+		}
+		
+		return jsonObj.toString();
+	}	// end of public String getRdto(HttpServletRequest request) {---------------
+	
+	// 예약리스트(페이징, 검색처리) 
+	private String reserveList(HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
@@ -395,11 +414,8 @@ public class MypageController {
 		        
 			}	// end of for------------------
 		}
-
 		return jsonArr.toString();
-	}	// end of public String mdreserveList(HttpServletRequest request) {-----
-	
-	
+	}	// end of private String reserveList(HttpServletRequest request) {---------------------
 	
 	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
 	@GetMapping("memberList.bibo") 
@@ -408,22 +424,17 @@ public class MypageController {
 			@RequestParam(defaultValue = "") String mbr_division) {
 	// requestParam 사용하여 매개변수 사용하기 
 		
-		   Map<String, Object> paramMap = new HashMap<>();
-	        if (!str_mbrId.isEmpty()) { // str_mbrId가 비어있지 않으면
-	            paramMap.put("str_mbrId", str_mbrId); // 파라맵으로 추가 
-	            // 회원명
-	        }
-	        if (!mbr_division.isEmpty()) { // mbr_division이 비어있지 않으면 
-	            paramMap.put("mbr_division", mbr_division);
-	            // 회원 구분
-	        }
+	   Map<String, Object> paramMap = new HashMap<>();
+        if (!str_mbrId.isEmpty()) {
+            paramMap.put("str_mbrId", str_mbrId);
+        }
+        if (!mbr_division.isEmpty()) {
+            paramMap.put("mbr_division", mbr_division);
+        }
 
-	        // 회원 목록 가져오기
-	        List<MemberDTO> memberList = service.getMemberList(paramMap);
-	        mav.addObject("memberList", memberList);
-		
-	
-		
+        // 회원 목록 가져오기
+        //List<MemberDTO> memberList = service.getMemberList(paramMap);
+        //mav.addObject("memberList", memberList);
 		
 		mav.setViewName("mypage/memberList.info");
 		return mav;

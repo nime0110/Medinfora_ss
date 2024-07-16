@@ -258,4 +258,11 @@ public class MypageService_imple implements MypageService {
 		return selectMemberList;
 	}
 	
+	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
+	@Override
+	public int cancleRdto(String ridx) {
+		int n = dao.cancleRdto(ridx);
+		return n;
+	}
+	
 }

@@ -364,12 +364,12 @@ commit;
 
 
 select *
-from media;
+from mediq;
 
 
 
 insert into media(aidx, qidx, userid, content, writeday)
-values(seq_aidx.nextval, 9, 'user001', '<p> 글글글 스마트에딩터로 사진 넣고 첨부파일에도 사진파일 넣어보겠습니다.</p>' ,default);
+values(seq_aidx.nextval, 22, 'medi002', '<p> 네 중고거래는 불가능 합니다. 약사 면허 가져오세요</p>' ,default);
 
 commit;
 

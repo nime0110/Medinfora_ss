@@ -86,6 +86,7 @@
 							<option>접수신청</option>
 							<option>접수완료</option>
 							<option>진료완료</option>
+							<option>접수취소</option>
 						</select>	
 					</div>
   				</div>
