@@ -11,7 +11,7 @@
 
 <!-- 중앙 div -->
 <div id="container">
-<h1 class="nanum-b size-n">우리동네 근처 병원 찾기</h1>
+<h1 class="nanum-b size-n">병원 찾기</h1>
 	<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="city">
@@ -58,14 +58,12 @@
 		</div>
 		<div id="hplist" class="tab-content">
 		    <ul id="hospitalList">
-		        <!-- Sample List Items -->
 		        <li>
 		        	<div id="no_searchList">
 		        		<span>🪄</span>
 		            	<p> 지역을 설정하고 검색버튼을 눌러주세요.</p>
 		        	</div>
 		        </li>
-		        <!-- More items can be added here -->
 		    </ul>
 		</div>
 	</div>
