@@ -171,8 +171,9 @@ function CancleRcode(ridx){
                     ,"currentShowPageNo":currentShowPageNo}
             , dataType:"json"
             , success: function(json){
-                console.log(json);
-                Page(currentShowPageNo);
+                if(json.length > 0){
+                    Page(currentShowPageNo);
+                }
             }
             , error:function(request){
                 alert("code: "+request.status);
