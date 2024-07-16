@@ -87,12 +87,10 @@ button.write:hover{
 }
 
 
-div.pagebar ul{
-	margin: 0 auto;
-	/*padding: 0;*/
-	display: table;
-	
-
+div.pagebar{
+	display: grid;
+    place-items: center;
+	margin-top: 10px;
 }
 
 </style>
@@ -113,9 +111,19 @@ $(document).ready(function(){
 
 });
 
-function gowrite(){
-	location.href="<%=ctxPath%>/questionWrite.bibo";
+function listView(pageNo){
+	
+	const subject = $("select[name='subject']").val();
+	const type = $("select[name='type']").val();
+	const word = $("input:text[name='word']").val().trim();
+	
+	const frm = document.questionList;
+	frm.PageNo.value = pageNo;
+	
+	frm.action = "<%=ctxPath%>/questionList.bibo";
+	frm.submit(); 	
 }
+
 
 function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	
@@ -123,7 +131,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	
 	if(pageNo != 1) {
 		pageBar += "<li class='page-item'>" 
-				+ " 	<a class='page-link' onclick='goSearch("+(pageNo-1)+")>" 
+				+ " 	<a class='page-link' onclick='listView("+(pageNo-1)+")>" 
 				+ "	    	<span aria-hidden='true'>&laquo;</span>" 
 				+ "	    </a>" 
 				+ "</li>";
@@ -137,7 +145,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 		}
 		else{
 			pageBar += "<li class='page-item'>"
-					+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>" +pageNo+"</a>" 
+					+ "		<a class='page-link' onclick='listView("+pageNo+")'>" +pageNo+"</a>" 
 					+ "</li>";
 		}
 		loop++;
@@ -146,7 +154,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	
 	if(pageNo <= totalPage) {
 		pageBar += "<li class='page-item'>"
-				+ "		<a class='page-link' onclick='goSearch("+pageNo+")'>"
+				+ "		<a class='page-link' onclick='listView("+pageNo+")'>"
 				+ "	    	<span aria-hidden='true'>&raquo;</span>"
 				+ "	    </a>"
 				+ "</li>";
@@ -157,7 +165,14 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	$("div.pagebar").html(pageBar);
 	
 	
+}// end of pageBarAdd()
+
+
+function gowrite(){
+	location.href="<%=ctxPath%>/questionWrite.bibo";
 }
+
+
 
 
 </script>
@@ -168,12 +183,12 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 	<div class="py-4" align="center">
 		<h2 class="nanum-eb size-n">묻고 답하기</h2>
 	</div>
-	<form>
-		<!-- <legend>ㅎㅇ</legend> -->
+	<form name="questionList">
+		<input type="hidden" name="PageNo"/>
 		<fieldset>
 			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
 				<span>
-					<select class="search_ch sel_0 nanum-b">
+					<select class="search_ch sel_0 nanum-b" name="subject">
 						<option value='0'>구분</option>
 						<option value='1'>건강상담</option>
 						<option value='2'>식생활,식습관</option>
@@ -182,7 +197,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 				</span>
 				
 				<span class="">
-					<select class="search_ch sel_1 nanum-b">
+					<select class="search_ch sel_1 nanum-b" name="type">
 						<option value='z'>전체</option>
 						<option value='Q.title'>질문제목</option>
 						<option value='Q.content'>질문내용</option>
@@ -191,7 +206,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 				</span>
 				
 				<span>
-					<input class="search_ch sel_2 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
+					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="검색어를 입력해주세요." />
 				</span>
 				<span>
 					<button class="jh_btn_design search nanum-eb size-s" type="button">검색</button>
@@ -218,10 +233,11 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 		</div>
 		
 		<!-- 여기에 리스트 띄우면 됨 -->
-		<div class="mb-5 px-3">
+		<div class="mb-5 px-3" id="questionArea">
 			<c:forEach var="qdto" items="${requestScope.qdtoMap.qList}"  varStatus="status">
 				<div class="row text-center py-3 nanum-n size-s b_border">
 					<input type="hidden" value="${qdto.qidx}" name="no${status.index}"/>
+					<input type="hidden" value="${qdto.userid}"/>
 					<span class="col-2">
 						<c:if test="${qdto.subject eq '1'}">건강상담</c:if>
 						<c:if test="${qdto.subject eq '2'}">식생활,식습관</c:if>
@@ -249,13 +265,12 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 			
 				</div>
 			</c:forEach>
-			
 		</div>
 	
 	</div>
 	
 	<%-- 페이지 바 --%>
-	<div class="pagebar mb-5" style="text-align: center;"></div>
+	<div class="pagebar" style="text-align: center;"></div>
 	
 	<div class="py-5 text-center">
 		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>
