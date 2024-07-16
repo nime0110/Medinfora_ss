@@ -38,7 +38,7 @@
 	
 		#wrap_container{
 			height: auto;
-			min-height: 76.8vh;
+			min-height: 78vh;
 			padding-bottom: 120px;
 		}
 	
