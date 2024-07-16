@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-div#ctxPath{
+div#ctxPath, div#hpname{
 	display: none;	
 }
 
