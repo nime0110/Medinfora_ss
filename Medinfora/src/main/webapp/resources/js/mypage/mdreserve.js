@@ -67,8 +67,8 @@ function RESearch(){
         }
     }
     if(sclist == "진료현황"){
-        if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료"){
-            alert("접수신청, 접수완료, 진료완료 중 하나를 입력하세요.");
+        if(inputsc != "접수신청" && inputsc != "접수완료" && inputsc != "진료완료" && inputsc != "접수취소"){
+            alert("접수신청, 접수완료, 진료완료, 접수취소 중 하나를 입력하세요.");
             return;
         }
     }
@@ -128,6 +128,9 @@ function Page(currentShowPageNo){
                     }
                     if(item.rcode == "3"){
                         v_html +=  `진료 완료`;
+                    }
+                    if(item.rcode == "0"){
+                        v_html += `접수 취소`
                     }
                         v_html += `     </span>
                                     </span> 
@@ -208,7 +211,6 @@ function ChangeRcode(ridx){
         , data: {ridx:ridx}
         , dataType:"json"
         , success: function(json){
-            console.log(json);
             // 모달 내용 업데이트
             $('#modal-ridx').text(json.ridx);
             $('#modal-name').text(json.name);
