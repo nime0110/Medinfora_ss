@@ -33,16 +33,41 @@
 		</c:if>
 		
 		<c:if test='${requestScope.nosearch == 2}'>
-			<div class="contenttitle">${requestScope.search}에 대한 검색내용은 존재하지 않습니다.</div>
+			<div class="contenttitle">"${requestScope.search}"의 검색결과는 존재하지 않습니다.</div>
 		</c:if>
 		
 		<c:if test='${requestScope.nosearch == 0}'>
 		
 			<div class="contenttitle">"${requestScope.search}" 의 검색결과</div>
 			
-			<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
-				<h4>${hdto.hpname}</h4>
-			</c:forEach>
+			<c:if test="${requestScope.searchlist.hdtolist != null}">
+				<div class="contentsub">
+				
+					<div class="c_subtitle">
+						<span>병원</span>
+					</div>
+					<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
+						<div class="content_h">
+							<div class="content_place">
+								<div class="content_hpname">${hdto.hpname}</div>
+								<div class="content_hpaddress">${hdto.hpaddr}</div>
+								<div class="content_hpmobile">${hdto.hptel}</div>
+							</div>
+							<div class="content_tool">
+								<button class="tool_btn" type="button">예약하기</button>
+								<button class="tool_btn" type="button">위치보기</button>
+							</div>
+						</div>
+					</c:forEach>
+					
+					<div class="showmore">
+						<span>검색결과 더보기</span>
+					</div>
+					
+				</div>
+				
+			</c:if>
+			
 			
 		</c:if>
 	</div>
