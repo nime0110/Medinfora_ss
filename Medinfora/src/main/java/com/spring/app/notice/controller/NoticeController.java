@@ -145,22 +145,74 @@ public class NoticeController {
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
 
-		List<NoticeDTO> noticeListdto = service.noticeListSearch_withPaging(paraMap);
+		  List<NoticeDTO> noticeListdto = service.noticeListSearch_withPaging(paraMap);
+		    mav.addObject("noticeListdto", noticeListdto);
+		    mav.addObject("paraMap", paraMap);
 
-		mav.addObject("noticeListdto", noticeListdto);
-		mav.addObject("paraMap", paraMap);
+		    String pageBar = makePageBar(currentShowPageNo, totalPage);
+		    mav.addObject("pageBar", pageBar);
 
-		String pageBar = Myutil.makePageBar(currentShowPageNo, sizePerPage, totalPage,
-				request.getContextPath() + "/notice/noticeList.bibo");
-		mav.addObject("pageBar", pageBar);
+		    String goBackURL = getCurrentURL(request);
+		    mav.addObject("goBackURL", goBackURL);
 
-		String goBackURL = Myutil.getCurrentURL(request);
-		mav.addObject("goBackURL", goBackURL);
+		    mav.setViewName("notice/noticeList.tiles");
+		    return mav;
+		} // end of public ModelAndView noticeList(ModelAndView mav, HttpServletRequest request)
 
-		mav.setViewName("notice/noticeList.tiles");
-		return mav;
-	} // end of public ModelAndView noticeList(ModelAndView mav, HttpServletRequest request)
+		private String makePageBar(int currentShowPageNo, int totalPage) {
+		    int pageNo = 1;
+		    int blockSize = 10;
+		    int loop = 1;
+		    
+		    String pageBar = "<ul class='pagination hj_pagebar nanum-n size-s'>";
+		    
+		    if(pageNo != 1) {
+		        pageBar += "<li class='page-item'>" 
+		                 + "    <a class='page-link' href='javascript:Page("+(pageNo-1)+")'>" 
+		                 + "          <span aria-hidden='true'>&laquo;</span>" 
+		                 + "       </a>" 
+		                 + "</li>";
+		    }
+		    
+		    while(!(loop>blockSize || pageNo > totalPage)) {
+		        if(pageNo == currentShowPageNo) {
+		            pageBar += "<li class='page-item'>"
+		                    + "      <a class='page-link nowPage'>"+pageNo+"</a>" 
+		                    + "</li>";
+		        }
+		        else{
+		            pageBar += "<li class='page-item'>"
+		                    + "      <a class='page-link' href='javascript:Page("+pageNo+")'>" +pageNo+"</a>" 
+		                    + "</li>";
+		        }
+		        loop++;
+		        pageNo++;
+		    }
+		    
+		    if(pageNo <= totalPage) {
+		        pageBar += "<li class='page-item'>"
+		                 + "      <a class='page-link' href='javascript:Page("+pageNo+")'>"
+		                 + "          <span aria-hidden='true'>&raquo;</span>"
+		                 + "       </a>"
+		                 + "</li>";
+		    }
+		    
+		    pageBar += "</ul>";
+		    
+		    return pageBar;
+		}
 
+		private String getCurrentURL(HttpServletRequest request) {
+		    String currentURL = request.getRequestURL().toString();
+		    String queryString = request.getQueryString();
+		    if (queryString != null) {
+		        currentURL += "?" + queryString;
+		    }
+		    String ctxPath = request.getContextPath();
+		    int beginIndex = currentURL.indexOf(ctxPath) + ctxPath.length();
+		    currentURL = currentURL.substring(beginIndex);
+		    return currentURL;
+		}
 	// === #62. 글1개를 보여주는 페이지 요청 === //
 	// @GetMapping("/view.action")
 	@RequestMapping("/notice/view.bibo") // === #133. 특정글을 조회한 후 "검색된결과목록보기" 버튼을 클릭했을 때 돌아갈 페이지를 만들기 위함.

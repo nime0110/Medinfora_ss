@@ -19,7 +19,9 @@ function click_on(nidx){
     frm.action = "<%=ctxPath%>/notice/view.bibo";
 		frm.submit();
 	}
-	
+function Page(pageNo) {
+    location.href = "<%=ctxPath%>/notice/noticeList.bibo?currentShowPageNo=" + pageNo;
+}
 	
 </script>
 

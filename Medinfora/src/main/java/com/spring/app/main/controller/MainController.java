@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
@@ -224,7 +225,10 @@ public class MainController {
 		
 		Map<String,List<Object>> searchList = service.searach(search);
 		
-		if(searchList == null) {
+		@SuppressWarnings("unchecked")
+		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
+		
+		if(countlist.get("totalcount") == 5) {
 			mav.addObject("nosearch",2);
 			mav.addObject("search",search);
 			mav.setViewName("search.tiles");
@@ -232,11 +236,12 @@ public class MainController {
 		}
 		
 		// 로그 작성부분
-		
 		Map<String,String> paraMap = new HashMap<>();
 		
-		paraMap.put("serach", search);
+		paraMap.put("search", search);
 		paraMap.put("userid", userid);
+		
+		service.writeSearchlog(paraMap);
 		
 		mav.addObject("searchlist",searchList);
 		mav.addObject("nosearch",0);
