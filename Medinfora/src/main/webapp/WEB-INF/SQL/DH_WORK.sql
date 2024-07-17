@@ -132,3 +132,16 @@ select HPNAME,hpaddr,AGENCY, HPTEL, hidx
 select USERID
 from CLASSCODEMET
 where HIDX ='';
+
+select SEARCHWORD
+from
+(
+    select row_number() over (order by cnt desc) as rno, SEARCHWORD, cnt
+    from
+    (
+        select SEARCHWORD, count(*) as cnt
+        from SEARCHLOG
+        group by SEARCHWORD
+    )
+)
+where rno between 1 and 5;

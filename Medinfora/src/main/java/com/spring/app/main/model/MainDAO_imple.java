@@ -233,4 +233,10 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
+	// 인덱스 인기 검색어 불러오기
+	@Override
+	public List<String> getPopwordList() {
+		return sqlsession.selectList("medinfora.getPopwordList");
+	}
+
 }

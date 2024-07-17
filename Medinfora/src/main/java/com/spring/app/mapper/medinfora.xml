@@ -298,4 +298,19 @@
 		where HIDX = #{hidx}
 	</select>
 	
+	<!-- 인기 검색어 불러오기 -->
+	<select id="getPopwordList" resultType="String">
+		select SEARCHWORD
+		from
+		(
+		    select row_number() over (order by cnt desc) as rno, SEARCHWORD, cnt
+		    from
+		    (
+		        select SEARCHWORD, count(*) as cnt
+		        from SEARCHLOG
+		        group by SEARCHWORD
+		    )
+		)
+		where rno between 1 and 5
+	</select>	
 </mapper>

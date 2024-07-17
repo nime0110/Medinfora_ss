@@ -370,5 +370,11 @@ public class MainService_imple implements MainService {
 	public void writeSearchlog(Map<String, String> paraMap) {
 		dao.writeSearchlog(paraMap);
 	}
+
+	// 인덱스 인기 검색어 불러오기
+	@Override
+	public List<String> getPopwordList() {
+		return dao.getPopwordList();
+	}
 	
 }

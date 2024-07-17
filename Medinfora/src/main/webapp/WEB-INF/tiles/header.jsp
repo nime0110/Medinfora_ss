@@ -20,6 +20,30 @@
 
 	$(document).ready(function(){
 		
+		$.ajax({
+			url : "<%=ctxPath%>/getpopword.bibo",
+			dataType : "json",
+			async : true,
+			success:function(json){
+				
+				const popUl = $('.pop_ul_dh');
+				
+				let htmltext = `
+					<li class="popwordsearch">1.&nbsp;<p class="nanum-n popword">\${json[0]}</p></li>
+				    <li class="popwordsearch">2.&nbsp;<p class="nanum-n popword">\${json[1]}</p></li>
+				    <li class="popwordsearch">3.&nbsp;<p class="nanum-n popword">\${json[2]}</p></li>
+				    <li class="popwordsearch">4.&nbsp;<p class="nanum-n popword">\${json[3]}</p></li>
+				    <li class="popwordsearch">5.&nbsp;<p class="nanum-n popword">\${json[4]}</p></li>	
+				`;
+				
+				popUl.html(htmltext);
+				
+			},
+			error:function(request){
+				alert("code : " + request.status);
+			}
+		});
+		
 		// 로그인창 열기
 		$("a#loginModal").click(function(){
 			$("div#loginModalArr").fadeIn();
@@ -43,7 +67,7 @@
 			const frm = document.passFrm;
 			frm.action = "<%=ctxPath%>/login/logout.bibo";
 			frm.submit();
-		})
+		});
 		
 		
 		$(window).on("message", function(e){
@@ -173,7 +197,26 @@
 		
 	}
 	
-
+	$(document).on("click",'.popwordsearch',(e) => {
+		
+		let target = $(e.target);
+		let word;
+		
+		if(target.hasClass("popwordsearch")){
+			word = target.children().text();
+		}else{
+			word = target.text();
+		}
+		
+		$('.dh-section-serachbar').val(word);
+		
+		const frm = document.searchFrm;
+		frm.action = "<%=ctxPath%>/search.bibo";
+		frm.submit();
+		
+	});
+	
+	
 </script>
 
 <link rel="stylesheet" href="<%=ctxPath %>/resources/css/header.css">
@@ -198,7 +241,7 @@
     <div class="input_text">
       <label class="my-auto">
         <form class="dh-section-form" name="searchFrm">
-          <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="search" id="store_search" placeholder='검색어를 입력하세요' required="required" />
+          <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="search" id="store_search" placeholder='검색어를 입력하세요' required="required" autocomplete="off" />
         </form>
       </label>
       <span class="DH-section-searchBtn" id="btnSearch" onclick="doSearch()"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i>
@@ -241,11 +284,13 @@
   <div class="pop_search fadeout">
     <div class="pop_title nanum-n">인기검색어</div>
     <ul class="pop_ul_dh">
+    
       <li>1.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
       <li>2.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
       <li>3.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
       <li>4.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
       <li>5.&nbsp;<p class="nanum-n">오늘뭐먹지</p></li>
+      
     </ul>
   </div>
   

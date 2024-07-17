@@ -95,6 +95,9 @@ public interface MainDAO {
 	// (검색) 가입된 병원회원 여부 검사
 	public boolean isMediMember(int hidx);
 
+	// 인덱스 인기 검색어 불러오기
+	public List<String> getPopwordList();
+
 	
 	
 }
