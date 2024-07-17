@@ -428,7 +428,7 @@ and (lower(title) like '%'||lower('글')||'%' OR lower(Q.content) like '%'||lowe
 select count(*) as CNT
 from MEDIQ Q FULL JOIN MEDIA A
 ON Q.qidx = A.qidx
-where 1=1 and subject=1 and (lower(Q.title) like '%'||lower('')||'%' or lower(content) like '%'||lower('')||'%'  or lower(A.content) like '%'||lower('')||'%');
+where 1=1 and  (lower(Q.title) like '%'||lower('질문')||'%' or lower(Q.content) like '%'||lower('질문')||'%'  or lower(A.content) like '%'||lower('질문')||'%');
 
 
 select Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
@@ -442,10 +442,10 @@ where 1=1 and lower(A.content) like '%'||lower('')||'%';
 SELECT distinct qidx, userid, title, writeday, imgsrc, acount, open, viewcount
      , pwd, subject
 FROM(
-select row_number() over(order by Q.qidx) AS rno
+select row_number() over(order by Q.qidx desc) AS rno
      , Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
-     , nvl(Q.imgsrc, ' ') AS imgsrc, Q.acount, Q.open, Q.viewcount
-     , nvl(Q.pwd, ' ') AS pwd, Q.subject
+     , nvl(Q.imgsrc, '') AS imgsrc, Q.acount, Q.open, Q.viewcount
+     , nvl(Q.pwd, '') AS pwd, Q.subject
 from MEDIQ Q FULL JOIN MEDIA A
 ON Q.qidx = A.qidx
 where 1=1
@@ -464,3 +464,19 @@ update MEDIQ set acount = 2
 where qidx = 9;
 
 commit;
+
+SELECT distinct qidx, userid, title, writeday, imgsrc, acount, open, viewCount
+     , pwd, subject
+FROM(
+    select row_number() over(order by Q.qidx desc) AS rno
+         , Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+         , nvl(Q.imgsrc, ' ') as imgsrc, Q.acount, Q.open, Q.viewCount
+         , nvl(Q.pwd, ' ') as pwd, Q.subject
+    from MEDIQ Q FULL JOIN MEDIA A
+    ON Q.qidx = A.qidx
+    where 1=1
+    and subject=to_number('1') and ( lower('Q.title') like '%'||lower('')||'%' )
+)S
+WHERE rno between 1 and 10
+ORDER BY qidx DESC;
+
