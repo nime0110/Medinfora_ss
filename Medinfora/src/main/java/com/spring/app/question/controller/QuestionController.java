@@ -133,6 +133,7 @@ public class QuestionController {
 		System.out.println(searchSubject);
 		System.out.println(searchWord);
 		System.out.println(searchType);
+		System.out.println(str_currentPageNo);
 		
 		List<MediQDTO> qList = null;
 		System.out.println(str_currentPageNo);
@@ -198,6 +199,11 @@ public class QuestionController {
 					qdtoMap.put("currentPageNo", currentPageNo);
 					qdtoMap.put("totalPage", totalPage);
 					
+					qdtoMap.put("subject", searchSubject);
+					qdtoMap.put("type", searchType);
+					qdtoMap.put("word", searchWord);
+					
+					
 					jsonObj.put("qdtoMap", qdtoMap);
 					
 				}
@@ -207,8 +213,6 @@ public class QuestionController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		return jsonObj.toString();
 	}
 	

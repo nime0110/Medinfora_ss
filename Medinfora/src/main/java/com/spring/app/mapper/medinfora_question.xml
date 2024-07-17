@@ -38,6 +38,20 @@
 		<if test='searchSubject != "0" and searchType == "z" and searchWord != ""'>
 			and subject=to_number(#{searchSubject}) and ( lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%' )
 		</if>
+		<if test='searchSubject != "0" and searchType != "z" and searchWord == ""'>
+			and subject=to_number(#{searchSubject})
+
+			<if test='searchType == "Q.title"'>
+				and ( lower(Q.title) like '%'||lower('')||'%' )
+			</if>
+			<if test='searchType == "Q.content"'>
+				and ( lower(Q.content) like '%'||lower('')||'%' )
+			</if>
+			<if test='searchType == "A.content"'>
+				and ( lower(A.content) like '%'||lower('')||'%' )
+			</if>
+			
+		</if>
 		<if test='searchSubject != "0" and searchType != "z" and searchWord != ""'>
 			and subject=to_number(#{searchSubject}) 
 
@@ -97,6 +111,20 @@
 		</if>
 		<if test='searchSubject != "0" and searchType == "z" and searchWord != ""'>
 			and subject=to_number(#{searchSubject}) and ( lower(Q.title) like '%'||lower(#{searchWord})||'%' or lower(Q.content) like '%'||lower(#{searchWord})||'%'  or lower(A.content) like '%'||lower(#{searchWord})||'%' )
+		</if>
+		<if test='searchSubject != "0" and searchType != "z" and searchWord == ""'>
+			and subject=to_number(#{searchSubject})
+
+			<if test='searchType == "Q.title"'>
+				and ( lower(Q.title) like '%'||lower('')||'%' )
+			</if>
+			<if test='searchType == "Q.content"'>
+				and ( lower(Q.content) like '%'||lower('')||'%' )
+			</if>
+			<if test='searchType == "A.content"'>
+				and ( lower(A.content) like '%'||lower('')||'%' )
+			</if>
+			
 		</if>
 		<if test='searchSubject != "0" and searchType != "z" and searchWord != ""'>
 			and subject=to_number(#{searchSubject}) 
