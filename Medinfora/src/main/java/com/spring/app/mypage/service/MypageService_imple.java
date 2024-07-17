@@ -83,7 +83,6 @@ public class MypageService_imple implements MypageService {
 		if("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색)
 			reserveList = dao.PatientNameList(paraMap);
-			
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색)
 			reserveList.addAll(dao.ReserveStatusList(paraMap));
 			
@@ -97,7 +96,6 @@ public class MypageService_imple implements MypageService {
 			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
 			reserveList.clear();	// 기존에 있는 값 비우기
 			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
-			
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
 		}

@@ -121,3 +121,14 @@ from (
     from NOTICE
     where TITLE like '%'||''||'%' or CONTENT like '%'||''||'%'
 )where rno between 1 and 5;
+
+select HPNAME,hpaddr,AGENCY, HPTEL, hidx
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL, HIDX
+		    from HOSPITAL
+		    where Hpname like '%'||'창원'||'%'
+		)where rno between 1 and 5
+
+select USERID
+from CLASSCODEMET
+where HIDX ='';

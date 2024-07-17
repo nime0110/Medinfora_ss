@@ -220,4 +220,17 @@ public class MainDAO_imple implements MainDAO{
 		sqlsession.insert("medinfora.writeSearchlog", paraMap);
 	}
 
+	// (검색) 가입된 병원회원 여부 검사
+	@Override
+	public boolean isMediMember(int hidx) {
+		
+		boolean result = false;
+		
+		if(sqlsession.selectList("medinfora.isMediMember",hidx).size()>0) {
+			result = true;
+		}
+		
+		return result;
+	}
+
 }

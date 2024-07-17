@@ -139,10 +139,6 @@
 		
 		// 이동하기 링크
 		
-		$('.href_reserve').on("click",function(){
-			location.href = "<%=ctxPath%>/reserve/choiceDr.bibo";
-		})
-		
 		$('.gohpsearch').on("click",function(){
 			location.href = "<%=ctxPath%>/hpsearch/hospitalSearch.bibo";
 		})
@@ -163,6 +159,10 @@
 	
 	function gonotice(){
 		location.href="<%=ctxPath%>/notice/noticeList.bibo";
+	}
+	
+	function goreserve(){
+		location.href="<%=ctxPath%>/reserve/choiceDr.bibo";
 	}
 	
 	function doSearch(){
@@ -190,10 +190,9 @@
     </button>
     <nav>
       <ul id="navbarNav">
-        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg1m">의료 기관</a></li>
+        <li class="nanum-n size-s dh_nav_item gohpsearch"><a class="dh_nav_item">병원 찾기</a></li>
+        <li class="nanum-n size-s dh_nav_item" onclick="goreserve()"><a class="dh_nav_item">진료 예약</a></li>
         <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item tg2m">의료 정보</a></li>
-        <li class="nanum-n size-s dh_nav_item"><a class="dh_nav_item" href="<%=ctxPath%>/reserve/choiceDr.bibo">진료 예약하기</a></li>
-      	<li class="nanum-n size-s dh_nav_item"><i class="fa-solid fa-caret-down"></i></li>
       </ul>
     </nav>
     <div class="input_text">
@@ -221,21 +220,21 @@
     
   </div>
   
-  <div class="tog_nav tg1 fadeout">
+  <!-- <div class="tog_nav tg1 fadeout">
   	<div class="tog_title">의료 기관</div>
   	<ul class="tog_ul">
   		<li class="tog_li gohpsearch">병원 찾기</li>
   		<li class="tog_li golochpsearch">우리동네 병원 찾기</li>
   		<li class="tog_li">약국/응급실 찾기</li>
   	</ul>
-  </div>
+  </div> -->
   
   <div class="tog_nav tg2 fadeout">
   	<div class="tog_title">의료 정보</div>
   	<ul class="tog_ul">
   		<li class="tog_li">의료 통계</li>
-  		<li class="tog_li">의약품 정보</li>
-  		<li class="tog_li"><a href="<%=ctxPath%>/questionList.bibo">묻고 답하기</a></li>
+  		<li class="tog_li">의료 뉴스</li>
+  		<li class="tog_li" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</li>
   	</ul>
   </div>
   
@@ -250,24 +249,16 @@
     </ul>
   </div>
   
+  <%-- 스마트폰 토글 --%>
   <div class="media_tog fadeout">
-  	<div class="media_tog_title">메인메뉴</div>
-	
-  	<div class="media_tog_sub">의료 기관</div>
-  	<ul class="media_tog_ul">
-		<li class="media_tog_li gohpsearch">병원 찾기</li>
-		<li class="media_tog_li golochpsearch">우리동네 병원 찾기</li>
-		<li class="media_tog_li">약국/응급실 찾기</li>
-	</ul>
-	
-  	<div class="media_tog_sub">의료 정보</div>
-	<ul class="media_tog_ul">
-		<li class="media_tog_li">의료 통계</li>
-		<li class="media_tog_li">의약품 정보</li>
-		<li class="media_tog_li"><a href="<%=ctxPath%>/questionList.bibo">묻고 답하기</a></li>
-	</ul>
-	
-  	<div class="media_tog_sub href_reserve">진료 예약하기</div>
+  	<div class="media_tog_title">일반 메뉴</div>
+  	<div class="media_tog_sub gohpsearch">병원 찾기</div>
+  	<div class="media_tog_sub" onclick="goreserve()">진료 예약</div>
+  	
+  	<div class="media_tog_title">의료 정보</div>
+  	<div class="media_tog_sub">의료 통계</div>
+  	<div class="media_tog_sub">의료 뉴스</div>
+  	<div class="media_tog_sub" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</div>
   </div>
   
 </header>

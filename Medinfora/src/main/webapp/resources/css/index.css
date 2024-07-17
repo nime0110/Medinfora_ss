@@ -452,6 +452,8 @@ div.hj_section_noticelist{
     height: 220px;
 }
 
+
+
 .pointerNoitice{
     text-decoration: underline;
     text-underline-offset: 5px;
@@ -480,11 +482,21 @@ div.hj_noticeitem:hover{
     padding : 4rem 1rem !important;
 }
 
+.card-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 .hj_notice_content{
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 4;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
 }
 

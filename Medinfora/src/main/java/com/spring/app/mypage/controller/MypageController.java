@@ -200,7 +200,7 @@ public class MypageController {
 		
 		// hidx 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.reserveList(paraMap);
-		
+
 		int totalCnt = service.reserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
@@ -275,8 +275,9 @@ public class MypageController {
 	}	// end of public String getRdto(HttpServletRequest request) {---------------
 	
 	// === 진료현황 변경 === //
+	@ResponseBody
 	@PostMapping("ChangeRstatus.bibo")
-	public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public String ChangeRstatus(HttpServletRequest request) {
 		String rStatus = request.getParameter("rStatus");
 		String ridx = request.getParameter("ridx");
 		
@@ -288,19 +289,21 @@ public class MypageController {
 		paraMap.put("ridx", ridx);
 		paraMap.put("rcode", rcode);
 		
+		JSONObject jsonObj = new JSONObject();
 		// 진료현황 변경해주기
 		int n = service.ChangeRstatus(paraMap);
-		
-		String message = "", loc = "";
+		int send = 0;
 		if(n==1) {
-			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
-			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
+			if("2".equals(rcode) || "0".equals(rcode)) {
+				send = 1;
+			}
 		}
-		mav.addObject("message",message);
-		mav.addObject("loc",loc);
-		mav.setViewName("msg");
-		return mav;
-	}	// end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {----------
+
+		jsonObj.put("n", n);
+		jsonObj.put("send", send);	// 문자전송할 사항
+
+		return jsonObj.toString();
+	}	// end of public String ChangeRstatus(HttpServletRequest request) {----------
 	
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
