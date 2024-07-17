@@ -45,4 +45,9 @@ public class HpsearchService_imple implements HpsearchService {
 		return hsdao.holidatCheck(currentDate);
 	}
 
+	@Override
+	public List<Map<String, String>> getChartPercentage(Map<String, String> paraMap) {
+		return hsdao.getChartPercentage(paraMap);
+	}
+
 }

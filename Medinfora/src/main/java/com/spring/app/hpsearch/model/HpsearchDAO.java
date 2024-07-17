@@ -23,5 +23,6 @@ public interface HpsearchDAO {
 
 	int holidatCheck(LocalDate currentDate);
 
-
+	List<Map<String, String>> getChartPercentage(Map<String, String> paraMap);
+	
 }

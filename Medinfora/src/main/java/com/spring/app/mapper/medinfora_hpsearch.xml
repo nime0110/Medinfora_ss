@@ -38,13 +38,54 @@
 	    WHERE C.RNO BETWEEN #{startRno} AND #{endRno}
 	</select>
 	
+			
+	<resultMap type="HashMap" id="chartMap">
+		<result property="CLASSNAME" column="CLASSNAME" javaType="String"/>
+		<result property="CNT" column="CNT" javaType="String"/>
+		<result property="PERCNTAGE" column="PERCNTAGE" javaType="String"/>
+	</resultMap>
+	
+	<select id="getChartPercentage" parameterType="HashMap" resultMap="chartMap">
+		WITH A
+		AS (
+		    select CLASSNAME, COUNT(*) AS CNT
+		        FROM (
+		        SELECT HIDX, HPNAME, HPADDR, HPTEL,  AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+		                STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
+		            STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8,
+		            ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
+		        FROM (
+		            SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY,WGS84LON, WGS84LAT, STARTTIME1,  STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
+		            STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8
+		            FROM hospital H
+		        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
+		          	AND H.hpaddr LIKE '%' || #{country} || '%' 
+		        <if test='classcode != ""'>
+				    AND H.classcode = #{classcode}
+				</if>
+				<if test='agency != ""'>
+				    AND H.agency = #{agency}
+				</if>
+				<if test='hpname != ""'>
+				    AND H.hpname LIKE '%' || #{hpname} || '%'
+				</if>
+		        ) A
+		        JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
+		    ) C
+		    GROUP BY CLASSNAME
+		    ORDER BY CNT DESC
+		    )
+		SELECT A.CLASSNAME, A.CNT, TO_CHAR( ROUND((A.CNT / B.TOTAL) * 100, 1), '990.0') AS PERCNTAGE
+		FROM A CROSS JOIN (SELECT SUM(CNT) AS TOTAL FROM A) B;
+	
+	</select>
+
+
 	<!-- 병원찾기 페이지네이션 관련 전체갯수 -->
 	<select id="getHpListTotalCount"  parameterType="HashMap" resultType="int">
         SELECT count(*)
         FROM (
-        SELECT MIN(HIDX) AS HIDX, HPNAME, HPADDR, MAX(HPTEL) AS HPTEL,
-               MAX(CLASSCODE) AS CLASSCODE, MAX(AGENCY) AS AGENCY,
-               MAX(WGS84LON) AS WGS84LON, MAX(WGS84LAT) AS WGS84LAT
+        SELECT HIDX
         FROM hospital
 		WHERE hpaddr LIKE '%' || #{addr} || '%'
 		AND hpaddr LIKE '%' || #{country} || '%'
@@ -59,7 +100,7 @@
 		        AND hpname LIKE '%' || #{hpname} || '%'
 		    </when>
 		</choose>
-		GROUP BY HPNAME, HPADDR)
+		GROUP BY HIDX)
 	</select>
 	
 	<select id="getHpDetail" parameterType="String" resultType="HospitalDTO">

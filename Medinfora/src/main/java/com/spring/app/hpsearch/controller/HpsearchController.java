@@ -354,5 +354,30 @@ public class HpsearchController {
 		
 	}// end of public String getlocalinfo(HttpServletRequest request)
 	
+	//통계 관련 메소드
+   @ResponseBody
+   @GetMapping(value="/hpsearch/getChartPercentage.bibo", produces="text/plain;charset=UTF-8")
+   public String getChartPercentage(HttpServletRequest request) {
+      
+	   Map<String, String> paraMap = new HashMap<>();
+      List<Map<String, String>> mapList = service.getChartPercentage(paraMap);
+      
+		
+      JSONArray jsonArr = new JSONArray();
+      
+      if(mapList != null) {
+         for(Map<String, String> map : mapList) {
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("GU", map.get("GU"));
+            jsonObj.put("CNT", map.get("CNT"));
+            jsonObj.put("PERCNTAGE", map.get("PERCNTAGE"));
+            
+            jsonArr.put(jsonObj);
+         }// end of for----------------------
+      }
+            
+      return jsonArr.toString();
+   }
+
 	
 }

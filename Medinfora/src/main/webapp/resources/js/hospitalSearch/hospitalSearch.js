@@ -298,6 +298,7 @@ function searchHospitals(pageNo) {
             overlays = []; 
 
             $('#hospitalList').empty(); 
+            createChart();
 			let v_html = "";
 			if(json.length > 0) {
 	           json.forEach((item, index) => { 
@@ -553,6 +554,117 @@ function displayPagination(totalPage, currentPage) {
             $(this).addClass('active');
         });
     }
+}
+
+
+function createChart(dom) {
+    // 차트를 표시할 DOM 요소를 가져옴
+    var dom = document.getElementById('hp_chart');
+
+    // ECharts 인스턴스를 초기화
+    var myChart = echarts.init(dom, null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+
+    let hpdata = [];
+
+    // 진료과목 데이터 가져오기 
+    $.ajax({
+        url: contextPath + "/getclasscode.bibo",
+        async: true,
+        dataType: "json",
+        success: function(json) {
+            $.each(json, function(index, item) {
+                hpdata.push({ value: 200, name: item.classname });
+            });
+
+            // 차트 옵션 설정
+            var option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: true,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2,
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: hpdata
+                    }
+                ]
+            };
+
+            // 차트에 옵션 설정
+            myChart.setOption(option);
+
+            var clickedIndex;
+
+            myChart.on('click', function(params) {
+                myChart.dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0
+                });
+
+                myChart.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+
+                clickedIndex = params.dataIndex;
+            });
+
+            myChart.on('mouseover', function(params) {
+                if (clickedIndex !== undefined && params.dataIndex === clickedIndex) {
+                    return;
+                } else {
+                    myChart.dispatchAction({
+                        type: 'downplay',
+                        dataIndex: clickedIndex
+                    });
+                }
+            });
+
+            myChart.on('mouseout', function(params) {
+                if (clickedIndex !== undefined) {
+                    myChart.dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: 0,
+                        dataIndex: clickedIndex
+                    });
+                }
+            });
+
+            window.addEventListener('resize', myChart.resize);
+        },
+        error: function(request) {
+            alert("code : " + request.status);
+        }
+    });
 }
 
 // 지도에서 모든 마커를 제거하는 함수
