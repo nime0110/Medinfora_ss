@@ -187,13 +187,6 @@ public class MainDAO_imple implements MainDAO{
 		return result;
 	}
 
-	// (검색) 병원 리스트 검색
-	@Override
-	public List<HospitalDTO> gethdtolist(String search) {
-		
-		return sqlsession.selectList("medinfora.gethdtolist",search);
-	}
-
 	// (검색) 답변 리스트 검색
 	@Override
 	public List<MediQDTO> getmqList(String search) {
@@ -237,6 +230,18 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public List<String> getPopwordList() {
 		return sqlsession.selectList("medinfora.getPopwordList");
+	}
+
+	// (검색) 회원 병원 리스트 선 검색
+	@Override
+	public List<HospitalDTO> gethdtoOurlist(String search) {
+		return sqlsession.selectList("medinfora.gethdtoOurlist",search);
+	}
+
+	// (검색) 병원 검색
+	@Override
+	public HospitalDTO gethdto(Map<String, String> paraMap) {
+		return sqlsession.selectOne("medinfora.gethdto",paraMap);
 	}
 
 }

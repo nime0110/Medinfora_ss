@@ -281,7 +281,45 @@ public class MainService_imple implements MainService {
 		
 		int counthospital,countmediq,countmedia,countnotice,totalcount;
 		
-		List<HospitalDTO> hdtoList = dao.gethdtolist(search);
+		List<HospitalDTO> hdtoList = dao.gethdtoOurlist(search);
+		
+		if(hdtoList.size()!=10) {
+			
+			int size = hdtoList.size();
+			int rno = 1;
+			
+			for(int i=0;i<10-size;i++) {
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("search",search);
+				paraMap.put("rno",String.valueOf(rno++));
+				
+				HospitalDTO hdto = dao.gethdto(paraMap);
+				
+				try {
+					hdto.getHpname();
+				}catch (Exception e) {
+					break;
+				}
+				
+				
+				for(int j=0;j<size;j++) {
+					
+					if(hdto.getHpname().equals(hdtoList.get(j).getHpname()) &&
+						hdto.getHpaddr().equals(hdtoList.get(j).getHpaddr()) ){
+						i--;
+						break;
+					}
+					if(j==size-1) {
+						hdtoList.add(hdto);
+					}
+					
+				}// 중복 제거
+				
+			}
+			
+		}
+		
 		counthospital = hdtoList.size();
 		
 		if(counthospital != 0) {

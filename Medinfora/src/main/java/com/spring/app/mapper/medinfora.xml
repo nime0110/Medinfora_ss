@@ -245,16 +245,6 @@
 		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
 	</select>
 	
-	<!-- (검색) 병원 리스트 검색 -->
-	<select id="gethdtolist" parameterType="String" resultType="HospitalDTO">
-		select HPNAME,hpaddr,AGENCY, HPTEL
-		from(
-		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
-		    from HOSPITAL
-		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
-		)where rno between 1 and 5
-	</select>
-	
 	<!-- (검색) 질문 리스트 검색 -->
 	<select id="getmqList" parameterType="String" resultType="MediQDTO">
 		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
@@ -312,5 +302,28 @@
 		    )
 		)
 		where rno between 1 and 5
-	</select>	
+	</select>
+	
+	<!-- (검색) 병원리스트 회원 선검색 -->
+	<select id="gethdtoOurlist" parameterType="String" resultType="HospitalDTO">
+		select hidx,HPNAME,HPaddr,AGENCY,HPTEL
+		from
+		(
+		    select row_number() over (order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME,HPADDR,AGENCY,HPTEL
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where HPNAME like '%'||#{search}||'%'
+		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+		)
+		where rno between 1 and 5
+	</select>
+	
+	<select id="gethdto" parameterType="HashMap" resultType="HospitalDTO">
+		select Hpname,HPaddr,AGENCY,HPTEL
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno = #{rno}
+	</select>
+	
 </mapper>
