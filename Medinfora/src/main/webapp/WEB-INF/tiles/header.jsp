@@ -251,6 +251,7 @@
   
   <%-- 스마트폰 토글 --%>
   <div class="media_tog fadeout">
+  	<div class="media_tog_title">일반 메뉴</div>
   	<div class="media_tog_sub gohpsearch">병원 찾기</div>
   	<div class="media_tog_sub" onclick="goreserve()">진료 예약</div>
   	
@@ -258,7 +259,6 @@
   	<div class="media_tog_sub">의료 통계</div>
   	<div class="media_tog_sub">의료 뉴스</div>
   	<div class="media_tog_sub" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</div>
-	
   </div>
   
 </header>

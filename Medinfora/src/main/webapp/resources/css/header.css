@@ -519,6 +519,7 @@ iframe#loginPage {
         color: var(--grey800);
         text-align: center;
         padding: 6px 0;
+        text-shadow: -1px 0 #ffffff, 0 1px #ffffff, 1px 0 #ffffff, 0 -1px #ffffff;
     }
 
     .media_tog_sub{
@@ -526,16 +527,18 @@ iframe#loginPage {
         margin : 5px 0;
         font-family: var(--font);
         font-size: 1rem;
-        color: var(--grey800);
+        color: var(--grey50);
         padding : 4px 8px;
         text-align: center;
         border-radius: 10px;
         transition: all 0.3s;
         box-shadow: 0px 0px 10px #0000000d;
+        text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
     }
     
     .media_tog_sub:hover{
-        color: var(--grey600);
+        color: var(--grey200);
+        background-color: rgba(0, 0, 0, 0.1);
         cursor: pointer;
     }
 
