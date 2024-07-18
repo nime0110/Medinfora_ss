@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
     const userid = "${requestScope.userid}";
@@ -70,8 +71,52 @@ $(document).ready(function(){
             }
         });
     });
-});
+    $("#btnSave").click(function(){
+        const formData = $("#editMemberForm").serialize();
+        $.ajax({
+            url: "<%= ctxPath %>/mypage/saveMemberDetail.bibo",
+            type: "POST",
+            data: formData,
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    alert("회원 정보가 성공적으로 저장되었습니다.");
+                    $("#memberDetailModal").modal('hide');
+                    location.reload(); // 페이지를 새로고침하여 변경사항을 반영
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("회원 정보를 저장하는데 실패했습니다.");
+            }
+        });
+    });
 
+    $("#btnDelete").click(function(){
+        const userid = $("#userid").val();
+        if (confirm("정말로 회원을 탈퇴시키겠습니까?")) {
+            $.ajax({
+                url: "<%= ctxPath %>/mypage/deleteMember.bibo",
+                type: "GET",
+                data: { userid: userid },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        alert("회원이 성공적으로 탈퇴되었습니다.");
+                        $("#memberDetailModal").modal('hide');
+                        location.reload(); // 페이지를 새로고침하여 변경사항을 반영
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("회원 탈퇴에 실패했습니다.");
+                }
+            });
+        }
+    });
+});
 </script>
 
 <div class="container" style="padding:3% 0;">
@@ -97,9 +142,15 @@ $(document).ready(function(){
         <option value="">회원 선택</option>
         <option value="0">관리자</option>
         <option value="1">일반회원</option>
-        <option value="2">의료회원</option>
+        <option value="2">의료종사자</option>
+        <option value="3">일반회원(휴면)</option>
+        <option value="4">의료종사자(휴면)</option>
+        <option value="8">정지회원</option>
+        <option value="9">탈퇴회원</option>
     </select>
     <button type="button" class="btn btn-secondary btn-sm" id="btnSearch">검색하기</button>
+    <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
+   <form class="search-box" action="" method="get"><input class="search-txt" type="text" name="" placeholder="검색어를 입력하세요"> </form>
 </form>
 <br>
 
@@ -120,10 +171,15 @@ $(document).ready(function(){
                 <tr>
                     <td>${member.userid}</td>
                     <td>
-                        <c:choose>
-                            <c:when test="${member.loginmethod == 0}">일반회원</c:when>
-                            <c:when test="${member.loginmethod == 1}">카카오회원</c:when>
-                            <c:otherwise>기타</c:otherwise>
+                         <c:choose>
+ 						   <c:when test="${member.mIdx == 0}">관리자</c:when>
+ 						     <c:when test="${member.mIdx == 1}">일반회원</c:when>
+                            <c:when test="${member.mIdx == 2}">의료종사자</c:when>
+                              <c:when test="${member.mIdx == 3}">일반회원(휴면)</c:when>
+                                <c:when test="${member.mIdx == 4}">의료종사자(휴면)</c:when>
+                                  <c:when test="${member.mIdx == 8}">정지회원</c:when>
+                                    <c:when test="${member.mIdx == 9}">탈퇴회원</c:when>
+                            <c:otherwise>일반회원</c:otherwise>
                         </c:choose>
                     </td>
                     <td>${member.name}</td>
@@ -185,14 +241,20 @@ $(document).ready(function(){
                     <select class="form-control" id="mbr_division" name="mbr_division">
                         <option value="0">관리자</option>
                         <option value="1">일반회원</option>
-                        <option value="2">의료회원</option>
+                        <option value="2">의료종사자</option>
+                         <option value="3">일반회원(휴면)</option>
+                        <option value="4">의료종사자(휴면)</option>
+                          <option value="8">정지회원</option>
+                        <option value="9">탈퇴회원</option>
                     </select>
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary" id="btnSave">저장</button>
+           <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="btnSave">저장</button>
+                <button type="button" class="btn btn-danger" id="btnDelete">탈퇴시키기</button>
+            </div>
         </div>
     </div>
 </div>

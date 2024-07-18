@@ -422,8 +422,7 @@ public class MypageController {
 	////////////////////////////////// ///////////////////////////////////////////
 	@GetMapping("memberList.bibo")
 	public ModelAndView isAdmin_memberList(ModelAndView mav, HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(defaultValue = "") String userid,
-			@RequestParam(defaultValue = "") String mbr_division) {
+			@RequestParam(defaultValue = "") String userid, @RequestParam(defaultValue = "") String mbr_division) {
 		// requestParam 사용하여 매개변수 사용하기
 
 		Map<String, Object> paraMap = new HashMap<>();
@@ -475,18 +474,19 @@ public class MypageController {
 
 		return jsonObj.toString();
 	}
+	
+	  // 회원 탈퇴 처리
+	  
+	  @GetMapping("/deleteMember.bibo") public ModelAndView
+	  deleteMember(ModelAndView mav, @RequestParam("userid") String userid) {
+	  boolean success = service.deleteMember(userid);
+	  
+	  if (success) { mav.addObject("message", "회원이 성공적으로 탈퇴되었습니다."); } else {
+	  mav.addObject("message", "회원 탈퇴에 실패했습니다."); }
+	  
+	  mav.setViewName("jsonView"); return mav; }
+	  
 	/*
-	 * // 회원 탈퇴 처리
-	 * 
-	 * @GetMapping("/deleteMember.bibo") public ModelAndView
-	 * deleteMember(ModelAndView mav, @RequestParam("userid") String userid) {
-	 * boolean success = service.deleteMember(userid);
-	 * 
-	 * if (success) { mav.addObject("message", "회원이 성공적으로 탈퇴되었습니다."); } else {
-	 * mav.addObject("message", "회원 탈퇴에 실패했습니다."); }
-	 * 
-	 * mav.setViewName("jsonView"); return mav; }
-	 * 
 	 * // 회원이 작성한 글 조회
 	 * 
 	 * @GetMapping("/getMemberPosts.bibo") public ModelAndView

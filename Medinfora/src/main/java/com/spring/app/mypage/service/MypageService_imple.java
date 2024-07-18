@@ -234,6 +234,7 @@ public class MypageService_imple implements MypageService {
 		List<MemberDTO> memberList = dao.GetHidxInfo(hidx);
 		return memberList;
 	}
+	//////////////////////////////////////////////////
 
 	// 회원 목록 가져오기
 	@Override
@@ -265,6 +266,7 @@ public class MypageService_imple implements MypageService {
 		return dao.deleteMember(userid) == 1;
 
 	}
+	///////////////////////////////////////////////////
 
 	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
 	@Override
