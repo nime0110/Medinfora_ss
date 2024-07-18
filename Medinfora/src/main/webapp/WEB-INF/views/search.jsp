@@ -5,13 +5,6 @@
 <% String ctxPath = request.getContextPath(); %>
 <link rel="stylesheet" href="<%=ctxPath%>/resources/css/search.css">
 
-<div id="searchheader">
-	<div id="searchdiv">
-		<input id="searchinput" type="text" name="search" value="${requestScope.search}"/>
-		<button id="searchbtn" type="button" name="btn_search"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i></button>
-	</div>
-</div>
-
 <div id="searchcontainer">
 	<div id="searchsidebar">
 		<div class="sidebaroption selectoption">
@@ -49,13 +42,12 @@
 					<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
 						<div class="content_h">
 							<div class="content_place">
-								<div class="content_hpname">${hdto.hpname}</div>
+								<div class="content_hpname">${hdto.hpname} (${hdto.agency})</div>
 								<div class="content_hpaddress">${hdto.hpaddr}</div>
 								<div class="content_hpmobile">${hdto.hptel}</div>
 							</div>
 							<div class="content_tool">
 								<button class="tool_btn" type="button">예약하기</button>
-								<button class="tool_btn" type="button">위치보기</button>
 							</div>
 						</div>
 					</c:forEach>

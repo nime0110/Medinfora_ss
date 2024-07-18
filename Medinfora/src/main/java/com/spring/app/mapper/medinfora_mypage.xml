@@ -4,6 +4,20 @@
 
 <mapper namespace="com.spring.app.mypage.model.MypageDAO">
 	
+	<!-- (비밀번호변경) 사용중인 비밀번호 확인하기 -->
+	<select id="nowpwdCheck" parameterType="Map" resultType="String">
+		select userid
+		from MEMBER 
+		where userid = #{userid} and PWD = #{pwd}
+	</select>
+	
+	<!-- (비밀번호변경) 비밀번호 변경하기 -->
+	<update id="updatepwd" parameterType="Map">
+		UPDATE MEMBER
+		SET pwd = #{pwd}, PWDUPDATEDAY = default
+		WHERE userid = #{userid}
+	</update>
+	
 	<!-- (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기  -->
 	<select id="Searchhospital" resultType="String" parameterType="String">
 		SELECT distinct hidx
@@ -84,7 +98,7 @@
 		    (
 		        select rcode, rstatus
 		        from reservecode
-		        where rstatus = #{inputsc}
+		        where rstatus like '%' || #{inputsc} || '%'
 		    ) RC
 		    ON RM.rcode = RC.rcode
 		)
@@ -327,20 +341,6 @@
 		WHERE USERID = #{userid}
 	</update>
 	
-	<!-- (비밀번호변경) 사용중인 비밀번호 확인하기 -->
-	<select id="nowpwdCheck" parameterType="Map" resultType="String">
-		select userid
-		from MEMBER 
-		where userid = #{userid} and PWD = #{pwd}
-	</select>
-	
-	<!-- (비밀번호변경) 비밀번호 변경하기 -->
-	<update id="updatepwd" parameterType="Map">
-		UPDATE MEMBER
-		SET pwd = #{pwd}, PWDUPDATEDAY = default
-		WHERE userid = #{userid}
-	</update>
-	
 	<!-- (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기  -->
 	<select id="getRdto" resultType="ReserveDTO" parameterType="String">
 		SELECT ridx, reportday, checkin, name, mobile, rstatus
@@ -455,7 +455,7 @@
 		        (
 		            select rcode, rstatus
 		            from reservecode
-		            where rstatus = #{inputsc}
+		            where rstatus like '%' || #{inputsc} || '%'
 		        )RC
 		        ON RM.rcode = RC.rcode
 		    ) RMC
@@ -736,6 +736,11 @@
 		ON C.userid = M.userid
 	</select>
 	
+	<!-- (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기  -->
+	<update id="cancleRdto" parameterType="String">
+		update reserve set rcode = '0'
+		where ridx = #{ridx}
+	</update>
 	
 	<!--  회원 목록 가져오기  -->
 	<select id="getMemberList" parameterType="map" resultType="MemberDTO">

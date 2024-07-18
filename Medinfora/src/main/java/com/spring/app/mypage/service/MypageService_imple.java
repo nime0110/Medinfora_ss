@@ -33,12 +33,12 @@ public class MypageService_imple implements MypageService {
 		boolean result = false;
 
 		try {
-			paraMap.put("mobile",aES256.encrypt(paraMap.get("mobile")));
+			paraMap.put("mobile", aES256.encrypt(paraMap.get("mobile")));
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		}
 
-		if(dao.updateinfo(paraMap)==1) {
+		if (dao.updateinfo(paraMap) == 1) {
 			result = true;
 		}
 
@@ -49,11 +49,11 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public boolean nowpwdCheck(Map<String, String> paraMap) {
 
-		paraMap.put("pwd",Sha256.encrypt(paraMap.get("pwd")));
+		paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
 
 		String userid = dao.nowpwdCheck(paraMap);
 
-		if(userid==null) {
+		if (userid == null) {
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public int updatepwd(Map<String, String> paraMap) {
 
-		paraMap.put("pwd",Sha256.encrypt(paraMap.get("pwd")));
+		paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
 
 		return dao.updatepwd(paraMap);
 	}
@@ -80,7 +80,7 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public List<ReserveDTO> reserveList(Map<String, String> paraMap) {
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색)
 			reserveList = dao.PatientNameList(paraMap);
 
@@ -94,14 +94,13 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
 
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
-		}
-		else {
+		} else {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명, 진료현황)
 			reserveList = dao.reserveList(paraMap);
 		}
@@ -113,7 +112,7 @@ public class MypageService_imple implements MypageService {
 	public int reserveListCnt(Map<String, String> paraMap) {
 		int n = 0;
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색 / 페이징 X)
 			reserveList = dao.TotalPatientNameList(paraMap);
 
@@ -127,18 +126,17 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
 
 			n = reserveList.size();
-		}
-		else {
+		} else {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트의 개수(환자명, 진료현황)
 			n = dao.reserveListCnt(paraMap);
 		}
 		return n;
-	}	
+	}
 
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	@Override
@@ -172,7 +170,7 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public List<ReserveDTO> UserReserveList(Map<String, String> paraMap) {
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)
 			reserveList = dao.HospitalNameList(paraMap);
 
@@ -186,14 +184,13 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
 
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
-		}
-		else {
+		} else {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명, 진료현황)
 			reserveList = dao.UserreserveList(paraMap);
 		}
@@ -205,7 +202,7 @@ public class MypageService_imple implements MypageService {
 	public int UserReserveListCnt(Map<String, String> paraMap) {
 		int n = 0;
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색 / 페이징 X)
 			reserveList = dao.TotalReserveHospitalNameList(paraMap);
 
@@ -219,13 +216,12 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
 
 			n = reserveList.size();
-		}
-		else {
+		} else {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트의 개수(병원명, 진료현황)
 			n = dao.UserreserveListCnt(paraMap);
 		}
@@ -244,25 +240,24 @@ public class MypageService_imple implements MypageService {
 	public List<MemberDTO> getMemberList(Map<String, Object> paraMap) {
 		List<MemberDTO> selectMemberList = dao.getMemberList(paraMap);
 
-
 		return selectMemberList;
 	}
 
-	// 회원 정보 상세 정보 가져오기 
+	// 회원 정보 상세 정보 가져오기
 	@Override
 	public MemberDTO getMemberDetail(String userid) {
-		
+
 		MemberDTO member = dao.getMemberDetails(userid);
 		if (member != null) {
-	        try {
-	            member.setMobile(aES256.decrypt(member.getMobile()));
-	            member.setEmail(aES256.decrypt(member.getEmail()));
-	        } catch (Exception e) {
-	            // 로깅 추가
-	            e.printStackTrace();
-	        }
-	    }
-	    return member;
+			try {
+				member.setMobile(aES256.decrypt(member.getMobile()));
+				member.setEmail(aES256.decrypt(member.getEmail()));
+			} catch (Exception e) {
+				// 로깅 추가
+				e.printStackTrace();
+			}
+		}
+		return member;
 	}
 
 	@Override
@@ -270,4 +265,12 @@ public class MypageService_imple implements MypageService {
 		return dao.deleteMember(userid) == 1;
 
 	}
+
+	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
+	@Override
+	public int cancleRdto(String ridx) {
+		int n = dao.cancleRdto(ridx);
+		return n;
+	}
+
 }
