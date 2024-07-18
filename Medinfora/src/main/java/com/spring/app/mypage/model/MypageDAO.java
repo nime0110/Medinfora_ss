@@ -88,5 +88,12 @@ public interface MypageDAO {
 
 	// 회원 목록 가져오기 
 	List<MemberDTO> getMemberList(Map<String, Object> paramMap);
+
+	// 회원 상세 정보 가져오기 
+	MemberDTO getMemberDetails(String userid);
+
+	int deleteMember(String userid);
+
+
 	
 }
