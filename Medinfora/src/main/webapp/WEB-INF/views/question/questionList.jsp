@@ -169,7 +169,7 @@ function pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo){
 }// end of pageBarAdd()
 
 
-function search(pageNo, subject, type, word){
+function searchList(pageNo, subject, type, word){
 	
 	if(pageNo == null){
 		subject = $("select[name='subject']").val();
@@ -188,6 +188,8 @@ function search(pageNo, subject, type, word){
 		dataType:"json",
 		success:function(json){
 			console.log(JSON.stringify(json));
+			
+			
 			
 			<%-- 리스트 띄우는거 ---%>
 			let questionArea = ``;
@@ -213,14 +215,14 @@ function search(pageNo, subject, type, word){
 								 <span class="col-5" align="left">\${item.title}&nbsp;`;
 								 
 				if(item.imgsrc.trim() != ""){
-					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>&nbsp;`;
+					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>`;
 				}
 				
 				if(item.newwrite == "0"){
 					questionArea += `<i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i>`;
 				}
 				
-				questionArea += `</span>
+				questionArea += `&nbsp;</span>
 								 <span class="col-2">`;
 								 
 				if(item.acount == 0){
@@ -247,54 +249,65 @@ function search(pageNo, subject, type, word){
 			$("div#questionArea").html(questionArea);
 			
 			
-			<%-- 망할 페이지바  코드중복...--%>
 			
+			<%-- 검색 값 유지하기 --%>
+			const subject = json.qdtoMap.subject;
+			const type = json.qdtoMap.type;
+			const word = json.qdtoMap.word;
+			
+			
+			$("select[name='subject']").val(subject);
+			$("select[name='type']").val(type);
+			$("input:text[name='word']").val(word);
+			
+			
+			<%-- 망할 페이지바  코드중복...--%>
 			const blockSize = json.qdtoMap.blockSize;
 			let loop = json.qdtoMap.loop;
 			let pageNo = json.qdtoMap.pageNo;
 			const totalPage = json.qdtoMap.totalPage;
 			const currentPageNo = json.qdtoMap.currentPageNo;
-			
+/*
 			console.log(blockSize);
 			console.log(loop);
 			console.log(pageNo);
 			console.log(totalPage);
 			console.log(currentPageNo);
-
+*/
 			let pageBar = `<ul class='pagination hj_pagebar nanum-n size-s'>`;
 			
 			if(pageNo != 1) {
-				pageBar += "<li class='page-item'>" 
-						+ " 	<a class='page-link' onclick='search("+(pageNo-1)+","+subject+","+type+","+word+")>" 
-						+ "	    	<span aria-hidden='true'>&laquo;</span>" 
-						+ "	    </a>" 
-						+ "</li>";
+				pageBar += `<li class='page-item'> 
+								<a class='page-link' onclick='searchList(\${pageNo-1},"\${subject}","\${type}","\${word}");'> 
+									<span aria-hidden='true'>&laquo;</span>
+								</a> 
+							</li>`;
 			}
 			
 			while(!(loop>blockSize || pageNo > totalPage)) {
 				if(pageNo == currentPageNo) {
-					pageBar += "<li class='page-item'>"
-							+ "		<a class='page-link nowPage'>"+pageNo+"</a>" 
-							+ "</li>";
+					pageBar += `<li class='page-item'>
+									<a class='page-link nowPage'>\${pageNo}</a>
+								</li>`;
 				}
 				else{
-					pageBar += "<li class='page-item'>"
-							+ "		<a class='page-link' onclick='search("+pageNo+")'>" +pageNo+"</a>" 
-							+ "</li>";
+					pageBar += `<li class='page-item'>
+									<a class='page-link' onclick='searchList(\${pageNo},"\${subject}","\${type}","\${word}");'>\${pageNo}</a> 
+								</li>`;
 				}
 				loop++;
 				pageNo++;
 			}
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li class='page-item'>"
-						+ "		<a class='page-link' onclick='search("+pageNo+")'>"
-						+ "	    	<span aria-hidden='true'>&raquo;</span>"
-						+ "	    </a>"
-						+ "</li>";
+				pageBar += `<li class='page-item'>
+								<a class='page-link' onclick='searchList(\${pageNo},"\${subject}","\${type}","\${word}");'>
+									<span aria-hidden='true'>&raquo;</span>
+								</a>
+							</li>`;
 			}
 			
-			pageBar += "</ul>";
+			pageBar += `</ul>`;
 			
 			$("div.pagebar").html(pageBar);
 			
@@ -353,10 +366,10 @@ function gowrite(){
 				</span>
 				
 				<span>
-					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="검색어를 입력해주세요." />
+					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="검색어를 입력해주세요." autocomplete="none"/>
 				</span>
 				<span>
-					<button class="jh_btn_design search nanum-eb size-s" type="button" onclick="search()">검색</button>
+					<button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()">검색</button>
 				</span>
 			      
 			      

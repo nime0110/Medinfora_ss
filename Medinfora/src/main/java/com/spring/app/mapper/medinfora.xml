@@ -245,16 +245,6 @@
 		select userid from CLASSCODEMET where hidx = #{hidx} group by userid
 	</select>
 	
-	<!-- (검색) 병원 리스트 검색 -->
-	<select id="gethdtolist" parameterType="String" resultType="HospitalDTO">
-		select HPNAME,hpaddr,AGENCY, HPTEL
-		from(
-		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
-		    from HOSPITAL
-		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
-		)where rno between 1 and 5
-	</select>
-	
 	<!-- (검색) 질문 리스트 검색 -->
 	<select id="getmqList" parameterType="String" resultType="MediQDTO">
 		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
@@ -281,7 +271,7 @@
 		from (
 		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, VIEWCNT
 		    from NOTICE
-		    where TITLE like '%'||''||'%' or CONTENT like '%'||''||'%'
+		    where TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%'
 		)where rno between 1 and 5
 	</select>
 	
@@ -290,5 +280,50 @@
 		INSERT INTO FINAL_ORAUSER3.SEARCHLOG (USERID, SEARCHWORD)
 		VALUES (#{userid}, #{search})
 	</insert>
+	
+	<!-- (검색) 병원회원여부 검색 -->
+	<select id="isMediMember" parameterType="int" resultType="String">
+		select USERID
+		from CLASSCODEMET
+		where HIDX = #{hidx}
+	</select>
+	
+	<!-- 인기 검색어 불러오기 -->
+	<select id="getPopwordList" resultType="String">
+		select SEARCHWORD
+		from
+		(
+		    select row_number() over (order by cnt desc) as rno, SEARCHWORD, cnt
+		    from
+		    (
+		        select SEARCHWORD, count(*) as cnt
+		        from SEARCHLOG
+		        group by SEARCHWORD
+		    )
+		)
+		where rno between 1 and 5
+	</select>
+	
+	<!-- (검색) 병원리스트 회원 선검색 -->
+	<select id="gethdtoOurlist" parameterType="String" resultType="HospitalDTO">
+		select hidx,HPNAME,HPaddr,AGENCY,HPTEL
+		from
+		(
+		    select row_number() over (order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME,HPADDR,AGENCY,HPTEL
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where HPNAME like '%'||#{search}||'%'
+		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+		)
+		where rno between 1 and 5
+	</select>
+	
+	<select id="gethdto" parameterType="HashMap" resultType="HospitalDTO">
+		select Hpname,HPaddr,AGENCY,HPTEL
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno = #{rno}
+	</select>
 	
 </mapper>

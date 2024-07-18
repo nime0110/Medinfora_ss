@@ -9,6 +9,8 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/mypage/reserveMedia.css">
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/mdreserve.js"></script>
 
+<div id="ctxPath"><%= ctxPath%></div>
+<div id="hpname">${sessionScope.loginuser.name}</div>
 <div class="hj_container">
 	<div class="py-4" align="center">
 		<h2 class="nanum-eb size-n">진료 예약 현황</h2>
@@ -98,7 +100,7 @@
   	</div>
 </div>
 <%-- 모달 끝 --%>
-<form name="ChangeRstatus">
-	<input type="hidden" name="rStatus" value="" />
-	<input type="hidden" name="ridx" value="" />
-</form>
+<!-- <form name="ChangeRstatus">
+	<input type="text" name="rStatus" value="" />
+	<input type="text" name="ridx" value="" />
+</form> -->

@@ -99,7 +99,7 @@ from(
     select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY
     from HOSPITAL
     where Hpname like '%'||'창원'||'%' group by HPNAME, HPADDR, AGENCY
-)where rno between 1 and 10;
+)where rno = '3';
 
 select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
 from (
@@ -129,11 +129,29 @@ select HPNAME,hpaddr,AGENCY, HPTEL, hidx
 		    where Hpname like '%'||'창원'||'%'
 		)where rno between 1 and 5
 
-SELECT hidx, hpname, hpaddr, hptel
-	    FROM(
-	        select row_number() over(order by hidx) AS rno
-	             , hidx, hpname, hpaddr, replace(hptel, '-', '') as hptel
-	        from hospital
-	        where hpname = '#{hpname}' and hpaddr = #{hpaddr}
-        )H
-        WHERE rno = 1;
+select USERID
+from CLASSCODEMET
+where HIDX ='';
+
+select SEARCHWORD
+from
+(
+    select row_number() over (order by cnt desc) as rno, SEARCHWORD, cnt
+    from
+    (
+        select SEARCHWORD, count(*) as cnt
+        from SEARCHLOG
+        group by SEARCHWORD
+    )
+)
+where rno between 1 and 5;
+
+select hidx,HPNAME,HPNAME,AGENCY,HPTEL
+from
+(
+    select row_number() over (order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME,HPADDR,AGENCY,HPTEL
+    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+    where HPNAME like '%'||'창원'||'%'
+    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+)
+where rno between 1 and 5;

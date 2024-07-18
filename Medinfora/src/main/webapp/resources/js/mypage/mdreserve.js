@@ -44,12 +44,54 @@ $(document).on('click','.btnStyle',() => {
         return;
     }
 
-    $("input[name='rStatus']").val(rStatus);
+    let ridx = $("#modal-ridx").text();
+    let mobile = $("#modal-mobile").text();
 
-    const frm = document.ChangeRstatus;
-    frm.action = "ChangeRstatus.bibo";
-    frm.method = "post";
-    frm.submit();
+    const ctxPath = $("div#ctxPath").text();
+    const hpname = $("div#hpname").text();
+    const reserveDay = $("#modal-checkin").text().substring(0,16);
+    let currentShowPageNo = $(".nowPage").text();
+
+    $.ajax({
+
+        url: "ChangeRstatus.bibo"
+        , type:"post"
+        , data: {"ridx":ridx
+                ,"rStatus":rStatus
+        }
+        , dataType:"json"
+        , success:function(json){
+            if(json.n == 1){
+                if(json.send == 1){
+                    $.ajax({
+                        url:ctxPath+"/smsSend.bibo"
+                        , type:"get"
+                        , data:{"mobile":mobile
+                            ,"smsContent":`${hpname} ${reserveDay} 예약이 ${rStatus} 되었습니다.`
+                        } 
+                        , dataType:"json"
+                        , success:function(json){
+                            alert("진료현황이 " + rStatus + " 으(로) 변경되었습니다.");
+                            $('#ChangeRcodeModal').modal('hide');
+                            Page(currentShowPageNo);
+                        }
+                        , error:function(request){
+                            alert("code: "+request.status);
+                        }
+                    })  // end of $.ajax({-----------------------------
+                }
+                else{
+                    alert("진료현황이 " + rStatus + " 으(로) 변경되었습니다.");
+                    $('#ChangeRcodeModal').modal('hide');
+                    Page(currentShowPageNo);
+                }
+            }
+        }
+        , error:function(request){
+			alert("code: "+request.status);
+		}
+
+    })  // end of $.ajax({----------------
     
 })  // end of $(document).on('change','.search_ch',(e) => {---------------
 

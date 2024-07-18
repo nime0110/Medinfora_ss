@@ -53,6 +53,7 @@ public class MainController {
 		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		
 		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
@@ -249,6 +250,22 @@ public class MainController {
 		mav.setViewName("search.tiles");
 		
 		return mav;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@GetMapping("/getpopword.bibo")
+	public String getpopword() {
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		List<String> popwordList = service.getPopwordList();
+		
+		for(String popword : popwordList) {
+			jsonArr.add(popword);
+		}
+		
+		return jsonArr.toString();
 	}
 	
 }

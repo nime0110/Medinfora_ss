@@ -59,6 +59,9 @@ public interface MypageDAO {
 	// (의료인- 진료예약 열람) 진료현황 변경해주기
 	int ChangeRstatus(Map<String, String> paraMap);
 
+	// (의료인- 진료예약 열람) 진료완료로 변경하기
+	void updatercode(String ridx);
+	
 	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)
 	List<ReserveDTO> HospitalNameList(Map<String, String> paraMap);
 

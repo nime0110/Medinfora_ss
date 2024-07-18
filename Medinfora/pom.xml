@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring</groupId>
-	<artifactId>app</artifactId>
-	<name>Mediinfora</name>
+	<artifactId>Medinfora</artifactId>
+	<name>Medinfora</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -391,6 +391,13 @@
 		    <version>1.8</version>
 		</dependency>
       	
+      	<!-- sms 전송 -->
+      	<dependency>
+	    	<groupId>net.nurigo</groupId>
+	    	<artifactId>javaSDK</artifactId>
+	    	<version>2.2</version>
+ 		</dependency>
+ 		
 	</dependencies>
     <build>
         <plugins>

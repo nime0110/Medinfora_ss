@@ -2,6 +2,8 @@ package com.spring.app.mypage.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -275,8 +277,9 @@ public class MypageController {
 	} // end of public String getRdto(HttpServletRequest request) {---------------
 
 	// === 진료현황 변경 === //
+	@ResponseBody
 	@PostMapping("ChangeRstatus.bibo")
-	public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public String ChangeRstatus(HttpServletRequest request) {
 		String rStatus = request.getParameter("rStatus");
 		String ridx = request.getParameter("ridx");
 
