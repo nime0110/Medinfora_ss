@@ -71,6 +71,9 @@ $(document).ready(function(){
             }
         });
     });
+    $(".close, button[data-dismiss='modal']").click(function(){
+        $("#memberDetailModal").modal('hide');
+    });
     $("#btnSave").click(function(){
         const formData = $("#editMemberForm").serialize();
         $.ajax({
@@ -82,6 +85,7 @@ $(document).ready(function(){
                 if (data.success) {
                     alert("회원 정보가 성공적으로 저장되었습니다.");
                     $("#memberDetailModal").modal('hide');
+                    
                     location.reload(); // 페이지를 새로고침하여 변경사항을 반영
                 } else {
                     alert(data.message);
@@ -136,10 +140,12 @@ $(document).ready(function(){
             </label>
             <input type="checkbox" id="${status.index}" name="userid" value="${userid}">&nbsp;&nbsp;
         </c:forEach>
-    </c:if>
-    <input type="hidden" name="userid" />
-    <select name="mbr_division" style="height: 30px; width: 120px; margin: 10px 30px 0 0;">
-        <option value="">회원 선택</option>
+    </c:if><form>
+		<fieldset>
+			<div class="p-4 searchBar" align="center">
+				<span>
+					<select class="sclist search_ch sel_0 nanum-b">
+						   <option value="">회원 선택</option>
         <option value="0">관리자</option>
         <option value="1">일반회원</option>
         <option value="2">의료종사자</option>
@@ -147,11 +153,24 @@ $(document).ready(function(){
         <option value="4">의료종사자(휴면)</option>
         <option value="8">정지회원</option>
         <option value="9">탈퇴회원</option>
-    </select>
-    <button type="button" class="btn btn-secondary btn-sm" id="btnSearch">검색하기</button>
+					</select>
+				</span>
+				<span>
+					<input class="inputsc search_ch sel_1 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
+					<input type="text" style="display: none;"/>		<%-- 전송방지 --%>
+				</span>
+				<span>
+					<button class="jh_btn_design search nanum-eb size-s" type="button">검색</button>
+				</span>
+			</div>
+		</fieldset>
+	</form>
+    <input type="hidden" name="userid" />
+    
+  
     <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
-   <form class="search-box" action="" method="get"><input class="search-txt" type="text" name="" placeholder="검색어를 입력하세요"> </form>
-</form>
+   
+
 <br>
 
 <table id="memberTbl" class="table">
@@ -242,9 +261,7 @@ $(document).ready(function(){
                         <option value="0">관리자</option>
                         <option value="1">일반회원</option>
                         <option value="2">의료종사자</option>
-                         <option value="3">일반회원(휴면)</option>
-                        <option value="4">의료종사자(휴면)</option>
-                          <option value="8">정지회원</option>
+                           <option value="8">정지회원</option>
                         <option value="9">탈퇴회원</option>
                     </select>
                 </div>

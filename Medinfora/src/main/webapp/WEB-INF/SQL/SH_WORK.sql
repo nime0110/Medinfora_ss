@@ -355,3 +355,14 @@ WHERE
         FROM member m
         LEFT JOIN memberidx mi ON m.midx = mi.midx
         WHERE m.userid =  'seunghye'
+        
+        
+        
+        
+         SELECT m.*, mi.mStatus,
+               
+               (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+               (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postCount
+        FROM member m
+        LEFT JOIN memberidx mi ON m.midx = mi.midx
+        WHERE m.userid = 'kimsh723'

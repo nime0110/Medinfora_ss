@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -246,9 +248,14 @@ public class MypageService_imple implements MypageService {
 
 	// 회원 정보 상세 정보 가져오기
 	@Override
-	public MemberDTO getMemberDetail(String userid) {
+	public MemberDTO getMemberDetail(Map<String, String> paraMap, HttpServletRequest request) {
 
-		MemberDTO member = dao.getMemberDetails(userid);
+		if(paraMap.get("loginmethod") == "0"){
+			paraMap.put("pw", Sha256.encrypt(paraMap.get("pwd")));
+		}
+	
+		MemberDTO member = dao.getMemberDetails(paraMap);
+		
 		if (member != null) {
 			try {
 				member.setMobile(aES256.decrypt(member.getMobile()));
