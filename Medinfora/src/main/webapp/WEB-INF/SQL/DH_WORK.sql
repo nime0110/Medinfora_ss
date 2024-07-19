@@ -155,3 +155,13 @@ from
     group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
 )
 where rno between 1 and 5;
+
+select hidx,HPNAME,HPaddr,AGENCY,HPTEL
+		from
+		(
+		    select row_number() over (order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME,HPADDR,AGENCY,HPTEL
+		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
+		    where HPNAME like '%'||'창원'||'%'
+		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+		)
+		where rno between 1 and 10

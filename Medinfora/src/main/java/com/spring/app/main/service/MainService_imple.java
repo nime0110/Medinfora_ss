@@ -283,12 +283,14 @@ public class MainService_imple implements MainService {
 		
 		List<HospitalDTO> hdtoList = dao.gethdtoOurlist(search);
 		
-		if(hdtoList.size()!=10) {
+		
+		if(hdtoList.size()!=5) {
 			
 			int size = hdtoList.size();
 			int rno = 1;
 			
-			for(int i=0;i<10-size;i++) {
+			dept:
+			for(int i=0;i<5-size;i++) {
 				
 				Map<String,String> paraMap = new HashMap<>();
 				paraMap.put("search",search);
@@ -302,22 +304,24 @@ public class MainService_imple implements MainService {
 					break;
 				}
 				
-				
-				for(int j=0;j<size;j++) {
-					
-					if(hdto.getHpname().equals(hdtoList.get(j).getHpname()) &&
-						hdto.getHpaddr().equals(hdtoList.get(j).getHpaddr()) ){
-						i--;
+				for(int j=0;j<5-size;j++) {
+					try {
+						if(hdto.getHpname().equals(hdtoList.get(j).getHpname()) &&
+							hdto.getHpaddr().equals(hdtoList.get(j).getHpaddr())) {
+							continue dept;
+						}
+					}catch (Exception e) {
 						break;
 					}
-					if(j==size-1) {
-						hdtoList.add(hdto);
-					}
-					
-				}// 중복 제거
+				}
 				
+				hdtoList.add(hdto);
 			}
 			
+		}else {
+			for(HospitalDTO hdto : hdtoList) {
+				hdtoList.add(hdto);
+			}
 		}
 		
 		counthospital = hdtoList.size();
