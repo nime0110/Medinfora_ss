@@ -9,14 +9,14 @@ import com.spring.app.domain.MemberDTO;
 
 public interface MypageListService {
 
-	// 회원 목록 가져오기 
-	List<MemberDTO> getMemberList(Map<String, Object> paramMap);
+	   // 회원 목록 가져오기 
+    List<MemberDTO> getMemberList(Map<String, Object> paramMap);
+    
+    // 회원 상세 정보를 가져오기
+    MemberDTO getMemberDetail(String userid);
+    
+    // 회원 탈퇴 처리
+    boolean deleteMember(String userid);
+
 	
-	// 회원 상세 정보를 가져오기
-		MemberDTO getMemberDetail(Map<String, String> paraMap, HttpServletRequest request);
-
-	 // 회원 탈퇴 처리
-	boolean deleteMember(String userid);
-
-	MemberDTO getMemberDetail(String userid);
 }
