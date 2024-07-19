@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -243,6 +245,44 @@ public class MypageService_imple implements MypageService {
 		List<MemberDTO> memberList = dao.GetHidxInfo(hidx);
 		return memberList;
 	}
+	//////////////////////////////////////////////////
+
+	// 회원 목록 가져오기
+	@Override
+	public List<MemberDTO> getMemberList(Map<String, Object> paraMap) {
+		List<MemberDTO> selectMemberList = dao.getMemberList(paraMap);
+
+		return selectMemberList;
+	}
+
+	// 회원 정보 상세 정보 가져오기
+	@Override
+	public MemberDTO getMemberDetail(Map<String, String> paraMap, HttpServletRequest request) {
+
+		if(paraMap.get("loginmethod") == "0"){
+			paraMap.put("pw", Sha256.encrypt(paraMap.get("pwd")));
+		}
+	
+		MemberDTO member = dao.getMemberDetails(paraMap);
+		
+		if (member != null) {
+			try {
+				member.setMobile(aES256.decrypt(member.getMobile()));
+				member.setEmail(aES256.decrypt(member.getEmail()));
+			} catch (Exception e) {
+				// 로깅 추가
+				e.printStackTrace();
+			}
+		}
+		return member;
+	}
+
+	@Override
+	public boolean deleteMember(String userid) {
+		return dao.deleteMember(userid) == 1;
+
+	}
+	///////////////////////////////////////////////////
 
 	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
 	@Override
