@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+#calendar{
+	max-width: 1100px;
+}
+
+.fc-button-primary{
+	background-color: var(--navy50) !important;
+	color: black !important;
+}
+
+.fc-toolbar-title{
+	font-weight: bold !important;
+}
+
+.fc-day-today{
+	background-color : var(--blue100) !important;
+}
+
+.fc-daygrid-event-dot, .fc-list-event-dot{
+	border : calc(var(--fc-daygrid-event-dot-width) / 2) solid #008060 !important;
+}
+
+.fc-event-main{
+	background-color: var(--navy600); 
+}
