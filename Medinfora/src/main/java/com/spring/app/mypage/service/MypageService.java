@@ -64,6 +64,4 @@ public interface MypageService {
 	 // 회원 탈퇴 처리
 	boolean deleteMember(String userid);
 
-	MemberDTO getMemberDetail(String userid);
-	
 }

@@ -89,14 +89,6 @@ public interface MypageDAO {
 	// (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetHidxInfo(String hidx);
 
-	// 회원 목록 가져오기 
-	List<MemberDTO> getMemberList(Map<String, Object> paramMap);
-
-	// 회원 상세 정보 가져오기 
-	MemberDTO getMemberDetails(String userid);
-
-	int deleteMember(String userid);
-
 
 	
 }
