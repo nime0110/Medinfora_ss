@@ -263,6 +263,7 @@ public class MypageService_imple implements MypageService {
 			paraMap.put("pw", Sha256.encrypt(paraMap.get("pwd")));
 		}
 	
+		/*
 		MemberDTO member = dao.getMemberDetails(paraMap);
 		
 		if (member != null) {
@@ -273,8 +274,8 @@ public class MypageService_imple implements MypageService {
 				// 로깅 추가
 				e.printStackTrace();
 			}
-		}
-		return member;
+		}*/
+		return null;
 	}
 
 	@Override
@@ -289,6 +290,12 @@ public class MypageService_imple implements MypageService {
 	public int cancleRdto(String ridx) {
 		int n = dao.cancleRdto(ridx);
 		return n;
+	}
+
+	@Override
+	public MemberDTO getMemberDetail(String userid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
