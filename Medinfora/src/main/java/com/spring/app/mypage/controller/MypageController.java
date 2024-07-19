@@ -460,6 +460,13 @@ public class MypageController {
 		return update;
 	}	// end of private boolean checkDate_checkin(List<ReserveDTO> reserveList) {----------------------
 
+	// === 진료일정관리 === //
+	@GetMapping("reserveSchedule.bibo")
+	public ModelAndView isDr_reserveSchedule(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/reserveSchedule.info");
+		return mav;
+	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
+	
 	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
 	@GetMapping("memberList.bibo") 
 	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,
