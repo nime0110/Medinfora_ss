@@ -24,53 +24,53 @@ public class MypageService_imple implements MypageService {
 
 	@Autowired
 	private MypageDAO dao;
-	
+
 	@Autowired
-    private AES256 aES256;
-	
+	private AES256 aES256;
+
 	// 회원정보 변경
 	@Override
 	public boolean updateinfo(Map<String, String> paraMap) {
-		
+
 		boolean result = false;
-		
+
 		try {
-			paraMap.put("mobile",aES256.encrypt(paraMap.get("mobile")));
+			paraMap.put("mobile", aES256.encrypt(paraMap.get("mobile")));
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		}
-		
-		if(dao.updateinfo(paraMap)==1) {
+
+		if (dao.updateinfo(paraMap) == 1) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 
 	// (비밀번호변경) 현 비밀번호 확인
 	@Override
 	public boolean nowpwdCheck(Map<String, String> paraMap) {
-		
-		paraMap.put("pwd",Sha256.encrypt(paraMap.get("pwd")));
-		
+
+		paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
+
 		String userid = dao.nowpwdCheck(paraMap);
-		
-		if(userid==null) {
+
+		if (userid == null) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	// (비밀번호변경) 비밀번호 변경하기
 	@Override
 	public int updatepwd(Map<String, String> paraMap) {
-		
-		paraMap.put("pwd",Sha256.encrypt(paraMap.get("pwd")));
-		
+
+		paraMap.put("pwd", Sha256.encrypt(paraMap.get("pwd")));
+
 		return dao.updatepwd(paraMap);
 	}
-	
+
 	// (의료인- 진료예약 열람) 아이디를 통해 병원인덱스 값 찾기
 	@Override
 	public String Searchhospital(String userid) {
@@ -82,12 +82,12 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public List<ReserveDTO> reserveList(Map<String, String> paraMap) {
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색)
 			reserveList = dao.PatientNameList(paraMap);
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색)
 			reserveList.addAll(dao.ReserveStatusList(paraMap));
-			
+
 			try {
 				Integer.parseInt(paraMap.get("inputsc"));
 				// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색)
@@ -95,13 +95,13 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
+
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
-		}
-		else {
+		} else {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명, 진료현황)
 			reserveList = dao.reserveList(paraMap);
 		}
@@ -113,13 +113,13 @@ public class MypageService_imple implements MypageService {
 	public int reserveListCnt(Map<String, String> paraMap) {
 		int n = 0;
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색 / 페이징 X)
 			reserveList = dao.TotalPatientNameList(paraMap);
-			
+
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X)
 			reserveList.addAll(dao.TotalReserveStatusList(paraMap));
-			
+
 			try {
 				Integer.parseInt(paraMap.get("inputsc"));
 				// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X)
@@ -127,26 +127,25 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
-			
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
+
 			n = reserveList.size();
-		}
-		else {
+		} else {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트의 개수(환자명, 진료현황)
 			n = dao.reserveListCnt(paraMap);
 		}
 		return n;
-	}	
-	
+	}
+
 	// (의료인- 진료예약 열람) 예약된 환자의 아이디 값을 가지고 이름과 전화번호 알아오기
 	@Override
 	public List<MemberDTO> GetPatientInfo(String patient_id) {
 		List<MemberDTO> memberList = dao.GetPatientInfo(patient_id);
 		return memberList;
 	}
-	
+
 	// (의료인- 진료예약 열람) ridx 를 통해 예약 정보 가져오기
 	@Override
 	public ReserveDTO getRdto(String ridx) {
@@ -179,13 +178,13 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public List<ReserveDTO> UserReserveList(Map<String, String> paraMap) {
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색)
 			reserveList = dao.HospitalNameList(paraMap);
-			
+
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색)
 			reserveList.addAll(dao.UserReserveStatusList(paraMap));
-			
+
 			try {
 				Integer.parseInt(paraMap.get("inputsc"));
 				// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색)
@@ -193,14 +192,13 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
-			
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
+
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
-		}
-		else {
+		} else {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명, 진료현황)
 			reserveList = dao.UserreserveList(paraMap);
 		}
@@ -212,13 +210,13 @@ public class MypageService_imple implements MypageService {
 	public int UserReserveListCnt(Map<String, String> paraMap) {
 		int n = 0;
 		List<ReserveDTO> reserveList = null;
-		if("전체".equals(paraMap.get("sclist"))) {
+		if ("전체".equals(paraMap.get("sclist"))) {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(병원명 검색 / 페이징 X)
 			reserveList = dao.TotalReserveHospitalNameList(paraMap);
-			
+
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료현황 검색 / 페이징X)
 			reserveList.addAll(dao.TotalUserReserveStatusList(paraMap));
-			
+
 			try {
 				Integer.parseInt(paraMap.get("inputsc"));
 				// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(진료예약일시, 예약신청일 검색 / 페이징 X)
@@ -226,13 +224,12 @@ public class MypageService_imple implements MypageService {
 			} catch (NumberFormatException e) {
 			}
 
-			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
-			reserveList.clear();	// 기존에 있는 값 비우기
-			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
-			
+			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList); // 중복제거
+			reserveList.clear(); // 기존에 있는 값 비우기
+			reserveList.addAll(uniqueReserveSet); // 중복제거한 리스트 넣어주기
+
 			n = reserveList.size();
-		}
-		else {
+		} else {
 			// (일반회원- 진료예약 열람) userid 의 현재 예약리스트의 개수(병원명, 진료현황)
 			n = dao.UserreserveListCnt(paraMap);
 		}
@@ -257,6 +254,7 @@ public class MypageService_imple implements MypageService {
 
 	// 회원 정보 상세 정보 가져오기
 	@Override
+<<<<<<< HEAD
 	public MemberDTO getMemberDetail(Map<String, String> paraMap, HttpServletRequest request) {
 
 		if(paraMap.get("loginmethod") == "0"){
@@ -266,6 +264,11 @@ public class MypageService_imple implements MypageService {
 		/*
 		MemberDTO member = dao.getMemberDetails(paraMap);
 		
+=======
+	public MemberDTO getMemberDetail(String userid) {
+
+		MemberDTO member = dao.getMemberDetails(userid);
+>>>>>>> parent of ffcac3d ([Revent])
 		if (member != null) {
 			try {
 				member.setMobile(aES256.decrypt(member.getMobile()));
@@ -274,8 +277,13 @@ public class MypageService_imple implements MypageService {
 				// 로깅 추가
 				e.printStackTrace();
 			}
+<<<<<<< HEAD
 		}*/
 		return null;
+=======
+		}
+		return member;
+>>>>>>> parent of ffcac3d ([Revent])
 	}
 
 	@Override
@@ -292,10 +300,13 @@ public class MypageService_imple implements MypageService {
 		return n;
 	}
 
+<<<<<<< HEAD
 	@Override
 	public MemberDTO getMemberDetail(String userid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+=======
+>>>>>>> parent of ffcac3d ([Revent])
 }

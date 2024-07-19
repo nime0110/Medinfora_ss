@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: SeoDongHyeok
 Build-Jdk: 11.0.23
+=======
+Built-By: kimsh
+Build-Jdk: 11.0.21
+>>>>>>> parent of ffcac3d ([Revent])
 Created-By: Maven Integration for Eclipse
 

@@ -4,10 +4,16 @@
     String ctxPath = request.getContextPath();
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/header.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/fontcss.cs"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
+<<<<<<< HEAD
 	   
 	
 	   // === 부서번호 체크박스 유지시키기 시작 === //
@@ -64,6 +70,8 @@ const frm = document.editFrm;
 frm.method = "GET";
 frm.action = "<%= ctxPath%>/mypage/memberList.info";
 frm.submit();
+=======
+>>>>>>> parent of ffcac3d ([Revent])
     const userid = "${requestScope.userid}";
     if(userid != ""){
         const arr_userid = userid.split(",");
@@ -122,9 +130,12 @@ frm.submit();
             }
         });
     });
+<<<<<<< HEAD
     $(".close, button[data-dismiss='modal']").click(function(){
         $("#memberDetailModal").modal('hide');
     });
+=======
+>>>>>>> parent of ffcac3d ([Revent])
     $("#btnSave").click(function(){
         const formData = $("#editMemberForm").serialize();
         $.ajax({
@@ -136,7 +147,10 @@ frm.submit();
                 if (data.success) {
                     alert("회원 정보가 성공적으로 저장되었습니다.");
                     $("#memberDetailModal").modal('hide');
+<<<<<<< HEAD
                     
+=======
+>>>>>>> parent of ffcac3d ([Revent])
                     location.reload(); // 페이지를 새로고침하여 변경사항을 반영
                 } else {
                     alert(data.message);
@@ -175,9 +189,8 @@ frm.submit();
 </script>
 
 <div class="container" style="padding:3% 0;">
+<p class="text-center nanum-b size-n">회원 전체 목록</p>
 
-	<p class="text-center nanum-b size-n"> 회원 전체 목록</p>
-	
 <form name="searchFrm">
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
@@ -192,12 +205,19 @@ frm.submit();
             </label>
             <input type="checkbox" id="${status.index}" name="userid" value="${userid}">&nbsp;&nbsp;
         </c:forEach>
+<<<<<<< HEAD
     </c:if><form>
 		<fieldset>
 			<div class="p-4 searchBar" align="center">
 				<span>
 					<select class="sclist search_ch sel_0 nanum-b">
 						   <option value="">회원 선택</option>
+=======
+    </c:if>
+    <input type="hidden" name="userid" />
+    <select name="mbr_division" style="height: 30px; width: 120px; margin: 10px 30px 0 0;">
+        <option value="">회원 선택</option>
+>>>>>>> parent of ffcac3d ([Revent])
         <option value="0">관리자</option>
         <option value="1">일반회원</option>
         <option value="2">의료종사자</option>
@@ -205,6 +225,7 @@ frm.submit();
         <option value="4">의료종사자(휴면)</option>
         <option value="8">정지회원</option>
         <option value="9">탈퇴회원</option>
+<<<<<<< HEAD
 					</select>
 				</span>
 				<span>
@@ -223,6 +244,13 @@ frm.submit();
     <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
    
 
+=======
+    </select>
+    <button type="button" class="btn btn-secondary btn-sm" id="btnSearch">검색하기</button>
+    <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
+   <form class="search-box" action="" method="get"><input class="search-txt" type="text" name="" placeholder="검색어를 입력하세요"> </form>
+</form>
+>>>>>>> parent of ffcac3d ([Revent])
 <br>
 
 <table id="memberTbl" class="table">
@@ -313,7 +341,13 @@ frm.submit();
                         <option value="0">관리자</option>
                         <option value="1">일반회원</option>
                         <option value="2">의료종사자</option>
+<<<<<<< HEAD
                            <option value="8">정지회원</option>
+=======
+                         <option value="3">일반회원(휴면)</option>
+                        <option value="4">의료종사자(휴면)</option>
+                          <option value="8">정지회원</option>
+>>>>>>> parent of ffcac3d ([Revent])
                         <option value="9">탈퇴회원</option>
                     </select>
                 </div>

@@ -207,7 +207,7 @@ values (seq_notice.nextval, 'kimsh', '세번째입니다', '내용이 들어갈 
             
             
             
-            
+            desc tab
             
             
             
@@ -354,6 +354,7 @@ WHERE
                (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postCount
         FROM member m
         LEFT JOIN memberidx mi ON m.midx = mi.midx
+<<<<<<< HEAD
         WHERE m.userid =  'seunghye'
         
         
@@ -366,3 +367,6 @@ WHERE
         FROM member m
         LEFT JOIN memberidx mi ON m.midx = mi.midx
         WHERE m.userid = 'kimsh723'
+=======
+        WHERE m.userid =  'seunghye'
+>>>>>>> parent of ffcac3d ([Revent])
