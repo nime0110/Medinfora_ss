@@ -3,8 +3,6 @@ package com.spring.app.mypage.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 
@@ -51,26 +49,8 @@ public interface MypageService {
 
 	// (일반회원- 진료예약 열람) 예약된 병원의 아이디 값을 가지고 이름과 전화번호 알아오기
 	List<MemberDTO> GetHidxInfo(String hidx);
-	
+
 	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
 	int cancleRdto(String ridx);
 
-	// 회원 목록 가져오기 
-	List<MemberDTO> getMemberList(Map<String, Object> paramMap);
-	
-	// 회원 상세 정보를 가져오기
-<<<<<<< HEAD
-	MemberDTO getMemberDetail(Map<String, String> paraMap, HttpServletRequest request);
-
-	// 회원 탈퇴 처리
-	boolean deleteMember(String userid);
-
-	MemberDTO getMemberDetail(String userid);
-	
-=======
-	MemberDTO getMemberDetail(String userid);
-	 // 회원 탈퇴 처리
-	boolean deleteMember(String userid);
-
->>>>>>> parent of ffcac3d ([Revent])
 }
