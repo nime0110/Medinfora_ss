@@ -525,6 +525,40 @@ public class MypageController {
 		return mav;
 	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
 	
+	// === (의료인) 예약일정관리 환자정보 모달창 정보 === //
+	@ResponseBody
+	@GetMapping(value="getPatientInfo.bibo", produces="text/plain;charset=UTF-8")
+	public String getPatientInfo(HttpServletRequest request) {
+		String checkin = request.getParameter("checkin");
+		
+		ReserveDTO rdto = null;
+		if(checkin != null) {
+			// checkin 를 통해 환자 userid 가져오기
+			rdto = service.getPatientd(checkin);
+		}
+
+		MemberDTO mdto = null;
+		JSONObject jsonObj = new JSONObject();	// {}
+		if(rdto != null) {
+			String userid = rdto.getUserid();
+			// userid 를 통해 환자 정보 가져오기
+			mdto = service.getPatientInfo(userid);
+			try {
+				mdto.setMobile(aES256.decrypt(mdto.getMobile()));
+				mdto.setEmail(aES256.decrypt(mdto.getEmail()));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			jsonObj.put("name", mdto.getName());
+			jsonObj.put("mobile", mdto.getMobile());
+			jsonObj.put("email", mdto.getEmail());
+			jsonObj.put("address", mdto.getAddress());
+			jsonObj.put("birthday", mdto.getBirthday());
+			jsonObj.put("gender", mdto.getGender());
+		}
+		return jsonObj.toString();
+	}	// end of public String getRdto(HttpServletRequest request) {---------------
+		
 	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
 	@GetMapping("memberList.bibo") 
 	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,

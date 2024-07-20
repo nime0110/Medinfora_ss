@@ -257,5 +257,19 @@ public class MypageService_imple implements MypageService {
 		List<ReserveDTO> reserveList = dao.TotalreserveList(hidx);
 		return reserveList;
 	}
+
+	// (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기
+	@Override
+	public ReserveDTO getPatientd(String checkin) {
+		ReserveDTO rdto = dao.getPatientd(checkin);
+		return rdto;
+	}
+	
+	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
+	@Override
+	public MemberDTO getPatientInfo(String userid) {
+		MemberDTO mdto = dao.getPatientInfo(userid);
+		return mdto;
+	}
 	
 }
