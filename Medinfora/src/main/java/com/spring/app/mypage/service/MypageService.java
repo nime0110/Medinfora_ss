@@ -53,4 +53,7 @@ public interface MypageService {
 	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
 	int cancleRdto(String ridx);
 
+	// (의료인- 진료 일정관리) hidx 의 예약리스트 가져오기
+	List<ReserveDTO> TotalreserveList(String hidx);
+
 }

@@ -24,3 +24,11 @@
 .fc-event-main{
 	background-color: var(--navy600); 
 }
+
+.fc-daygrid-day-events{
+	position: absolute !important;
+}
+
+.fc-event-title, .fc-list-event-title{
+	cursor: pointer !important;
+}

@@ -250,5 +250,12 @@ public class MypageService_imple implements MypageService {
 		int n = dao.cancleRdto(ridx);
 		return n;
 	}
+
+	// (의료인- 진료 일정관리) hidx 의 예약리스트 가져오기
+	@Override
+	public List<ReserveDTO> TotalreserveList(String hidx) {
+		List<ReserveDTO> reserveList = dao.TotalreserveList(hidx);
+		return reserveList;
+	}
 	
 }

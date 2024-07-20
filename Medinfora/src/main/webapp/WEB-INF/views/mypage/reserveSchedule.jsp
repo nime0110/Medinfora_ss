@@ -9,17 +9,18 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/mypage/reserveSchedule.js"></script>
 <script>
 
-data = [ 
-    {
-      title: '양혜정1',
-      start: '2024-07-20 14:00'
-    },
-    {
-      title: '양혜정2',
-      start: '2024-07-20 15:00'
-    }
-    
-];
+const nameList = ${requestScope.nameList};
+const timeList = ${requestScope.timeList};
+const checkinEndList = ${requestScope.checkinEndList};
+
+const data = [];
+
+for(let i=0; i<nameList.length; i++){
+	let name = nameList[i];
+	let time = timeList[i];
+	let endTime = checkinEndList[i];
+	data.push({title:name,start:time,end:endTime});
+}
   
 document.addEventListener('DOMContentLoaded', function() {
 	var calendarEl = document.getElementById('calendar');
@@ -43,14 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
         	center: 'title',
         	right: 'dayGridMonth,timeGridWeek,listDay,listWeek'
       	},
-      	editable: false,	// 데이터 수정 불가능하게 하기
+      	editable: false,			// 데이터 수정 불가능하게 하기
+      	dayMaxEvents: true,			// more 표시
+      	allDaySlot: false, 			// all-day 영역 숨기기
+      	displayEventEnd: false,		// end 시간 숨기기
       	events: data
 
    });
 
    // 캘린더 생성
    calendar.render();
-});
+})	// end of document.addEventListener('DOMContentLoaded', function() {------
+
 </script>
 
 <div class="schedulebox">
