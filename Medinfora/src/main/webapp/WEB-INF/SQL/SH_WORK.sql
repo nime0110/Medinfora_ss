@@ -292,7 +292,22 @@ values (seq_notice.nextval, 'kimsh', '세번째입니다', '내용이 들어갈 
         select * 
         from  memberidx
         
+        UPDATE member SET mIdx = 1 WHERE userid = 'user001';
+        commit;
         select * from member
+        
+        
+        
+        
+        
+        
+        
+         SELECT userid, pwd, email, name, address, detailAddress, 
+               birthday, mobile, gender, mIdx, registerday, pwdUpdateday,
+        FROM member
+        
+         AND userid LIKE CONCAT('%', 'kimsh723', '%')
+      desc registerday
         
         select * 
         from member

@@ -6,29 +6,42 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/header.css" />
-<link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/fontcss.cs"/>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath %>/resources/css/fontcss.css"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<style>
+.modal-dialog {
+    display: flex;
+    align-items: flex-start;
+    min-height: calc(100% - 1rem);
+    padding-top: 10vh;
+    max-width: 45%; /* 모달 다이얼로그의 최대 너비를 화면의 80%로 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
 
+.modal-content {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 100%; /* 모달 컨텐츠를 다이얼로그 너비에 맞춤 */
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 95%; /* 작은 화면에서는 화면의 95% 너비 사용 */
+    }
+}
+
+div.pagebar{
+	display: grid;
+    place-items: center;
+	margin-top: 10px;
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function(){
-    const userid = "${requestScope.userid}";
-    if(userid != ""){
-        const arr_userid = userid.split(",");
-        $("input:checkbox[name='userid']").each(function(index, elmt){
-            for(let i=0; i<arr_userid.length; i++){
-                if($(elmt).val() == arr_userid[i]){
-                    $(elmt).prop("checked", true);
-                    break;
-                }
-            }
-        });
-    }
-    const mbr_division = "${requestScope.mbr_division}";
-    if(mbr_division != ""){
-        $("select[name='mbr_division']").val(mbr_division);
-    }
     $("button#btnSearch").click(function(){
         const arr_userid = [];
         $("input:checkbox[name='userid']:checked").each(function(index, item){
@@ -42,23 +55,47 @@ $(document).ready(function(){
         frm.submit();
     });
 
+    // 회원 관리 버튼 클릭 이벤트
     $(document).on("click", ".btnManage", function(){
         const userid = $(this).data("userid");
         $.ajax({
-            url: "<%=ctxPath%>/mypage/getMemberDetail.bibo",
+            url: "<%= ctxPath %>/mypage/getMemberDetail.bibo",
             type: "GET",
             data: { userid: userid },
             dataType: "json",
             success: function(response) {
                 if (response.success) {
                     // 모달에 데이터 채우기
+                    $('#useridText').text(response.userid);
+                    $('#nameText').text(response.name);
+                    $('#emailText').text(response.email);
+                    $('#mobileText').text(response.mobile);
+                    $('#addressText').text(response.address);
+                    $('#detailAddressText').text(response.detailAddress);
                     $('#userid').val(response.userid);
-                    $('#name').val(response.name);
-                    $('#email').val(response.email);
-                    $('#mobile').val(response.mobile);
-                    $('#address').val(response.address);
-                    $('#detailAddress').val(response.detailAddress);
-                    $('#mbr_division').val(response.mbr_division);
+                    $('#mIdx').val(response.mbr_division);
+
+                    // 회원 구분 설정
+                    let memberType = '';
+                    switch(response.mbr_division) {
+                        case 0: memberType = '관리자'; break;
+                        case 1: memberType = '일반회원'; break;
+                        case 2: memberType = '의료종사자'; break;
+                        case 3: memberType = '일반회원(휴면)'; break;
+                        case 4: memberType = '의료종사자(휴면)'; break;
+                        case 8: memberType = '정지회원'; break;
+                        case 9: memberType = '탈퇴회원'; break;
+                        default: memberType = '일반회원';
+                    }
+                    $('#memberTypeText').text(memberType);
+                    // QNA 글 올린 갯수 
+                    
+                    if (response.mbr_division == 1) {
+                        $('#memberWriteCount').text(response.postCount);
+                        $('#memberWriteCount').closest('tr').show();
+                    } else {
+                        $('#memberWriteCount').closest('tr').hide();
+                    }
                     // 모달 표시
                     $('#memberDetailModal').modal('show');
                 } else {
@@ -71,43 +108,27 @@ $(document).ready(function(){
             }
         });
     });
-    $(".close, button[data-dismiss='modal']").click(function(){
+
+    // 모달 닫기
+    $(".close, button[data-dismiss='modal']").click(function() {
         $("#memberDetailModal").modal('hide');
     });
-    $("#btnSave").click(function(){
-        const formData = $("#editMemberForm").serialize();
-        $.ajax({
-            url: "<%= ctxPath %>/mypage/saveMemberDetail.bibo",
-            type: "POST",
-            data: formData,
-            success: function(response) {
-                var data = JSON.parse(response);
-                if (data.success) {
-                    alert("회원 정보가 성공적으로 저장되었습니다.");
-                    $("#memberDetailModal").modal('hide');
-                    
-                    location.reload(); // 페이지를 새로고침하여 변경사항을 반영
-                } else {
-                    alert(data.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert("회원 정보를 저장하는데 실패했습니다.");
-            }
-        });
-    });
 
-    $("#btnDelete").click(function(){
+   
+
+
+    // 회원 정지
+    $("#btnStop").click(function() {
         const userid = $("#userid").val();
-        if (confirm("정말로 회원을 탈퇴시키겠습니까?")) {
+        if (confirm("정말로 회원을 정지 시키겠습니까?")) {
             $.ajax({
-                url: "<%= ctxPath %>/mypage/deleteMember.bibo",
+                url: "<%= ctxPath %>/mypage/StopMember.bibo",
                 type: "GET",
                 data: { userid: userid },
                 success: function(response) {
                     var data = JSON.parse(response);
                     if (data.success) {
-                        alert("회원이 성공적으로 탈퇴되었습니다.");
+                        alert("회원이 성공적으로 정지되었습니다.");
                         $("#memberDetailModal").modal('hide');
                         location.reload(); // 페이지를 새로고침하여 변경사항을 반영
                     } else {
@@ -115,17 +136,34 @@ $(document).ready(function(){
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert("회원 탈퇴에 실패했습니다.");
+                    alert("회원 정지에 실패했습니다.");
                 }
             });
         }
     });
+
+    // 검색 조건에 따른 알림 표시 및 검색 제한
+    $("select[name='subject']").change(function(){
+        if ($(this).val() == '2') { // 의료회원 선택
+        
+            $("input[name='word']").attr("placeholder", "병원 이름을 입력하세요");
+        } else {
+            $("input[name='word']").attr("placeholder", "성명이나 ID를 검색하세요");
+        }
+    });
 });
+
+function searchList() {
+    const frm = document.searchFrm;
+    frm.method = "GET";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
+    frm.submit();
+}
 </script>
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
-
+   <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
 <form name="searchFrm">
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
@@ -140,35 +178,38 @@ $(document).ready(function(){
             </label>
             <input type="checkbox" id="${status.index}" name="userid" value="${userid}">&nbsp;&nbsp;
         </c:forEach>
-    </c:if><form>
+    </c:if>
+	
+		<input type="hidden" name="PageNo"/>
 		<fieldset>
-			<div class="p-4 searchBar" align="center">
+			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
 				<span>
-					<select class="sclist search_ch sel_0 nanum-b">
-						   <option value="">회원 선택</option>
-        <option value="0">관리자</option>
-        <option value="1">일반회원</option>
-        <option value="2">의료종사자</option>
-        <option value="3">일반회원(휴면)</option>
-        <option value="4">의료종사자(휴면)</option>
-        <option value="8">정지회원</option>
-        <option value="9">탈퇴회원</option>
+					<select class="search_ch sel_0 nanum-b" name="subject">
+						<option value=''>전체</option>
+						<option value='1'>일반회원명</option>
+						<option value='2'>병원명</option>
 					</select>
 				</span>
+				
+				
+				
 				<span>
-					<input class="inputsc search_ch sel_1 nanum-b" name="search" type="text" placeholder="검색어를 입력해주세요." />
-					<input type="text" style="display: none;"/>		<%-- 전송방지 --%>
+					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
 				</span>
 				<span>
-					<button class="jh_btn_design search nanum-eb size-s" type="button">검색</button>
+					<button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
 				</span>
+			      
+			      
 			</div>
+		
 		</fieldset>
+	
 	</form>
     <input type="hidden" name="userid" />
     
   
-    <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
+ 
    
 
 <br>
@@ -178,7 +219,7 @@ $(document).ready(function(){
         <tr>
             <th>아이디</th>
             <th>회원 유형</th>
-            <th>성명</th>
+            <th  style="text-align:center;">성명</th>
             <th>성별</th>
             <th>가입일자</th>
             <th>관리</th>
@@ -201,7 +242,7 @@ $(document).ready(function(){
                             <c:otherwise>일반회원</c:otherwise>
                         </c:choose>
                     </td>
-                    <td>${member.name}</td>
+                    <td style="text-align:center;">${member.name}</td>
                     <td>
                         <c:choose>
                             <c:when test="${member.gender == 1}">M</c:when>
@@ -217,62 +258,65 @@ $(document).ready(function(){
         </c:if>
     </tbody>
 </table>
+     <%-- 페이지 바 --%>
+	<div class="pagebar" style="text-align: center;"></div>
 </div>
 
 <!-- 회원 상세정보 모달 -->
 <div class="modal fade" id="memberDetailModal" tabindex="-1" role="dialog" aria-labelledby="memberDetailModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="memberDetailModalLabel">회원 상세 정보</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="editMemberForm">
-                <div class="form-group">
-                    <label for="userid">아이디</label>
-                    <input type="text" class="form-control" id="userid" name="userid" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="name">성명</label>
-                    <input type="text" class="form-control" id="name" name="name">
-                </div>
-                <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" name="email">
-                </div>
-                <div class="form-group">
-                    <label for="mobile">연락처</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile">
-                </div>
-                <div class="form-group">
-                    <label for="address">주소</label>
-                    <input type="text" class="form-control" id="address" name="address">
-                </div>
-                <div class="form-group">
-                    <label for="detailAddress">상세주소</label>
-                    <input type="text" class="form-control" id="detailAddress" name="detailAddress">
-                </div>
-                <div class="form-group">
-                    <label for="mbr_division">회원 구분</label>
-                    <select class="form-control" id="mbr_division" name="mbr_division">
-                        <option value="0">관리자</option>
-                        <option value="1">일반회원</option>
-                        <option value="2">의료종사자</option>
-                           <option value="8">정지회원</option>
-                        <option value="9">탈퇴회원</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-           <div class="modal-footer">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="memberDetailModalLabel">회원 상세 정보</h5>
+            </div>
+            <div class="modal-body">
+                <form id="editMemberForm">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>아이디</th>
+                            <td id="useridText"></td>
+                        </tr>
+                        <tr>
+                            <th>성명</th>
+                            <td id="nameText"></td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td id="emailText"></td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td id="mobileText"></td>
+                        </tr>
+                        <tr>
+                            <th>주소</th>
+                            <td id="addressText"></td>
+                        </tr>
+                        <tr>
+                            <th>상세주소</th>
+                            <td id="detailAddressText"></td>
+                        </tr>
+                        <tr>
+                            <th>회원 구분</th>
+                            <td id="memberTypeText"></td>
+                        </tr>
+                        <tr>
+                        	<th>작성 글 수</th><!-- QnA에 글 올린 갯수 -->
+                        	<td id="memberWriteCount"></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" id="userid" name="userid">
+                    <input type="hidden" id="mIdx" name="mIdx">
+                </form>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" id="btnSave">저장</button>
-                <button type="button" class="btn btn-danger" id="btnDelete">탈퇴시키기</button>
+             
+                <button type="button" class="btn btn-danger" id="btnStop">정지시키기</button>
             </div>
         </div>
+   
+	
     </div>
 </div>
-</div>
+

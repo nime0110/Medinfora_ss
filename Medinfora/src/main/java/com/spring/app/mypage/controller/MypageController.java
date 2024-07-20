@@ -275,7 +275,7 @@ public class MypageController {
 		}
 		return jsonObj.toString();
 	} // end of public String getRdto(HttpServletRequest request) {---------------
-
+/*
 	// === 진료현황 변경 === //
 	@ResponseBody
 	@PostMapping("ChangeRstatus.bibo")
@@ -305,7 +305,7 @@ public class MypageController {
 		return mav;
 	} // end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest
 		// request, HttpServletResponse response) {----------
-
+*/
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
 	@GetMapping(value = "myreserveList.bibo", produces = "text/plain;charset=UTF-8")

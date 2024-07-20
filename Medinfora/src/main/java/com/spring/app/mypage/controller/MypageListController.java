@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.mypage.service.MypageListService;
 
@@ -33,19 +34,36 @@ public class MypageListController {
 	
 	
 	@GetMapping("memberList.bibo")
-    public ModelAndView memberList(ModelAndView mav, 
+	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response, 
                                    @RequestParam(defaultValue = "") String userid, 
-                                   @RequestParam(defaultValue = "") String mbr_division) {
+                                   @RequestParam(defaultValue = "") String subject,
+                                   @RequestParam(defaultValue = "") String word,
+                                   @RequestParam(defaultValue = "1") int pageNo) {
         Map<String, Object> paraMap = new HashMap<>();
         if (!userid.isEmpty()) {
             paraMap.put("userid", userid);
         }
-        if (!mbr_division.isEmpty()) {
-            paraMap.put("mbr_division", mbr_division);
+        // subject와 word가 빈 문자열이 아닌 경우 검색 조건에 따라 paraMap에 추가
+        if (!subject.isEmpty() && !word.isEmpty()) {
+            if (subject.equals("1")) {
+                paraMap.put("name", word);  // 일반회원명으로 검색
+            }
+              else if (subject.equals("2")) {
+            		paraMap.put("hospitalName", word);  // 병원명으로 검색
+            }
         }
+        paraMap.put("pageNo", pageNo);
+        paraMap.put("pageSize", 10); // 페이지당 출력할 회원 수
 
+
+        // 서비스단에 회원 목록가져와서 mav에 추가 
         List<MemberDTO> memberList = service.getMemberList(paraMap);
+        int totalPage = service.getTotalPage(paraMap);
         mav.addObject("memberList", memberList);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPageNo", pageNo);
+        mav.addObject("subject", subject);
+        mav.addObject("word", word);
         mav.setViewName("mypage/memberList.info");
         return mav;
     }
@@ -70,8 +88,19 @@ public class MypageListController {
                 jsonObj.put("email", member.getEmail());
                 jsonObj.put("mobile", member.getMobile());
                 jsonObj.put("address", member.getAddress());
-                jsonObj.put("detailAddress", member.getDetailAddress());
-                jsonObj.put("mbr_division", member.getLoginmethod());
+                jsonObj.put("detailAddress", member.getDetailAddress()); 
+                jsonObj.put("mbr_division", member.getmIdx()); 
+                /*
+                 * 	0	관리자
+					1	일반회원
+					2	의료종사자
+					3	일반회원(휴면)
+					4	의료종사자(휴면)
+					8	정지회원
+					9	탈퇴회원
+                 */
+                jsonObj.put("postCount", member.getPostcount()); // qna에 글 올린 갯수
+                
             } else {
                 jsonObj.put("success", false);
                 jsonObj.put("message", "회원 정보를 찾을 수 없습니다.");
@@ -84,32 +113,27 @@ public class MypageListController {
         
         return jsonObj.toString();
     }
-
+    
+    // 회원 정지 
     @ResponseBody
-    @GetMapping("/deleteMember.bibo")
-    public String deleteMember(@RequestParam String userid) {
+    @GetMapping("/StopMember.bibo")
+    public String stopMember(@RequestParam String userid) {
         JSONObject jsonObj = new JSONObject();
-        boolean success = service.deleteMember(userid);
+        boolean success = service.StopMember(userid);
         
         if (success) {
             jsonObj.put("success", true);
-            jsonObj.put("message", "회원이 성공적으로 탈퇴되었습니다.");
+            jsonObj.put("message", "회원이 성공적으로 정지되었습니다.");
         } else {
             jsonObj.put("success", false);
-            jsonObj.put("message", "회원 탈퇴에 실패했습니다.");
+            jsonObj.put("message", "회원 정지에 실패했습니다.");
         }
         
         return jsonObj.toString();
     }
 }
-	/*
-	 * // 회원이 작성한 글 조회
-	 * 
-	 * @GetMapping("/getMemberPosts.bibo") public ModelAndView
-	 * getMemberPosts(ModelAndView mav, @RequestParam("userid") String userid) {
-	 * List<PostDTO> posts = service.getMemberPosts(userid); mav.addObject("posts",
-	 * posts); mav.setViewName("mypage/memberPosts"); return mav; }
-	 */
-
+	
+	
+		 
 	////////////////////////////////////////////////////////////////////////////////////
 

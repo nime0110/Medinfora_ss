@@ -15,8 +15,10 @@ public interface MypageListService {
     // 회원 상세 정보를 가져오기
     MemberDTO getMemberDetail(String userid);
     
-    // 회원 탈퇴 처리
-    boolean deleteMember(String userid);
+  // 회원 정지
+	boolean StopMember(String userid);
+
+	int getTotalPage(Map<String, Object> paraMap);
 
 	
 }

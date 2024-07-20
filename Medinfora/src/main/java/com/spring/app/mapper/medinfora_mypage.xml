@@ -747,33 +747,6 @@
 		where ridx = #{ridx}
 	</update>
 	
-	<!--  회원 목록 가져오기  -->
-	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
-        SELECT userid, pwd, email, name, address, detailAddress, 
-               birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
-        FROM member
-        WHERE 1=1
-      
-        <if test="userid != null and userid != ''">
-            AND userid LIKE CONCAT('%', #{userid}, '%')
-        </if>
-        <if test="mbr_division != null and mbr_division != ''">
-            AND loginmethod = #{mbr_division}
-        </if>
-    </select>
 
-    <!-- 회원 상세 정보 가져오기 -->
-    <select id="getMemberDetails" parameterType="String" resultType="MemberDTO">
-       SELECT m.*, mi.mStatus,
-              (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
-               (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postCount
-        FROM member m
-        LEFT JOIN memberidx mi ON m.midx = mi.midx
-      WHERE m.userid = #{userid}
-    </select>
-    
-    <delete id="deleteMember" parameterType="String">
-		DELETE FROM member WHERE userid = #{userid}
-	</delete>
 	
 </mapper>

@@ -15,4 +15,9 @@ public interface MypageListDAO {
     // 회원 삭제하기
     int deleteMember(String userid);
 
+    // 회원 정지 
+	int updateMemberStatusToStopped(String userid);
+
+	int getTotalPage(Map<String, Object> paraMap);
+
 }

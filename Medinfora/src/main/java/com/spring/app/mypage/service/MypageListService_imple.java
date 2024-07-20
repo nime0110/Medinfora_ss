@@ -51,11 +51,24 @@ public class MypageListService_imple implements MypageListService {
         return member;
     }
     
-    // 회원 탈퇴 처리
-    @Override
-    public boolean deleteMember(String userid) {
-        return mdao.deleteMember(userid) == 1;
-    }
+   // 회원 정지 
+	@Override
+	public boolean StopMember(String userid) {
+	
+		 try {
+	            int result = mdao.updateMemberStatusToStopped(userid);
+	            return result > 0;
+	        } catch (Exception e) {
+	            // 로그 추가
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
 
+	@Override
+	public int getTotalPage(Map<String, Object> paraMap) {
+
+		 return mdao.getTotalPage(paraMap);
+	}
 	
 }
