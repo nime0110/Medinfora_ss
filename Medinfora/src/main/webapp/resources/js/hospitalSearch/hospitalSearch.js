@@ -1,4 +1,4 @@
-let map;
+  let map;
 let clusterer;
 let markers = [];
 let infowindows = [];
@@ -10,7 +10,7 @@ let openOverlay = null;
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
 // 폴리곤 관련 변수
-let detailMode = false; 
+let detailMode = false;  
 let level = '';
 let polygons = [];
 let polygonOverlays = [];
@@ -249,10 +249,11 @@ function searchHospitals(pageNo) {
     clearAllwithmarker(); 
     clearClusterer(); 
 
+    //진료중인 병원만 보기
     let checkbox = $('#check-status');
-    let checkbox_val = ' ';
-    if(checkbox.is(':checked')) { 
-        checkbox_val = checkbox.val();
+    let checkbox_val = ' '; //기본값
+    if(checkbox.is(':checked')) {  //만약 check 되어있다면
+        checkbox_val = checkbox.val(); //check된 값을 가져온다.
     }
 
     console.log(checkbox_val);
@@ -280,17 +281,20 @@ function searchHospitals(pageNo) {
         return;
     }
 	
+    const param = {
+        addr: addr, 
+        country: country,
+        classcode: classcode, 
+        agency: agency,
+        hpname: hpname,
+        checkStatus: checkbox_val,
+        currentShowPageNo: pageNo
+    }
+
+    
     $.ajax({
         url: contextPath +'/hpsearch/hpsearchAdd.bibo', 
-        data: { 
-        		addr: addr, 
-        		country: country,
-        		classcode: classcode, 
-        		agency: agency,
-        		hpname: hpname,
-                checkStatus: checkbox_val,
-        		currentShowPageNo: pageNo
-        	   },
+        data: param,
         dataType: "json",
         success: function(json) {
             removeMarkers();
@@ -298,7 +302,7 @@ function searchHospitals(pageNo) {
             overlays = []; 
 
             $('#hospitalList').empty(); 
-            createChart();
+
 			let v_html = "";
 			if(json.length > 0) {
 	           json.forEach((item, index) => { 
@@ -489,6 +493,7 @@ function searchHospitals(pageNo) {
                     kakao.maps.event.trigger(markers[index], 'click');
                 });
                 
+                createChart(param);
             } else {
                 v_html += `<div id="no_searchList">
                 <span>😥</span>
@@ -508,6 +513,30 @@ function searchHospitals(pageNo) {
         }
     });   
 }
+
+/*
+function requestChartData(hospitalList) {
+    $.ajax({
+        url: contextPath + '/hpsearch/getChartPercentage.bibo',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(hospitalList),
+        dataType: 'json',
+        success: function(chartData) {
+            console.log(JSON.stringify(chartData));
+            //rawChart(chartData); // 차트 그리기
+        },
+        error: function(request, status, error) {
+            alert(`code: ${request.status}\nmessage: ${request.responseText}\nerror: ${error}`);
+        }
+    });
+}
+
+*/
+
+
+
+
 
 function removedisplayPagination() {
     $('#rpageNumber').empty();
@@ -557,7 +586,8 @@ function displayPagination(totalPage, currentPage) {
 }
 
 
-function createChart(dom) {
+
+function createChart(param) {
     // 차트를 표시할 DOM 요소를 가져옴
     var dom = document.getElementById('hp_chart');
 
@@ -569,16 +599,49 @@ function createChart(dom) {
 
     let hpdata = [];
 
-    // 진료과목 데이터 가져오기 
     $.ajax({
-        url: contextPath + "/getclasscode.bibo",
+        url: contextPath + "/hpsearch/getChartPercentage.bibo",
         async: true,
+        data: param,
         dataType: "json",
         success: function(json) {
+            console.log(JSON.stringify(json));
+            console.log("param", param);
+            /*
+            const param = {
+                addr: addr, 
+                country: country,
+                classcode: classcode, 
+                agency: agency,
+                hpname: hpname,
+                checkStatus: checkbox_val,
+                currentShowPageNo: pageNo
+            }
+            */
+            let chart_html = '<span class="nanum-b size-n" id="chart_addr">' +  param.addr;
+            if(param.country != "") {
+                chart_html += param.country + "에 있는 "; //백석동 
+            } else {
+                chart_html += "에 있는 "; //백석동
+            }
+            if(param.agency != "") {
+                chart_html += param.agency; //병원
+            } else {
+                chart_html += `의료기관의 진료과목별 비율은 </span> <br>`;
+            }
+            chart_html += `<span class="nanum-b" id="chart_classname">`
             $.each(json, function(index, item) {
-                hpdata.push({ value: 200, name: item.classname });
+                chart_html += `${item.CLASSNAME} ${item.PERCNTAGE}%, `;
+                //마지막 인덱스일 때 , 삭제
+                if(index == json.length - 1) {
+                    chart_html = chart_html.substring(0, chart_html.length - 2);
+                }
+                hpdata.push({ value: `${item.PERCNTAGE}`, name: `${item.CLASSNAME}`});
             });
-
+            chart_html += " </span>입니다.";
+            
+            $('#hp_chart_description').html(chart_html);
+            $('#wrap_container').css('padding-bottom', '112vh');
             // 차트 옵션 설정
             var option = {
                 tooltip: {
@@ -606,7 +669,7 @@ function createChart(dom) {
                         emphasis: {
                             label: {
                                 show: true,
-                                fontSize: 40,
+                                fontSize: 30,
                                 fontWeight: 'bold'
                             }
                         },
@@ -666,6 +729,7 @@ function createChart(dom) {
         }
     });
 }
+
 
 // 지도에서 모든 마커를 제거하는 함수
 function removeMarkers() {

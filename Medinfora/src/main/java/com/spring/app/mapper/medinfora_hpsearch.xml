@@ -60,9 +60,6 @@
 		            FROM hospital H
 		        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
 		          	AND H.hpaddr LIKE '%' || #{country} || '%' 
-		        <if test='classcode != ""'>
-				    AND H.classcode = #{classcode}
-				</if>
 				<if test='agency != ""'>
 				    AND H.agency = #{agency}
 				</if>
@@ -76,8 +73,7 @@
 		    ORDER BY CNT DESC
 		    )
 		SELECT A.CLASSNAME, A.CNT, TO_CHAR( ROUND((A.CNT / B.TOTAL) * 100, 1), '990.0') AS PERCNTAGE
-		FROM A CROSS JOIN (SELECT SUM(CNT) AS TOTAL FROM A) B;
-	
+		FROM A CROSS JOIN (SELECT SUM(CNT) AS TOTAL FROM A) B
 	</select>
 
 
