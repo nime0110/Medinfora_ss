@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.domain.AddQDTO;
+import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.question.model.QuestionDAO;
 
@@ -36,5 +38,28 @@ public class QuestionService_imple implements QuestionService {
 		List<MediQDTO> qList = qdao.totalquestionList(paraMap);
 		return qList;
 	}
+	
+	// 글 조회
+	@Override
+	public MediQDTO questionView(int qidx) {
+		MediQDTO qdto = null;
+		
+		qdto = qdao.questionView(qidx);
+		
+		return qdto;
+	}
+	
+	// 답변 조회
+	@Override
+	public List<MediADTO> answerView(int qidx) {
+		List<MediADTO> adtoList = qdao.answerView(qidx);
+		return adtoList;
+	}
+
+	
+	
+	
+	
+	
 
 }

@@ -170,5 +170,26 @@
 	    ORDER BY qidx DESC
 	</select>
 	
+	
+	
+	<!-- 질문 조회 -->
+	<select id="questionView" resultType="MediQDTO">
+		select qidx, userid, subject, title, content, acount, open, viewCount
+	         , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+	         , nvl(imgsrc, ' ') as imgsrc
+	         , nvl(pwd, ' ') as pwd
+	    from mediq
+	    where qidx = #{qidx}
+	</select>
+	
+	
+	<!-- 답변 조회 -->
+	<select id="answerView" resultType="MediADTO">
+		select aidx, qidx, userid, content
+		     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+		from media
+		where qidx = #{qidx}
+	</select>
+	
 
 </mapper>
