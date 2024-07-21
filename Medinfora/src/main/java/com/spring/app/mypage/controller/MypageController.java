@@ -284,8 +284,8 @@ public class MypageController {
 			jsonObj.put("checkin", rsdto.getCheckin());
 		}
 		return jsonObj.toString();
-	}	// end of public String getRdto(HttpServletRequest request) {---------------
-	
+	} // end of public String getRdto(HttpServletRequest request) {---------------
+/*
 	// === 진료현황 변경 === //
 	@ResponseBody
 	@PostMapping("ChangeRstatus.bibo")
@@ -308,6 +308,41 @@ public class MypageController {
 		if(n==1) {
 			if("2".equals(rcode) || "0".equals(rcode)) {
 				send = 1;
+
+		String message = "", loc = "";
+		if (n == 1) {
+			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
+			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
+		}
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		mav.setViewName("msg");
+		return mav;
+	} // end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest
+		// request, HttpServletResponse response) {----------
+*/
+	// === (일반) 진료예약열람(페이징, 검색 처리) === //
+	@ResponseBody
+	@GetMapping(value = "myreserveList.bibo", produces = "text/plain;charset=UTF-8")
+	public String myreserveList(HttpServletRequest request) {
+		// 예얄리스트(페이징, 검색처리)
+		return reserveList(request);
+	} // end of public String mdreserveList(HttpServletRequest request) {-----
+
+	// === (일반회원) 진료접수 취소 정보 === //
+	@ResponseBody
+	@GetMapping(value = "cancleRdto.bibo", produces = "text/plain;charset=UTF-8")
+	public String cancleRdto(HttpServletRequest request) {
+		String ridx = request.getParameter("ridx");
+
+		ReserveDTO rsdto = null;
+		JSONObject jsonObj = new JSONObject();
+		if (ridx != null) {
+			// ridx 를 통해 진료접수 취소하기
+			int n = service.cancleRdto(ridx);
+			if (n == 1) {
+				// 예얄리스트(페이징, 검색처리)
+				return reserveList(request);
 			}
 		}
 
@@ -588,4 +623,5 @@ public class MypageController {
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	
+
 }

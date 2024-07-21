@@ -62,4 +62,5 @@ public interface MypageService {
 	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
 	MemberDTO getPatientInfo(String userid);
 
+
 }
