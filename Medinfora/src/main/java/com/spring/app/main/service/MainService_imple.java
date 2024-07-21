@@ -281,7 +281,49 @@ public class MainService_imple implements MainService {
 		
 		int counthospital,countmediq,countmedia,countnotice,totalcount;
 		
-		List<HospitalDTO> hdtoList = dao.gethdtolist(search);
+		List<HospitalDTO> hdtoList = dao.gethdtoOurlist(search);
+		
+		
+		if(hdtoList.size()!=5) {
+			
+			int size = hdtoList.size();
+			int rno = 1;
+			
+			dept:
+			for(int i=0;i<5-size;i++) {
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("search",search);
+				paraMap.put("rno",String.valueOf(rno++));
+				
+				HospitalDTO hdto = dao.gethdto(paraMap);
+				
+				try {
+					hdto.getHpname();
+				}catch (Exception e) {
+					break;
+				}
+				
+				for(int j=0;j<5-size;j++) {
+					try {
+						if(hdto.getHpname().equals(hdtoList.get(j).getHpname()) &&
+							hdto.getHpaddr().equals(hdtoList.get(j).getHpaddr())) {
+							continue dept;
+						}
+					}catch (Exception e) {
+						break;
+					}
+				}
+				
+				hdtoList.add(hdto);
+			}
+			
+		}else {
+			for(HospitalDTO hdto : hdtoList) {
+				hdtoList.add(hdto);
+			}
+		}
+		
 		counthospital = hdtoList.size();
 		
 		if(counthospital != 0) {
@@ -369,6 +411,12 @@ public class MainService_imple implements MainService {
 	@Override
 	public void writeSearchlog(Map<String, String> paraMap) {
 		dao.writeSearchlog(paraMap);
+	}
+
+	// 인덱스 인기 검색어 불러오기
+	@Override
+	public List<String> getPopwordList() {
+		return dao.getPopwordList();
 	}
 	
 }

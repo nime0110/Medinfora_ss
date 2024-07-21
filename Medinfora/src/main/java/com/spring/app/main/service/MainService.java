@@ -80,5 +80,8 @@ public interface MainService {
 
 	// (검색) 검색 로그 작성하기
 	public void writeSearchlog(Map<String, String> paraMap);
+
+	// 인덱스 인기 검색어 불러오기
+	public List<String> getPopwordList();
 	
 }

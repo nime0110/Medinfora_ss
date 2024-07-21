@@ -2,6 +2,8 @@ package com.spring.app.mypage.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -201,6 +203,13 @@ public class MypageController {
 		// hidx 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.reserveList(paraMap);
 
+		// 진료예약일이 오늘 이전이라면 진료완료로 변경
+		boolean update = checkDate_checkin(reserveList);
+		
+		if(update) {	// 변경한 진료현황이 존재한 경우
+			reserveList = service.reserveList(paraMap);
+		}
+		
 		int totalCnt = service.reserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
@@ -244,7 +253,7 @@ public class MypageController {
 
 		return jsonArr.toString();
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
-	
+
 	// === (의료인) 진료현황 변경 모달창 정보 === //
 	@ResponseBody
 	@GetMapping(value="getRdto.bibo", produces="text/plain;charset=UTF-8")
@@ -319,7 +328,6 @@ public class MypageController {
 	public String cancleRdto(HttpServletRequest request) {
 		String ridx = request.getParameter("ridx");
 		
-		ReserveDTO rsdto = null;
 		JSONObject jsonObj = new JSONObject();
 		if(ridx != null) {
 			// ridx 를 통해 진료접수 취소하기
@@ -377,6 +385,13 @@ public class MypageController {
 		// userid 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.UserReserveList(paraMap);
 		
+		// 진료예약일이 오늘 이전이라면 진료완료로 변경
+		boolean update = checkDate_checkin(reserveList);
+		
+		if(update) {	// 변경한 진료현황이 존재한 경우
+			reserveList = service.reserveList(paraMap);
+		}
+				
 		int totalCnt = service.UserReserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
@@ -419,6 +434,38 @@ public class MypageController {
 		}
 		return jsonArr.toString();
 	}	// end of private String reserveList(HttpServletRequest request) {---------------------
+	
+	// 진료예약일이 오늘 이전이라면 진료완료로 변경
+	private boolean checkDate_checkin(List<ReserveDTO> reserveList) {
+		LocalDate today = LocalDate.now();
+        
+		boolean update = false;
+		for(ReserveDTO rsdto: reserveList) {
+			String ridx = rsdto.getRidx();
+			String rcode = rsdto.getRcode();
+			String checkin = rsdto.getCheckin().substring(0,10);
+			
+			
+			// 진료예약일을 날짜타입으로 변환
+			LocalDate checkinDate = LocalDate.parse(checkin);
+			
+			if(checkinDate.isBefore(today)) {	// 만약 예약일이 오늘 날짜와 이전이라면
+				if("1".equals(rcode) || "2".equals(rcode)) {	// 접수신청이나 접수완료이라면
+					// 진료완료로 변경하기
+					service.updatercode(ridx);
+					update = true;
+				}
+			}
+		}	// end of for-----------
+		return update;
+	}	// end of private boolean checkDate_checkin(List<ReserveDTO> reserveList) {----------------------
+
+	// === 진료일정관리 === //
+	@GetMapping("reserveSchedule.bibo")
+	public ModelAndView isDr_reserveSchedule(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/reserveSchedule.info");
+		return mav;
+	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
 	
 	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
 	@GetMapping("memberList.bibo") 

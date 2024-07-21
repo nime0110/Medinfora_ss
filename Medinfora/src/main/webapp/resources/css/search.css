@@ -118,19 +118,20 @@
 }
 
 .content_title{
+    width: 100%;
     font-family: var(--font);
     font-size: 1.2rem;
     font-weight: bold;
     color:var(--blue800);
     padding-bottom: 15px;
     transition: all 0.3s;
-    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     line-clamp:1;
     -webkit-box-orient: vertical;
+    height: auto;
 }
 
 .content_title:hover{

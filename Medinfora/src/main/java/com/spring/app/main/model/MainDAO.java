@@ -77,8 +77,11 @@ public interface MainDAO {
 	// 병원 중복가입 체크
 	public boolean checkhidx(String hidx);
 
-	// (검색) 병원 리스트 검색
-	public List<HospitalDTO> gethdtolist(String search);
+	// (검색) 회원 병원 리스트 선 검색
+	public List<HospitalDTO> gethdtoOurlist(String search);
+	
+	// (검색) 병원 검색
+	public HospitalDTO gethdto(Map<String, String> paraMap);
 
 	// (검색) 질문 리스트 검색
 	public List<MediQDTO> getmqList(String search);
@@ -94,6 +97,11 @@ public interface MainDAO {
 
 	// (검색) 가입된 병원회원 여부 검사
 	public boolean isMediMember(int hidx);
+
+	// 인덱스 인기 검색어 불러오기
+	public List<String> getPopwordList();
+
+
 
 	
 	
