@@ -1,4 +1,4 @@
-package com.spring.app.mypage.service;
+package com.spring.app.mypageList.service;
 
 import java.util.List;
 import java.util.Map;

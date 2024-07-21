@@ -1,10 +1,13 @@
-package com.spring.app.mypage.model;
+package com.spring.app.mypageList.model;
 
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.spring.app.domain.MemberDTO;
 
+@Mapper
 public interface MypageListDAO {
     // 회원 목록 가져오기 
     List<MemberDTO> getMemberList(Map<String, Object> paramMap);

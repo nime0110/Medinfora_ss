@@ -321,42 +321,12 @@ public class MypageController {
 	} // end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest
 		// request, HttpServletResponse response) {----------
 */
-	// === (일반) 진료예약열람(페이징, 검색 처리) === //
-	@ResponseBody
-	@GetMapping(value = "myreserveList.bibo", produces = "text/plain;charset=UTF-8")
-	public String myreserveList(HttpServletRequest request) {
-		// 예얄리스트(페이징, 검색처리)
-		return reserveList(request);
-	} // end of public String mdreserveList(HttpServletRequest request) {-----
-
-	// === (일반회원) 진료접수 취소 정보 === //
-	@ResponseBody
-	@GetMapping(value = "cancleRdto.bibo", produces = "text/plain;charset=UTF-8")
-	public String cancleRdto(HttpServletRequest request) {
-		String ridx = request.getParameter("ridx");
-
-		ReserveDTO rsdto = null;
-		JSONObject jsonObj = new JSONObject();
-		if (ridx != null) {
-			// ridx 를 통해 진료접수 취소하기
-			int n = service.cancleRdto(ridx);
-			if (n == 1) {
-				// 예얄리스트(페이징, 검색처리)
-				return reserveList(request);
-			}
-		}
-
-		jsonObj.put("n", n);
-		jsonObj.put("send", send);	// 문자전송할 사항
-
-		return jsonObj.toString();
-	}	// end of public String ChangeRstatus(HttpServletRequest request) {----------
 	
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
 	@GetMapping(value="myreserveList.bibo", produces="text/plain;charset=UTF-8")
 	public String myreserveList(HttpServletRequest request) {
-		// 예얄리스트(페이징, 검색처리) 
+		// 예약리스트(페이징, 검색처리) 
 		return reserveList(request);
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
@@ -593,35 +563,5 @@ public class MypageController {
 		}
 		return jsonObj.toString();
 	}	// end of public String getRdto(HttpServletRequest request) {---------------
-		
-	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
-	@GetMapping("memberList.bibo") 
-	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(defaultValue = "") String str_mbrId, 
-			@RequestParam(defaultValue = "") String mbr_division) {
-	// requestParam 사용하여 매개변수 사용하기 
-		
-	   Map<String, Object> paramMap = new HashMap<>();
-        if (!str_mbrId.isEmpty()) {
-            paramMap.put("str_mbrId", str_mbrId);
-        }
-        if (!mbr_division.isEmpty()) {
-            paramMap.put("mbr_division", mbr_division);
-        }
-
-        // 회원 목록 가져오기
-        //List<MemberDTO> memberList = service.getMemberList(paramMap);
-        //mav.addObject("memberList", memberList);
-		
-		mav.setViewName("mypage/memberList.info");
-		return mav;
-	}
 	
-	
-	
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////
-	
-
 }

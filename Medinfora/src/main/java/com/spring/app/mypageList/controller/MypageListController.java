@@ -1,4 +1,4 @@
-package com.spring.app.mypage.controller;
+package com.spring.app.mypageList.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,22 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.app.common.AES256;
-import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
-import com.spring.app.mypage.service.MypageListService;
+import com.spring.app.mypageList.service.MypageListService;
 
 @Controller
-@RequestMapping(value = "/mypage/")
+@RequestMapping("/mapage/")
 public class MypageListController {
 
 	@Autowired
 	private MypageListService service;
-
-	@Autowired
-	private AES256 aES256;
-
-	
 	
 	@GetMapping("memberList.bibo")
 	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response, 
@@ -69,7 +62,7 @@ public class MypageListController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/getMemberDetail.bibo", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "getMemberDetail.bibo", produces = "application/json;charset=UTF-8")
     public String getMemberDetail(@RequestParam String userid) {
         JSONObject jsonObj = new JSONObject();
 
@@ -116,7 +109,7 @@ public class MypageListController {
     
     // 회원 정지 
     @ResponseBody
-    @GetMapping("/StopMember.bibo")
+    @GetMapping("StopMember.bibo")
     public String stopMember(@RequestParam String userid) {
         JSONObject jsonObj = new JSONObject();
         boolean success = service.StopMember(userid);
@@ -132,8 +125,3 @@ public class MypageListController {
         return jsonObj.toString();
     }
 }
-	
-	
-		 
-	////////////////////////////////////////////////////////////////////////////////////
-

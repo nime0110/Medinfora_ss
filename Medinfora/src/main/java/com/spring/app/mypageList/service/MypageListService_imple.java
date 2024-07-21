@@ -1,4 +1,4 @@
-package com.spring.app.mypage.service;
+package com.spring.app.mypageList.service;
 
 import java.util.List;
 import java.util.Map;
@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import com.spring.app.common.AES256;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.MemberDTO;
-
-import com.spring.app.mypage.model.MypageListDAO;
+import com.spring.app.mypageList.model.MypageListDAO;
 
 @Service
-
 public class MypageListService_imple implements MypageListService {
 	//////////////////////////////////////////////////
 	@Autowired
@@ -23,7 +21,7 @@ public class MypageListService_imple implements MypageListService {
 	
 	@Autowired
 	private MypageListDAO mdao;
-	  // 회원 목록 가져오기
+	// 회원 목록 가져오기
     @Override
     public List<MemberDTO> getMemberList(Map<String, Object> paraMap) {
         return mdao.getMemberList(paraMap);
