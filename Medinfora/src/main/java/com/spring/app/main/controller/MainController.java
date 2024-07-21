@@ -126,7 +126,6 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
-		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
