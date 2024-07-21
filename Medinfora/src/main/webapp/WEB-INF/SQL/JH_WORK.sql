@@ -310,10 +310,13 @@ desc member;
 select * from member;
 
 
-delete from member
-where userid = 'user001';
+DELETE FROM loginlog WHERE userid = 'ramen001_kakao';
+DELETE FROM member WHERE userid = 'ramen001_kakao';
+
 
 commit;
+
+select * from member;
 
 update member set midx = 0
 where userid = 'jhkvng9546';
@@ -364,12 +367,12 @@ commit;
 
 
 select *
-from mediq;
+from member;
 
 
 
 insert into media(aidx, qidx, userid, content, writeday)
-values(seq_aidx.nextval, 22, 'medi002', '<p> 네 중고거래는 불가능 합니다. 약사 면허 가져오세요</p>' ,default);
+values(seq_aidx.nextval, 22, 'md20396', '<p> 네 아니에요 가능합니다</p>' ,default);
 
 commit;
 
@@ -479,4 +482,44 @@ FROM(
 )S
 WHERE rno between 1 and 10
 ORDER BY qidx DESC;
+
+---------------------------------------------------------------------------------------------------------------------
+
+select * from mediq;  -- qidx
+
+select * from media;  -- qidx
+
+SELECT Q.    , 
+       A.
+       NVL(컬럼명, ' ')
+SELECT *       
+FROM (SELECT * FROM mediq WHERE qidx=23) Q LEFT JOIN media A
+ON Q.qidx = A.qidx
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+-- 글 조회하는 쿼리문
+WITH Q
+AS(
+    select qidx, userid, subject, title, content
+         , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+         , imgsrc, acount, open, viewCount, pwd
+    from mediq
+    where qidx = 22
+)
+SELECT Q.qidx, Q.userid, subject, title, Q.content, Q.writeday, aidx, A.userid, A.content, A.writeday
+FROM Q left JOIN media A
+ON Q.qidx = A.qidx;
+
+
+select aidx, qidx, userid, content
+     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+from media
+where qidx = 22;
+
+desc addMedia;
+
+
 

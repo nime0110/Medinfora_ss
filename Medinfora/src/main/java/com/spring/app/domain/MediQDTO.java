@@ -13,12 +13,51 @@ public class MediQDTO {
 	
 	private MultipartFile filesrc;
 	
-	private MediADTO adto;
-	
-	
 	
 	private String newwrite;	// 0 새로운거  1 오늘날짜보다 지난거
 	
+	// 첨부파일 관련
+	private String filename;
+	private String originFilename;
+	private String size;
+	
+	
+
+	public String getFilename() {
+		
+		if(!imgsrc.isEmpty()) {
+			filename = imgsrc.substring(0, imgsrc.indexOf("\\"));
+		}
+		else {
+			filename = null;
+		}
+		
+		return filename;
+	}
+
+	public String getOriginFilename() {
+		
+		if(!imgsrc.isEmpty()) {
+			originFilename = imgsrc.substring(imgsrc.indexOf("\\"), imgsrc.lastIndexOf("\\"));
+		}
+		else {
+			originFilename = null;
+		}
+		
+		return originFilename;
+	}
+
+	public String getSize() {
+		if(!imgsrc.isEmpty()) {
+			size = imgsrc.substring(imgsrc.lastIndexOf("\\"));
+		}
+		else {
+			size = null;
+		}
+		
+		return size;
+	}
+
 
 	public String getNewwrite() {
 		
@@ -145,13 +184,6 @@ public class MediQDTO {
 		this.viewCount = viewCount;
 	}
 
-	public MediADTO getAdto() {
-		return adto;
-	}
-
-	public void setAdto(MediADTO adto) {
-		this.adto = adto;
-	}
 	
 	
 	
