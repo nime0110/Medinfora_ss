@@ -51,5 +51,6 @@
 	<mybatis-spring:scan base-package="com.spring.app.mypage.model" factory-ref="sqlSessionFactory" />
 	<mybatis-spring:scan base-package="com.spring.app.question.model" factory-ref="sqlSessionFactory" />
 	<mybatis-spring:scan base-package="com.spring.app.mypageList.model" factory-ref="sqlSessionFactory" />
+	<mybatis-spring:scan base-package="com.spring.app.commu.model" factory-ref="sqlSessionFactory" />
 	
 </beans>
