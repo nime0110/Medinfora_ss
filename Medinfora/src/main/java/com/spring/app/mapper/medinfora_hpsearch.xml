@@ -46,34 +46,35 @@
 	</resultMap>
 	
 	<select id="getChartPercentage" parameterType="HashMap" resultMap="chartMap">
-		WITH A
-		AS (
-		    select CLASSNAME, COUNT(*) AS CNT
-		        FROM (
-		        SELECT HIDX, HPNAME, HPADDR, HPTEL,  AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
-		                STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
-		            STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8,
-		            ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
-		        FROM (
-		            SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY,WGS84LON, WGS84LAT, STARTTIME1,  STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6,
-		            STARTTIME7, STARTTIME8, ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8
-		            FROM hospital H
-		        	WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
-		          	AND H.hpaddr LIKE '%' || #{country} || '%' 
-				<if test='agency != ""'>
-				    AND H.agency = #{agency}
-				</if>
-				<if test='hpname != ""'>
-				    AND H.hpname LIKE '%' || #{hpname} || '%'
-				</if>
+		WITH A AS (
+	    SELECT CLASSNAME, COUNT(*) AS CNT
+	    FROM (
+	        SELECT HIDX, HPNAME, HPADDR, HPTEL, AGENCY, WGS84LON, WGS84LAT, CLASSNAME,
+	               STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6, STARTTIME7, STARTTIME8, 
+	               ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8,
+	               ROW_NUMBER() OVER (ORDER BY A.HIDX DESC) AS RNO
+	        FROM (
+	            SELECT HIDX, HPNAME, HPADDR, HPTEL, CLASSCODE, AGENCY, WGS84LON, WGS84LAT, 
+	                   STARTTIME1, STARTTIME2, STARTTIME3, STARTTIME4, STARTTIME5, STARTTIME6, STARTTIME7, STARTTIME8, 
+	                   ENDTIME1, ENDTIME2, ENDTIME3, ENDTIME4, ENDTIME5, ENDTIME6, ENDTIME7, ENDTIME8
+	            FROM hospital H
+	            WHERE H.hpaddr LIKE '%' || #{addr} || '%' 
+	            AND H.hpaddr LIKE '%' || #{country} || '%' 
+	            <if test='agency != ""'>
+	                AND H.agency = #{agency}
+	            </if>
+	            <if test='hpname != ""'>
+	                AND H.hpname LIKE '%' || #{hpname} || '%'
+	            </if>
 		        ) A
 		        JOIN CLASSCODE B ON A.CLASSCODE = B.CLASSCODE
 		    ) C
 		    GROUP BY CLASSNAME
 		    ORDER BY CNT DESC
-		    )
-		SELECT A.CLASSNAME, A.CNT, TO_CHAR( ROUND((A.CNT / B.TOTAL) * 100, 1), '990.0') AS PERCNTAGE
-		FROM A CROSS JOIN (SELECT SUM(CNT) AS TOTAL FROM A) B
+		)
+		SELECT A.CLASSNAME, A.CNT, TO_CHAR(ROUND((A.CNT / B.TOTAL) * 100, 1), '990.0') AS PERCNTAGE
+		FROM A 
+		CROSS JOIN (SELECT SUM(CNT) AS TOTAL FROM A) B
 	</select>
 
 
