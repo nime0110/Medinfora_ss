@@ -53,13 +53,11 @@
 	    <button class="tab-button active" data-tab="map_box">지도</button>
 	    <button class="tab-button" data-tab="hplist">리스트</button>
 	</div>
-	<div id="map_box" class="map_wrap tab-content">
-		<div id="map"></div>
-	</div>
+
 	
 	<div id="flexbox_map">
 		<div id="map_box" class="map_wrap tab-content">
-		 	 <div id="hp_chart"  style="height: 100%">통계들어감</div>
+			<div id="map"></div>
 		</div>
 		<div id="hplist" class="tab-content">
 		    <ul id="hospitalList">
@@ -74,9 +72,10 @@
 	</div>
     <div class="pagination" id="rpageNumber">
     </div>
-  
-    
-<div id="hospitalList"></div>
+    <div id="hp_chart_description">
+    	<div id="space"></div>
+    </div>
+  	<div id="hp_chart" style="height: 100%">통계들어감</div>
 
   	
 <%-- 로더  --%>
