@@ -279,15 +279,66 @@ public class MainService_imple implements MainService {
 		
 		Map<String,List<Object>> result = new HashMap<>();
 		
-		int counthospital,countmediq,countmedia,countmediqa,countnotice,totalcount;
+		int counthospital,countmediq,countmedia,countnotice,totalcount;
 		
-		List<HospitalDTO> hdtoList = dao.gethdtolist(search);
+		List<HospitalDTO> hdtoList = dao.gethdtoOurlist(search);
+		
+		
+		if(hdtoList.size()!=5) {
+			
+			int size = hdtoList.size();
+			int rno = 1;
+			
+			dept:
+			for(int i=0;i<5-size;i++) {
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("search",search);
+				paraMap.put("rno",String.valueOf(rno++));
+				
+				HospitalDTO hdto = dao.gethdto(paraMap);
+				
+				try {
+					hdto.getHpname();
+				}catch (Exception e) {
+					break;
+				}
+				
+				for(int j=0;j<5-size;j++) {
+					try {
+						if(hdto.getHpname().equals(hdtoList.get(j).getHpname()) &&
+							hdto.getHpaddr().equals(hdtoList.get(j).getHpaddr())) {
+							continue dept;
+						}
+					}catch (Exception e) {
+						break;
+					}
+				}
+				
+				hdtoList.add(hdto);
+			}
+			
+		}else {
+			for(HospitalDTO hdto : hdtoList) {
+				hdtoList.add(hdto);
+			}
+		}
+		
 		counthospital = hdtoList.size();
 		
 		if(counthospital != 0) {
 			List<Object> inputer = new ArrayList<Object>();
 			for(HospitalDTO hdto : hdtoList) {
-				inputer.add(hdto);
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("hpname",hdto.getHpname());
+				paraMap.put("hpaddr",hdto.getHpaddr());
+				
+				HospitalDTO finaldto = dao.searchMedicalEnd(paraMap);
+				finaldto.setAgency(hdto.getAgency());
+				finaldto.setMember(dao.isMediMember(finaldto.getHidx()));
+				
+				inputer.add(finaldto);
 			}
 
 			result.put("hdtolist",inputer);
@@ -313,12 +364,21 @@ public class MainService_imple implements MainService {
 		
 		if(countmedia != 0) {
 			List<Object> inputer = new ArrayList<Object>();
+			start:
 			for(MediQDTO madto : madtoList) {
 				String content = Myutil.removeHTMLtag(madto.getContent());
 				madto.setContent(content);
-				inputer.add(madto);
+				
+				for(int i=0;i<mqdtoList.size();i++) {
+					if(mqdtoList.get(i).getTitle().equals(madto.getTitle())) {
+						continue start;
+					}
+					if(i==mqdtoList.size()-1) {
+						inputer.add(madto);
+					}
+				}// 질문 답변 중복 제거
+				
 			}
-			
 			result.put("madtolist",inputer);
 		}
 	
@@ -330,23 +390,19 @@ public class MainService_imple implements MainService {
 			for(NoticeDTO ndto : ndtoList) {
 				String content = Myutil.removeHTMLtag(ndto.getContent());
 				ndto.setContent(content);
+				inputer.add(ndto);
 			}
 			
-			result.put("ndtoList",inputer);
-			inputer.clear();
+			result.put("ndtolist",inputer);
 		}
 		
-		countmediqa = countmediq + countmedia;
-		totalcount = counthospital + countmediqa + countnotice;
+		totalcount = counthospital + countmediq + countmedia + countnotice;
 		
-		List<Object> inputer = new ArrayList<Object>();
+		List<Object> cntInputer = new ArrayList<Object>();
 		Map<String,Integer> countmap = new HashMap<String, Integer>();
-		countmap.put("counthospital",counthospital);
-		countmap.put("countmediqa",countmediqa);
-		countmap.put("countnotice",countnotice);
 		countmap.put("totalcount",totalcount);
-		inputer.add(countmap);
-		result.put("countmap",inputer);
+		cntInputer.add(countmap);
+		result.put("countmap",cntInputer);
 		
 		return result;
 	}
@@ -355,6 +411,12 @@ public class MainService_imple implements MainService {
 	@Override
 	public void writeSearchlog(Map<String, String> paraMap) {
 		dao.writeSearchlog(paraMap);
+	}
+
+	// 인덱스 인기 검색어 불러오기
+	@Override
+	public List<String> getPopwordList() {
+		return dao.getPopwordList();
 	}
 	
 }

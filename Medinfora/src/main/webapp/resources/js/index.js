@@ -58,7 +58,9 @@ window.onload = () => {
 
     $('.dh-section-serachbar').on("blur",function(){
 
-        $('.pop_search').addClass("fadeout");
+        setTimeout(function() {
+            $('.pop_search').addClass("fadeout");
+        },100)
 
     });
 

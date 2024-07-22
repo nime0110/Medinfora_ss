@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
+import com.spring.app.domain.AddADTO;
+import com.spring.app.domain.AddQDTO;
+import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.question.service.QuestionService;
@@ -130,12 +134,13 @@ public class QuestionController {
 								,@RequestParam(value="word", defaultValue = "")String searchWord
 								,@RequestParam(value="PageNo", defaultValue = "1")String str_currentPageNo) {
 		
-		System.out.println(searchSubject);
-		System.out.println(searchWord);
-		System.out.println(searchType);
+		// System.out.println(searchSubject);
+		// System.out.println(searchWord);
+		// System.out.println(searchType);
+		// System.out.println(str_currentPageNo);
 		
 		List<MediQDTO> qList = null;
-		System.out.println(str_currentPageNo);
+		// System.out.println(str_currentPageNo);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("readCountMark", "yes");
@@ -156,7 +161,7 @@ public class QuestionController {
 		try {
 			totalCount = questionservice.totalquestion(paraMap);
 			
-			System.out.println("확인용 totalCount "+totalCount);
+			// System.out.println("확인용 totalCount "+totalCount);
 			totalPage = (int) Math.ceil((double)totalCount/sizePerPage); 
 			
 			if(str_currentPageNo == null) {
@@ -198,6 +203,11 @@ public class QuestionController {
 					qdtoMap.put("currentPageNo", currentPageNo);
 					qdtoMap.put("totalPage", totalPage);
 					
+					qdtoMap.put("subject", searchSubject);
+					qdtoMap.put("type", searchType);
+					qdtoMap.put("word", searchWord);
+					
+					
 					jsonObj.put("qdtoMap", qdtoMap);
 					
 				}
@@ -207,8 +217,6 @@ public class QuestionController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		return jsonObj.toString();
 	}
 	
@@ -356,5 +364,128 @@ public class QuestionController {
 	
 		return mav;
 	}
+	
+	
+	
+	// 질문 조회
+	@GetMapping("/questionView.bibo")
+	public String questionView(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		String readCountMark = String.valueOf(session.getAttribute("readCountMark"));
+		
+		if(readCountMark == null || "null".equalsIgnoreCase(readCountMark)) {
+			readCountMark = "no";
+		}
+		
+		session.removeAttribute("readCountMark");
+		
+		String redirect = "question/questionView.tiles";
+		
+		Map<String, Object> totalcontent = new HashMap<>();
+		
+		try {
+		
+		// 가져올 값
+		/*
+		 	1. 글관련
+		 	작성자
+		 	구분
+		 	작성일 > 형식 yyyy-mm-dd 로 해야함
+		 	진행상태 > 답변수가 1개 이상일 경우 답변완료로 진행 아니면 답변중
+		 	조회수 > 리스트에서 전달해준 mark가 없으면 조회수 증가 x
+		 	파일정보 > 다운로드 가능해야함(단, 의료회원 및 작성자, 관리자만 가능하도록)
+		 	
+		 	2.답변내용(있는경우 없는경우로 나눠서 해야함)
+		 	- 질문번호를 넣어서 가져옴(리스트로 가져와야함)
+		 	
+		 	3.추가질문 또는 답변 내용(2번과 동일)
+		 	- 답변번호를 넣어서 가져옴(리스트로 가져와야함)
+		 	
+
+		 	
+		*/
+		
+			// 먼저 글번호를 가져오자
+			String str_qidx = request.getParameter("qidx");
+			
+			if(str_qidx == null) {
+				str_qidx = "22";
+			}
+			
+			// System.out.println(str_qidx);
+			
+			int qidx = Integer.parseInt(str_qidx);
+			
+			// 글정보 조회
+			MediQDTO qdto = questionservice.questionView(qidx);
+			
+			if(qdto == null) {
+				redirect = "redirect:/questionList.bibo";
+			}
+			
+			// 답변 조회
+			List<MediADTO> adtoList = questionservice.answerView(qidx);
+			
+			if(adtoList.size() > 0) {
+				
+				// 추가 질문 및 답변이 있는지 확인
+				for(MediADTO adto : adtoList) {
+					String adix = adto.getAidx();
+					
+					
+					
+					
+					
+					
+				}
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+		
+		}catch(Exception e) {
+			redirect = "redirect:/questionList.bibo";
+		}
+		
+		return redirect;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

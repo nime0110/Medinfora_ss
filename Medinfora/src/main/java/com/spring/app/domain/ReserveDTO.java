@@ -1,5 +1,7 @@
 package com.spring.app.domain;
 
+import java.util.Objects;
+
 public class ReserveDTO {
 
 	private String ridx;			// 예약번호
@@ -92,5 +94,21 @@ public class ReserveDTO {
 	public void setrStatus(String rStatus) {
 		this.rStatus = rStatus;
 	}
+	
+//////////////////////////////////////////////////////////////////
+	
+	// === 리스트 중복제거용 === //
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReserveDTO that = (ReserveDTO) o;
+        return Objects.equals(ridx, that.ridx);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ridx);
+    }
 	
 }

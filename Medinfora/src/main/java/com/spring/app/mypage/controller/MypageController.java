@@ -2,7 +2,12 @@ package com.spring.app.mypage.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +205,13 @@ public class MypageController {
 		
 		// hidx 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.reserveList(paraMap);
+
+		// 진료예약일이 오늘 이전이라면 진료완료로 변경
+		boolean update = checkDate_checkin(reserveList);
+		
+		if(update) {	// 변경한 진료현황이 존재한 경우
+			reserveList = service.reserveList(paraMap);
+		}
 		
 		int totalCnt = service.reserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
@@ -244,7 +256,7 @@ public class MypageController {
 
 		return jsonArr.toString();
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
-	
+
 	// === (의료인) 진료현황 변경 모달창 정보 === //
 	@ResponseBody
 	@GetMapping(value="getRdto.bibo", produces="text/plain;charset=UTF-8")
@@ -272,11 +284,12 @@ public class MypageController {
 			jsonObj.put("checkin", rsdto.getCheckin());
 		}
 		return jsonObj.toString();
-	}	// end of public String getRdto(HttpServletRequest request) {---------------
-	
+	} // end of public String getRdto(HttpServletRequest request) {---------------
+/*
 	// === 진료현황 변경 === //
+	@ResponseBody
 	@PostMapping("ChangeRstatus.bibo")
-	public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public String ChangeRstatus(HttpServletRequest request) {
 		String rStatus = request.getParameter("rStatus");
 		String ridx = request.getParameter("ridx");
 		
@@ -288,25 +301,32 @@ public class MypageController {
 		paraMap.put("ridx", ridx);
 		paraMap.put("rcode", rcode);
 		
+		JSONObject jsonObj = new JSONObject();
 		// 진료현황 변경해주기
 		int n = service.ChangeRstatus(paraMap);
-		
-		String message = "", loc = "";
+		int send = 0;
 		if(n==1) {
+			if("2".equals(rcode) || "0".equals(rcode)) {
+				send = 1;
+
+		String message = "", loc = "";
+		if (n == 1) {
 			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
 			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
 		}
-		mav.addObject("message",message);
-		mav.addObject("loc",loc);
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
 		mav.setViewName("msg");
 		return mav;
-	}	// end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {----------
+	} // end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest
+		// request, HttpServletResponse response) {----------
+*/
 	
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
 	@GetMapping(value="myreserveList.bibo", produces="text/plain;charset=UTF-8")
 	public String myreserveList(HttpServletRequest request) {
-		// 예얄리스트(페이징, 검색처리) 
+		// 예약리스트(페이징, 검색처리) 
 		return reserveList(request);
 	}	// end of public String mdreserveList(HttpServletRequest request) {-----
 	
@@ -316,7 +336,6 @@ public class MypageController {
 	public String cancleRdto(HttpServletRequest request) {
 		String ridx = request.getParameter("ridx");
 		
-		ReserveDTO rsdto = null;
 		JSONObject jsonObj = new JSONObject();
 		if(ridx != null) {
 			// ridx 를 통해 진료접수 취소하기
@@ -374,6 +393,13 @@ public class MypageController {
 		// userid 의 현재 예약리스트 가져오기(검색포함)
 		reserveList = service.UserReserveList(paraMap);
 		
+		// 진료예약일이 오늘 이전이라면 진료완료로 변경
+		boolean update = checkDate_checkin(reserveList);
+		
+		if(update) {	// 변경한 진료현황이 존재한 경우
+			reserveList = service.reserveList(paraMap);
+		}
+				
 		int totalCnt = service.UserReserveListCnt(paraMap);	// 리스트 총 결과 개수
 		int totalPage = (int)Math.ceil((double)totalCnt/sizePerPage);
 		
@@ -417,33 +443,125 @@ public class MypageController {
 		return jsonArr.toString();
 	}	// end of private String reserveList(HttpServletRequest request) {---------------------
 	
-	//////////////////////////////////승혜  작업 영역 ///////////////////////////////////////////
-	@GetMapping("memberList.bibo") 
-	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(defaultValue = "") String str_mbrId, 
-			@RequestParam(defaultValue = "") String mbr_division) {
-	// requestParam 사용하여 매개변수 사용하기 
-		
-	   Map<String, Object> paramMap = new HashMap<>();
-        if (!str_mbrId.isEmpty()) {
-            paramMap.put("str_mbrId", str_mbrId);
-        }
-        if (!mbr_division.isEmpty()) {
-            paramMap.put("mbr_division", mbr_division);
-        }
+	// 진료예약일이 오늘 이전이라면 진료완료로 변경
+	private boolean checkDate_checkin(List<ReserveDTO> reserveList) {
+		LocalDate today = LocalDate.now();
+        
+		boolean update = false;
+		for(ReserveDTO rsdto: reserveList) {
+			String ridx = rsdto.getRidx();
+			String rcode = rsdto.getRcode();
+			String checkin = rsdto.getCheckin().substring(0,10);
+			
+			// 진료예약일을 날짜타입으로 변환
+			LocalDate checkinDate = LocalDate.parse(checkin);
+			
+			if(checkinDate.isBefore(today)) {	// 만약 예약일이 오늘 날짜와 이전이라면
+				if("1".equals(rcode) || "2".equals(rcode)) {	// 접수신청이나 접수완료이라면
+					// 진료완료로 변경하기
+					service.updatercode(ridx);
+					update = true;
+				}
+			}
+		}	// end of for-----------
+		return update;
+	}	// end of private boolean checkDate_checkin(List<ReserveDTO> reserveList) {----------------------
 
-        // 회원 목록 가져오기
-        //List<MemberDTO> memberList = service.getMemberList(paramMap);
-        //mav.addObject("memberList", memberList);
+	// === 진료일정관리 === //
+	@GetMapping("reserveSchedule.bibo")
+	public ModelAndView isDr_reserveSchedule(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		String userid = loginuser.getUserid();
 		
-		mav.setViewName("mypage/memberList.info");
+		String hidx = "";
+		
+		// 아이디를 통해 병원인덱스 값 찾기
+		hidx = service.Searchhospital(userid);
+		
+		// hidx 의 예약리스트 가져오기
+		List<ReserveDTO> reserveList = service.TotalreserveList(hidx);
+		
+		JSONArray name_jsonArr = new JSONArray();
+		JSONArray time_jsonArr = new JSONArray();
+		JSONArray checkinEnd_jsonArr = new JSONArray();
+		if(reserveList != null) {
+			for(ReserveDTO rsdto: reserveList) {
+				String patient_id = rsdto.getUserid();
+				
+				// 예약된 환자의 아이디 값을 가지고 이름 알아오기
+				List<MemberDTO> memberList = service.GetPatientInfo(patient_id);
+				if(memberList != null) {
+					for(MemberDTO mdto: memberList) {
+						// select 용으로 사용되는 값에 담기
+						rsdto.setName(mdto.getName());
+					}	// end of for---------------
+					name_jsonArr.put(rsdto.getName());
+					time_jsonArr.put(rsdto.getCheckin());
+				}
+				String checkin = rsdto.getCheckin();
+				try {
+					// checkin 을 CALENDAR 타입으로 변환
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					
+				    Date parsedDate = dateFormat.parse(checkin);
+				    
+				    Calendar calendar = Calendar.getInstance();
+				    calendar.setTime(parsedDate);
+				    
+				    // 30분 추가
+				    calendar.add(Calendar.MINUTE, 30);
+				    
+				    // 30분 추가한 값을 String 타입에 담기
+				    Date plus30 = calendar.getTime();
+				    String checkinEnd = dateFormat.format(plus30);
+				    checkinEnd_jsonArr.put(checkinEnd);
+				} catch (ParseException e) {
+				    e.printStackTrace();
+				}
+				
+			}	//end of for---------------
+		}
+		// ReserveDTO 의 name 값과 checkin 을 짝지어 넘겨주기
+		mav.addObject("nameList", name_jsonArr.toString());
+		mav.addObject("timeList", time_jsonArr.toString());
+		mav.addObject("checkinEndList", checkinEnd_jsonArr.toString());
+		mav.setViewName("mypage/reserveSchedule.info");
 		return mav;
-	}
+	}	// end of public ModelAndView isLogin_mdreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {-----
 	
-	
-	
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////
+	// === (의료인) 예약일정관리 환자정보 모달창 정보 === //
+	@ResponseBody
+	@GetMapping(value="getPatientInfo.bibo", produces="text/plain;charset=UTF-8")
+	public String getPatientInfo(HttpServletRequest request) {
+		String checkin = request.getParameter("checkin");
+		
+		ReserveDTO rdto = null;
+		if(checkin != null) {
+			// checkin 를 통해 환자 userid 가져오기
+			rdto = service.getPatientd(checkin);
+		}
+
+		MemberDTO mdto = null;
+		JSONObject jsonObj = new JSONObject();	// {}
+		if(rdto != null) {
+			String userid = rdto.getUserid();
+			// userid 를 통해 환자 정보 가져오기
+			mdto = service.getPatientInfo(userid);
+			try {
+				mdto.setMobile(aES256.decrypt(mdto.getMobile()));
+				mdto.setEmail(aES256.decrypt(mdto.getEmail()));
+			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			jsonObj.put("name", mdto.getName());
+			jsonObj.put("mobile", mdto.getMobile());
+			jsonObj.put("email", mdto.getEmail());
+			jsonObj.put("address", mdto.getAddress());
+			jsonObj.put("birthday", mdto.getBirthday());
+			jsonObj.put("gender", mdto.getGender());
+		}
+		return jsonObj.toString();
+	}	// end of public String getRdto(HttpServletRequest request) {---------------
 	
 }

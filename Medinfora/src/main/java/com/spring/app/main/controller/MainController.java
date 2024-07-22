@@ -53,6 +53,7 @@ public class MainController {
 		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		
 		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
@@ -125,7 +126,6 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
-		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
@@ -228,7 +228,7 @@ public class MainController {
 		@SuppressWarnings("unchecked")
 		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
 		
-		if(countlist.get("totalcount") == 5) {
+		if(countlist.get("totalcount") == 0) {
 			mav.addObject("nosearch",2);
 			mav.addObject("search",search);
 			mav.setViewName("search.tiles");
@@ -249,6 +249,22 @@ public class MainController {
 		mav.setViewName("search.tiles");
 		
 		return mav;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@GetMapping("/getpopword.bibo")
+	public String getpopword() {
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		List<String> popwordList = service.getPopwordList();
+		
+		for(String popword : popwordList) {
+			jsonArr.add(popword);
+		}
+		
+		return jsonArr.toString();
 	}
 	
 }

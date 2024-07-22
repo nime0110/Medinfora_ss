@@ -10,6 +10,8 @@ public class HospitalDTO {
 	// [ss] Add field for select query--  
 	private String classname;
 	
+	// [dh] check our member
+	private boolean isMember;
 	
 	public int getHidx() {
 		return hidx;
@@ -160,6 +162,12 @@ public class HospitalDTO {
 	}
 	public void setClassname(String classname) {
 		this.classname = classname;
+	}
+	public boolean isMember() {
+		return isMember;
+	}
+	public void setMember(boolean isMember) {
+		this.isMember = isMember;
 	}
 	
 	

@@ -3,6 +3,8 @@ package com.spring.app.question.service;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.app.domain.AddQDTO;
+import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 
 public interface QuestionService {
@@ -15,5 +17,15 @@ public interface QuestionService {
 	
 	// 전체 리스트(검색포함)
 	List<MediQDTO> totalquestionList(Map<String, String> paraMap);
+	
+	// 질문 조회
+	MediQDTO questionView(int qidx);
+	
+	// 답변 조회
+	List<MediADTO> answerView(int qidx);
+	
+	
+
+	
 
 }

@@ -38,6 +38,9 @@ public interface MypageService {
 	// (의료인- 진료예약 열람) 진료현황 변경해주기
 	int ChangeRstatus(Map<String, String> paraMap);
 
+	// (의료인- 진료예약 열람) 진료완료로 변경하기
+	void updatercode(String ridx);
+	
 	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(검색포함)
 	List<ReserveDTO> UserReserveList(Map<String, String> paraMap);
 
@@ -49,5 +52,15 @@ public interface MypageService {
 
 	// (일반회원- 진료예약 열람) ridx 를 통해 진료접수 취소하기
 	int cancleRdto(String ridx);
+
+	// (의료인- 진료 일정관리) hidx 의 예약리스트 가져오기
+	List<ReserveDTO> TotalreserveList(String hidx);
+
+	// (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기
+	ReserveDTO getPatientd(String checkin);
+	
+	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
+	MemberDTO getPatientInfo(String userid);
+
 
 }

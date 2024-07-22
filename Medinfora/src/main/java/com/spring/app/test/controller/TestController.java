@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.Myutil;
+import com.spring.app.domain.HolidayVO;
+import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.main.service.MainService;
 
@@ -21,7 +23,6 @@ public class TestController {
 	@RequestMapping(value="/test.bibo")
 	public ModelAndView commom(ModelAndView mav) {
 		
-		/* API 입력 영역
 		if(true) {
 			try {
 				
@@ -71,9 +72,7 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		*/
-		/*
-		// HOLIDAY API
+		
 		if(true) {
 			try {
 				String holidayAdr = "";
@@ -97,7 +96,6 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
-		*/
 		mav.setViewName("redirect:index.bibo");
 		
 		return mav;

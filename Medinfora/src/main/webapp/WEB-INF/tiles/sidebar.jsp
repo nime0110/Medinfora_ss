@@ -45,7 +45,7 @@
            <ul class="sidebar_list_ul">
                <li class="sidebar_list_li">내 답변내용</li>
                <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mdreserve.bibo'">진료 예약 열람</li>
-               <li class="sidebar_list_li">진료 일정 관리</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/reserveSchedule.bibo'">진료 일정 관리</li>
            </ul>
            </c:if>
            

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.app.mypageList.model.MypageListDAO">
+
+	<!--  회원 목록 가져오기  -->
+	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
+        SELECT userid, pwd, email, name, address, detailAddress, 
+               birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
+        FROM member
+        WHERE 1=1
+      
+        <if test="userid != null and userid != ''">
+            AND userid LIKE CONCAT('%', #{userid}, '%')
+        </if>
+        <if test="mbr_division != null and mbr_division != ''">
+            AND mIdx = #{mbr_division}
+        </if>
+    </select>
+
+    <!-- 회원 상세 정보 가져오기 -->
+    <select id="getMemberDetails" parameterType="String" resultType="MemberDTO">
+       SELECT m.*, mi.mStatus,
+          (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+          (CASE WHEN m.midx = 1 THEN (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) ELSE NULL END) as postCount
+    FROM member m
+    LEFT JOIN memberidx mi ON m.midx = mi.midx
+    WHERE m.userid = #{userid}
+    </select>
+    
+     <!-- 회원 정지 -->
+    <update id="updateMemberStatusToStopped" parameterType="String">
+        UPDATE member SET mIdx = 8 WHERE userid = #{userid}
+    </update>
+    
+   <select id="getTotalPage" parameterType="map" resultType="int">
+    SELECT COUNT(*) 
+    FROM member
+    WHERE 1=1
+    <if test="userid != null and userid != ''">
+        AND userid LIKE CONCAT('%', #{userid}, '%')
+    </if>
+    <if test="name != null and name != ''">
+        AND name LIKE CONCAT('%', #{name}, '%')
+    </if>
+    <if test="hospitalName != null and hospitalName != ''">
+        AND hospitalName LIKE CONCAT('%', #{hospitalName}, '%')
+    </if>
+    </select>
+</mapper>
