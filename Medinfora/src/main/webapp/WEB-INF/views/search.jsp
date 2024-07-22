@@ -120,8 +120,8 @@ function hospitaldetail(hidx){
 						</div>
 					</c:forEach>
 					
-					<div class="showmore">
-						<span>검색결과 더보기</span>
+					<div class="showmore" onclick="location.href = '<%=ctxPath%>/notice/noticeList.bibo'">
+						<span>공지사항 목록보기</span>
 					</div>
 				
 				</div>
