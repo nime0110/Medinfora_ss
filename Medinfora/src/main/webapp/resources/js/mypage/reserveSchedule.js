@@ -1,27 +1,3 @@
-$(document).on("click",'.fc-list-event',(e) => {
-	
-	// let day = $(e.target).parent().data-Date();
-	// alert(day);
-	// let time = $(e.target).find(".fc-list-event-time").text();
-	// alert(time);
-	// let name = $(e.target).find(".fc-list-event-title").text();
-
-	// if(word == ""){
-	// 	word = target.text();
-	// }
-	// word(예약자명) 에 대한 정보 보여주기
-	// ShowInfo(word);
-})	// end of $(document).on("click",'.fc-list-event-title',(e) => {-----
-	
-// $(document).on("click",'.fc-event',(e) => {
-	
-// 	let word = $(e.target).text();
-// 	alert(word);
-// 	// word(예약자명) 에 대한 정보 보여주기
-// 	// ShowInfo(word);
-	
-// })	// end of $(document).on("click",'.fc-event-title',(e) => {------
-
 // word(예약자명) 에 대한 정보 보여주기
 function ShowInfo(checkin){
 
