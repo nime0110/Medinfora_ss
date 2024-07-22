@@ -23,4 +23,6 @@ public interface MypageListDAO {
 
 	int getTotalPage(Map<String, Object> paraMap);
 
+	//int getTotalCount(Map<String, Object> paraMap);
+
 }
