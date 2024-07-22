@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.spring.app.mypage.model.MypageListDAO">
+<mapper namespace="com.spring.app.mypageList.model.MypageListDAO">
 
 	<!--  회원 목록 가져오기  -->
 	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
