@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+div#ctxPath, div#hpname{
+	display: none;	
+}
+
+div.hj_container{
+	margin-top: 100px;
+}
+
+div.searchBar{
+	background-color: var(--object-skyblue-color);
+}
+
+.search_ch {
+	height: 40px;
+	border: none;
+	border-radius: 0.5rem;
+}
+
+.sel_0 {
+	width: 200px;
+	margin-right: 2rem;
+	padding: 0 40px 0 20px;
+}
+
+.sel_1 {
+	width: 40%;
+	padding-left: 20px;
+}
+
+button.search {
+	margin: 0;
+	width: 100px;
+}
+
+.subject {
+	border-top: 3px solid black;
+	border-bottom: 1px solid black;
+}
+
+.b_border {
+	border-bottom: solid 1px rgb(163, 163, 163);
+}
+
+input:focus, select {
+	outline: none;
+}
+
+.rscode{
+	background-color: var(--navy450);
+	border-radius: 10%;
+	color: white;
+}
+
+.rschange{
+	width: 50px;
+	background-color: white;
+	border: solid 2px var(--text-black-color);
+	border-radius: 0.5rem;
+}
+
+/* 모달 css start */
+.modal-content {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    margin: auto;
+    width: 45rem;
+}
+
+#modal-name{
+	float: left;
+	font-size: 1.25rem;
+    margin: 1.2vh 0;
+}
+
+.modal-mini-title{
+	font-size: 1.25rem;
+    margin: 1.5vh 0;
+}
+
+
+.modal-title {
+    font-weight: bold;
+    color: #333;
+}
+
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+}
+
+/* 테이블 스타일 start */
+.row-table {
+    margin-bottom: 20px;
+}
+
+
+.row-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.row-table th {
+    background-color: #f7f7f7;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.row-table td {
+    background-color: #fff;
+    padding: 12px;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+
+.row-table th,
+.row-table td {
+    font-size: 14px;
+}
+/* 테이블 스타일 end */
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼 호버 효과 */
+.btnStyle:hover {
+    background-color: #5a6268;
+    color: #fff;
+}
+
+.modal-dialog {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+.btnStyle{
+	height: 40px;
+  	background-color: var(--navy300);
+  	border: none;
+  	color: var(--text-white-color);
+  	font-size: 1rem;
+  	margin-left: 90%;
+  	border-radius: 0.5rem;;
+}
+
+#closeModalButton{
+	margin-left: 80%;
+}
+
+.changers{
+	border: solid 1px black;
+	margin-top: 10px;
+	width: 200px;
+	margin-right: 2rem;
+	padding: 0 20px;
+}
+/* 모달 css end */

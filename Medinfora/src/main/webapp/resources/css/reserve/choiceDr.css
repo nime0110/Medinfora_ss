@@ -1,0 +1,255 @@
+.reserveContent{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.reserveTitlediv{
+    border-bottom: solid 2px var(--grey700);
+}
+
+.reserve_title{
+    display: block;
+    line-height: 5rem;
+    text-align: center;
+    color: var(--grey800);
+}
+
+.reserve_seq{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.reserve_li{
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+    border-radius: 10px 0 10px 10px;
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.35);
+    background-color: var(--grey600);
+    color : var(--text-white-color);
+    width: 40%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.reserve_licontent{
+    padding: 30px;
+    font-size: 1.3rem;
+}
+
+.searchhp{
+    display: flex;
+    justify-content: center;
+    background-color: var(--navy250);
+    margin: 0;
+    padding: 24pt 24pt;
+    margin-bottom: 50px;
+}
+
+.location_select{
+    width: 35%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.class_select{
+    width: 25%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.name_input{
+    width: 40%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selectbox{
+    border: none;
+    background-color: var(--grey100);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 38px;
+    margin-left: 2px;
+    margin-right: 2px;
+	font-size: 1rem;
+}
+
+.loc_sel{
+    width: 45%;
+}
+
+.inlinesearch{
+    width: 90%;
+}
+
+.searchoicename{
+    width: 100%;
+	font-size: 1.2rem;
+    padding-bottom: 12px;
+    font-weight: bold;
+    color : var(--text-white-color);
+}
+
+.inputbox{
+    border: none;
+    width: 70%;
+    background-color: var(--grey100);
+    height: 38px;
+	font-size: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 4px;
+}
+
+.choicedr{
+    background-color: var(--grey800) !important;
+    color : var(--text-white-color) !important;
+}
+
+/* 카드 섹션 부분 */
+
+.exam_choiceDr{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap : 14px;
+    border-top: solid 3px var(--grey300);
+    padding-top: 48px;
+    padding-bottom: 24px;
+    padding-left: auto;
+}
+
+.btn_card{
+    background-color: var(--blue50);
+    width: 32%;
+    min-height: 115.6px;
+    display: flex;
+    flex-wrap: wrap;
+    transition: all 0.3s;
+}
+
+.hj_custom-checkbox{
+    display: none;
+}
+
+.card_top{
+    width: 100%;
+    padding: 12px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hospital_name{
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    color:var(--grey900);
+    font-weight: bold;
+    transition: all 0.3s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    max-width: 85%;
+}
+
+.hj_custom-checkbox-label{
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hj_custom-checkbox:checked + .hj_custom-checkbox-label::after {
+    content: '\2714';
+    font-size: 18px;
+    text-align: center;
+    line-height: 0px;
+    color: #007BFF;
+    padding-left: 4px;
+}
+
+.choiceHospital{
+    background-color: var(--navy600);
+}
+
+.choicefontcolor{
+    color : var(--blue50) !important;
+}
+
+.hospital_addr{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    padding: 0 12px;
+    color : var(--grey800);
+}
+
+.btn_card:hover{
+    background-color: var(--blue200);
+    cursor: pointer;
+}
+
+.hospital_name_hover{
+    color: var(--grey900) !important;
+}
+
+/* 카드 섹션 부분 끝*/
+
+.reserve_pagebar{
+    border: none;
+    list-style: none;
+}
+
+.btn_card:hover{
+    background-color: var(--blue200);
+    cursor: pointer;
+}
+
+.hospital_name_hover{
+    color: var(--grey900) !important;
+}
+
+/* 카드 섹션 부분 끝*/
+
+.searchhpbtn{
+    border: none;
+    border-radius: 0;
+    background-color: var(--navy700);
+    color:var(--blue50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    width: 27%;
+    border-radius: 4px;
+}
+
+.btn_proc{
+	border: none;
+    border-radius: 0;
+    background-color: var(--navy700);
+    color:var(--blue50);
+    height: 38px;
+    transition: all 0.5s;
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.searchhpbtn:hover
+, .btn_proc:hover{
+    background-color: var(--navy900);
+    color:var(--grey50);
+}
+
+.hidx{
+	display:none;
+}
+

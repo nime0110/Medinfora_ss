@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+	<!-- domain(DTO) package -->
+	<typeAliases>
+		<typeAlias type="com.spring.app.domain.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.spring.app.domain.HospitalDTO" alias="HospitalDTO"/>
+		<typeAlias type="com.spring.app.domain.KoreaAreaVO" alias="KoreaAreaVO"/>
+		<typeAlias type="com.spring.app.domain.ClasscodeDTO" alias="ClasscodeDTO"/>
+		<typeAlias type="com.spring.app.domain.NoticeDTO" alias="NoticeDTO"/>
+		<typeAlias type="com.spring.app.domain.HolidayVO" alias="HolidayVO"/>		
+		<typeAlias type="com.spring.app.domain.ReserveDTO" alias="ReserveDTO"/>
+		<typeAlias type="com.spring.app.domain.MediQDTO" alias="MediQDTO"/>
+		<typeAlias type="com.spring.app.domain.MediADTO" alias="MediADTO"/>
+	</typeAliases>
+	
+	
+</configuration>

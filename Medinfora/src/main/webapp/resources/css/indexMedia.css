@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+@media (max-width: 768px) {
+
+
+  /* 성심 start */
+    .sim_promo_section {
+    flex-direction: column;
+    padding: 2rem;
+    height: 150vh;
+    }
+
+    .sim_promo_section_banner {
+        width: inherit;
+        height: 50vh;
+    }
+
+    .sim_promo_section_services { 
+        margin-left: 0px;
+        padding: 0px;
+    }
+    .sim_promo_section_service_links .icon {
+        width: 8rem;
+        height: 8rem;
+    }
+    .sim_promo_section_service_links span {
+        margin-top: 1.5vh;
+        font-size: 18px;
+    }
+
+    .sim_promo_section_services h3 {
+        font-size: 40px;
+        margin-left: 1rem;
+        margin-top: 7.5vh;
+        margin-bottom: 4vh;
+    }
+    .sim_promo_section_banner_notice {
+        padding: 25px;
+    }
+    .sim_promo_section_banner_notice h4 {
+        font-size: 30px;
+    }
+    .sim_promo_section_banner_notice_flexbox {
+        display: flex;
+    }
+    .sim_promo_section_banner_notice_flexbox a {
+        font-size: large;
+    }
+    .sim_promo_section_banner_notice ul {
+        margin-top: 10px;
+    }
+    .sim_promo_section_banner_notice ul li {
+        font-size: large;
+    }
+    .sim_promo_section_service_links {
+        margin-bottom: 40px;
+    }
+/* 성심 end */
+    .hj_section{
+        padding : 4rem 1rem !important;
+    }
+    div.hj_section_notice{
+        text-align: center;
+    }
+    .sim_promo_section_services {
+       margin-left: 0; 
+    }
+    a.hj_notice_plusicon{
+        display: block;
+    }
+    a.hj_notice_plus{
+        display: none;
+    }
+    div.hj_section_noticelist{
+        height: 600px;
+    }
+    div.hj_cardMb{
+        margin-bottom: 10px;
+    }
+ /* 승혜 작업 영역 START */
+ div.sh_subpage{
+        display: none;
+      
+    }
+ h4.sh_font{
+	font-size: 0.5rem;
+}
+    
+    div.sh_car{
+        display: block;
+    }
+  .sh_card-text p{
+            font-size: 10px;
+        }
+    
+
+    .sh_text {
+        font-size: 8px;
+    }
+
+}
+
+/* 예외 처리 영역 */
+@media (max-width: 1024px) {
+    
+ /* 승혜 작업 영역 START */
+
+    .sh_card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px; 
+        padding-right: 50px; 
+    }
+
+    .sh_card-inner {
+        width: calc(90% - 10px); 
+        box-sizing: border-box;
+    }
+
+    .sh-card {
+        height: 198px; 
+    }
+    h4.sh_font{
+	font-size: 0.6rem;
+}
+
+.sh_text {
+	font-size: 8px;
+}
+
+    /* 승혜 작업 영역 END */
+}
+
+

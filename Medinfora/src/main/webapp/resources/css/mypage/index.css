@@ -1,0 +1,149 @@
+:root {
+    --primary-background-color : #0066cc; /* 주 메인 색상 - 넓은 색상 부분에 작업해주시면 됩니다. */
+    --sub-background-color : #e6f7ff; /* 서브 색상 - 옅은 색상 부분에 적용(옅은 하늘색) */
+
+     /* div background 색상 등 object 컬럼 색상입니다 */
+    --object-lightpurple-color : #e5e2ff;
+    --object-lightyello-color : #fff6d8;
+    --object-lightgreen-color : #DFF9F2;
+    --object-clearblue-color : #f2f4f8;
+    --object-skyblue-color : #d8eaff;
+
+    /* object 컬럼 색상별 text 진한 컬러 - 오브젝트색상 계열의 진한 fontcolor 로 매칭시켜서 사용하시면됨 */
+    --object-lightgreen-font-color: #23C197;
+    --object-lightyello-font-color: #f46d19;
+    --object-lightpurple-font-color: #2614F3;
+
+    /* 포인트 컬러 */
+    
+    /* 기본 텍스트 컬러 */
+    --text-black-color: #0e0e0e; 
+    --text-white-color: #fff; 
+    --text-gray-color: #222; 
+
+}
+
+#info_container{
+    display: flex;
+    margin: 0 auto;
+    padding-top: 100px;
+    width: 80%;
+    padding-bottom: 100px;
+	min-height: 100%;
+}
+
+#info_sidebar{
+    width: 20rem;
+    min-width: 160px;
+    min-height: 500px;
+    background-color: var(--object-clearblue-color);
+    border-radius: 20px;
+    padding : 24px 12px;
+}
+
+.sidebar_intro{
+    font-family: 'Nanum Gothic';
+    padding-bottom: 24px;
+    font-size: 14pt;
+}
+
+.sideber_username{
+    font-weight: bold;
+}
+
+.sidebar_title{
+    font-family: 'Nanum Gothic';
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18pt;
+    color: var(--primary-background-color);
+}
+
+.sidebar_divideline{
+    border: solid 1px var(--text-gray-color);
+}
+
+.sidebar_list{
+    width: 100%;
+}
+
+.sidebar_list_title{
+    font-family: 'Nanum Gothic';
+    padding-left: 12px;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+
+.sidebar_list_ul{
+    text-decoration-style: none;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0px;
+    padding-bottom: 12px;
+}
+
+.sidebar_list_li{
+    font-family: 'Nanum Gothic';
+    width: 80%;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 0 auto;
+    transition: all 0.5s;
+    font-size: 10pt;
+}
+
+.sidebar_list_li:hover{
+    background-color: var(--text-white-color);
+    color:var(--primary-background-color);
+    cursor: pointer;
+}
+
+#info_content{
+    font-family: 'Nanum Gothic';
+    width: 80rem;
+    padding-left: 48px;
+    margin: 0;
+}
+
+/* 여기서부터 내용작성 */
+
+
+
+/* 반응형 */
+
+@media (max-width: 768px) {
+	#info_container{
+		width: 100%;
+        margin: 0 0;
+	}
+
+    #info_sidebar{
+        display: none;
+        position: absolute;
+        top : 60px;
+    }
+
+    #info_content{
+        padding: 0;
+    }
+
+}
+
+/* 반응형 예외 (필요시에만 작성)*/
+
+@media (max-width: 1280px) {
+	#info_container{
+		width: 90%;
+	}
+}
+
+@media (max-width: 768px) {
+
+	#info_container{
+		width: 100%;
+	}
+	
+}
+
