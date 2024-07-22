@@ -534,12 +534,24 @@ public class MypageController {
 	@ResponseBody
 	@GetMapping(value="getPatientInfo.bibo", produces="text/plain;charset=UTF-8")
 	public String getPatientInfo(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		String hospital_userid = loginuser.getUserid();
+		
+		// 아이디를 통해 병원인덱스 값 찾기
+		String hidx = service.Searchhospital(hospital_userid);
+		
 		String checkin = request.getParameter("checkin");
+		
+		Map<String, String> paraMap = new HashMap();
+		paraMap.put("hidx", hidx);
+		paraMap.put("checkin", checkin);		
 		
 		ReserveDTO rdto = null;
 		if(checkin != null) {
-			// checkin 를 통해 환자 userid 가져오기
-			rdto = service.getPatientd(checkin);
+			// 병원과 예약일시를 통해 환자아이디 가져오기
+			rdto = service.getPatientd(paraMap);
 		}
 
 		MemberDTO mdto = null;
