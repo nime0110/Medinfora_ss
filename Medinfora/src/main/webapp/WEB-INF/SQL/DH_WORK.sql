@@ -165,3 +165,11 @@ select hidx,HPNAME,HPaddr,AGENCY,HPTEL
 		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
 		)
 		where rno between 1 and 10
+
+
+select hidx,Hpname,HPaddr,AGENCY,HPTEL
+		from(
+		    select row_number() over(order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||'비타민'||'%' group by HOSPITAL.HIDX,HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno between 1 and 10

@@ -5,6 +5,16 @@
 <% String ctxPath = request.getContextPath(); %>
 <link rel="stylesheet" href="<%=ctxPath%>/resources/css/search.css">
 
+<script>
+
+function hospitaldetail(hidx){
+	
+	location.href = `<%=ctxPath%>/hpsearch/hospitalSearch.bibo?hidx=\${hidx}`;
+	
+}
+
+</script>
+
 <div id="searchcontainer">
 	<div id="searchsidebar">
 		<div class="sidebaroption selectoption">
@@ -42,7 +52,7 @@
 					<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
 						<div class="content_h">
 							<div class="content_place">
-								<div class="content_hpname">${hdto.hpname} (${hdto.agency})</div>
+								<div class="content_hpname" onclick="hospitaldetail('${hdto.hidx}')">${hdto.hpname} (${hdto.agency})</div>
 								<div class="content_hpaddress">${hdto.hpaddr}</div>
 								<div class="content_hpmobile">${hdto.hptel}</div>
 							</div>

@@ -318,11 +318,11 @@
 	</select>
 	
 	<select id="gethdto" parameterType="HashMap" resultType="HospitalDTO">
-		select Hpname,HPaddr,AGENCY,HPTEL
+		select hidx,Hpname,HPaddr,AGENCY,HPTEL
 		from(
-		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    select row_number() over(order by HPNAME) as rno, HOSPITAL.HIDX as hidx, HPNAME, HPADDR, AGENCY, HPTEL
 		    from HOSPITAL
-		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		    where Hpname like '%'||#{search}||'%' group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
 		)where rno = #{rno}
 	</select>
 	
