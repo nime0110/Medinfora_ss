@@ -164,12 +164,26 @@ select hidx,HPNAME,HPaddr,AGENCY,HPTEL
 		    where HPNAME like '%'||'창원'||'%'
 		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
 		)
-		where rno between 1 and 10
+		where rno between 1 and 5
 
 
-select hidx,Hpname,HPaddr,AGENCY,HPTEL
+select Hpname,HPaddr,AGENCY,HPTEL
 		from(
-		    select row_number() over(order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME, HPADDR, AGENCY, HPTEL
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
 		    from HOSPITAL
-		    where Hpname like '%'||'비타민'||'%' group by HOSPITAL.HIDX,HPNAME, HPADDR, AGENCY, HPTEL
-		)where rno between 1 and 10
+		    where Hpname like '%'||'비타민'||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno between 1 and 5;
+
+select HIDX
+from (select hidx, row_number() over (order by HIDX) as rno
+      from HOSPITAL
+      where hpname = '비타민가정의원')
+where rno = 1;
+
+select count(*)
+from(
+    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+    from HOSPITAL
+    where Hpname like '%'||'비타민'||'%'
+    group by HPNAME, HPADDR, AGENCY, HPTEL
+)

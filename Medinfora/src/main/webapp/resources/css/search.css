@@ -8,37 +8,10 @@
     margin: 0;
 }
 
-#searchsidebar{
-    width: 20%;
-    margin: 0;
-}
-
-.sidebaroption{
-    font-family: var(--font);
-    font-size: 1rem;
-    padding: 15px 10px;
-    background-color: var(--navy400);
-    color: var(--blue50);
-    max-width: 95%;
-    text-align: end;
-    border-bottom: solid 1px var(--navy800);
-    border-right: solid 1px var(--navy800);
-    transition: all 0.5s;
-}
-
-.sidebaroption:hover{
-    cursor: pointer;
-    background-color: var(--navy500);
-}
-
-.selectoption{
-    background-color: var(--navy700);
-    font-weight: bold;
-}
-
 #searchcontents{
     width: 80%;
     padding: 10px 30px;
+    margin: 0 auto;
 }
 
 .contenttitle{

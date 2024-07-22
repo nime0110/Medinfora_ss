@@ -7,29 +7,50 @@
 
 <script>
 
+let cnt = ${requestScope.hcnt};
+
 function hospitaldetail(hidx){
 	
 	location.href = `<%=ctxPath%>/hpsearch/hospitalSearch.bibo?hidx=\${hidx}`;
 	
 }
 
+function noticedetail(nidx){
+	
+	location.href = `<%=ctxPath%>/notice/view.bibo?nidx=\${nidx}`;
+	
+}
+
+function moreshow(hcnt){
+	
+	let view = 0;
+	
+	if (cnt > 5){
+		view = 5;
+		cnt = cnt - 5;
+	}else{
+		view = cnt%5;
+		cnt = 0;
+	}
+	
+	const orginhtml = $('#htmlhospital').html();
+	let addhtml = '';
+	
+	for(let i=0;i<view;i++){
+		
+		/*
+		$.ajax({
+			url : "/getmorehinfo.bibo",
+			
+		})*/
+		
+	}
+	
+}
+
 </script>
 
 <div id="searchcontainer">
-	<div id="searchsidebar">
-		<div class="sidebaroption selectoption">
-			<span>통합검색</span>
-		</div>
-		<div class="sidebaroption">
-			<span>병원검색</span>
-		</div>
-		<div class="sidebaroption">
-			<span>Q&amp;A</span>
-		</div>
-		<div class="sidebaroption">
-			<span>공지사항</span>
-		</div>
-	</div>
 	<div id="searchcontents">
 		<c:if test='${requestScope.nosearch == 1}'>
 			<div class="contenttitle">검색어를 입력해주세요.</div>
@@ -49,24 +70,28 @@ function hospitaldetail(hidx){
 					<div class="c_subtitle">
 						<span>병원</span>
 					</div>
-					<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
-						<div class="content_h">
-							<div class="content_place">
-								<div class="content_hpname" onclick="hospitaldetail('${hdto.hidx}')">${hdto.hpname} (${hdto.agency})</div>
-								<div class="content_hpaddress">${hdto.hpaddr}</div>
-								<div class="content_hpmobile">${hdto.hptel}</div>
+					<div id="htmlhospital">
+						<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
+							<div class="content_h">
+								<div class="content_place">
+									<div class="content_hpname" onclick="hospitaldetail('${hdto.hidx}')">${hdto.hpname} (${hdto.agency})</div>
+									<div class="content_hpaddress">${hdto.hpaddr}</div>
+									<div class="content_hpmobile">${hdto.hptel}</div>
+								</div>
+								<div class="content_tool">
+									<c:if test="${hdto.member == true}">
+										<button class="tool_btn" type="button">예약하기</button>
+									</c:if>
+								</div>
 							</div>
-							<div class="content_tool">
-								<c:if test="${hdto.member == true}">
-									<button class="tool_btn" type="button">예약하기</button>
-								</c:if>
-							</div>
-						</div>
-					</c:forEach>
-					
-					<div class="showmore">
-						<span>검색결과 더보기</span>
+						</c:forEach>
 					</div>
+					
+					<c:if test="${requestScope.hcnt > 0}">
+						<div class="showmore" onclick="moreshow()">
+							<span>검색결과 더보기</span>
+						</div>
+					</c:if>
 					
 				</div>
 				
@@ -97,8 +122,8 @@ function hospitaldetail(hidx){
 						</div>
 					</c:forEach>
 					
-					<div class="showmore">
-						<span>검색결과 더보기</span>
+					<div class="showmore" onclick="location.href='<%=ctxPath%>/questionList.bibo'">
+						<span>QNA 더보기</span>
 					</div>
 					
 				</div>
@@ -110,10 +135,10 @@ function hospitaldetail(hidx){
 					<div class="c_subtitle">
 						<span>공지사항</span>
 					</div>
-					<c:forEach var="ndto" items="${requestScope.searchlist.ndtolist}">
+					<c:forEach var="ndto" items="${requestScope.searchlist.ndtolist}" >
 						<div class="content_h">
 							<div class="content_place">
-								<div class="content_title">${ndto.title}</div>
+								<div class="content_title" onclick="noticedetail('${ndto.nidx}')">${ndto.title}</div>
 								<div class="content_content">${ndto.content}</div>
 								<div class="content_writeday">${ndto.writeday}</div>
 							</div>

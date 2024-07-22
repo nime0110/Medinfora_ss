@@ -267,9 +267,9 @@
 	
 	<!-- (검색) 공지 리스트 검색 -->
 	<select id="getndtoList" parameterType="String" resultType="NoticeDTO">
-		select TITLE,CONTENT,WRITEDAY,VIEWCNT
+		select TITLE,CONTENT,WRITEDAY,VIEWCNT, nidx
 		from (
-		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, VIEWCNT
+		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, VIEWCNT, nidx
 		    from NOTICE
 		    where TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%'
 		)where rno between 1 and 5
@@ -306,24 +306,45 @@
 	
 	<!-- (검색) 병원리스트 회원 선검색 -->
 	<select id="gethdtoOurlist" parameterType="String" resultType="HospitalDTO">
-		select hidx,HPNAME,HPaddr,AGENCY,HPTEL
+		select HPNAME,HPaddr,AGENCY,HPTEL
 		from
 		(
-		    select row_number() over (order by HPNAME) as rno, HOSPITAL.HIDX as hidx,HPNAME,HPADDR,AGENCY,HPTEL
+		    select row_number() over (order by HPNAME) as rno, HPNAME,HPADDR,AGENCY,HPTEL
 		    from CLASSCODEMET join HOSPITAL on CLASSCODEMET.HIDX = HOSPITAL.HIDX
 		    where HPNAME like '%'||#{search}||'%'
-		    group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+		    group by HPNAME, HPADDR, AGENCY, HPTEL
 		)
 		where rno between 1 and 5
 	</select>
 	
+	<!-- (검색) 병원리스트 후검색 -->
 	<select id="gethdto" parameterType="HashMap" resultType="HospitalDTO">
-		select hidx,Hpname,HPaddr,AGENCY,HPTEL
+		select Hpname,HPaddr,AGENCY,HPTEL
 		from(
-		    select row_number() over(order by HPNAME) as rno, HOSPITAL.HIDX as hidx, HPNAME, HPADDR, AGENCY, HPTEL
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
 		    from HOSPITAL
-		    where Hpname like '%'||#{search}||'%' group by HOSPITAL.HIDX, HPNAME, HPADDR, AGENCY, HPTEL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
 		)where rno = #{rno}
+	</select>
+	
+	<!-- (검색) hidx 가져오기 -->
+	<select id="gethidx" parameterType="HashMap" resultType="int">
+		select HIDX
+		from (select hidx, row_number() over (order by HIDX) as rno
+		      from HOSPITAL
+		      where hpname = #{hpname} and hpaddr=#{hpaddr})
+		where rno = 1
+	</select>
+	
+	<!-- (검색) 총검색된 병원 갯수 가져오기 -->
+	<select id="hcnt" parameterType="String" resultType="int">
+		select count(*)
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%'
+		    group by HPNAME, HPADDR, AGENCY, HPTEL
+		)
 	</select>
 	
 </mapper>

@@ -101,6 +101,13 @@ public interface MainDAO {
 	// 인덱스 인기 검색어 불러오기
 	public List<String> getPopwordList();
 
+	// (검색) hidx 가져오기
+	public int gethidx(Map<String, String> paraMap);
+	
+	// (검색) 총 병원 검색수
+	public int hcnt(String search);
+
+
 
 
 	

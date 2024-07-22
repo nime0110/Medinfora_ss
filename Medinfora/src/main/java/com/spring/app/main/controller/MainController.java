@@ -225,6 +225,8 @@ public class MainController {
 		
 		Map<String,List<Object>> searchList = service.searach(search);
 		
+		int hcnt = service.hcnt(search) - 5;
+		
 		@SuppressWarnings("unchecked")
 		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
 		
@@ -243,6 +245,7 @@ public class MainController {
 		
 		service.writeSearchlog(paraMap);
 		
+		mav.addObject("hcnt",hcnt);
 		mav.addObject("searchlist",searchList);
 		mav.addObject("nosearch",0);
 		mav.addObject("search",search);

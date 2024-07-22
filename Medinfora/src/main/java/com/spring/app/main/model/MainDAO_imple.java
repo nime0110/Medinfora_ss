@@ -243,5 +243,20 @@ public class MainDAO_imple implements MainDAO{
 	public HospitalDTO gethdto(Map<String, String> paraMap) {
 		return sqlsession.selectOne("medinfora.gethdto",paraMap);
 	}
+	
+	// (검색) hidx 가져오기
+	@Override
+	public int gethidx(Map<String, String> paraMap) {
+		return sqlsession.selectOne("medinfora.gethidx",paraMap);
+	}
+
+	// (검색) 총 병원 검색수
+	@Override
+	public int hcnt(String search) {
+		return sqlsession.selectOne("medinfora.hcnt",search);
+	}
+
+
+	
 
 }
