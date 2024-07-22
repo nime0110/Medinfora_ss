@@ -20,7 +20,7 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.mypageList.service.MypageListService;
 
 @Controller
-@RequestMapping("/mapage/")
+@RequestMapping(value="/mypage/")
 public class MypageListController {
 
 	@Autowired
