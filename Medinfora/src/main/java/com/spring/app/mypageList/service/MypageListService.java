@@ -20,5 +20,10 @@ public interface MypageListService {
 
 	int getTotalPage(Map<String, Object> paraMap);
 
+	String makePageBar(int parseInt, int totalPage, int totalCount, String subject, String word);
+
+	int getTotalCount(Map<String, Object> paraMap);
+
+
 	
 }

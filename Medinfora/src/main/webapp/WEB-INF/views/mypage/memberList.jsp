@@ -154,9 +154,19 @@ $(document).ready(function(){
 
 function searchList() {
     const frm = document.searchFrm;
+    frm.pageNo.value = 1;
     frm.method = "GET";
     frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
     frm.submit();
+}
+
+function Page(pageNo) {
+    const frm = document.searchFrm;
+    frm.pageNo.value = pageNo;
+    frm.method = "GET";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
+    frm.submit();
+    console.log("pageNo set to:", frm.pageNo.value);
 }
 </script>
 
@@ -164,6 +174,7 @@ function searchList() {
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
    <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
 <form name="searchFrm">
+    <input type="hidden" name="pageNo" value="${param.pageNo}"/>
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
         <c:forEach var="userid" items="${requestScope.mbrList}" varStatus="status">
@@ -179,7 +190,7 @@ function searchList() {
         </c:forEach>
     </c:if>
 	
-		<input type="hidden" name="PageNo"/>
+		
 		<fieldset>
 			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
 				<span>
@@ -258,7 +269,7 @@ function searchList() {
     </tbody>
 </table>
      <%-- 페이지 바 --%>
-	<div class="pagebar" style="text-align: center;"></div>
+	<div class="pagebar w-100 d-flex justify-content-center pt-3">${pagebar}</div>
 </div>
 
 <!-- 회원 상세정보 모달 -->

@@ -17,6 +17,7 @@
         <if test="mbr_division != null and mbr_division != ''">
             AND mIdx = #{mbr_division}
         </if>
+        order by registerday desc
     </select>
 
     <!-- 회원 상세 정보 가져오기 -->
@@ -34,18 +35,17 @@
         UPDATE member SET mIdx = 8 WHERE userid = #{userid}
     </update>
     
-   <select id="getTotalPage" parameterType="map" resultType="int">
-    SELECT COUNT(*) 
+
+    
+      <select id="getTotalPage" parameterType="map" resultType="int">
+          SELECT COUNT(*)
     FROM member
     WHERE 1=1
-    <if test="userid != null and userid != ''">
-        AND userid LIKE CONCAT('%', #{userid}, '%')
+    <if test="subject != null and subject == '1'">
+        AND (name LIKE CONCAT('%', #{word}, '%') OR userid LIKE CONCAT('%', #{word}, '%'))
     </if>
-    <if test="name != null and name != ''">
-        AND name LIKE CONCAT('%', #{name}, '%')
-    </if>
-    <if test="hospitalName != null and hospitalName != ''">
-        AND hospitalName LIKE CONCAT('%', #{hospitalName}, '%')
+    <if test="subject != null and subject == '2'">
+        AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE CONCAT('%', #{word}, '%'))
     </if>
     </select>
 </mapper>

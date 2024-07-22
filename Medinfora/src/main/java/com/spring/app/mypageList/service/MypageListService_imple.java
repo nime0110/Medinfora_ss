@@ -65,8 +65,67 @@ public class MypageListService_imple implements MypageListService {
 
 	@Override
 	public int getTotalPage(Map<String, Object> paraMap) {
-
-		 return mdao.getTotalPage(paraMap);
+		int totalCount = getTotalCount(paraMap);
+	    int pageSize = 10; // 페이지당 보여줄 레코드 수
+	    return (int) Math.ceil((double) totalCount / pageSize);
+		
 	}
+// 페이지바 
+	@Override
+	public String makePageBar(int currentShowPageNo, int totalPage, int totalCount, String subject, String word) {
+		    int pageNo = 1;
+		    int blockSize = 10;
+		    int loop = 1;
+		    
+		    String pageBar = "<ul class='pagination hj_pagebar nanum-n size-s'>";
+		    
+		    if(pageNo != 1) {
+		        pageBar += "<li class='page-item'>" 
+		                 + "    <a class='page-link' href='javascript:Page("+(pageNo-1)+")'>" 
+		                 + "          <span aria-hidden='true'>&laquo;</span>" 
+		                 + "       </a>" 
+		                 + "</li>";
+		    }
+		    
+		    while(!(loop>blockSize || pageNo > totalPage)) {
+		        if(pageNo == currentShowPageNo) {
+		            pageBar += "<li class='page-item'>"
+		                    + "      <a class='page-link nowPage'>"+pageNo+"</a>" 
+		                    + "</li>";
+		        }
+		        else{
+		            pageBar += "<li class='page-item'>"
+		                    + "      <a class='page-link' href='javascript:Page("+pageNo+")'>" +pageNo+"</a>" 
+		                    + "</li>";
+		        }
+		        loop++;
+		        pageNo++;
+		    }
+		    
+		    if(pageNo <= totalPage) {
+		        pageBar += "<li class='page-item'>"
+		                 + "      <a class='page-link' href='javascript:Page("+pageNo+")'>"
+		                 + "          <span aria-hidden='true'>&raquo;</span>"
+		                 + "       </a>"
+		                 + "</li>";
+		    }
+		    
+		    pageBar += "</ul>";
+		    
+		    return pageBar;
+	}
+
+	@Override
+	public int getTotalCount(Map<String, Object> paraMap) {
+	    int totalCount = 0;
+	    try {
+	        totalCount = mdao.getTotalPage(paraMap);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return totalCount;	}
+
+
+
 	
 }
