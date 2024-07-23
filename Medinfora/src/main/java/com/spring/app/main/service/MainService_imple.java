@@ -314,6 +314,11 @@ public class MainService_imple implements MainService {
 						break;
 					}
 				}
+				paraMap.put("hpname",hdto.getHpname());
+				paraMap.put("hpaddr",hdto.getHpaddr());
+				int index = dao.gethidx(paraMap);
+				
+				hdto.setHidx(index);
 				
 				hdtoList.add(hdto);
 			}
@@ -417,6 +422,30 @@ public class MainService_imple implements MainService {
 	@Override
 	public List<String> getPopwordList() {
 		return dao.getPopwordList();
+	}
+
+	// (검색) 총 병원 검색수
+	@Override
+	public int hcnt(String search) {
+		return dao.hcnt(search);
+	}
+
+	// (검색) 병원 추가검색
+	@Override
+	public List<HospitalDTO> getmorehinfo(Map<String, String> paraMap) {
+		
+		List<HospitalDTO> hdtoList = dao.gethdtoList(paraMap);
+		
+		for(HospitalDTO hdto : hdtoList) {
+			
+			paraMap.put("hpname",hdto.getHpname());
+			paraMap.put("hpaddr",hdto.getHpaddr());
+			int index = dao.gethidx(paraMap);
+			
+			hdto.setHidx(index);
+		}
+		
+		return hdtoList;
 	}
 	
 }
