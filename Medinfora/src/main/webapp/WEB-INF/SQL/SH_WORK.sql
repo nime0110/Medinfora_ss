@@ -382,3 +382,28 @@ WHERE
         FROM member m
         LEFT JOIN memberidx mi ON m.midx = mi.midx
         WHERE m.userid = 'kimsh723'
+        
+        
+        
+        SELECT COUNT(*)
+FROM member
+WHERE (name LIKE '김승혜' OR userid LIKE 'kimsh723');
+        
+        
+        
+        SELECT COUNT(*)
+FROM member
+WHERE (
+    '1' = '입력된_subject값' AND (name LIKE '김승혜' OR userid LIKE 'kimsh723')
+) OR (
+    '2' = '입력된_subject값' AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '병원')
+);
+        
+             SELECT COUNT(*)
+    FROM member
+    WHERE 1=1
+    <if test="subject != null and subject == '1'">
+        AND (name LIKE CONCAT('%', #{word}, '%') OR userid LIKE CONCAT('%', #{word}, '%'))
+    </if>
+    <if test="subject != null and subject == '2'">
+        AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE CONCAT('%', #{word}, '%'))

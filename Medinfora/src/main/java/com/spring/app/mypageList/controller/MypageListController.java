@@ -28,10 +28,23 @@ public class MypageListController {
 	
 	@GetMapping("memberList.bibo")
 	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response, 
-                                   @RequestParam(defaultValue = "") String userid) 
+                                   @RequestParam(defaultValue = "") String userid,   
+                                   @RequestParam(defaultValue = "1") int pageNo ) 
 	{
         Map<String, Object> paraMap = new HashMap<>();
        
+        int pageSize = 10;// 페이지당 보여줄 회원 수
+        
+        paraMap.put("pageNo", pageNo);
+        paraMap.put("pageSize", pageSize);  
+        
+        
+        int start = (pageNo - 1) * pageSize + 1;
+        int end = pageNo * pageSize;
+        paraMap.put("start", start);
+        paraMap.put("end", end);
+
+        
         if (!userid.isEmpty()) {
             paraMap.put("userid", userid);
         }
@@ -39,8 +52,9 @@ public class MypageListController {
         // 검색 조건 처리
         String subject = request.getParameter("subject");
         String word = request.getParameter("word");
-        if(subject != null && !subject.isEmpty()) {
-        	if(word != null && !word.isEmpty()) {
+        
+        if(subject != null && !subject.isEmpty()) { // subject가 null이 아니고 빈 문자열이 아닌 경우
+        	if(word != null && !word.isEmpty()) { // word가 null이 아니고 빈 문자열이 아닌 경우
         		paraMap.put("subject", subject);
         		paraMap.put("word", word);
         		
@@ -49,25 +63,31 @@ public class MypageListController {
         
         
         // 페이징 처리
-        String pageNo = request.getParameter("pageNo");
+      /*  String pageNo = request.getParameter("pageNo");
         if(pageNo == null || pageNo.isEmpty()) {
+        	System.out.println("PageNo is not set or empty");
         	pageNo = "1";
         }
         paraMap.put("pageNo", Integer.parseInt(pageNo));
         paraMap.put("pageSize", 10); // 페이지당 보여줄 회원 수 
-
+*/
         // 서비스단에 회원 목록가져와서 mav에 추가 
         List<MemberDTO> memberList = service.getMemberList(paraMap);
         int totalCount = service.getTotalCount(paraMap);
-        int totalPage = service.getTotalPage(paraMap);
+		/* int totalPage = service.getTotalPage(paraMap); */
+        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+        
+        
         
         // 페이지바 만들기
-        String pagebar = service.makePageBar(Integer.parseInt(pageNo), totalPage, totalCount, subject, word);  
+        String pagebar = service.makePageBar(pageNo, totalPage, totalCount, subject, word);  
+      
         mav.addObject("memberList", memberList);
         mav.addObject("totalPage", totalPage);
         mav.addObject("pagebar", pagebar);
         mav.addObject("subject", subject);
         mav.addObject("word", word);
+        mav.addObject("currentPageNo", pageNo);
      
         mav.setViewName("mypage/memberList.info");
         return mav;
