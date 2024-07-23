@@ -35,4 +35,14 @@
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
 	</definition>
 	
+	<definition name="status-tiles" template="/WEB-INF/tiles/status-tiles.jsp">
+		<put-attribute name="header"  value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="statusViewBar"  value="/WEB-INF/tiles/statusViewBar.jsp" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer"  value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
+	
+	<definition name="*/*.status" extends="status-tiles">
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

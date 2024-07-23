@@ -41,6 +41,14 @@ div.pagebar{
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	  // Ensure pageNo element exists
+    if (document.querySelector("input[name='pageNo']")) {
+        // Your existing code
+    } else {
+        console.error("pageNo input element not found.");
+    }
+	
     $("button#btnSearch").click(function(){
         const arr_userid = [];
         $("input:checkbox[name='userid']:checked").each(function(index, item){
@@ -153,28 +161,44 @@ $(document).ready(function(){
 });
 
 function searchList() {
-    const frm = document.searchFrm;
-    frm.pageNo.value = 1;
+    const frm = document.memberListForm;
+    frm.pageNo.value = 1; // 검색 시 첫 페이지로 이동 
     frm.method = "GET";
-    frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
     frm.submit();
 }
 
 function Page(pageNo) {
-    const frm = document.searchFrm;
+   
+   //  const frm = document.forms['memberListForm'];
+    const frm = document.memberListForm;
+ <%--  if (frm) {
+        const pageNoInput = frm.elements['pageNo'];
+        if (pageNoInput) {
+            pageNoInput.value = pageNo || 1;
+           
+            frm.method = "GET";
+            frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
+            frm.submit();
+        } else {
+           
+        }
+    } else {
+     
+    } --%>
     frm.pageNo.value = pageNo;
     frm.method = "GET";
-    frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
     frm.submit();
-    console.log("pageNo set to:", frm.pageNo.value);
 }
+
 </script>
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
    <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
-<form name="searchFrm">
-    <input type="hidden" name="pageNo" value="${param.pageNo}"/>
+<form name="memberListForm">
+    <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
         <c:forEach var="userid" items="${requestScope.mbrList}" varStatus="status">
@@ -192,7 +216,8 @@ function Page(pageNo) {
 	
 		
 		<fieldset>
-			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
+			<div class="search_box p-4" align="center" style="background-color: var(--object-skyblue-color); ">
+				<form id = "searchForm">
 				<span>
 					<select class="search_ch sel_0 nanum-b" name="subject">
 						<option value=''>전체</option>
@@ -209,8 +234,8 @@ function Page(pageNo) {
 				<span>
 					<button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
 				</span>
-			      
-			      
+			  
+			        </form>  
 			</div>
 		
 		</fieldset>
@@ -255,8 +280,8 @@ function Page(pageNo) {
                     <td style="text-align:center;">${member.name}</td>
                     <td>
                         <c:choose>
-                            <c:when test="${member.gender == 1}">M</c:when>
-                            <c:otherwise>F</c:otherwise>
+                            <c:when test="${member.gender == 1}">남</c:when>
+                            <c:otherwise>여</c:otherwise>
                         </c:choose>
                     </td>
                     <td>${member.registerday}</td>

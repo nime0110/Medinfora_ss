@@ -6,18 +6,37 @@
 
 	<!--  회원 목록 가져오기  -->
 	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
-        SELECT userid, pwd, email, name, address, detailAddress, 
-               birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
-        FROM member
-        WHERE 1=1
-      
-        <if test="userid != null and userid != ''">
-            AND userid LIKE CONCAT('%', #{userid}, '%')
-        </if>
-        <if test="mbr_division != null and mbr_division != ''">
-            AND mIdx = #{mbr_division}
-        </if>
-        order by registerday desc
+             SELECT *
+        FROM (
+            SELECT 
+                ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+                userid, 
+                pwd, 
+                email, 
+                name, 
+                address, 
+                detailAddress, 
+                birthday, 
+                mobile, 
+                gender, 
+                mIdx, 
+                registerday, 
+                pwdUpdateday, 
+                loginmethod
+            FROM member
+            WHERE 1=1
+            AND userid != 'Anonymous'
+            <!-- 검색 조건 -->
+            <if test="subject != null and subject != ''">
+                <if test="subject == '1'">
+                    AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+                </if>
+                <if test="subject == '2'">
+                    AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+                </if>
+            </if>
+        ) numbered_members
+        WHERE rn BETWEEN #{start} AND #{end}
     </select>
 
     <!-- 회원 상세 정보 가져오기 -->
@@ -47,5 +66,23 @@
     <if test="subject != null and subject == '2'">
         AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE CONCAT('%', #{word}, '%'))
     </if>
+    </select>
+    
+    
+    
+      <!-- 총 회원 수 가져오기 -->
+    <select id="getTotalCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE 1=1
+        <!-- 검색 조건 -->
+        <if test="subject != null and subject != ''">
+            <if test="subject == '1'">
+                AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+            </if>
+            <if test="subject == '2'">
+                AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+            </if>
+        </if>
     </select>
 </mapper>

@@ -275,7 +275,7 @@
   <div class="tog_nav tg2 fadeout">
   	<div class="tog_title">의료 정보</div>
   	<ul class="tog_ul">
-  		<li class="tog_li">의료 통계</li>
+  		<li class="tog_li" onclick="javascript:location.href='<%=ctxPath%>/status/view.bibo'">의료 통계</li>
   		<li class="tog_li">의료 뉴스</li>
   		<li class="tog_li" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</li>
   	</ul>
