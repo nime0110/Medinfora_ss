@@ -2,21 +2,41 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.spring.app.mypage.model.MypageListDAO">
+<mapper namespace="com.spring.app.mypageList.model.MypageListDAO">
 
 	<!--  회원 목록 가져오기  -->
 	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
-        SELECT userid, pwd, email, name, address, detailAddress, 
-               birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
-        FROM member
-        WHERE 1=1
-      
-        <if test="userid != null and userid != ''">
-            AND userid LIKE CONCAT('%', #{userid}, '%')
-        </if>
-        <if test="mbr_division != null and mbr_division != ''">
-            AND mIdx = #{mbr_division}
-        </if>
+             SELECT *
+        FROM (
+            SELECT 
+                ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+                userid, 
+                pwd, 
+                email, 
+                name, 
+                address, 
+                detailAddress, 
+                birthday, 
+                mobile, 
+                gender, 
+                mIdx, 
+                registerday, 
+                pwdUpdateday, 
+                loginmethod
+            FROM member
+            WHERE 1=1
+            AND userid != 'Anonymous'
+            <!-- 검색 조건 -->
+            <if test="subject != null and subject != ''">
+                <if test="subject == '1'">
+                    AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+                </if>
+                <if test="subject == '2'">
+                    AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+                </if>
+            </if>
+        ) numbered_members
+        WHERE rn BETWEEN #{start} AND #{end}
     </select>
 
     <!-- 회원 상세 정보 가져오기 -->
@@ -34,18 +54,35 @@
         UPDATE member SET mIdx = 8 WHERE userid = #{userid}
     </update>
     
-   <select id="getTotalPage" parameterType="map" resultType="int">
-    SELECT COUNT(*) 
+
+    
+      <select id="getTotalPage" parameterType="map" resultType="int">
+          SELECT COUNT(*)
     FROM member
     WHERE 1=1
-    <if test="userid != null and userid != ''">
-        AND userid LIKE CONCAT('%', #{userid}, '%')
+    <if test="subject != null and subject == '1'">
+        AND (name LIKE CONCAT('%', #{word}, '%') OR userid LIKE CONCAT('%', #{word}, '%'))
     </if>
-    <if test="name != null and name != ''">
-        AND name LIKE CONCAT('%', #{name}, '%')
+    <if test="subject != null and subject == '2'">
+        AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE CONCAT('%', #{word}, '%'))
     </if>
-    <if test="hospitalName != null and hospitalName != ''">
-        AND hospitalName LIKE CONCAT('%', #{hospitalName}, '%')
-    </if>
+    </select>
+    
+    
+    
+      <!-- 총 회원 수 가져오기 -->
+    <select id="getTotalCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE 1=1
+        <!-- 검색 조건 -->
+        <if test="subject != null and subject != ''">
+            <if test="subject == '1'">
+                AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+            </if>
+            <if test="subject == '2'">
+                AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+            </if>
+        </if>
     </select>
 </mapper>

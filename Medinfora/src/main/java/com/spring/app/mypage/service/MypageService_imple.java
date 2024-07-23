@@ -258,10 +258,10 @@ public class MypageService_imple implements MypageService {
 		return reserveList;
 	}
 
-	// (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기
+	// (의료인- 진료 일정관리) 병원과 예약일시를 통해 환자아이디 가져오기
 	@Override
-	public ReserveDTO getPatientd(String checkin) {
-		ReserveDTO rdto = dao.getPatientd(checkin);
+	public ReserveDTO getPatientd(Map<String, String> paraMap) {
+		ReserveDTO rdto = dao.getPatientd(paraMap);
 		return rdto;
 	}
 	

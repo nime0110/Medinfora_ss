@@ -20,7 +20,7 @@ import com.spring.app.domain.MemberDTO;
 import com.spring.app.mypageList.service.MypageListService;
 
 @Controller
-@RequestMapping("/mapage/")
+@RequestMapping(value="/mypage/")
 public class MypageListController {
 
 	@Autowired
@@ -28,35 +28,67 @@ public class MypageListController {
 	
 	@GetMapping("memberList.bibo")
 	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response, 
-                                   @RequestParam(defaultValue = "") String userid, 
-                                   @RequestParam(defaultValue = "") String subject,
-                                   @RequestParam(defaultValue = "") String word,
-                                   @RequestParam(defaultValue = "1") int pageNo) {
+                                   @RequestParam(defaultValue = "") String userid,   
+                                   @RequestParam(defaultValue = "1") int pageNo ) 
+	{
         Map<String, Object> paraMap = new HashMap<>();
+       
+        int pageSize = 10;// 페이지당 보여줄 회원 수
+        
+        paraMap.put("pageNo", pageNo);
+        paraMap.put("pageSize", pageSize);  
+        
+        
+        int start = (pageNo - 1) * pageSize + 1;
+        int end = pageNo * pageSize;
+        paraMap.put("start", start);
+        paraMap.put("end", end);
+
+        
         if (!userid.isEmpty()) {
             paraMap.put("userid", userid);
         }
-        // subject와 word가 빈 문자열이 아닌 경우 검색 조건에 따라 paraMap에 추가
-        if (!subject.isEmpty() && !word.isEmpty()) {
-            if (subject.equals("1")) {
-                paraMap.put("name", word);  // 일반회원명으로 검색
-            }
-              else if (subject.equals("2")) {
-            		paraMap.put("hospitalName", word);  // 병원명으로 검색
-            }
+        
+        // 검색 조건 처리
+        String subject = request.getParameter("subject");
+        String word = request.getParameter("word");
+        
+        if(subject != null && !subject.isEmpty()) { // subject가 null이 아니고 빈 문자열이 아닌 경우
+        	if(word != null && !word.isEmpty()) { // word가 null이 아니고 빈 문자열이 아닌 경우
+        		paraMap.put("subject", subject);
+        		paraMap.put("word", word);
+        		
+        	}
         }
-        paraMap.put("pageNo", pageNo);
-        paraMap.put("pageSize", 10); // 페이지당 출력할 회원 수
-
-
+        
+        
+        // 페이징 처리
+      /*  String pageNo = request.getParameter("pageNo");
+        if(pageNo == null || pageNo.isEmpty()) {
+        	System.out.println("PageNo is not set or empty");
+        	pageNo = "1";
+        }
+        paraMap.put("pageNo", Integer.parseInt(pageNo));
+        paraMap.put("pageSize", 10); // 페이지당 보여줄 회원 수 
+*/
         // 서비스단에 회원 목록가져와서 mav에 추가 
         List<MemberDTO> memberList = service.getMemberList(paraMap);
-        int totalPage = service.getTotalPage(paraMap);
+        int totalCount = service.getTotalCount(paraMap);
+		/* int totalPage = service.getTotalPage(paraMap); */
+        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+        
+        
+        
+        // 페이지바 만들기
+        String pagebar = service.makePageBar(pageNo, totalPage, totalCount, subject, word);  
+      
         mav.addObject("memberList", memberList);
         mav.addObject("totalPage", totalPage);
-        mav.addObject("currentPageNo", pageNo);
+        mav.addObject("pagebar", pagebar);
         mav.addObject("subject", subject);
         mav.addObject("word", word);
+        mav.addObject("currentPageNo", pageNo);
+     
         mav.setViewName("mypage/memberList.info");
         return mav;
     }
