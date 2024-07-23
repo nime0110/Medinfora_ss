@@ -93,6 +93,13 @@ div.pagebar{
 	margin-top: 10px;
 }
 
+div#oneqdto:hover{
+	background-color: var(--primary-background-color);
+	color: var(--text-white-color);
+	border: none;
+	cursor: pointer;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -108,8 +115,26 @@ $(document).ready(function(){
 	
 	pageBarAdd(blockSize, loop, pageNo, totalPage, currentPageNo);
 	
+	
+	$("div#oneqdto").click(function(e){
+		
+		const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
+		// alert("확인용 : "+qidx);
+		
+		goView(qidx);
+	});
+	
+	
+	
+	
+	
+	
+	
 
 });
+
+
+
 
 function listView(pageNo){
 	// 검색 조건 없이 그냥 리스트 변경할 경우
@@ -196,8 +221,8 @@ function searchList(pageNo, subject, type, word){
 			
 			$.each(json.qdtoMap.qList, function(index, item){
 				
-				questionArea += `<div class="row text-center py-3 nanum-n size-s b_border">
-									<input type="hidden" value="\${item.qidx}"/>
+				questionArea += `<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">
+									<input type="hidden" value="\${item.qidx}" name="qidx"/>
 									<input type="hidden" value="\${item.userid}"/>
 									<span class="col-2">`;
 									
@@ -215,11 +240,11 @@ function searchList(pageNo, subject, type, word){
 								 <span class="col-5" align="left">\${item.title}&nbsp;`;
 								 
 				if(item.imgsrc.trim() != ""){
-					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>`;
+					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>&nbsp;`;
 				}
 				
 				if(item.newwrite == "0"){
-					questionArea += `<i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i>`;
+					questionArea += `&nbsp;&nbsp;<i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i>`;
 				}
 				
 				questionArea += `&nbsp;</span>
@@ -313,6 +338,13 @@ function searchList(pageNo, subject, type, word){
 			
 			
 			
+			$("div#oneqdto").click(function(e){
+				
+				const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
+				// alert("확인용 : "+qidx);
+				
+				goView(qidx);
+			});
 			
 
 			
@@ -330,6 +362,11 @@ function searchList(pageNo, subject, type, word){
 
 function gowrite(){
 	location.href="<%=ctxPath%>/questionWrite.bibo";
+}
+
+//글조회페이지 이동
+function goView(qidx){
+	location.href="<%=ctxPath%>/questionView.bibo"+"?qidx="+qidx;
 }
 
 
@@ -395,8 +432,8 @@ function gowrite(){
 		<!-- 여기에 리스트 띄우면 됨 -->
 		<div class="mb-5 px-3" id="questionArea">
 			<c:forEach var="qdto" items="${requestScope.qdtoMap.qList}"  varStatus="status">
-				<div class="row text-center py-3 nanum-n size-s b_border">
-					<input type="hidden" value="${qdto.qidx}" name="no${status.index}"/>
+				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">
+					<input type="hidden" value="${qdto.qidx}" name="qidx"/>
 					<input type="hidden" value="${qdto.userid}"/>
 					<span class="col-2">
 						<c:if test="${qdto.subject eq '1'}">건강상담</c:if>

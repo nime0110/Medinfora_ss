@@ -17,6 +17,7 @@
 		<typeAlias type="com.spring.app.domain.ReserveDTO" alias="ReserveDTO"/>
 		<typeAlias type="com.spring.app.domain.MediQDTO" alias="MediQDTO"/>
 		<typeAlias type="com.spring.app.domain.MediADTO" alias="MediADTO"/>
+		<typeAlias type="com.spring.app.domain.AddQnADTO" alias="AddQnADTO"/>
 	</typeAliases>
 	
 	

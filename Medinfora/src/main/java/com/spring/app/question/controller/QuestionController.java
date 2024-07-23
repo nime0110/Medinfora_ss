@@ -23,8 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
-import com.spring.app.domain.AddADTO;
-import com.spring.app.domain.AddQDTO;
+import com.spring.app.domain.AddQnADTO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
@@ -413,7 +412,7 @@ public class QuestionController {
 				str_qidx = "22";
 			}
 			
-			// System.out.println(str_qidx);
+			System.out.println(str_qidx);
 			
 			int qidx = Integer.parseInt(str_qidx);
 			
@@ -423,38 +422,31 @@ public class QuestionController {
 			if(qdto == null) {
 				redirect = "redirect:/questionList.bibo";
 			}
+			else {
+				System.out.println(qdto.getName());
+				totalcontent.put("qdto", qdto);
+			}
 			
 			// 답변 조회
 			List<MediADTO> adtoList = questionservice.answerView(qidx);
 			
-			if(adtoList.size() > 0) {
+			for(MediADTO adto : adtoList) {
+				System.out.println(adto.getAddqnadtoList());
+				List<AddQnADTO> addqnadtoList = adto.getAddqnadtoList();
 				
-				// 추가 질문 및 답변이 있는지 확인
-				for(MediADTO adto : adtoList) {
-					String adix = adto.getAidx();
-					
-					
-					
-					
-					
-					
+				for(AddQnADTO asb : addqnadtoList) {
+					System.out.println(asb.getAidx());
 				}
-				
-				
 			}
 			
 			
+			totalcontent.put("adtoList", adtoList);
+			
+			request.setAttribute("totalcontent", totalcontent);
 			
 			
-			
-			
-			
-			
-			
-			
-
-		
 		}catch(Exception e) {
+			e.printStackTrace();
 			redirect = "redirect:/questionList.bibo";
 		}
 		
@@ -462,6 +454,25 @@ public class QuestionController {
 	}
 	
 	
+	
+	@ResponseBody
+	@GetMapping("/answerWrite.bibo")
+	public String answerWrite(MediADTO mdto) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("qidx", mdto.getQidx());
+		paraMap.put("userid", mdto.getUserid());
+		paraMap.put("content", mdto.getContent());
+		// qnacnt 는 기본값 0 이므로 추가답변 추가될 때마다 +1 해야함
+		
+		// String result = questionservice.answerWrite(paraMap);
+		
+		
+		return "";
+	}
 	
 	
 	
