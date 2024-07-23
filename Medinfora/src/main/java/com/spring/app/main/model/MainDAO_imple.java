@@ -256,6 +256,12 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.selectOne("medinfora.hcnt",search);
 	}
 
+	// (검색) 병원추가검색
+	@Override
+	public List<HospitalDTO> gethdtoList(Map<String, String> paraMap) {
+		return sqlsession.selectList("medinfora.gethdtoList",paraMap);
+	}
+
 
 	
 

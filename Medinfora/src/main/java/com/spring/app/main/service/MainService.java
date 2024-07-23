@@ -86,5 +86,8 @@ public interface MainService {
 
 	// (검색) 총 병원 검색수
 	public int hcnt(String search);
+
+	// (검색) 병원 추가 검색
+	public List<HospitalDTO> getmorehinfo(Map<String, String> paraMap);
 	
 }

@@ -7,11 +7,13 @@
 
 <script>
 
-let cnt = ${requestScope.hcnt};
+const totalcnt = ${requestScope.hcnt};
+const totalview = Math.ceil(${requestScope.hcnt}/5);
+let view = 2;
 
-function hospitaldetail(hidx){
+function hospitaldetail(hidx,hpname){
 	
-	location.href = `<%=ctxPath%>/hpsearch/hospitalSearch.bibo?hidx=\${hidx}`;
+	location.href = `<%=ctxPath%>/hpsearch/hospitalSearch.bibo?hidx=\${hidx}&hpname=\${hpname}`;
 	
 }
 
@@ -21,30 +23,81 @@ function noticedetail(nidx){
 	
 }
 
-function moreshow(hcnt){
+function reserve(hidx,sel_hpname){
 	
-	let view = 0;
+	let f = document.createElement('form');
+	    
+    let obj1;
+    obj1 = document.createElement('input');
+    obj1.setAttribute('type', 'hidden');
+    obj1.setAttribute('name', 'hidx');
+    obj1.setAttribute('value', hidx);
+
+	let obj2;
+	obj2 = document.createElement('input');
+	obj2.setAttribute('type', 'hidden');
+	obj2.setAttribute('name', 'sel_hpname');
+	obj2.setAttribute('value', sel_hpname);
+    
+    f.appendChild(obj1);
+    f.appendChild(obj2);
+    f.setAttribute('method', 'post');
+    f.setAttribute('action', '<%=ctxPath%>/reserve/choiceDay.bibo');
+    document.body.appendChild(f);
+    f.submit();
+
+}
+
+function moreshow(search){
 	
-	if (cnt > 5){
-		view = 5;
-		cnt = cnt - 5;
-	}else{
-		view = cnt%5;
-		cnt = 0;
+	let sn = 0;
+	let en = 0;
+	
+	for(let i=1;i<=totalview;i++){
+		let snv = 5*(i-1)+1;
+		let env = 0;
+		if(i!=totalview){
+			env = 5*i;
+		}else{
+			env = totalcnt;
+		}
+		if(view==i){
+			sn = snv;
+			en = env;
+			view++;
+			break;
+		}
 	}
 	
-	const orginhtml = $('#htmlhospital').html();
-	let addhtml = '';
+	const data = {"search":search,"sn":sn,"en":en};
 	
-	for(let i=0;i<view;i++){
-		
-		/*
-		$.ajax({
-			url : "/getmorehinfo.bibo",
-			
-		})*/
-		
-	}
+	let addhtml = $('#htmlhospital').html();
+
+	$.ajax({
+		url : "<%=ctxPath%>/getmorehinfo.bibo",
+		data : data,
+		dataType:"json",
+		success:function(json){
+			json.forEach((element,idx)=>{
+				addhtml += `
+				<div class="content_h">
+					<div class="content_place">
+						<div class="content_hpname" onclick="hospitaldetail('\${element.hidx}','\${element.hpname}')">\${element.hpname} (\${element.agency})</div>
+						<div class="content_hpaddress">\${element.hpaddr}</div>
+						<div class="content_hpmobile">\${element.hptel}</div>
+					</div>
+				</div>`;
+			});
+
+			$('#htmlhospital').html(addhtml);
+			if(view-1==totalview){
+				$(".showmore").hide();
+			}
+		},
+		error:function(request){
+			alert("code : " + request.status);
+		}
+	});
 	
 }
 
@@ -74,21 +127,21 @@ function moreshow(hcnt){
 						<c:forEach var="hdto" items="${requestScope.searchlist.hdtolist}">
 							<div class="content_h">
 								<div class="content_place">
-									<div class="content_hpname" onclick="hospitaldetail('${hdto.hidx}')">${hdto.hpname} (${hdto.agency})</div>
+									<div class="content_hpname" onclick="hospitaldetail('${hdto.hidx}','${hdto.hpname}')">${hdto.hpname} (${hdto.agency})</div>
 									<div class="content_hpaddress">${hdto.hpaddr}</div>
 									<div class="content_hpmobile">${hdto.hptel}</div>
 								</div>
 								<div class="content_tool">
 									<c:if test="${hdto.member == true}">
-										<button class="tool_btn" type="button">예약하기</button>
+										<button class="tool_btn" type="button" onclick="reserve('${hdto.hidx}','${hdto.hpname}')">예약하기</button>
 									</c:if>
 								</div>
 							</div>
 						</c:forEach>
 					</div>
 					
-					<c:if test="${requestScope.hcnt > 0}">
-						<div class="showmore" onclick="moreshow()">
+					<c:if test="${requestScope.hcnt > 5}">
+						<div class="showmore" onclick="moreshow('${requestScope.search}')">
 							<span>검색결과 더보기</span>
 						</div>
 					</c:if>

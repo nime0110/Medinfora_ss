@@ -107,6 +107,9 @@ public interface MainDAO {
 	// (검색) 총 병원 검색수
 	public int hcnt(String search);
 
+	// (검색) 병원추가검색
+	public List<HospitalDTO> gethdtoList(Map<String, String> paraMap);
+
 
 
 

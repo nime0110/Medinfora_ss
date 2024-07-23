@@ -347,4 +347,14 @@
 		)
 	</select>
 	
+	<!-- (검색) 병원추가검색 -->
+	<select id="gethdtoList" parameterType="HashMap" resultType="HospitalDTO">
+		select Hpname,HPaddr,AGENCY,HPTEL
+		from(
+		    select row_number() over(order by HPNAME) as rno, HPNAME, HPADDR, AGENCY, HPTEL
+		    from HOSPITAL
+		    where Hpname like '%'||#{search}||'%' group by HPNAME, HPADDR, AGENCY, HPTEL
+		)where rno between #{sn} and #{en}
+	</select>
+	
 </mapper>
