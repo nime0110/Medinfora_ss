@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.personalChart{
+	height: 500px;
+	border: solid 1px black;
+}
+
+#totalChart{
+	height: 500px;
+}
