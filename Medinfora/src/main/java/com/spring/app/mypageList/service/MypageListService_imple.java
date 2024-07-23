@@ -24,7 +24,14 @@ public class MypageListService_imple implements MypageListService {
 	// 회원 목록 가져오기
     @Override
     public List<MemberDTO> getMemberList(Map<String, Object> paraMap) {
-        return mdao.getMemberList(paraMap);
+		/*
+		 * // 페이지 번호와 페이지 크기 가져오기 int pageNo = (int)paraMap.get("pageNo"); int pageSize
+		 * = (int) paraMap.get("pageSize");
+		 * 
+		 * // 검색 조건 처리 String searchType = (String) paraMap.get("searchType"); String
+		 * searchKeyword = (String) paraMap.get("searchKeyword");
+		 */	
+    	return mdao.getMemberList(paraMap);
     }
     
     // 회원 정보 상세 정보 가져오기
@@ -63,6 +70,7 @@ public class MypageListService_imple implements MypageListService {
 	        }
 	    }
 
+	// 페이지 보여줄 레코드 수 
 	@Override
 	public int getTotalPage(Map<String, Object> paraMap) {
 		int totalCount = getTotalCount(paraMap);
@@ -117,15 +125,17 @@ public class MypageListService_imple implements MypageListService {
 
 	@Override
 	public int getTotalCount(Map<String, Object> paraMap) {
-	    int totalCount = 0;
+	   /* int totalCount = 0;
 	    try {
 	        totalCount = mdao.getTotalPage(paraMap);
+	       
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-	    return totalCount;	}
+	    return totalCount;	
+	    }*/
 
+		return mdao.getTotalCount(paraMap);
 
-
-	
+	}
 }
