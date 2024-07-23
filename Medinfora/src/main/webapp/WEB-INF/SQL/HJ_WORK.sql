@@ -532,3 +532,8 @@ ON C.userid = M.userid
 select *
 from reserve
 where userid = 'hemint'
+
+-- === (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기 === --
+select userid
+from reserve
+where checkin = to_char(to_date('2024-07-15 08:30','yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss')

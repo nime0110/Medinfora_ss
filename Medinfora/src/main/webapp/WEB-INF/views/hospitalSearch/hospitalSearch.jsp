@@ -6,13 +6,14 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/hpsearch/hpsearch.css" />
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a85d4c332f523d2ef9be7ec67b43ff8e&libraries=services,clusterer,drawing"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script> <!-- ECharts 라이브러리 추가 -->
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/hospitalSearch/hospitalSearch.js"></script>
 
 
 <!-- 중앙 div -->
 <div id="container">
 <h1 class="nanum-b size-n">병원 찾기</h1>
-	<div id="searchBox">
+<div id="searchBox">
 	<div class="dropdown_hpsearch">
 		<select id="city">
 		  <!-- 시/도 데이터 -->
@@ -45,16 +46,18 @@
 		<input type="text" id="searchHpname" placeholder="병원명을 입력하세요">
 		<button onclick="searchHospitals(1)">검색</button>
 	</div>
+	<!-- 카카오맵 / 리스트설정  -->
+</div>  
 	
 	<div id="tabs" class="mobile-only">
 	    <button class="tab-button active" data-tab="map_box">지도</button>
 	    <button class="tab-button" data-tab="hplist">리스트</button>
 	</div>
-	<!-- 카카오맵 / 리스트설정  -->
+
 	
 	<div id="flexbox_map">
 		<div id="map_box" class="map_wrap tab-content">
-		    <div id="map"></div>
+			<div id="map"></div>
 		</div>
 		<div id="hplist" class="tab-content">
 		    <ul id="hospitalList">
@@ -69,9 +72,10 @@
 	</div>
     <div class="pagination" id="rpageNumber">
     </div>
-</div>    
-    
-<div id="hospitalList"></div>
+    <div id="hp_chart_description">
+    	<div id="space"></div>
+    </div>
+  	<div id="hp_chart" style="height: 100%">통계들어감</div>
 
   	
 <%-- 로더  --%>

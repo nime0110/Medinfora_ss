@@ -53,6 +53,7 @@ public class MainController {
 		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		
 		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
@@ -125,7 +126,6 @@ public class MainController {
 	@RequestMapping(value="/getclasscode.bibo", produces="text/plain;charset=UTF-8")
 	public String getclasscode() {
 		
-		// classcode Jsonarr으로 파싱
 		JSONArray jsonarr = new JSONArray();
 		
 		List<ClasscodeDTO> clsscodeDTOList = service.getclasscode();
@@ -186,7 +186,6 @@ public class MainController {
 			String newFilename = fileManager.doFileUpload(is, filename, path);
 			   
 			String ctxPath = request.getContextPath(); //  
-			System.out.println("ctxPath : "+ctxPath);
 
 			String strURL = "";
 			strURL += "&bNewLine=true&sFileName="+newFilename; 
@@ -225,10 +224,12 @@ public class MainController {
 		
 		Map<String,List<Object>> searchList = service.searach(search);
 		
+		int hcnt = service.hcnt(search);
+		
 		@SuppressWarnings("unchecked")
 		Map<String,Integer> countlist = (Map<String, Integer>) searchList.get("countmap").get(0);
 		
-		if(countlist.get("totalcount") == 5) {
+		if(countlist.get("totalcount") == 0) {
 			mav.addObject("nosearch",2);
 			mav.addObject("search",search);
 			mav.setViewName("search.tiles");
@@ -243,12 +244,60 @@ public class MainController {
 		
 		service.writeSearchlog(paraMap);
 		
+		mav.addObject("hcnt",hcnt);
 		mav.addObject("searchlist",searchList);
 		mav.addObject("nosearch",0);
 		mav.addObject("search",search);
 		mav.setViewName("search.tiles");
 		
 		return mav;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@GetMapping("/getpopword.bibo")
+	public String getpopword() {
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		List<String> popwordList = service.getPopwordList();
+		
+		for(String popword : popwordList) {
+			jsonArr.add(popword);
+		}
+		
+		return jsonArr.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/getmorehinfo.bibo", produces="text/plain;charset=UTF-8")
+	public String getmorehinfo(HttpServletRequest request) {
+
+		String search = request.getParameter("search");
+		String sn = request.getParameter("sn");
+		String en = request.getParameter("en");
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("search",search);
+		paraMap.put("sn",sn);
+		paraMap.put("en",en);
+		
+		List<HospitalDTO> hdtoList = service.getmorehinfo(paraMap);
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		for(HospitalDTO hdto : hdtoList) {
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("hidx",hdto.getHidx());
+			jsonObj.put("hpname",hdto.getHpname());
+			jsonObj.put("agency",hdto.getAgency());
+			jsonObj.put("hpaddr",hdto.getHpaddr());
+			jsonObj.put("hptel",hdto.getHptel());
+			jsonArr.add(jsonObj);
+		}
+		
+		return jsonArr.toString();
 	}
 	
 }

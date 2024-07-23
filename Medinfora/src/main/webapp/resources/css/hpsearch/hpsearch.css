@@ -459,6 +459,27 @@ div#no_searchList > span {
 /* 모달 css end */
 
 
+
+#hp_chart_description {
+	width: 70%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 4vh;
+}
+
+#chart_addr {
+	font-size: 2.4rem;
+}
+
+#chart_classname {
+    font-size: 1.1rem;
+}
+
+
+
+
+
+
 /* 반응형 디자인을 위한 미디어 쿼리 */
 
 @media (max-width: 1200px) {

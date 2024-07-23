@@ -80,5 +80,14 @@ public interface MainService {
 
 	// (검색) 검색 로그 작성하기
 	public void writeSearchlog(Map<String, String> paraMap);
+
+	// 인덱스 인기 검색어 불러오기
+	public List<String> getPopwordList();
+
+	// (검색) 총 병원 검색수
+	public int hcnt(String search);
+
+	// (검색) 병원 추가 검색
+	public List<HospitalDTO> getmorehinfo(Map<String, String> paraMap);
 	
 }

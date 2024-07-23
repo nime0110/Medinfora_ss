@@ -83,7 +83,6 @@ public class MypageService_imple implements MypageService {
 		if("전체".equals(paraMap.get("sclist"))) {
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(환자명 검색)
 			reserveList = dao.PatientNameList(paraMap);
-			
 			// (의료인- 진료예약 열람) hidx 의 현재 예약리스트 가져오기(진료현황 검색)
 			reserveList.addAll(dao.ReserveStatusList(paraMap));
 			
@@ -97,7 +96,6 @@ public class MypageService_imple implements MypageService {
 			Set<ReserveDTO> uniqueReserveSet = new HashSet<>(reserveList);	// 중복제거
 			reserveList.clear();	// 기존에 있는 값 비우기
 			reserveList.addAll(uniqueReserveSet);	// 중복제거한 리스트 넣어주기
-			
 			// === 진료일시 기준으로 내림차순 === //
 			reserveList.sort(Comparator.comparing(ReserveDTO::getCheckin).reversed());
 		}
@@ -168,6 +166,13 @@ public class MypageService_imple implements MypageService {
 		return n;
 	}
 
+	// (의료인- 진료예약 열람) 진료완료로 변경하기
+	@Override
+	public void updatercode(String ridx) {
+		dao.updatercode(ridx);
+		
+	}
+	
 	// (일반회원- 진료예약 열람) userid 의 현재 예약리스트 가져오기(검색포함)
 	@Override
 	public List<ReserveDTO> UserReserveList(Map<String, String> paraMap) {
@@ -244,6 +249,27 @@ public class MypageService_imple implements MypageService {
 	public int cancleRdto(String ridx) {
 		int n = dao.cancleRdto(ridx);
 		return n;
+	}
+
+	// (의료인- 진료 일정관리) hidx 의 예약리스트 가져오기
+	@Override
+	public List<ReserveDTO> TotalreserveList(String hidx) {
+		List<ReserveDTO> reserveList = dao.TotalreserveList(hidx);
+		return reserveList;
+	}
+
+	// (의료인- 진료 일정관리) 병원과 예약일시를 통해 환자아이디 가져오기
+	@Override
+	public ReserveDTO getPatientd(Map<String, String> paraMap) {
+		ReserveDTO rdto = dao.getPatientd(paraMap);
+		return rdto;
+	}
+	
+	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
+	@Override
+	public MemberDTO getPatientInfo(String userid) {
+		MemberDTO mdto = dao.getPatientInfo(userid);
+		return mdto;
 	}
 	
 }

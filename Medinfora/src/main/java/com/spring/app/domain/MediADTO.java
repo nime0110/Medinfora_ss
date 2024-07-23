@@ -6,7 +6,6 @@ public class MediADTO {
 
 	private String aidx, qidx, userid, content, writeday;
 	
-	private MediQDTO qdto;
 
 	public String getAidx() {
 		return aidx;
@@ -48,13 +47,6 @@ public class MediADTO {
 		this.writeday = writeday;
 	}
 
-	public MediQDTO getQdto() {
-		return qdto;
-	}
-
-	public void setQdto(MediQDTO qdto) {
-		this.qdto = qdto;
-	}
 	
 	
 	

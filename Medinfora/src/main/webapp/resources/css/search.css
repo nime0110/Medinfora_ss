@@ -6,39 +6,12 @@
     display: flex;
     flex-wrap: wrap;
     margin: 0;
-}
-
-#searchsidebar{
-    width: 20%;
-    margin: 0;
-}
-
-.sidebaroption{
-    font-family: var(--font);
-    font-size: 1rem;
-    padding: 15px 10px;
-    background-color: var(--navy400);
-    color: var(--blue50);
-    max-width: 95%;
-    text-align: end;
-    border-bottom: solid 1px var(--navy800);
-    border-right: solid 1px var(--navy800);
-    transition: all 0.5s;
-}
-
-.sidebaroption:hover{
-    cursor: pointer;
-    background-color: var(--navy500);
-}
-
-.selectoption{
-    background-color: var(--navy700);
-    font-weight: bold;
-}
+}   
 
 #searchcontents{
     width: 80%;
     padding: 10px 30px;
+    margin: 0 auto;
 }
 
 .contenttitle{
@@ -47,7 +20,7 @@
 }
 
 .contentsub{
-    width: 80%;
+    width: 100%;
     border-radius: 20px;
     padding : 20px 20px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -70,14 +43,21 @@
 .content_h{
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 100%;
     padding: 10px 5px;
     border-bottom: solid 1px var(--grey100);
     justify-content: space-between;
 }
 
+.content_q{
+    display: block;
+    width: 80%;
+    padding: 10px 5px;
+    border-bottom: solid 1px var(--grey100);
+}
+
 .content_place{
-    min-width: calc(100%-100px);
+    width: calc(100%-100px);
 }
 
 .content_tool{
@@ -108,6 +88,50 @@
     font-family: var(--font);
     font-size: 1.0rem;
     color: var(--grey700);
+}
+
+.content_title{
+    width: 100%;
+    font-family: var(--font);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:var(--blue800);
+    padding-bottom: 15px;
+    transition: all 0.3s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp:1;
+    -webkit-box-orient: vertical;
+    height: auto;
+}
+
+.content_title:hover{
+    cursor: pointer;
+    color:var(--grey800);
+}
+
+.content_content{
+	width:100%;
+    font-family: var(--font);
+    font-size: 1.0rem;
+    color: var(--grey700);
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp:4;
+    -webkit-box-orient: vertical;
+}
+
+.content_writeday{
+    font-family: var(--font);
+    padding-top: 10px;
+    font-size: 0.8rem;
+    color: var(--grey500);
+    text-align: right;
 }
 
 .tool_btn{
