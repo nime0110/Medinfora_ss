@@ -186,4 +186,18 @@ from(
     from HOSPITAL
     where Hpname like '%'||'비타민'||'%'
     group by HPNAME, HPADDR, AGENCY, HPTEL
-)
+);
+
+select count(*)
+from SEARCHLOG where substr(REGISTERDAY,0,10) = '2024-07-23'
+and userid != 'Anonymous';
+
+select searchword, count
+from
+(
+select row_number() over (order by count(*) desc) as rno, SEARCHWORD, count(*) as count
+ from (select SEARCHWORD
+       from SEARCHLOG
+       where substr(REGISTERDAY, 0, 10) between substr(to_char(sysdate-7,'yyyy-mm-dd'), 0, 10)) and substr(to_char(sysdate,'yyyy-mm-dd'), 0, 10))
+ group by SEARCHWORD
+) where rno between 1 and 7;
