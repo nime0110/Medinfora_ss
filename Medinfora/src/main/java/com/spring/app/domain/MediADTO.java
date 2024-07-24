@@ -1,11 +1,31 @@
 package com.spring.app.domain;
 
+import java.util.List;
 
 public class MediADTO {
 	
 
-	private String aidx, qidx, userid, content, writeday;
+	private String aidx, qidx, userid, content, writeday, qnacnt;
 	
+	
+	public String getQnacnt() {
+		return qnacnt;
+	}
+
+	public void setQnacnt(String qnacnt) {
+		this.qnacnt = qnacnt;
+	}
+
+	private List<AddQnADTO> addqnadtoList;
+	
+
+	public List<AddQnADTO> getAddqnadtoList() {
+		return addqnadtoList;
+	}
+
+	public void setAddqnadtoList(List<AddQnADTO> addqnadtoList) {
+		this.addqnadtoList = addqnadtoList;
+	}
 
 	public String getAidx() {
 		return aidx;

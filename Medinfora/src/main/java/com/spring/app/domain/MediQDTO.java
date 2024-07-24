@@ -13,7 +13,11 @@ public class MediQDTO {
 	
 	private MultipartFile filesrc;
 	
+	private String name;	// 글조회 이름
 	
+	
+	
+
 	private String newwrite;	// 0 새로운거  1 오늘날짜보다 지난거
 	
 	// 첨부파일 관련
@@ -22,14 +26,26 @@ public class MediQDTO {
 	private String size;
 	
 	
+	
+	
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	
 	public String getFilename() {
 		
-		if(!imgsrc.isEmpty()) {
-			filename = imgsrc.substring(0, imgsrc.indexOf("\\"));
+		if(imgsrc.isBlank()) {
+			filename = null;
+			
 		}
 		else {
-			filename = null;
+			filename = imgsrc.substring(0, imgsrc.indexOf("/"));
 		}
 		
 		return filename;
@@ -37,22 +53,22 @@ public class MediQDTO {
 
 	public String getOriginFilename() {
 		
-		if(!imgsrc.isEmpty()) {
-			originFilename = imgsrc.substring(imgsrc.indexOf("\\"), imgsrc.lastIndexOf("\\"));
+		if(imgsrc.isBlank()) {
+			originFilename = null;
 		}
 		else {
-			originFilename = null;
+			originFilename = imgsrc.substring(imgsrc.indexOf("/")+1, imgsrc.lastIndexOf("/"));
 		}
 		
 		return originFilename;
 	}
 
 	public String getSize() {
-		if(!imgsrc.isEmpty()) {
-			size = imgsrc.substring(imgsrc.lastIndexOf("\\"));
+		if(imgsrc.isBlank()) {
+			size = null;
 		}
 		else {
-			size = null;
+			size = imgsrc.substring(imgsrc.lastIndexOf("/")+1);
 		}
 		
 		return size;
