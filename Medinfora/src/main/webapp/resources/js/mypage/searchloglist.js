@@ -8,18 +8,25 @@ $(function(){
 
     if(setoption.t=="t0"){
         chartloadT0(opdata);
+    }else{
+        chartloadT1(opdata);
     }
 
     $('.selectbox').on("change",function(){
 
         echarts.init(document.getElementById('chartin'), null, {
             renderer: 'canvas',
-            useDirtyRect: false
+            useDirtyRect: false,
+            xAxis: [{
+                show: false
+            }]
         });
         setoption = getStatus();
         opdata = getdata(setoption);
         if(setoption.t=="t0"){
             chartloadT0(opdata);
+        }else{
+            chartloadT1(opdata);
         }
 
     });
@@ -54,6 +61,14 @@ function getdata(setoption){
                 }
 
                 result = {"xAxis":xAxis,"series":series};
+            }else{
+
+                const data = [];
+                json.forEach((element,index)=>{
+                    data.push({"value":Number(element.value),"name":element.name});
+                });
+
+                result = data;
             }
         },
 		error:function(request){
