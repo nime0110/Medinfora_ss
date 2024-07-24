@@ -20,7 +20,7 @@ public class MemberDTO {
 	private int loginmethod;	// 로그인방법 ( 0 : 일반, 1 : 카카오)
 	
 	
-	// select 용
+	// === Select 용 === //
 	private int lastlogingap;	// 로그인한지 12개월 넘었는지 확인하는 용도
 	private int pwdchangegap;	// 비밀번호 변경한지 얼마나 되었는지 확인용
 	private boolean requirePwdChange = false;	// 비밀번호 변경안한지 3개월 지났는지 확인 용도
@@ -33,6 +33,11 @@ public class MemberDTO {
 	private String lastLogin; // loginlog에 있는 접속일 가져올 것임 
 	private String memberStatusString; //회원 상태 
 	
+	private String age;
+	
+	////////////////////////////////////////////////////////////////
+	
+	// === Getter, Setter === //
 	public String getUserid() {
 		return userid;
 	}
@@ -176,8 +181,11 @@ public class MemberDTO {
 	public void setPostcount(Integer postcount) {
 		this.postcount = postcount;
 	}
-	
-	
-	
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
 	
 }
