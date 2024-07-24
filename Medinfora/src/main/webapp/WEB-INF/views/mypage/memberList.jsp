@@ -27,6 +27,9 @@
     width: 100%; /* 모달 컨텐츠를 다이얼로그 너비에 맞춤 */
 }
 
+
+
+
 @media (max-width: 768px) {
     .modal-dialog {
         max-width: 95%; /* 작은 화면에서는 화면의 95% 너비 사용 */
