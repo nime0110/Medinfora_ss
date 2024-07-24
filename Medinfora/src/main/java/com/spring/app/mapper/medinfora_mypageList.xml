@@ -6,7 +6,7 @@
 
 	<!--  회원 목록 가져오기  -->
 	<select id="getMemberList" parameterType="map" resultType="MemberDTO">
-             SELECT *
+       SELECT *
         FROM (
             SELECT 
                 ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
@@ -22,22 +22,33 @@
                 mIdx, 
                 registerday, 
                 pwdUpdateday, 
-                loginmethod
-            FROM member
+                loginmethod,
+                (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+                (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+            FROM member m
             WHERE 1=1
             AND userid != 'Anonymous'
-            <!-- 검색 조건 -->
-            <if test="subject != null and subject != ''">
-                <if test="subject == '1'">
-                    AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
-                </if>
-                <if test="subject == '2'">
-                    AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
-                </if>
+            <if test="word != null and word != ''">
+                <choose>
+                    <when test="subject == '1'">
+                        AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+                    </when>
+                    <when test="subject == '2'">
+                        AND name LIKE '%' || #{word} || '%'
+                    </when>
+                    <otherwise>
+                        AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+                    </otherwise>
+                </choose>
             </if>
         ) numbered_members
         WHERE rn BETWEEN #{start} AND #{end}
     </select>
+
+
+
+
+
 
     <!-- 회원 상세 정보 가져오기 -->
     <select id="getMemberDetails" parameterType="String" resultType="MemberDTO">
