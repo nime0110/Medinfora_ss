@@ -143,7 +143,7 @@ public class MypageController {
 	
 	// === (일반회원) 진료예약 열람 === //
 	@GetMapping("myreserve.bibo")
-	public ModelAndView isLogin_myreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView isMember_myreserve(ModelAndView mav,HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/myreserve.info");
 		return mav;
 	}
@@ -285,42 +285,6 @@ public class MypageController {
 		}
 		return jsonObj.toString();
 	} // end of public String getRdto(HttpServletRequest request) {---------------
-/*
-	// === 진료현황 변경 === //
-	@ResponseBody
-	@PostMapping("ChangeRstatus.bibo")
-	public String ChangeRstatus(HttpServletRequest request) {
-		String rStatus = request.getParameter("rStatus");
-		String ridx = request.getParameter("ridx");
-		
-		// 선택한 진료현황의 예약코드 가져오기
-		String rcode = service.GetRcode(rStatus);
-		
-		Map<String,String> paraMap = new HashMap<>();
-		
-		paraMap.put("ridx", ridx);
-		paraMap.put("rcode", rcode);
-		
-		JSONObject jsonObj = new JSONObject();
-		// 진료현황 변경해주기
-		int n = service.ChangeRstatus(paraMap);
-		int send = 0;
-		if(n==1) {
-			if("2".equals(rcode) || "0".equals(rcode)) {
-				send = 1;
-
-		String message = "", loc = "";
-		if (n == 1) {
-			message = "진료현황이 " + rStatus + " 으(로) 변경되었습니다.";
-			loc = request.getContextPath() + "/mypage/mdreserve.bibo";
-		}
-		mav.addObject("message", message);
-		mav.addObject("loc", loc);
-		mav.setViewName("msg");
-		return mav;
-	} // end of public ModelAndView ChangeRstatus(ModelAndView mav, HttpServletRequest
-		// request, HttpServletResponse response) {----------
-*/
 	
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody

@@ -212,113 +212,41 @@ function createChart(result){
     option && myChart.setOption(option);
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     const datag =  Getdata();
-//     console.log(datag);
-//     var chartDom = document.getElementById('totalChart');
-//     var myChart = echarts.init(chartDom);
-//     var option;
+ageChart();
+function ageChart(){
 
-//     setTimeout(function () {
-//     option = {
-//         title: {
-//         text: '특정 연도의 연령별 입원 비율 (%)'
-//         },
-//         legend: {},
-//         tooltip: {
-//         trigger: 'axis',
-//         showContent: false
-//         },
-//         dataset: {
-//         source: [
-//             ['product', '2017', '2018', '2019'],
-//             ['15-19', 2.7, 0.7, 0.5],
-//             ['20-29', 2.6, 0.6, 1.4],
-//             ['30-39', 3.3, 1.9, 2.6],
-//             ['40-49', 5, 3, 2.8],
-//             ['50-59', 5.1, 4.4, 4.2],
-//             ['60', 11, 7.5, 7.8]
-//         ]
-//         },
-//         xAxis: { type: 'category' },
-//         yAxis: { gridIndex: 0 },
-//         grid: { top: '55%' },
-//         series: [
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'line',
-//             smooth: true,
-//             seriesLayoutBy: 'row',
-//             emphasis: { focus: 'series' }
-//         },
-//         {
-//             type: 'pie',
-//             id: 'pie',
-//             radius: '30%',
-//             center: ['50%', '25%'],
-//             emphasis: {
-//             focus: 'self'
-//             },
-//             label: {
-//             formatter: '{b}: {@2017} ({d}%)'
-//             },
-//             encode: {
-//             itemName: 'product',
-//             value: '2017',
-//             tooltip: '2017'
-//             }
-//         }
-//         ]
-//     };
-//     myChart.on('updateAxisPointer', function (event) {
-//         const xAxisInfo = event.axesInfo[0];
-//         if (xAxisInfo) {
-//         const dimension = xAxisInfo.value + 1;
-//         myChart.setOption({
-//             series: {
-//             id: 'pie',
-//             label: {
-//                 formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-//             },
-//             encode: {
-//                 value: dimension,
-//                 tooltip: dimension
-//             }
-//             }
-//         });
-//         }
-//     });
-//     myChart.setOption(option);
-//     });
+    $.ajax({
+        url : "getAge.bibo",
+        async: true,
+        dataType: "json",
+        success: function(json) {
+            if(json.age != '0'){    // 만나이 15세 이상인 경우
+                alert(json.age);    // 만나이
+                let dvs = json.age;
 
-//     option && myChart.setOption(option);
-// });     // end of document.addEventListener("DOMContentLoaded", () => {---------
+                let addr = "https://apis.data.go.kr/1352000/ODMS_STAT_12/callStat12Api?serviceKey=t18H0wc1LlracvIWqfFfc8Y4aWsblSv9Bvsntzf26kWqSnakUeTEZG1u27WFuRWVe819MPwqiiJW2wfD7YyPIg%3D%3D&dvs="+dvs;
+
+                console.log(addr);
+                $.ajax({
+                    url: addr,
+                    success:function(xml){
+                        const json = xmlToJson(xml);
+                        console.log(json.response.body.items.item);
+
+                        
+                    },
+                    error: function(request) {
+                        alert("code : " + request.status);
+                    }
+
+                })  // end of $.ajax({-------------------
+
+            }
+        },
+        error: function(request) {
+            alert("code : " + request.status);
+        }
+
+    })  // end of $.ajax({------------------
+
+}   // end of function ageChart(){------------------
