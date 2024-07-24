@@ -519,7 +519,40 @@ select aidx, qidx, userid, content
 from media
 where qidx = 22;
 
-desc addMedia;
 
+
+
+select *
+from addqna;
+
+select qaidx, aidx, cntnum, qnastatus, qcontent
+     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+from addqna
+where aidx = 5
+order by cntnum, qaidx;
+
+select *
+from mediq
+where qidx = 22;
+
+insert into addqna(qaidx, aidx, cntnum, qnastatus, qcontent, writeday)
+values(seq_addqna.nextval, 4, 2, 1, '추가질문 2', default);
+
+
+commit;
+
+
+WITH A
+AS(
+select *
+from media
+where aidx = 1)
+,
+M AS(
+select userid, name
+from member)
+SELECT M.userid, name
+FROM A JOIN M
+ON A.userid = M.userid;
 
 

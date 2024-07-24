@@ -173,7 +173,7 @@
 	
 	
 	<!-- 질문 조회 -->
-	<select id="questionView" resultType="MediQDTO">
+	<select id="questionView" parameterType="int" resultType="MediQDTO">
 		select qidx, userid, subject, title, content, acount, open, viewCount
 	         , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
 	         , nvl(imgsrc, ' ') as imgsrc
@@ -182,13 +182,31 @@
 	    where qidx = #{qidx}
 	</select>
 	
+	<!-- 질문자 이름 -->
+	<select id="getwriterName" parameterType="String" resultType="String">
+		select name
+		from member
+		where userid = #{userid}
+	</select>
+	
+
 	
 	<!-- 답변 조회 -->
-	<select id="answerView" resultType="MediADTO">
-		select aidx, qidx, userid, content
+	<select id="answerView" parameterType="int" resultType="MediADTO">
+		select aidx, qidx, userid, content, qnacnt
 		     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
 		from media
 		where qidx = #{qidx}
+	</select>
+	
+	
+	<!-- 추가질답 조회 -->
+	<select id="addquestionView" parameterType="String" resultType="AddQnADTO">
+		select qaidx, aidx, cntnum, qnastatus, qcontent
+		     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+		from addqna
+		where aidx = to_number(#{aidx})
+		order by cntnum, qaidx asc
 	</select>
 	
 

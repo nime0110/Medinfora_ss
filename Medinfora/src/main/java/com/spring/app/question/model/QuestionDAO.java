@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.spring.app.domain.AddQnADTO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 
@@ -26,7 +27,13 @@ public interface QuestionDAO {
 	// 답변조회
 	List<MediADTO> answerView(int qidx);
 	
-	// 추가질문 조회
-	List<Map<String, String>> addQList(String adix);
+	// 추가질답 조회
+	List<AddQnADTO> addquestionView(String aidx);
+	
+	// 질문자 이름
+	String getwriterName(String userid);
+	
+	// 병원 이름, 아이디
+	Map<String, String> getAnswerName(String aidx);
 
 }
