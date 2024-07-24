@@ -214,34 +214,26 @@ function Page(pageNo) {
         </c:forEach>
     </c:if>
 	
-		
-		<fieldset>
-			<div class="search_box p-4" align="center" style="background-color: var(--object-skyblue-color); ">
-				<form id = "searchForm">
-				<span>
-					<select class="search_ch sel_0 nanum-b" name="subject">
-						<option value=''>전체</option>
-						<option value='1'>일반회원명</option>
-						<option value='2'>병원명</option>
-					</select>
-				</span>
-				
-				
-				
-				<span>
-					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
-				</span>
-				<span>
-					<button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
-				</span>
-			  
-			        </form>  
-			</div>
-		
-		</fieldset>
-	
-	</form>
-    <input type="hidden" name="userid" />
+	 <fieldset>
+        <div class="search_box p-4" align="center" style="background-color: var(--object-skyblue-color);">
+            <span>
+                <select class="search_ch sel_0 nanum-b" name="subject">
+                    <option value='0'>전체</option>
+                    <option value='1'>일반회원명</option>
+                    <option value='2'>병원명</option>
+                </select>
+            </span>
+            <span>
+                <input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
+            </span>
+            <span>
+                <button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
+            </span>
+        </div>
+    </fieldset>
+</form>
+
+   <!--  <input type="hidden" name="userid" /> -->
     
   
  

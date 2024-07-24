@@ -50,15 +50,14 @@ public class MypageListController {
         }
         
         // 검색 조건 처리
-        String subject = request.getParameter("subject");
-        String word = request.getParameter("word");
+        String subject = request.getParameter("subject"); // 검색 기준 ("0" 전체, "1" 회원명,"2" 병원명)
+        String word = request.getParameter("word"); // 검색어
         
-        if(subject != null && !subject.isEmpty()) { // subject가 null이 아니고 빈 문자열이 아닌 경우
-        	if(word != null && !word.isEmpty()) { // word가 null이 아니고 빈 문자열이 아닌 경우
-        		paraMap.put("subject", subject);
-        		paraMap.put("word", word);
-        		
-        	}
+        if(subject != null && !subject.isEmpty()) {
+            paraMap.put("subject", subject);
+        }
+        if(word != null && !word.isEmpty()) {
+            paraMap.put("word", word);
         }
         
         
