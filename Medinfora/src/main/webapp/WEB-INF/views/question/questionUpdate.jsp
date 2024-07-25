@@ -3,6 +3,8 @@
 <%
 	String ctxPath = request.getContextPath();
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 
 <style>
 
@@ -95,6 +97,10 @@ span#filechoice:hover{
 	border: solid 4px #ff9999 !important;
 }
 
+#filechoice{
+	z-index: 10;
+}
+
 
 
 </style>
@@ -104,6 +110,14 @@ span#filechoice:hover{
 
 $(document).ready(function() {
 	$("input:file[name='filesrc']").hide();
+	
+	
+	// 원래 글정보 넣어주기
+	// originqdto
+	const org_subject = "${requestScope.originqdto.subject}";
+	
+	$("select[name='subject']").val(org_subject);
+	
 	
 	const isfile = $("input:file[name='filesrc']");
     const fc = $("span#filechoice");
@@ -117,6 +131,7 @@ $(document).ready(function() {
     	if(gubun == "파일 삭제"){
     		$("span#filename").html("업로드할 파일을 선택하세요");
     		isfile.val("");
+    		$("input:hidden[name='imgsrc']").val("");
     		$(e.target).html("파일 선택");
     	}
     	else if(gubun == "파일 선택"){
@@ -127,7 +142,12 @@ $(document).ready(function() {
     
     if(isfile == null && ab.html() == "파일 삭제"){
     	fc.html("파일 선택");
+    	$("input:hidden[name='imgsrc']").val("");
 	}
+	
+	
+	
+	
 	
 	// 공개여부에 따라 비밀번호 활성화
 	$("select[name='open']").on("change", function(e){
@@ -192,13 +212,26 @@ $(document).ready(function() {
     $("button#write").click(function(){
     	gowrite(obj);
     });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 });// end of $(document).ready(function()
 
 		
 // Function Declaration
 function goback(){
-	location.href="<%=ctxPath%>/questionList.bibo";
+	location.href="<%=ctxPath%>/questionView.bibo?qidx=${requestScope.originqdto.qidx}";
+	// history.back();
 }
 	
 function gowrite(obj){
@@ -293,6 +326,7 @@ function gowrite(obj){
 
 
 	<form name="qwrite" enctype="multipart/form-data">
+		<input type="hidden" name="qidx" value="${requestScope.originqdto.qidx}" />
 		<table class="table" style="width: 100%;">
 			<colgroup>
 				<col style="width: 15%;">
@@ -318,25 +352,32 @@ function gowrite(obj){
 			<tr class="">
 				<th>질문제목&nbsp;<span style="color: red;">&ast;</span></th>
 					<td>
-						<input class="nanum-n" type="text" name="title" placeholder="제목을 입력하세요" />
+						<input class="nanum-n" type="text" name="title" placeholder="제목을 입력하세요" value="${requestScope.originqdto.title}"/>
 					</td>
 				</tr>
 
 			<tr class="">
 				<th scope="row">질문내용&nbsp;<span style="color: red;">&ast;</span></th>
 				<td>
-					 <textarea style="width: 100%; height: 612px;" name="content" id="content"></textarea>
+					 <textarea style="width: 100%; height: 612px;" name="content" id="content">${requestScope.originqdto.content}</textarea>
 				</td>
 			</tr>
 
 			<tr class="">
 				<th>첨부파일</th>
-					<td>
+					<td class="addfile">
 						<label class="add_file w-100">
-							<span style="padding-top: 0.4rem;" id='filename'>업로드할 파일을 선택하세요</span>
-							<span class="nanum-b" id="filechoice">파일 선택</span>
+							<c:if test="${not empty requestScope.originqdto.originFilename}">
+								<span style="padding-top: 0.4rem;" id='filename'>${requestScope.originqdto.originFilename}</span>
+								<span class="nanum-b" id="filechoice">파일 삭제</span>
+							</c:if>
+							<c:if test="${empty requestScope.originqdto.originFilename}">
+								<span style="padding-top: 0.4rem;" id='filename'>업로드할 파일을 선택하세요</span>
+								<span class="nanum-b" id="filechoice">파일 선택</span>
+							</c:if>
 						</label>
 						<input id="filesrc" name="filesrc" type="file" />
+						<input type="hidden" name="imgsrc"  value="${requestScope.originqdto.imgsrc}" />
 					</td>
 				</tr>
 
@@ -365,7 +406,7 @@ function gowrite(obj){
 	</form>
 
 	<div class="text-center my-5">
-		<button class="write mx-5 write_w nanum-b" id="write" >등록</button>
+		<button class="write mx-5 write_w nanum-b" id="write" >수정</button>
 		<button class="write write_c nanum-b" onclick="goback()">취소</button>
 	</div>
 
