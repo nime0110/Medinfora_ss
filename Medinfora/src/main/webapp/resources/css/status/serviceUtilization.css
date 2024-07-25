@@ -1,12 +1,16 @@
 @charset "UTF-8";
 
 .personalChart{
-	height: 500px;
+	height: 800px;
 	border: solid 1px black;
 }
 
 .userid{
 	display: none;	
+}
+
+.year{
+	height: 300px;
 }
 
 #totalChart{

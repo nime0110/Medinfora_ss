@@ -12,7 +12,17 @@
 
 <c:if test="${sessionScope.loginuser != null}">
 	<div class="personalChart mb-3">
-		<div id="byAge"></div>
+		<div id="byAge">
+			<div class="text-center nanum-b size-n">
+				연령&nbsp;
+				<span class="age"></span>
+			</div>
+			<div class="row">
+				<div id="first" class="year col-4"></div>
+				<div id="second" class="year col-4"></div>
+				<div id="third" class="year col-4"></div>
+			</div>
+		</div>
 		<div id="byGener"></div>
 	</div>
 </c:if>
