@@ -23,6 +23,12 @@ function noticedetail(nidx){
 	
 }
 
+function qnadetail(qidx){
+	
+	location.href = `<%=ctxPath%>/questionView.bibo?qidx=\${qidx}`;
+	
+}
+
 function reserve(hidx,sel_hpname){
 	
 	let f = document.createElement('form');
@@ -159,7 +165,7 @@ function moreshow(search){
 					<c:forEach var="mqdto" items="${requestScope.searchlist.mqdtolist}">
 						<div class="content_q">
 							<div class="content_place">
-								<div class="content_title">${mqdto.title}</div>
+								<div class="content_title" onclick="qnadetail('${mqdto.qidx}')">${mqdto.title}</div>
 								<div class="content_content">${mqdto.content}</div>
 								<div class="content_writeday">${mqdto.writeday}</div>
 							</div>
@@ -168,7 +174,7 @@ function moreshow(search){
 					<c:forEach var="madto" items="${requestScope.searchlist.madtolist}">
 						<div class="content_q">
 							<div class="content_place">
-								<div class="content_title">${madto.title}</div>
+								<div class="content_title" onclick="qnadetail('${madto.qidx}')">${madto.title}</div>
 								<div class="content_content">${madto.content}</div>
 								<div class="content_writeday">${madto.writeday}</div>
 							</div>
@@ -201,10 +207,9 @@ function moreshow(search){
 					<div class="showmore" onclick="location.href = '<%=ctxPath%>/notice/noticeList.bibo'">
 						<span>공지사항 목록보기</span>
 					</div>
-				
+					
 				</div>
 			</c:if>
-			
 		</c:if>
 	</div>
 </div>
