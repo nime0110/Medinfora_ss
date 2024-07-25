@@ -118,9 +118,6 @@ function createChart(result){
 
     setTimeout(function () {
     option = {
-        title: {
-        text: '특정 연도의 연령별 입원 비율 (%)'
-        },
         legend: {},
         tooltip: {
         trigger: 'axis',
@@ -337,8 +334,6 @@ function ageChart(){
 
                         })  // end of json.response.body.items.item.forEach(elmt => {-------------------
                         
-
-                        // }
                     },
                     error: function(request) {
                         alert("code : " + request.status);
@@ -355,3 +350,152 @@ function ageChart(){
     })  // end of $.ajax({------------------
 
 }   // end of function ageChart(){------------------
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+genderChart();
+function genderChart(){
+
+    let dataBygender_fi = [];
+    let dataBygender_se = [];
+    let dataBygender_th = [];
+
+    $.ajax({
+        url : "getGender.bibo",
+        async: true,
+        dataType: "json",
+        success: function(json) {
+            if(json.gender != '0'){    // 병원이 아닌 경우
+
+                $(".gender").text(json.gender.substring(4));
+                let dvs = json.gender;
+
+                let addr = "https://apis.data.go.kr/1352000/ODMS_STAT_12/callStat12Api?serviceKey=t18H0wc1LlracvIWqfFfc8Y4aWsblSv9Bvsntzf26kWqSnakUeTEZG1u27WFuRWVe819MPwqiiJW2wfD7YyPIg%3D%3D&dvs="+dvs;
+
+                $.ajax({
+                    url: addr,
+                    success:function(xml){
+                        const json = xmlToJson(xml);
+
+                        json.response.body.items.item.forEach(elmt => {
+
+                            const year = elmt.year['#text'];
+                            const outpt = elmt.outpt['#text'];
+                            const adms = elmt.adms['#text'];
+                            const none = elmt.none['#text'];
+
+                            if(year=="2017"){
+                                dataBygender_fi.push({value:`${outpt}`, name:"외래"});
+                                dataBygender_fi.push({value:`${adms}`, name:"입원"});
+                                dataBygender_fi.push({value:`${none}`, name:"전혀 없음"});
+                            }
+                            else if(year=="2018"){
+                                dataBygender_se.push({value:`${outpt}`, name:"외래"});
+                                dataBygender_se.push({value:`${adms}`, name:"입원"});
+                                dataBygender_se.push({value:`${none}`, name:"전혀 없음"});
+                            }
+                            else if(year=="2019"){
+                                dataBygender_th.push({value:`${outpt}`, name:"외래"});
+                                dataBygender_th.push({value:`${adms}`, name:"입원"});
+                                dataBygender_th.push({value:`${none}`, name:"전혀 없음"});
+                            }
+                            
+                            // 차트를 표시할 DOM 요소를 가져옴
+                            var chartDom_fi = document.getElementById(`gender_fi`);
+                            var chartDom_se = document.getElementById(`gender_se`);
+                            var chartDom_th = document.getElementById(`gender_th`);
+
+                            // ECharts 인스턴스를 초기화
+                            var myChart_fi = echarts.init(chartDom_fi);
+                            var myChart_se = echarts.init(chartDom_se);
+                            var myChart_th = echarts.init(chartDom_th);
+
+                            var option_fi = {
+                                tooltip: {
+                                    trigger: 'item'
+                                  },
+                                  legend: {
+                                    top: '5%',
+                                    left: 'center'
+                                  },
+                                  series: [
+                                    {
+                                      name: '2017',
+                                      type: 'pie',
+                                      radius: ['40%', '70%'],
+                                      center: ['50%', '70%'],
+                                      startAngle: 180,
+                                      endAngle: 360,
+                                      data: dataBygender_fi
+                                    }
+                                  ]
+                            }
+
+                            var option_se = {
+                                tooltip: {
+                                    trigger: 'item'
+                                  },
+                                  legend: {
+                                    top: '5%',
+                                    left: 'center'
+                                  },
+                                  series: [
+                                    {
+                                      name: '2018',
+                                      type: 'pie',
+                                      radius: ['40%', '70%'],
+                                      center: ['50%', '70%'],
+                                      startAngle: 180,
+                                      endAngle: 360,
+                                      data: dataBygender_se
+                                    }
+                                  ]
+                            }
+                            var option_th = {
+                                tooltip: {
+                                    trigger: 'item'
+                                  },
+                                  legend: {
+                                    top: '5%',
+                                    left: 'center'
+                                  },
+                                  series: [
+                                    {
+                                      name: '2019',
+                                      type: 'pie',
+                                      radius: ['40%', '70%'],
+                                      center: ['50%', '70%'],
+                                      startAngle: 180,
+                                      endAngle: 360,
+                                      data: dataBygender_th
+                                    }
+                                  ]
+                            }
+                            // 차트에 옵션 설정
+                            myChart_fi.setOption(option_fi);
+                            myChart_se.setOption(option_se);
+                            myChart_th.setOption(option_th);
+
+                        })  // end of json.response.body.items.item.forEach(elmt => {-------------------
+                    },
+                    error: function(request) {
+                        alert("code : " + request.status);
+                    }
+                })
+            }
+        },
+        error: function(request) {
+            alert("code : " + request.status);
+        }
+    })  // end of $.ajax({------------------
+}   // end of function ageChart(){------------------
+    
+//////////////////////////////////////////////////////////////////////////////////////////////
+// 화면크기 재조정
+let resizeTimer;
+
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {       // 화면 사이즈가 변경된 후 일정 시간이 지난 후
+        window.location.reload();
+    }, 2000);
+});

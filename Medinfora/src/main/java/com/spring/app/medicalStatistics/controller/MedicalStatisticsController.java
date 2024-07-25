@@ -74,4 +74,31 @@ public class MedicalStatisticsController {
 		return jsonObj.toString();
 		
 	}	// end of public String getAge(HttpServletRequest request) {-------------------
+	
+	// 성별 파악
+	@ResponseBody
+	@GetMapping("getGender.bibo")
+	public String getGender(HttpServletRequest request) {
+	
+		HttpSession session = request.getSession();
+		
+		JSONObject jsonObj = new JSONObject();
+		try {
+			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+			
+			int gender = loginuser.getGender();
+
+			if(gender==1) {
+				jsonObj.put("gender", "성별__남성");
+			}
+			else {
+				jsonObj.put("gender", "성별__여성");
+			}
+			
+		}catch (NullPointerException e) {	// 병원인 경우
+			jsonObj.put("gender", "0");
+		}
+
+		return jsonObj.toString();
+	}
 }
