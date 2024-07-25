@@ -95,7 +95,9 @@
 </script>
 
 <div class="hj_container">
+
 	<div class="reserveContent pt-3">
+	
 	    <div class="reserveTitlediv mt-5 pb-3">
 	        <span class="reserve_title nanum-b size-b">온라인 진료예약</span>
 	    </div>
@@ -109,29 +111,38 @@
 	            </li>
 	        </ul>
 	    </div>
-	    <div>
-	        <div class="div_choiceDay row mt-5">
-	            <div class="reserve_day col-lg-6">
-	               	 <div id='calendar'>
-	               	 </div>
-	            </div>
-	            <div class="choiceTimediv col-lg-6 pt-3 pl-5">
-	                <h3 class="selectDay nanum-b size-n">
-	                	<%-- 선택한 날짜 --%>
-	                </h3>
-	                <div class="choiceTime row mt-3">
-						<%-- 예약가능한 시간대 --%>
-	                </div>
-	            </div>
-	        </div>
+	    
+        <div class="div_choiceDay">
+        
+            <div class="reserve_day">
+            	
+               	 <div id='calendar'></div>
+               	 
+            </div>
+            
+            <div class="choiceTimediv">
+            
+                <h3 class="selectDay nanum-b size-n">
+                	<%-- 선택한 날짜 --%>
+                </h3>
+                <div class="choiceTime">
+					<%-- 예약가능한 시간대 --%>
+                </div>
+                
+            </div>
+            
         </div>
+	        
         <div class="div_proc text-center mb-5">
 	        <button type="button" class="btn_proc btn btn-lg mr-5" onclick="javascript:history.back()">뒤로</button>
 	        <button type="button" class="reservationbtn btn_proc btn btn-lg">예약</button>
 	    </div>
+	    
     </div>
+    
     <form name ="choiceFrm">
     	<input type="hidden" name="hidx" value="${requestScope.hidx}"/>
     	<input type="hidden" name="day" />
     </form>
+    
 </div>

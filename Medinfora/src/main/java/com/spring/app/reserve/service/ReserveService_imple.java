@@ -50,6 +50,9 @@ public class ReserveService_imple implements ReserveService {
 	// === 날짜가 공휴일인지 체크 === //
 	@Override
 	public int holidayCheck(String day) {
+		
+		day = day.substring(0,10);
+		
 		int check = dao.holidayCheck(day);
 		return check;
 	}

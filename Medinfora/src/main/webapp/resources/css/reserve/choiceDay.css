@@ -40,23 +40,55 @@
     font-size: 1.3rem;
 }
 
+/* 선택 영역 */
+
 .choiceday{
     background-color: var(--grey800) !important;
     color : var(--text-white-color) !important;
 }
 
 .div_choiceDay{
-    border-top: solid 3px var(--grey300);
     padding-top: 48px;
     padding-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
 }
 
 .reserve_day{
-    border: solid 1px black;
+    width: 50%;
 }
 
+/* 캘린더 영역 START */
+
+.reserve_day{
+    width: 50%;
+}
+
+#calendar {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.fc-daygrid-day-frame{
+  height: 50px !important;
+}
+
+.fc-event-title-container{
+  text-align: center;
+  padding-top: 2px;
+  height: 20px;
+  transition: all 0.5s;
+}
+
+.fc-event-title-container:hover{
+  background-color: blue;
+  cursor: pointer;
+}
+/* 캘린더 영역 END */
+
 .choiceTimediv{
-    border: solid 1px black;
+    width: 50%;
 }
 
 .exTimebtn{
@@ -98,4 +130,29 @@
     background-color: var(--navy600);
     color : var(--blue50) !important;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+
+    .reserve_title{
+        font-size: 2.5rem !important;
+    }
+
+    .reserve_seq{
+		padding: 0;
+	}
+
+    .reserve_licontent{
+        font-size: 1.7rem !important;
+        padding: 5px;
+    }
+
+    .choicedr{
+    	display: none;
+    }
+    
+    .choiceday{
+    	width: 100%;
+    }
+
 }

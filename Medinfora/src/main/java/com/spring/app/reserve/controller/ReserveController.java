@@ -175,6 +175,8 @@ public class ReserveController {
 			
 			String dayOfweek = parseDayofWeek(currentDate,day);
 			
+			System.out.println(day + dayOfweek);
+			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("hidx", hidx);
 			paraMap.put("day", day);
@@ -385,9 +387,12 @@ public class ReserveController {
 		
 		// 날짜가 공휴일인지 확인
 		int check = service.holidayCheck(day);
+		
 		if(check == 1) {
 			n = 0;
 		}
+		
+		System.out.println(n);
 		
 		String dayOfweek = "";
 		
@@ -417,6 +422,8 @@ public class ReserveController {
 			dayOfweek = "공휴일";
 			break;
 		}
+		
+		System.out.println(dayOfweek);
 		
 		return dayOfweek;
 	}
