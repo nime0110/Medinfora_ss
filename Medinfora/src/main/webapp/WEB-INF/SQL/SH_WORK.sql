@@ -407,3 +407,99 @@ WHERE (
     </if>
     <if test="subject != null and subject == '2'">
         AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE CONCAT('%', #{word}, '%'))
+        
+        
+        
+        
+        
+        
+        SELECT userid, pwd, email, name, address, detailAddress, 
+               birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
+        FROM member
+        WHERE 1=1
+    
+        
+        
+        
+          SELECT ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+                   userid, pwd, email, name, address, detailAddress, 
+                   birthday, mobile, gender, mIdx, registerday, pwdUpdateday, loginmethod
+            FROM member
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  SELECT *
+        FROM (
+            SELECT 
+                ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+                userid, 
+                pwd, 
+                email, 
+                name, 
+                address, 
+                detailAddress, 
+                birthday, 
+                mobile, 
+                gender, 
+                mIdx, 
+                registerday, 
+                pwdUpdateday, 
+                loginmethod
+            FROM member
+            WHERE 1=1
+            <!-- 검색 조건 -->
+            <if test="subject != null and subject != ''">
+                <if test="subject == '1'">
+                    AND (name LIKE '%' || #{word} || '%' OR userid LIKE '%' || #{word} || '%')
+                </if>
+                <if test="subject == '2'">
+                    AND userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+                </if>
+            </if>
+        ) numbered_members
+        WHERE rn BETWEEN 1 AND 10
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        SELECT *
+FROM (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+        userid, 
+        pwd, 
+        email, 
+        name, 
+        address, 
+        detailAddress, 
+        birthday, 
+        mobile, 
+        gender, 
+        mIdx, 
+        registerday, 
+        pwdUpdateday, 
+        loginmethod
+    FROM member
+    WHERE 1=1
+    -- 검색 조건
+ 
+) numbered_members
+WHERE rn BETWEEN 11 AND 20

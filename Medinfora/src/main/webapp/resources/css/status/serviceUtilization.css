@@ -5,6 +5,10 @@
 	border: solid 1px black;
 }
 
+.userid{
+	display: none;	
+}
+
 #totalChart{
 	height: 500px;
 }

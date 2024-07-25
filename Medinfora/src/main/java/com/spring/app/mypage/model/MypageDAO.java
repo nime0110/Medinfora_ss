@@ -100,5 +100,12 @@ public interface MypageDAO {
 	
 	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
 	MemberDTO getPatientInfo(String userid);
+
+	// (검색통계) T0 데이터 가져오기
+	int getT0data(Map<String, String> t0Map);
+
+	// (검색통계) T1 데이터 가져오기
+	List<Map<String, String>> getT1data(Map<String, String> paraMap);
+
 	
 }

@@ -789,4 +789,39 @@
 		from member
 		where userid = #{userid}
 	</select>
+	
+	<!-- (검색통계) T0 데이터 가져오기 -->
+	<select id="getT0data" parameterType="HashMap" resultType="int">
+		select count(*)
+		from SEARCHLOG where substr(REGISTERDAY,0,10) = #{date}
+		<if test="opu == 'u1'">
+			and userid != 'Anonymous'
+		</if>
+	</select>
+	
+	<!-- (검색통계) T1 데이터 가져오기 -->
+	<resultMap type="java.util.HashMap" id="t1Map">
+		<result property="searchword" column="searchword" javaType="java.lang.String" />
+		<result property="count" column="count" javaType="java.lang.String" />
+	</resultMap>
+	
+	<select id="getT1data" parameterType="HashMap" resultMap="t1Map">
+		select searchword, count
+		from
+		(
+			select row_number() over (order by count(*) desc) as rno, SEARCHWORD, count(*) as count
+			from
+			(
+				select SEARCHWORD
+				from SEARCHLOG
+				where substr(REGISTERDAY, 0, 10) between #{startday} and #{today}
+				<if test="opu == 'u1'">
+					and userid != 'Anonymous'
+				</if>
+			)
+			group by SEARCHWORD
+		)
+		where rno between 1 and 7
+	</select>
+	
 </mapper>
