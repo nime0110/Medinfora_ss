@@ -81,7 +81,12 @@ public class MypageListService_imple implements MypageListService {
 // 페이지바 
 	@Override
 	public String makePageBar(int currentShowPageNo, int totalPage, int totalCount, String subject, String word) {
-		    int pageNo = 1;
+		    
+		   if (totalCount == 0 || totalPage <= 1) {
+		        return "1"; // 결과가 없거나 1페이지뿐일 때는 페이지 바를 생성하지 않음
+		    }
+		
+			int pageNo = 1;
 		    int blockSize = 10;
 		    int loop = 1;
 		    
@@ -121,7 +126,7 @@ public class MypageListService_imple implements MypageListService {
 		    pageBar += "</ul>";
 		    
 		    return pageBar;
-	}
+		}
 
 	@Override
 	public int getTotalCount(Map<String, Object> paraMap) {
