@@ -17,9 +17,16 @@ div.searchBar{
 }
 
 .rscode{
-	background-color: #f1bd81;
+	background-color: var(--navy450);
 	border-radius: 10%;
 	color: white;
+}
+
+.rscancle{
+	width: 50px;
+	background-color: white;
+	border: solid 2px var(--text-black-color);
+	border-radius: 0.5rem;
 }
 /*========================================================================================================*/
 
