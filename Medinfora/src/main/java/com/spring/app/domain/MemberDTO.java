@@ -25,8 +25,6 @@ public class MemberDTO {
 	private int pwdchangegap;	// 비밀번호 변경한지 얼마나 되었는지 확인용
 	private boolean requirePwdChange = false;	// 비밀번호 변경안한지 3개월 지났는지 확인 용도
 	
-	
-	private String hpname; // 병원명
 
 	private Integer postcount; // 게시글 올린 갯수
 	private String lastLogin; // loginlog에 있는 접속일 가져올 것임 
@@ -168,12 +166,6 @@ public class MemberDTO {
 	}
 	public void setPostcount(Integer postcount) {
 		this.postcount = postcount;
-	}
-	public String getHpname() {
-		return hpname;
-	}
-	public void setHpname(String hpname) {
-		this.hpname = hpname;
 	}
 	
 	
