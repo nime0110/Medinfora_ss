@@ -156,13 +156,7 @@ public class MemberDTO {
 		this.loginmethod = loginmethod;
 	}
 	
-	public HospitalDTO getHdto() {
-		return hdto;
-	}
 	
-	public void setHdto(HospitalDTO hdto) {
-		this.hdto = hdto;
-	}
 		public String getLastLogin() {
 		return lastLogin;
 	}

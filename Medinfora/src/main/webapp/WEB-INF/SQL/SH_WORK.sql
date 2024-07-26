@@ -473,11 +473,24 @@ WHERE (
         WHERE rn BETWEEN 1 AND 10
         
         
+        desc hospital
+        desc member
+        
+       select * from hospital
+        SELECT hpname FROM hospital 
         
         
         
-        
-        
+          SELECT 
+            ROW_NUMBER() OVER (ORDER BY m.registerday DESC) AS rn,
+            m.userid, m.pwd, m.email, m.name, m.address, m.detailAddress, 
+            m.birthday, m.mobile, m.gender, m.mIdx, m.registerday, 
+            m.loginmethod,
+            h.hpname,
+            (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+            (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+        FROM member m
+                
         
         
         SELECT *
@@ -503,3 +516,190 @@ FROM (
  
 ) numbered_members
 WHERE rn BETWEEN 11 AND 20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    SELECT *
+    FROM (
+        SELECT 
+            ROW_NUMBER() OVER (ORDER BY m.registerday DESC) AS rn,
+            m.userid, m.pwd, m.email, m.name, m.address, m.detailAddress, 
+            m.birthday, m.mobile, m.gender, m.mIdx, m.registerday, 
+            m.loginmethod,
+            (SELECT hpname FROM hospital WHERE userid = m.userid) as hpname,
+            (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+            (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+        FROM member m
+        WHERE 1=1
+        AND m.userid != 'Anonymous'
+        <if test="subject != null and subject != ''">
+            <if test="subject == '1'">
+                AND (m.name LIKE '%' || #{word} || '%' OR m.userid LIKE '%' || #{word} || '%')
+            </if>
+            <if test="subject == '2'">
+                AND m.userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%' || #{word} || '%')
+            </if>
+        </if>
+    ) numbered_members
+    WHERE rn BETWEEN #{start} AND #{end}
+    
+    
+    select *
+    from member
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    SELECT * FROM (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY m.registerday DESC) AS rn,
+        m.userid, m.pwd, m.email, m.name, m.address, m.detailAddress, 
+        m.birthday, m.mobile, m.gender, m.mIdx, m.registerday, 
+        m.loginmethod,
+        (SELECT hpname FROM hospital WHERE userid = m.userid) as hpname,
+        (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+        (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+    FROM member m
+    WHERE 1=1
+    AND m.userid != 'Anonymous'
+    AND (m.name LIKE '%김%' OR m.userid LIKE '%k%')  -- subject가 '1'일 때
+    AND m.userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%병원%')  -- subject가 '2'일 때
+) numbered_members
+WHERE rn BETWEEN 1 AND 10
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY m.registerday DESC) AS rn,
+        m.userid, m.pwd, m.email, m.name, m.address, m.detailAddress, 
+        m.birthday, m.mobile, m.gender, m.mIdx, m.registerday, 
+        m.loginmethod,
+       (SELECT MAX(hpname) FROM hospital WHERE userid = m.userid) as hpname,
+         FROM hospital 
+         WHERE userid = m.userid) as hpname,
+        (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+        (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+    FROM member m
+    WHERE 1=1
+    AND m.userid != 'Anonymous'
+    AND (
+        (m.name LIKE '%김%' OR m.userid LIKE '%k%')  -- subject가 '1'일 때
+        OR
+        m.userid IN (SELECT userid FROM hospital WHERE hpname LIKE '%병원%')  -- subject가 '2'일 때
+    )
+) numbered_members
+WHERE rn BETWEEN 1 AND 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+        userid, 
+        pwd, 
+        email, 
+        name, 
+        address, 
+        detailAddress, 
+        birthday, 
+        mobile, 
+        gender, 
+        mIdx, 
+        registerday, 
+        pwdUpdateday, 
+        loginmethod,
+        (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+        (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+    FROM member m
+    WHERE 1=1
+    AND userid != 'Anonymous'
+    AND (name LIKE '%김%' OR userid LIKE '%김%')
+) numbered_members
+WHERE rn BETWEEN 1 AND 10
+
+
+
+select * from hospital
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
+        userid, 
+        pwd, 
+        email, 
+        name, 
+        address, 
+        detailAddress, 
+        birthday, 
+        mobile, 
+        gender, 
+        mIdx, 
+        registerday, 
+        pwdUpdateday, 
+        loginmethod,
+        (SELECT MAX(registerday) FROM loginlog WHERE userid = m.userid) as lastLogin,
+        (SELECT COUNT(*) FROM mediQ WHERE userid = m.userid) as postcount
+    FROM member m
+    WHERE 1=1
+    AND userid != 'Anonymous'
+--    AND name LIKE '%김%'
+) numbered_members
+WHERE rn BETWEEN 22 AND 31 

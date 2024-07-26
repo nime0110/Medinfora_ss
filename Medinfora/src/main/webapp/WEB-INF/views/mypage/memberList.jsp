@@ -195,11 +195,49 @@ function Page(pageNo) {
     frm.submit();
 }
 
+<%--  엑셀 파일로 다운로드 시작 --%>
+	$("button#btnExcel").click(function(){
+		
+			const arr_memberId = new Array();
+			
+			$("input:option[name='subject']:selected").each(function(index, item){
+				arr_memberId.push($(item).val());
+			});
+			const frm = document.searchFrm;
+			frm.arr_memberId;
+			
+			frm.method = "post"; 
+			frm.action="<%= ctxPath%>/emp/downloadExcelFile.bibo";
+			frm.submit();
+	});
+	
+
 </script>
+
+<style>
+.search_ch {
+	height: 40px;
+	border: none;
+	border-radius: 0.5rem;
+}
+
+.sel_0 {
+	width: 200px;
+	margin-right: 2rem;
+	padding: 0 40px 0 20px;
+}
+.sel_1 {
+	width: 40%;
+	padding-left: 20px;
+}
+
+</style>
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
-   <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
+<form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
+   <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 업로드 </button> 
+</form>
 <form name="memberListForm">
     <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
     <c:if test="${not empty requestScope.mbrList}">
@@ -217,23 +255,26 @@ function Page(pageNo) {
         </c:forEach>
     </c:if>
 	
+	<form>
 	 <fieldset>
-        <div class="search_box p-4" align="center" style="background-color: var(--object-skyblue-color);">
+        <div class="p-4 searchBar" align="center" style="background-color: var(--object-skyblue-color);">
             <span>
-                <select class="search_ch sel_0 nanum-b" name="subject">
+                <select class="sclist search_ch sel_0 nanum-b" name="subject">
                     <option value='0'>전체</option>
                     <option value='1'>일반회원명</option>
                     <option value='2'>병원명</option>
                 </select>
             </span>
             <span>
-                <input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
+                <input class="inputsc search_ch sel_1 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
             </span>
             <span>
-                <button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
+                <button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()" style="margin: 1px;
+	width: 100px;" >검색</button>
             </span>
         </div>
     </fieldset>
+    </form>
 </form>
 
    <!--  <input type="hidden" name="userid" /> -->
