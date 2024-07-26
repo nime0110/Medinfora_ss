@@ -28,160 +28,169 @@ public class MemberDTO {
 	private HospitalDTO hdto;
 	
 	private Integer postcount; // 게시글 올린 갯수
-	private String lastLogin; // loginlog에 있는 접속일 가져올 것임 
-	private String memberStatusString; //회원 상태 
-	
+	private String lastLogin; // loginlog에 있는 접속일 가져올 것임
+	private String memberStatusString; // 회원 상태
+
 	private String age;
-	
+
 	////////////////////////////////////////////////////////////////
-	
+
 	// === Getter, Setter === //
 	public String getUserid() {
 		return userid;
 	}
+
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	
-	
+
 	public String getPwd() {
 		return pwd;
 	}
+
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-	
-	
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
+
 	public String getDetailAddress() {
 		return detailAddress;
 	}
+
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
 	}
-	
-	
+
 	public String getBirthday() {
 		return birthday;
 	}
+
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
-	
-	
+
 	public String getMobile() {
 		return mobile;
 	}
+
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	
-	
+
 	public int getGender() {
 		return gender;
 	}
+
 	public void setGender(int gender) {
 		this.gender = gender;
 	}
-	
-	
+
 	public int getmIdx() {
 		return mIdx;
 	}
+
 	public void setmIdx(int mIdx) {
 		this.mIdx = mIdx;
 	}
-	
-	
+
 	public String getRegisterday() {
 		return registerday;
 	}
+
 	public void setRegisterday(String registerday) {
 		this.registerday = registerday;
 	}
-	
-	
+
 	public int getLastlogingap() {
 		return lastlogingap;
 	}
+
 	public void setLastlogingap(int lastlogingap) {
 		this.lastlogingap = lastlogingap;
 	}
-	
-	
+
 	public int getPwdchangegap() {
 		return pwdchangegap;
 	}
+
 	public void setPwdchangegap(int pwdchangegap) {
 		this.pwdchangegap = pwdchangegap;
 	}
-	
-	
+
 	public boolean isRequirePwdChange() {
 		return requirePwdChange;
 	}
+
 	public void setRequirePwdChange(boolean requirePwdChange) {
 		this.requirePwdChange = requirePwdChange;
 	}
-	
+
 	public int getLoginmethod() {
 		return loginmethod;
 	}
+
 	public void setLoginmethod(int loginmethod) {
 		this.loginmethod = loginmethod;
 	}
-	
-	
-		public String getLastLogin() {
+
+	public String getLastLogin() {
 		return lastLogin;
 	}
+
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+
 	public String getMemberStatusString() {
 		return memberStatusString;
 	}
+
 	public void setMemberStatusString(String memberStatusString) {
 		this.memberStatusString = memberStatusString;
 	}
+
 	public HospitalDTO getHdto() {
 		return hdto;
 	}
+
 	public void setHdto(HospitalDTO hdto) {
 		this.hdto = hdto;
 	}
+
 	public Integer getPostcount() {
 		return postcount;
 	}
+
 	public void setPostcount(Integer postcount) {
 		this.postcount = postcount;
 	}
 	public String getAge() {
 		return age;
 	}
+
 	public void setAge(String age) {
 		this.age = age;
 	}
