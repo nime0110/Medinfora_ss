@@ -28,7 +28,6 @@ public class MemberDTO {
 	
 	private HospitalDTO hdto;
 	
-
 	private Integer postcount; // 게시글 올린 갯수
 	private String lastLogin; // loginlog에 있는 접속일 가져올 것임 
 	private String memberStatusString; //회원 상태 
@@ -168,6 +167,12 @@ public class MemberDTO {
 	}
 	public void setMemberStatusString(String memberStatusString) {
 		this.memberStatusString = memberStatusString;
+	}
+	public HospitalDTO getHdto() {
+		return hdto;
+	}
+	public void setHdto(HospitalDTO hdto) {
+		this.hdto = hdto;
 	}
 	public Integer getPostcount() {
 		return postcount;
