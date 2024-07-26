@@ -101,4 +101,12 @@ public class MedicalStatisticsController {
 
 		return jsonObj.toString();
 	}
+
+	// 시도별 주요시설 현황
+	@GetMapping("facilities.bibo") 
+	public ModelAndView facilities(ModelAndView mav) {
+		mav.setViewName("status/facilities.status");
+		return mav;
+	}
+	
 }

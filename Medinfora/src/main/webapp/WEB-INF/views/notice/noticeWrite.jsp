@@ -67,19 +67,22 @@ $(document).ready(function(){
             <form name="noticeWriteFrm" method="post" enctype="multipart/form-data" action="<%= ctxPath %>/notice/noticeWriteEnd.bibo">
                 <table style="width: 1024px" class="table table-bordered">
                     <tr>
-                        <th style="width: 15%;">제목</th>
+                        <th style="width: 15%;
+  background-color: #d8eaff;">제목</th>
                         <td>
                             <input type="text" name="title" size="103" maxlength="200" />
                         </td>
                     </tr>
                     <tr>
-                        <th style="width: 15%;">내용</th>
+                        <th style="width: 15%;
+  background-color: #d8eaff;">내용</th>
                         <td>
                             <textarea style="width: 100%; height: 612px;" name="content" id="content"></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <th style="width: 15%;">파일첨부</th>
+                        <th style="width: 15%;
+  background-color: #d8eaff;">파일첨부</th>
                         <td>
                               <input id="attach" type="file" name="attach" />
                             <input type="hidden" name="filename" />
