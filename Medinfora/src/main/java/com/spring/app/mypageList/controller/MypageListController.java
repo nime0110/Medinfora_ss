@@ -28,10 +28,11 @@ public class MypageListController {
 	private MypageListService service;
 	
 	@GetMapping("memberList.bibo")
-	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response,  @RequestParam(defaultValue = "") String userid) 
+	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response) 
 	{
 	
 	 // 검색 조건 처리
+		String userid = request.getParameter("userid");
 	    String subject = request.getParameter("subject"); // 검색 기준 ("0" 전체, "1" 회원명,"2" 병원명)
 	    String word = request.getParameter("word"); // 검색어
 	    String str_currentPageNo = request.getParameter("pageNo"); // 현재 페이지 번호
@@ -52,8 +53,7 @@ public class MypageListController {
 	    }
 
 	    int start = ((currentPageNo - 1) * sizePerPage) + 1;
-	    int end = currentPageNo * sizePerPage;
-
+	    int end = start + sizePerPage - 1;
 	    // 검색과 페이징을 위한 파라미터 맵 설정
 	    Map<String, Object> paraMap = new HashMap<>();
 	    paraMap.put("userid", userid);
@@ -61,14 +61,27 @@ public class MypageListController {
 	    paraMap.put("word", word);
 	    paraMap.put("start", start);
 	    paraMap.put("end", end);
-
+	    paraMap.put("pageNo", currentPageNo);
+	    paraMap.put("sizePerPage", sizePerPage);
 	    // 회원 목록과 총 게시물 수를 가져오는 서비스 호출
 	    List<MemberDTO> memberList = service.getMemberList(paraMap);
-	    int totalCount = service.getTotalCount(paraMap);
+	    int totalCount = service.getTotalCount(paraMap); // 검색 조건을 포함한 총 레코드 수
 	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage); // 총 페이지 수 계산
 
+		/*
+		 * System.out.println("totalPage : " + totalPage);
+		 * System.out.println("totalCount : " + totalCount);
+		 * System.out.println("sizePerPage : " + sizePerPage);
+		 */  
+	    // 현재 페이지 번호가 총 페이지 수를 초과하지 않도록 조정
+	    currentPageNo = Math.min(currentPageNo, totalPage);
+	 // totalPage가 0이 되는 것을 방지
+	    totalPage = Math.max(1, totalPage);
+	    
 	    // 페이지 바 생성
 	    String pagebar = service.makePageBar(currentPageNo, totalPage, totalCount, subject, word);
+
+	    
 
 	    // 모델에 데이터 추가
 	    mav.addObject("memberList", memberList);
@@ -78,7 +91,7 @@ public class MypageListController {
 	    mav.addObject("word", word);
 	    mav.addObject("userid", userid);
 	    mav.addObject("pagebar", pagebar);
-
+	    mav.addObject("totalCount", totalCount);
 	    // 뷰 이름 설정
 	    mav.setViewName("mypage/memberList.info");
 	    return mav;
