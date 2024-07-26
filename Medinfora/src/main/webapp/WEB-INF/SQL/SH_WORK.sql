@@ -700,6 +700,6 @@ SELECT * FROM (
     FROM member m
     WHERE 1=1
     AND userid != 'Anonymous'
-    AND name LIKE '%김%'
+--    AND name LIKE '%김%'
 ) numbered_members
-WHERE rn BETWEEN 1 AND 10
+WHERE rn BETWEEN 22 AND 31 
