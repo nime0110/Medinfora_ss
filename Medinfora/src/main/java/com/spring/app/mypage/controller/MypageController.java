@@ -608,12 +608,8 @@ public class MypageController {
 	
 	
 	@GetMapping("myquestion.bibo")
-	public ModelAndView myquestion(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			mav.setViewName("mypage/myquestion.info");
-		} catch (Exception e) {
-			mav.setViewName("index.tiles");
-		}
+	public ModelAndView isMember_myquestion(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/myquestion.info");
 		
 		return mav;
 	}
