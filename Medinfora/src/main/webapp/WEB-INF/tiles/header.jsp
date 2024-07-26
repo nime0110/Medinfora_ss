@@ -181,8 +181,8 @@
 		location.href="<%=ctxPath%>/mypage/myinfo.bibo";
 	}
 	
-	function gonotice(){
-		location.href="<%=ctxPath%>/notice/noticeList.bibo";
+	function gocommu(){
+		location.href="<%=ctxPath%>/commu/commuList.bibo";
 	}
 	
 	function goreserve(){
@@ -333,7 +333,7 @@
 		</c:if>
     </li>
     <li>
-		<div class="icon" onclick="gonotice()">
+		<div class="icon" onclick="gocommu()">
 			<i class="fa-solid fa-circle-exclamation setcon"></i>
 		</div>
 		<a href="<%=ctxPath %>/commu/commuList.bibo"  class="nanum-b size-n">커뮤니티</a>
