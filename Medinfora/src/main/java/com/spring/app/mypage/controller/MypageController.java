@@ -608,7 +608,7 @@ public class MypageController {
 	
 	
 	@GetMapping("myquestion.bibo")
-	public ModelAndView isMember_myquestion(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView isLogin_myquestion(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/myquestion.info");
 		
 		return mav;
