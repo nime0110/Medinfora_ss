@@ -27,7 +27,18 @@ select column_name, comments
 from user_col_comments
 where table_name = '테이블명';
 -- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE, KOREAAREA, HOLIDAY, CLASSCODE
--- CLASSCODEMET
+-- CLASSCODEMET, SEARCHLOG, BOOKMARK, SUGGESTION, Comment, ADDQNA, COMMUFILES, COMMU
+
+
+-- 생성된 시퀀스 조회 --
+select sequence_name
+from user_sequences;
+    
+-- 생성된 함수 조회 --
+SELECT object_name
+FROM all_objects
+WHERE object_type = 'FUNCTION';
+
 ----------------------------------------------------------------------------------------
 -- === 활동중인 의료종사자인 회원의 수 === --
 select count(*)
@@ -573,4 +584,4 @@ end func_age;
 select func_age(birthday) as age
 from member
 where (midx = 1 and userid != 'Anonymous')
-    and userid = 'seunghye'
+    and userid = #{userid};

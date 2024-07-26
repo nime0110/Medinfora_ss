@@ -181,12 +181,16 @@
 		location.href="<%=ctxPath%>/mypage/myinfo.bibo";
 	}
 	
-	function gonotice(){
-		location.href="<%=ctxPath%>/notice/noticeList.bibo";
+	function gocommu(){
+		location.href="<%=ctxPath%>/commu/commuList.bibo";
 	}
 	
 	function goreserve(){
 		location.href="<%=ctxPath%>/reserve/choiceDr.bibo";
+	}
+	
+	function gocustomerService(){
+		location.href="<%=ctxPath%>/customerService.bibo";
 	}
 	
 	function doSearch(){
@@ -332,16 +336,16 @@
 		</c:if>
     </li>
     <li>
-		<div class="icon" onclick="gonotice()">
+		<div class="icon" onclick="gocommu()">
 			<i class="fa-solid fa-circle-exclamation setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/notice/noticeList.bibo"  class="nanum-b size-n">공지사항</a>
+		<a href="<%=ctxPath %>/commu/commuList.bibo"  class="nanum-b size-n">커뮤니티</a>
     </li>
     <li>
-	<div class="icon">
+	<div class="icon" onclick="gocustomerService()">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-	<a href="#" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">고객센터</a>
     </li>
   </ul>
 </aside>
