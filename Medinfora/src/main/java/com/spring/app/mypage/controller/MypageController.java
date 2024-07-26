@@ -540,4 +540,65 @@ public class MypageController {
 		return jsonObj.toString();
 	}	// end of public String getRdto(HttpServletRequest request) {---------------
 	
+	@GetMapping("searchloglist.bibo")
+	public ModelAndView isAdmin_searchloglist(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		
+		mav.setViewName("mypage/searchloglist.info");
+		
+		return mav;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="getlogdata.bibo", produces="text/plain;charset=UTF-8")
+	public String getlogdata(HttpServletRequest request) {
+		
+		String result = "";
+		
+		String opt = request.getParameter("t");
+		String opu = request.getParameter("u");
+		String opr = request.getParameter("r");
+		
+		Map<String,String> paraMap = new HashMap<String, String>();
+		paraMap.put("opu",opu);
+		paraMap.put("opr",opr);
+		
+		if(opt.equals("t0")) {
+			Map<String,List<String>> resultT0 = service.getT0data(paraMap);
+			
+			JSONArray xAxis = new JSONArray();
+			JSONArray series = new JSONArray();
+			
+			for(String data : resultT0.get("xAxis")) {
+				xAxis.put(data);
+			}
+			
+			for(String data : resultT0.get("data")) {
+				series.put(data);
+			}
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("xAxis", xAxis);
+			jsonObj.put("series", series);
+			
+			result = jsonObj.toString();
+			
+		}else {
+			List<Map<String,String>> resultT1 = service.getT1data(paraMap);
+			
+			JSONArray data = new JSONArray();
+			
+			for(Map<String,String> resultT : resultT1) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("value", resultT.get("count"));
+				jsonObj.put("name", resultT.get("searchword"));
+				data.put(jsonObj);
+			}
+			
+			result = data.toString();
+		}
+		
+		return result;
+	}
+	
 }
