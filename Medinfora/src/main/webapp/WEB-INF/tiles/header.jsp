@@ -345,13 +345,13 @@
 		<div class="icon" onclick="gonotice()">
 			<i class="fa-solid fa-circle-exclamation setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/notice/noticeList.bibo"  class="nanum-b size-n">공지사항</a>
+		<a href="<%=ctxPath %>/commu/commuList.bibo"  class="nanum-b size-n">커뮤니티</a>
     </li>
     <li>
 	<div class="icon">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-	<a href="#" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/CustomerService" class="nanum-b size-n">고객센터</a>
     </li>
   </ul>
 </aside>
