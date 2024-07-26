@@ -181,8 +181,8 @@
 		location.href="<%=ctxPath%>/mypage/myinfo.bibo";
 	}
 	
-	function gonotice(){
-		location.href="<%=ctxPath%>/notice/noticeList.bibo";
+	function gocommu(){
+		location.href="<%=ctxPath%>/commu/commuList.bibo";
 	}
 	
 	function goreserve(){
@@ -241,7 +241,7 @@
     <div class="input_text">
       <label class="my-auto">
         <form class="dh-section-form" name="searchFrm">
-          <input class="dh-section-serachbar my-sm-0 nanum-b" type="text" name="search" id="store_search" placeholder='검색어를 입력하세요' required="required" autocomplete="off" />
+          <input class="dh-section-serachbar my-sm-0 nanum-b" onkeypress = "if(event.keyCode == 13){doSearch();}" type="text" name="search" id="store_search" placeholder='검색어를 입력하세요' required="required" autocomplete="off" />
         </form>
       </label>
       <span class="DH-section-searchBtn" id="btnSearch" onclick="doSearch()"><i class="DH-section-searchBtni fa-solid fa-magnifying-glass"></i>
@@ -262,15 +262,6 @@
     </c:if>
     
   </div>
-  
-  <!-- <div class="tog_nav tg1 fadeout">
-  	<div class="tog_title">의료 기관</div>
-  	<ul class="tog_ul">
-  		<li class="tog_li gohpsearch">병원 찾기</li>
-  		<li class="tog_li golochpsearch">우리동네 병원 찾기</li>
-  		<li class="tog_li">약국/응급실 찾기</li>
-  	</ul>
-  </div> -->
   
   <div class="tog_nav tg2 fadeout">
   	<div class="tog_title">의료 정보</div>
@@ -342,16 +333,16 @@
 		</c:if>
     </li>
     <li>
-		<div class="icon" onclick="gonotice()">
+		<div class="icon" onclick="gocommu()">
 			<i class="fa-solid fa-circle-exclamation setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/notice/noticeList.bibo"  class="nanum-b size-n">공지사항</a>
+		<a href="<%=ctxPath %>/commu/commuList.bibo"  class="nanum-b size-n">커뮤니티</a>
     </li>
     <li>
 	<div class="icon">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-	<a href="#" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/CustomerService" class="nanum-b size-n">고객센터</a>
     </li>
   </ul>
 </aside>

@@ -247,9 +247,9 @@
 	
 	<!-- (검색) 질문 리스트 검색 -->
 	<select id="getmqList" parameterType="String" resultType="MediQDTO">
-		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,qidx
 		from (
-		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,qidx
 		    from MEDIQ
 		    where OPEN = 1 and (TITLE like '%'||#{search}||'%' or CONTENT like '%'||#{search}||'%')
 		)where rno between 1 and 5
@@ -257,9 +257,9 @@
 	
 	<!-- (검색) 답변 리스트 검색 -->
 	<select id="getmaList" parameterType="String" resultType="MediQDTO">
-		select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT
+		select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT, qidx
 		from (
-		    select row_number() over (order by MEDIA.WRITEDAY desc) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount
+		    select row_number() over (order by MEDIA.WRITEDAY desc) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount, MEDIQ.QIDX as qidx
 		    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
 		    where OPEN = 1 and MEDIA.CONTENT like '%'||#{search}||'%'
 		)where rno between 1 and 5

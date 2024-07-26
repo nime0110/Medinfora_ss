@@ -105,6 +105,26 @@ img#answericon{
 	background-color: #ffffff;
 }
 
+button#addanswer_btn{
+	margin: 0 0.5rem 0 1rem;
+}
+
+.answer_btn{
+	text-align: right;
+
+}
+
+a#download:hover {
+	cursor: pointer;
+}
+
+
+div.wrap-text {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+
 </style>
 
 
@@ -112,7 +132,7 @@ img#answericon{
 
 
 function goList(){
-	location.href="javascript:history.back()";
+	location.href="<%=ctxPath%>/questionList.bibo";
 }
 
 </script>
@@ -163,19 +183,37 @@ function goList(){
 
 		</div>
 		<div class="py-2 w-75">
-			<span class="nanum-b" style="display: block;">${requestScope.totalcontent.qdto.content}</span>
+			<div class="nanum-b wrap-text">${requestScope.totalcontent.qdto.content}</div>
 			
 			<c:if test="${not empty requestScope.totalcontent.qdto.filename}">
 				<div class="mt-5 w-75" style="background-color: aquamarine;">
 					<span class="nanum-b">첨부파일</span>
-					<div class="mt-1 nanum-b" name="file">
-						<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.filename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
+					<div class="mt-1 nanum-b" >
+						<c:if test='${sessionScope.loginuser.mIdx == "2" or sessionScope.loginuser.userid == requestScope.totalcontent.qdto.userid}'>
+							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> 
+							<a id="download" href="<%=ctxPath%>/question/filedownload.bibo?filename=${requestScope.totalcontent.qdto.filename}&originFilename=${requestScope.totalcontent.qdto.originFilename}&qidx=${requestScope.totalcontent.qdto.qidx}">${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</a>
+						</c:if>
+						<c:if test='${sessionScope.loginuser.userid != requestScope.totalcontent.qdto.userid}'>
+							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
+						</c:if>
 					</div>
 				</div>
 			</c:if>
 
 		</div>
 	</div>
+	
+	<%-- 질문 수정삭제 --%>
+	<form name="questionUpdate" method="post">
+		<input type="hidden" id="writer" name="userid" value="${requestScope.totalcontent.qdto.userid}">
+		<input type="hidden" name="qidx" value="${requestScope.totalcontent.qdto.qidx}">
+	</form>
+	<c:if test="${not empty sessionScope.loginuser and  sessionScope.loginuser.userid eq requestScope.totalcontent.qdto.userid}">
+		<div class="mx-5" style="text-align: right;">
+			<button class="btn btn-outline-dark" type="button" id="addanswer_btn" onclick="questionupdate()">수정</button>
+			<button class="btn btn-outline-danger" type="button" onclick="questionDelete(${requestScope.totalcontent.qdto.qidx})">삭제</button>
+		</div>
+	</c:if>
 	
 	<c:if test='${not empty sessionScope.loginuser and sessionScope.loginuser.mIdx == "2"}'>
 		<%-- 조건은 의료진만 답변 --%>
@@ -213,7 +251,7 @@ function goList(){
 				<div class="py-2 w-75">
 					<span class="nanum-b">${adto.content}</span>
 					<div class="b_blue mt-5 mb-3">
-						여기에 병원정보 들어간다			
+						여기에 병원정보 들어간다 ${adto.userid}		
 					</div>
 	
 				</div>
@@ -223,37 +261,78 @@ function goList(){
 				</div>
 			</div>
 			
+			<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid eq adto.userid}">
+				<%-- 답변 수정 --%>
+				<div class="mb-2 mx-5" id="answer_btn${status.index}" style="text-align: right;">
+					<button class="btn btn-outline-secondary btn-m" type="button" id="addanswer_btn" onclick="showUpdateQ(${status.index})">수정</button>
+					<button class="btn btn-outline-danger btn-m" type="button" onclick="answeDelete(${status.index})">삭제</button>
+				</div>
+				
+				<div id="answerUpdate${status.index}" class="mx-5 mb-3 answerUpdate">
+					<input type="hidden" value="${adto.content}" id="orgincotent"/>
+					<form class="answer" name="answer">
+						<input type="hidden" value="${adto.aidx}" name="aidx"/>
+						<input type="hidden" value="${sessionScope.loginuser.userid}" name="userid" />
+						<textarea class="form-control plusq" name="content"
+							placeholder="수정답변을 입력하세요." maxlength="150">${adto.content}</textarea>
+						<div style="text-align: right;">
+							<button class="nanum-b" id="upload" type="button" onclick="answerUpdate(${status.index})">등록</button>
+							<button class="nanum-b" id="acancle" type="button" onclick="answerUpcanle(${status.index})">취소</button>
+						</div>
+					</form>
+				</div>
+			</c:if>
+			
+			<%-- 추가질답 --%>
 			<div class="mx-5 mb-3 p-3" style="background-color: bisque;">
 				<div>
 					<h5 class="nanum-b">이 답변의 추가 Q&A</h5>
 					<h6>질문자와 답변자가 추가로 묻고 답하며 지식을 공유할 수 있습니다.</h6>
 				</div>
-				<c:forEach var="add" items="${adto.addqnadtoList}">
+				<c:forEach var="add" items="${adto.addqnadtoList}" varStatus="addquestion">
 					<c:if test='${add.qnastatus == "0"}'>
 						<div class="py-2">
-							<div class="d-flex">
+							<div class="d-flex mb-1">
 								<div class="nanum-b">질문자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></div>
 								<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid eq adto.userid}">
-									<button class="btn btn-dark mx-3 btn-sm" type="button" id="addanswer_btn" onclick="showaddanswerArea(${status.index})">추가답변</button>
+									<button class="btn btn-dark mx-3 btn-sm" type="button" onclick="showaddanswerArea(${addquestion.index})">추가답변</button>
 								</c:if>
 							</div>
 							
 							<div><span class="nanum-n" >${add.qcontent}</span></div>
-							<form id="addA" name="addA">
-								<input type="text" value="${add.cntnum}" name="cntnum"/>
+							<form id="addA${addquestion.index}" name="addA">
+								<input type="hidden" value="${adto.aidx}" name="aidx"/>
+								<input type="hidden" value="1" name="qnastatus"/>
+								<input type="hidden" value="${add.cntnum}" name="cntnum"/>
 								<textarea class="form-control plusa" name="qcontent" id="qcontent"
 									placeholder="추가 답변할 내용을 입력하세요." maxlength="70"></textarea>
 								<div style="text-align: right; width: 80%;">
-									<button class="nanum-b" id="upload" type="button" onclick="addAnswerupload(${status.index})">등록</button>
-									<button class="nanum-b" id="cancle" type="button" onclick="addAnswercancle(${status.index})">취소</button>
+									<button class="nanum-b" id="upload" type="button" onclick="addAnswerupload(${addquestion.index})">등록</button>
+									<button class="nanum-b" id="cancle" type="button" onclick="addAnswercancle(${addquestion.index})">취소</button>
 								</div>
 							</form>
 						</div>
 					</c:if>
 					<c:if test='${add.qnastatus == "1"}'>
-						<div class="py-1">
-							<span class="nanum-b">답변자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></span>
-							<div>${add.qcontent}</div>
+						<div class="py-1" id="addanswerArea${addquestion.index}">
+							<div class="d-flex mb-1">
+								<div class="nanum-b">답변자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></div>
+								<c:if test='${not empty sessionScope.loginuser and sessionScope.loginuser.userid eq adto.userid}'>
+									<button class="btn btn-outline-dark btn-sm" type="button" id="addanswer_btn" onclick="showUpdateaddQ(${addquestion.index})">수정</button>
+									<button class="btn btn-outline-danger btn-sm" type="button" onclick="addAnswerdelete(${addquestion.index})">삭제</button>
+								</c:if>
+							</div>
+							
+							<div id="addanswer"><span class="nanum-n" id="qcontent">${add.qcontent}</span></div>
+							
+							<div id="updateaddA">
+								<input type="hidden" value="${add.qaidx}" name="qaidx"/>
+								<textarea class="form-control plusa" name="qcontent" id="qcontent"	placeholder="수정답변 내용을 입력하세요." maxlength="70">${add.qcontent}</textarea>
+								<div style="text-align: right; width: 80%;">
+									<button class="nanum-b" id="upload" type="button" onclick="addAnswerupdate(${addquestion.index})">등록</button>
+									<button class="nanum-b" id="cancle" type="button" onclick="addupdatecancle(${addquestion.index})">취소</button>
+								</div>
+							</div>
 						</div>
 					</c:if>
 				</c:forEach>
@@ -261,16 +340,16 @@ function goList(){
 			</div>
 			
 			
-			<c:if test="${not empty sessionScope.loginuser and  sessionScope.loginuser.userid eq requsetScope.qdto.userid}">
+			<c:if test="${not empty sessionScope.loginuser and  sessionScope.loginuser.userid eq requestScope.totalcontent.qdto.userid}">
 			<div class="mx-5">
 				<%-- 질문자 경우에만 --%>
 				<button class="mb-2 btn btn-light" type="button" id="addquestion_btn" onclick="showaddArea(${status.index})">추가질문</button>
 			
 				<div class="mb-3" id="addQuestionArea">
 					<form id="addQ" name="addQ">
-						<input type="text" value="${adto.aidx}" name="aidx" />
-						<input type="text" value="${adto.qnacnt+1}" name="cntnum" />
-						<input type="hidden" value="${adto.aidx}" name="cntnum" />
+						<input type="hidden" value="${adto.aidx}" name="aidx" />				
+						<input type="hidden" value="${adto.qnacnt+1}" name="cntnum" />
+						<input type="hidden" value="0" name="qnastatus" />
 						<textarea class="form-control plusq" name="qcontent" id="acontent"
 							placeholder="추가 질문할 내용을 입력하세요." maxlength="70"></textarea>
 						<div style="text-align: right;">

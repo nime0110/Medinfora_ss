@@ -209,5 +209,66 @@
 		order by cntnum, qaidx asc
 	</select>
 	
+	<!-- 답변등록 -->
+	<insert id="answerWrite" parameterType="MediADTO">
+		insert into media(aidx, qidx, userid, content, writeday, qnacnt)
+		values(seq_aidx.nextval, #{qidx}, #{userid}, #{content}, default, default)
+	</insert>
+	
+	<!-- 추가질답 등록 -->
+	<insert id="addqaUpload" parameterType ="AddQnADTO">
+		insert into addqna(qaidx, aidx, cntnum, qnastatus, qcontent, writeday)
+		values(seq_addqna.nextval, to_number(#{aidx}), to_number(#{cntnum}), to_number(#{qnastatus}), #{qcontent}, default)
+	</insert>
+	
+	<!-- 답변수 업데이트 -->
+	<update id="updateqnanum" parameterType="String">
+		update media set qnacnt = qnacnt+1
+		where aidx = to_number(#{aidx})
+	</update>
+	
+	<!-- 추가질답 수정 -->
+	<update id="addqaUpdate" parameterType="AddQnADTO">
+		update addqna set qcontent = #{qcontent}, writeday = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		where qaidx = to_number(#{qaidx})
+	</update>
+	
+	<!-- 추가질답 삭제 -->
+	<delete id="addqaDelete">
+		delete from addqna
+		where qaidx = to_number(#{qaidx})
+	</delete>
+	
+	<!-- 답변 수정 -->
+	<update id="answerUpdate" parameterType="MediADTO">
+		update media set content = #{content}
+		where aidx = to_number(#{aidx}) and userid = #{userid}
+	</update>
+	
+	<!-- 답변 삭제 -->
+	<delete id="answerDelete" parameterType="MediADTO">
+		delete from media
+		where aidx = to_number(${aidx})
+	</delete>
+	
+	<!-- 질문 삭제 -->
+	<delete id="questionDelete">
+		delete from mediq
+		where qidx = to_number(${qidx})
+	</delete>
+	
+	<!-- 질문 수정 -->
+	<update id="questionUpdate" parameterType="MediQDTO">
+		update mediq set subject=#{subject}, title=#{title}, content=#{content}, imgsrc=#{imgsrc}, open=#{open}
+		<if test='open == "2"'>, pwd=#{pwd}</if>
+		where qidx = to_number(#{qidx})
+	</update>
+	
+	<!-- 글조회수 증가 -->
+	<update id="viewCountIncrease">
+		update mediq set viewCount = viewCount+1
+		where qidx = to_number(#{qidx})
+	</update>
+	
 
 </mapper>

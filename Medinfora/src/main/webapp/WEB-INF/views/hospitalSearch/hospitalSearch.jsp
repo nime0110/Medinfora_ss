@@ -75,7 +75,7 @@
     <div id="hp_chart_description">
     	<div id="space"></div>
     </div>
-  	<div id="hp_chart" style="height: 100%">통계들어감</div>
+  	<div id="hp_chart" style="height: 100%"></div>
 
   	
 <%-- 로더  --%>
