@@ -2,15 +2,15 @@ package com.spring.app.domain;
 
 public class AddQnADTO {
 	
-	private String qadix, aidx, cntnum, qnastatus, qcontent, writeday;
+	private String qaidx, aidx, cntnum, qnastatus, qcontent, writeday;
 
 
-	public String getQadix() {
-		return qadix;
+	public String getQaidx() {
+		return qaidx;
 	}
 
-	public void setQadix(String qadix) {
-		this.qadix = qadix;
+	public void setQaidx(String qaidx) {
+		this.qaidx = qaidx;
 	}
 
 	public String getAidx() {

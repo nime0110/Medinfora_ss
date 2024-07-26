@@ -80,7 +80,81 @@ public class QuestionService_imple implements QuestionService {
 		}
 		return adtoList;
 	}
+	
+	
+	@Override
+	public int answerWrite(MediADTO mdto) {
+		
+		int result = 0;
+		
+		result = qdao.answerWrite(mdto);
+		
+		return result;
+	}
+	
+	
+	@Override
+	public int addqaUpload(AddQnADTO addqadto) {
+		
+		String qnastatus = addqadto.getQnastatus();
+		
+		int result = qdao.addqaUpload(addqadto);
+		
+		if("0".equals(qnastatus)) {
+			qdao.updateqnanum(addqadto.getAidx());
+		}
+		
+		return result;
+	}
+	
+	
+	@Override
+	public int addqaUpdate(AddQnADTO addqadto) {
+		
+		int result = qdao.addqaUpdate(addqadto);
+		return result;
+	}
 
+	@Override
+	public int addqaDelete(AddQnADTO addqadto) {
+		int result = qdao.addqaDelete(addqadto);
+		return result;
+	}
+	
+	
+	@Override
+	public int answerUpdate(MediADTO adto) {
+		int result = qdao.answerUpdate(adto);
+		return result;
+	}
+
+	@Override
+	public int answerDelete(MediADTO adto) {
+		int result = qdao.answerDelete(adto);
+		return result;
+	}
+
+	@Override
+	public int questionDelete(String qdto) {
+		int result = qdao.questionDelete(qdto);
+		return result;
+	}
+
+	@Override
+	public int questionUpdate(MediQDTO qdto) {
+		int result = 0;
+		
+		result = qdao.questionUpdate(qdto);
+		
+		return result;
+	}
+	
+	
+	@Override
+	public void viewCountIncrease(int qidx) {
+		qdao.viewCountIncrease(qidx);
+	}
+	
 	
 	
 	

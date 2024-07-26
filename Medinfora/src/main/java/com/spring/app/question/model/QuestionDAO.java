@@ -35,5 +35,35 @@ public interface QuestionDAO {
 	
 	// 병원 이름, 아이디
 	Map<String, String> getAnswerName(String aidx);
+	
+	// 답변등록
+	int answerWrite(MediADTO mdto);
+	
+	// 추가질답 등록
+	int addqaUpload(AddQnADTO addqadto);
+	
+	// 추가질문등록에 따른 답변 qnacnt 증가
+	void updateqnanum(String aidx);
+	
+	// 추가질답 수정
+	int addqaUpdate(AddQnADTO addqadto);
+	
+	// 추가질답 삭제
+	int addqaDelete(AddQnADTO addqadto);
+	
+	// 답변 수정
+	int answerUpdate(MediADTO adto);
+	
+	// 답변 삭제
+	int answerDelete(MediADTO adto);
+	
+	// 질문 삭제
+	int questionDelete(String qdto);
+	
+	// 질문 수정
+	int questionUpdate(MediQDTO qdto);
+
+	// 조회수 증가
+	void viewCountIncrease(int qidx);
 
 }
