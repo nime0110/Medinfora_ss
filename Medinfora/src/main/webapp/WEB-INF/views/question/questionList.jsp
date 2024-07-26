@@ -416,9 +416,9 @@ function goView(qidx){
 	
 	</form>
 	
-	<!-- 질문 구역 곳 -->
+	<%-- 질문 구역 곳 --%>
 	<div>
-		<!-- 목차 ? -->
+		<%-- 목차? --%>
 		<div class="mt-4 px-3 subject">
 			<div class="row text-center py-3 nanum-eb size-s">
 				<span class="col-2">구분</span>
@@ -429,7 +429,7 @@ function goView(qidx){
 			</div>
 		</div>
 		
-		<!-- 여기에 리스트 띄우면 됨 -->
+		<%-- 리스트 보여지는 곳 --%>
 		<div class="mb-5 px-3" id="questionArea">
 			<c:forEach var="qdto" items="${requestScope.qdtoMap.qList}"  varStatus="status">
 				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">

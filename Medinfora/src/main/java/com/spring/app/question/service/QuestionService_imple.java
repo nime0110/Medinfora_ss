@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.app.common.AES256;
 import com.spring.app.domain.AddQnADTO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
@@ -17,6 +18,9 @@ public class QuestionService_imple implements QuestionService {
 	
 	@Autowired
 	private QuestionDAO qdao;
+	
+	@Autowired
+	private AES256 aes;
 	
 	// 질문등록
 	@Override
@@ -72,6 +76,31 @@ public class QuestionService_imple implements QuestionService {
 					List<AddQnADTO> addqnadtoList = qdao.addquestionView(adto.getAidx());
 
 					adto.setAddqnadtoList(addqnadtoList);
+					
+					List<MemberDTO> memberList = qdao.memberView(adto.getUserid());
+					
+					for(MemberDTO member : memberList) {
+						member.setMobile(aes.decrypt(member.getMobile()));
+					}
+					
+					// 병원정보 넣어줌
+					adto.setMemberList(memberList);
+					
+					// 진료과목 구해오기
+					List<String> classList = qdao.getClassSize(adto.getUserid());
+					
+					String classname = "";
+					for(String code : classList) {
+						String classcode = qdao.getClasscode(code);
+						//System.out.println(classcode);
+						
+						classname += classcode+"/";
+					}
+					
+					classname = classname.substring(0, classname.length()-1);
+					
+					adto.setClasscode(classname);
+					
 				}
 			}
 		}catch(Exception e) {

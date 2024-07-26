@@ -600,6 +600,48 @@ from mediq
 where qidx = 31;
 
 
+select userid, name, mobile
+from member
+where mIdx = 2;
+
+
+
+select CLASSCODE,CLASSNAME from CLASSCODE;
+
+
+select * from hospital;
+
+
+SELECT table_name 
+FROM user_tables;
+
+select *
+from CLASSCODEMET
+where userid = 'medi002';
+
+
+-- 내질답 조회
+SELECT distinct qidx, userid, title, writeday, imgsrc, acount, open, viewCount
+     , pwd, subject
+FROM(
+    select row_number() over(order by Q.qidx desc) AS rno
+         , Q.qidx, Q.userid, title, to_char(to_date(Q.writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+         , nvl(Q.imgsrc, ' ') as imgsrc, Q.acount, Q.open, Q.viewCount
+         , nvl(Q.pwd, ' ') as pwd, Q.subject
+    from MEDIQ Q FULL JOIN MEDIA A
+    ON Q.qidx = A.qidx
+    where 1=1 and A.userid = 'medi002'
+)S
+WHERE rno between 1 and 10
+ORDER BY qidx DESC;
+            
+            
+-- 전체 개수
+select count(*) as cnt
+from MEDIQ Q FULL JOIN MEDIA A
+ON Q.qidx = A.qidx
+where 1=1 and A.userid = 'medi002' and subject=to_number('1');
+
 
 
 

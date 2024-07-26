@@ -33,7 +33,7 @@
 	               회원 메뉴&nbsp;<i class="fa-solid fa-user"></i>
 	           </div>
 	           <ul class="sidebar_list_ul">
-	               <li class="sidebar_list_li">내 문의사항</li>
+	               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myquestion.bibo'">내 문의사항</li>
 	               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myreserve.bibo'">진료 예약 내역</li>
 	           </ul>
            </c:if>
@@ -43,7 +43,7 @@
                의료인 메뉴&nbsp;<i class="fa-solid fa-user-doctor"></i>
            </div>
            <ul class="sidebar_list_ul">
-               <li class="sidebar_list_li">내 답변내용</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myquestion.bibo'">내 답변내용</li>
                <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mdreserve.bibo'">진료 예약 열람</li>
                <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/reserveSchedule.bibo'">진료 일정 관리</li>
            </ul>

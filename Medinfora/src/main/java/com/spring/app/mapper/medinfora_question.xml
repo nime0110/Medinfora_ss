@@ -32,6 +32,12 @@
 		from MEDIQ Q FULL JOIN MEDIA A
 		ON Q.qidx = A.qidx
 		where 1=1
+		<if test='userid != "" and midx == "1"'>
+			and Q.userid = #{userid}
+		</if>
+		<if test='userid != "" and midx == "2"'>
+			and A.userid = #{userid}
+		</if>
 		<if test='searchSubject != "0" and searchType == "z" and searchWord == ""'>
 			and subject=to_number(#{searchSubject})
 		</if>
@@ -106,6 +112,12 @@
 		from MEDIQ Q FULL JOIN MEDIA A
 		ON Q.qidx = A.qidx
 		where 1=1
+		<if test='userid != "" and midx == "1"'>
+			and Q.userid = #{userid}
+		</if>
+		<if test='userid != "" and midx == "2"'>
+			and A.userid = #{userid}
+		</if>
 		<if test='searchSubject != "0" and searchType == "z" and searchWord == ""'>
 			and subject=to_number(#{searchSubject})
 		</if>
@@ -269,6 +281,33 @@
 		update mediq set viewCount = viewCount+1
 		where qidx = to_number(#{qidx})
 	</update>
+	
+	<!-- 병원정보 조회 -->
+	<select id="memberView" parameterType="String" resultType="MemberDTO">
+		select name, mobile
+		from member
+		where mIdx = 2 and userid = #{userid}
+	</select>
+	
+	<!-- 진료과목코드 -->
+	<resultMap type="String" id="getcode">
+		<result property="classcode" column="classcode" javaType="String" />
+	</resultMap>
+	<select id="getClassSize" parameterType="String" resultMap="getcode">
+		select classcode
+		from classcodemet
+		where userid = #{userid}
+	</select>
+	
+	<!-- 진료과목이름 -->
+	<resultMap type="String" id="getcodename">
+		<result property="classname" column="classname" javaType="String" />
+	</resultMap>
+	<select id="getClasscode" parameterType="String" resultMap="getcodename">
+		select classname
+		from classcode
+		where classcode = #{classcode}
+	</select>
 	
 
 </mapper>

@@ -124,6 +124,17 @@ div.wrap-text {
     white-space: normal;
 }
 
+div#medinfo {
+	background-color: #d8eaff;
+}
+
+div.medispec{
+	width: 80px; 
+	text-align: right;
+	margin-right: 0.5rem; 
+	
+}
+
 
 </style>
 
@@ -189,6 +200,16 @@ function goList(){
 				<div class="mt-5 w-75" style="background-color: aquamarine;">
 					<span class="nanum-b">첨부파일</span>
 					<div class="mt-1 nanum-b" >
+						<c:choose>
+							<c:when test='${sessionScope.loginuser.mIdx == "2" or sessionScope.loginuser.userid == requestScope.totalcontent.qdto.userid}'>
+								<i class="fa-solid fa-paperclip" style="color: #535965;"></i> 
+								<a id="download" href="<%=ctxPath%>/question/filedownload.bibo?filename=${requestScope.totalcontent.qdto.filename}&originFilename=${requestScope.totalcontent.qdto.originFilename}&qidx=${requestScope.totalcontent.qdto.qidx}">${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</a>
+							</c:when>
+							<c:otherwise>
+								<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
+							</c:otherwise>
+						</c:choose>
+						<%--
 						<c:if test='${sessionScope.loginuser.mIdx == "2" or sessionScope.loginuser.userid == requestScope.totalcontent.qdto.userid}'>
 							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> 
 							<a id="download" href="<%=ctxPath%>/question/filedownload.bibo?filename=${requestScope.totalcontent.qdto.filename}&originFilename=${requestScope.totalcontent.qdto.originFilename}&qidx=${requestScope.totalcontent.qdto.qidx}">${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</a>
@@ -196,6 +217,7 @@ function goList(){
 						<c:if test='${sessionScope.loginuser.userid != requestScope.totalcontent.qdto.userid}'>
 							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
 						</c:if>
+						--%>
 					</div>
 				</div>
 			</c:if>
@@ -250,10 +272,13 @@ function goList(){
 				<!-- 답변 내용 -->
 				<div class="py-2 w-75">
 					<span class="nanum-b">${adto.content}</span>
-					<div class="b_blue mt-5 mb-3">
-						여기에 병원정보 들어간다 ${adto.userid}		
+					<div class="b_blue mt-5 mb-3 p-2" id="medinfo">
+						<div class="nanum-eb mb-3" style="font-size: 1.3rem;">답변자 정보</div>
+						<input type="hidden" value="${adto.userid}" id="medi_userid"/>
+						<div class="nanum-b d-flex mb-1" ><div class="medispec">병&nbsp;원&nbsp;명&nbsp;&nbsp;:</div><div>${adto.memberList[0].name}</div></div>
+						<div class="nanum-b d-flex mb-1" ><div class="medispec">대표번호&nbsp;&nbsp;:</div><div>${adto.memberList[0].mobile}</div></div>
+						<div class="nanum-b d-flex" ><div class="medispec">진료과목&nbsp;&nbsp;:</div><div>${adto.classcode}</div></div>
 					</div>
-	
 				</div>
 				<!-- 답변일자 -->
 				<div class="mx-3">
