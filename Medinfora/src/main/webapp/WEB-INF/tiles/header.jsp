@@ -189,6 +189,10 @@
 		location.href="<%=ctxPath%>/reserve/choiceDr.bibo";
 	}
 	
+	function gocustomerService(){
+		location.href="<%=ctxPath%>/customerService.bibo";
+	}
+	
 	function doSearch(){
 		
 		const frm = document.searchFrm;
@@ -339,10 +343,10 @@
 		<a href="<%=ctxPath %>/commu/commuList.bibo"  class="nanum-b size-n">커뮤니티</a>
     </li>
     <li>
-	<div class="icon">
+	<div class="icon" onclick="gocustomerService()">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/CustomerService" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">고객센터</a>
     </li>
   </ul>
 </aside>
