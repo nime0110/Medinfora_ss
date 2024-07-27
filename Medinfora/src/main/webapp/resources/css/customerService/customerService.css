@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.customerServiceContainer{
+	height: 1000px;
+	width: 80%;
+}
+
+.img_container{
+	display: inline-block;	
+}
+
+.serviceIcon{
+	width: 50px;
+	height: 50px;
+	background-color:var(--blue300);
+}
+
+.gptContainer{
+	height: 900px;
+}
+
+#chatContent{
+	border: solid 1px black;
+	height: 800px;
+}
+
+#userInput{
+	width: 85%;
+    margin: 5px 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.sendbox{
+	height: 100px;
+}
