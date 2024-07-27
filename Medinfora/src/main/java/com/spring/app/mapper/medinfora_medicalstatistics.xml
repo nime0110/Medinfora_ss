@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.app.medicalStatistics.model.MedicalStatisticsDAO">
+	
+	<!-- (의료서비스율 통계) 생년월일을 가지고 만나이 파악  -->
+	<select id="getAge" parameterType="String" resultType="String">
+		select func_age(birthday) as age
+		from member
+		where (midx = 1 and userid != 'Anonymous')
+		    and userid = #{userid}
+	</select>
+	
+</mapper>

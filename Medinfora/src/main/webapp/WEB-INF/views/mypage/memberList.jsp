@@ -27,6 +27,9 @@
     width: 100%; /* 모달 컨텐츠를 다이얼로그 너비에 맞춤 */
 }
 
+
+
+
 @media (max-width: 768px) {
     .modal-dialog {
         max-width: 95%; /* 작은 화면에서는 화면의 95% 너비 사용 */
@@ -41,6 +44,14 @@ div.pagebar{
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	  // Ensure pageNo element exists
+    if (document.querySelector("input[name='pageNo']")) {
+        // Your existing code
+    } else {
+        console.error("pageNo input element not found.");
+    }
+	
     $("button#btnSearch").click(function(){
         const arr_userid = [];
         $("input:checkbox[name='userid']:checked").each(function(index, item){
@@ -153,17 +164,82 @@ $(document).ready(function(){
 });
 
 function searchList() {
-    const frm = document.searchFrm;
+    const frm = document.memberListForm;
+    frm.pageNo.value = 1; // 검색 시 첫 페이지로 이동 
     frm.method = "GET";
-    frm.action = "<%= ctxPath %>/mypage/memberList.bibo";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
     frm.submit();
 }
+
+function Page(pageNo) {
+   
+   //  const frm = document.forms['memberListForm'];
+    const frm = document.memberListForm;
+ <%--  if (frm) {
+        const pageNoInput = frm.elements['pageNo'];
+        if (pageNoInput) {
+            pageNoInput.value = pageNo || 1;
+           
+            frm.method = "GET";
+            frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
+            frm.submit();
+        } else {
+           
+        }
+    } else {
+     
+    } --%>
+    frm.pageNo.value = pageNo;
+    frm.method = "GET";
+    frm.action = "<%= ctxPath %>/mypage/memberList.bibo"; 
+    frm.submit();
+}
+
+<%--  엑셀 파일로 다운로드 시작 --%>
+	$("button#btnExcel").click(function(){
+		
+			const arr_memberId = new Array();
+			
+			$("select[name='subject']").each(function(index, item){
+				arr_memberId.push($(item).val());
+			});
+			const frm = document.searchFrm;
+			frm.arr_memberId;
+			
+			frm.method = "post"; 
+			frm.action="<%= ctxPath%>/downloadExcelFile.bibo";
+			frm.submit();
+	});
+	
+
 </script>
+
+<style>
+.search_ch {
+	height: 40px;
+	border: none;
+	border-radius: 0.5rem;
+}
+
+.sel_0 {
+	width: 200px;
+	margin-right: 2rem;
+	padding: 0 40px 0 20px;
+}
+.sel_1 {
+	width: 40%;
+	padding-left: 20px;
+}
+
+</style>
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
-   <button type="button" class="btn btn-secondary btn-sm">엑셀파일 업로드 </button> 
-<form name="searchFrm">
+<form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
+   <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드 </button> 
+</form>
+<form name="memberListForm">
+    <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
         <c:forEach var="userid" items="${requestScope.mbrList}" varStatus="status">
@@ -179,33 +255,29 @@ function searchList() {
         </c:forEach>
     </c:if>
 	
-		<input type="hidden" name="PageNo"/>
-		<fieldset>
-			<div class="p-4" align="center" style="background-color: var(--object-skyblue-color); ">
-				<span>
-					<select class="search_ch sel_0 nanum-b" name="subject">
-						<option value=''>전체</option>
-						<option value='1'>일반회원명</option>
-						<option value='2'>병원명</option>
-					</select>
-				</span>
-				
-				
-				
-				<span>
-					<input class="search_ch sel_2 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
-				</span>
-				<span>
-					<button class="nanum-eb size-s" type="button" onclick="searchList()">검색</button>
-				</span>
-			      
-			      
-			</div>
-		
-		</fieldset>
-	
-	</form>
-    <input type="hidden" name="userid" />
+	<form>
+	 <fieldset>
+        <div class="p-4 searchBar" align="center" style="background-color: var(--object-skyblue-color);">
+            <span>
+                <select class="sclist search_ch sel_0 nanum-b" name="subject">
+                    <option value='0'>전체</option>
+                    <option value='1'>일반회원명</option>
+                    <option value='2'>병원명</option>
+                </select>
+            </span>
+            <span>
+                <input class="inputsc search_ch sel_1 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
+            </span>
+            <span>
+                <button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()" style="margin: 1px;
+	width: 100px;" >검색</button>
+            </span>
+        </div>
+    </fieldset>
+    </form>
+</form>
+
+   <!--  <input type="hidden" name="userid" /> -->
     
   
  
@@ -244,8 +316,8 @@ function searchList() {
                     <td style="text-align:center;">${member.name}</td>
                     <td>
                         <c:choose>
-                            <c:when test="${member.gender == 1}">M</c:when>
-                            <c:otherwise>F</c:otherwise>
+                            <c:when test="${member.gender == 1}">남</c:when>
+                            <c:otherwise>여</c:otherwise>
                         </c:choose>
                     </td>
                     <td>${member.registerday}</td>
@@ -258,7 +330,7 @@ function searchList() {
     </tbody>
 </table>
      <%-- 페이지 바 --%>
-	<div class="pagebar" style="text-align: center;"></div>
+	<div class="pagebar w-100 d-flex justify-content-center pt-3">${pagebar}</div>
 </div>
 
 <!-- 회원 상세정보 모달 -->

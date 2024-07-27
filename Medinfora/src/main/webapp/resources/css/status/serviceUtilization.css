@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+.name{
+	font-size: 2.5em;	
+}
+
+.userid{
+	display: none;	
+}
+
+.year{
+	height: 300px;
+}
+
+#totalChart{
+	height: 500px;
+}
+
+.smSizehr{
+	display:none;
+}

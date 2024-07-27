@@ -519,7 +519,88 @@ select aidx, qidx, userid, content
 from media
 where qidx = 22;
 
-desc addMedia;
+
+
+
+select *
+from addqna;
+
+select qaidx, aidx, cntnum, qnastatus, qcontent
+     , to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD') as writeday
+from addqna
+where aidx = 5
+order by cntnum, qaidx;
+
+select *
+from mediq
+where qidx = 22;
+
+insert into addqna(qaidx, aidx, cntnum, qnastatus, qcontent, writeday)
+values(seq_addqna.nextval, 4, 2, 1, '추가질문 2', default);
+
+
+commit;
+
+
+WITH A
+AS(
+select *
+from mediad
+where aidx = 1)
+,
+M AS(
+select userid, name
+from member)
+SELECT M.userid, name
+FROM A JOIN M
+ON A.userid = M.userid;
+
+select *
+from media;
+
+select *
+from addqna;
+-- seq_addqna 가 시퀀스
+
+-- 시퀀스 조회
+select *
+from user_sequences;
+
+select *
+from media;
+
+-- 디폴드값 보기
+select COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE, DATA_DEFAULT
+from user_tab_columns
+where table_name = 'MEDIQ';
+
+
+-- 테이블 제약조건 변경(cascade 추가
+SELECT constraint_name
+FROM user_constraints
+WHERE table_name = 'MEDIA'
+AND constraint_type = 'R';
+
+ALTER TABLE MEDIA
+DROP CONSTRAINT QIDX_MEDIA_FK;
+
+ALTER TABLE MEDIA
+DROP CONSTRAINT USERID_MEDIA_FK;
+
+ALTER TABLE MEDIA
+ADD CONSTRAINT USERID_MEDIA_FK FOREIGN KEY (USERID)
+REFERENCES MEMBER (USERID)
+ON DELETE CASCADE;
+
+
+COMMIT;
+
+select *
+from mediq
+where qidx = 31;
+
+
+
 
 
 

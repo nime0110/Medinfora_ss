@@ -27,7 +27,18 @@ select column_name, comments
 from user_col_comments
 where table_name = '테이블명';
 -- LOGINLOG, MEDIA, MEDIQ, RESERVECODE, RESERVE, MEMBER, MEMBERIDX, CLASSCODE, HOSPITAL, NOTICE, KOREAAREA, HOLIDAY, CLASSCODE
--- CLASSCODEMET
+-- CLASSCODEMET, SEARCHLOG, BOOKMARK, SUGGESTION, Comment, ADDQNA, COMMUFILES, COMMU
+
+
+-- 생성된 시퀀스 조회 --
+select sequence_name
+from user_sequences;
+    
+-- 생성된 함수 조회 --
+SELECT object_name
+FROM all_objects
+WHERE object_type = 'FUNCTION';
+
 ----------------------------------------------------------------------------------------
 -- === 활동중인 의료종사자인 회원의 수 === --
 select count(*)
@@ -537,3 +548,40 @@ where userid = 'hemint'
 select userid
 from reserve
 where checkin = to_char(to_date('2024-07-15 08:30','yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss')
+
+-------------------------------------------------------------------------------------------------------------
+
+-- === 만나이 구하기 === --
+SELECT userid
+    , case when this_year_birthday > to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd')
+            then extract(year from sysdate) - birthyear - 1 
+            else extract(year from sysdate) - birthyear
+            end as age
+FROM
+(
+    select userid, to_date(to_char(sysdate,'yyyy') || substr(birthday,5,4),'yyyymmdd') as this_year_birthday
+        , substr(birthday,0,4) as birthyear
+    from member
+    where midx = 1 and userid != 'Anonymous'
+)
+
+-- === (일반회원용) 만나이 구하는 함수 생성 === --
+create or replace function func_age
+(p_birthday in varchar2)
+return varchar2
+is
+    v_age    varchar2(6);
+begin
+    v_age :=  case when to_date(to_char(sysdate, 'yyyy') || substr(p_birthday, 5, 4), 'yyyymmdd') - to_date(to_char(sysdate,'yyyymmdd'), 'yyyymmdd') > 0 
+                    then extract(year from sysdate) - ( to_number(substr(p_birthday,0,4)) ) - 1 
+                    else extract(year from sysdate) - ( to_number(substr(p_birthday,0,4)) )
+                    end;
+    return v_age;
+end func_age;
+-- Function FUNC_AGE이(가) 컴파일되었습니다.
+
+-- === (의료서비스율 통계) 생년월일을 가지고 만나이 파악 === --
+select func_age(birthday) as age
+from member
+where (midx = 1 and userid != 'Anonymous')
+    and userid = #{userid};

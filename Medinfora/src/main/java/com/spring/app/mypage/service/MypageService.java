@@ -56,11 +56,17 @@ public interface MypageService {
 	// (의료인- 진료 일정관리) hidx 의 예약리스트 가져오기
 	List<ReserveDTO> TotalreserveList(String hidx);
 
-	// (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기
-	ReserveDTO getPatientd(String checkin);
+	// (의료인- 진료 일정관리) 병원과 예약일시를 통해 환자아이디 가져오기
+	ReserveDTO getPatientd(Map<String, String> paraMap);
 	
 	// (의료인- 진료 일정관리) userid 를 통해 환자 정보 가져오기
 	MemberDTO getPatientInfo(String userid);
+
+	// (검색통계) T0 데이터 가져오기
+	Map<String, List<String>> getT0data(Map<String, String> paraMap);
+
+	// (검색통계) T1 데이터 가져오기
+	List<Map<String, String>> getT1data(Map<String, String> paraMap);
 
 
 }

@@ -2,7 +2,11 @@ package com.spring.app.mypage.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.app.common.AES256;
+import com.spring.app.common.Myutil;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
@@ -258,10 +263,10 @@ public class MypageService_imple implements MypageService {
 		return reserveList;
 	}
 
-	// (의료인- 진료 일정관리) checkin 를 통해 환자 userid 가져오기
+	// (의료인- 진료 일정관리) 병원과 예약일시를 통해 환자아이디 가져오기
 	@Override
-	public ReserveDTO getPatientd(String checkin) {
-		ReserveDTO rdto = dao.getPatientd(checkin);
+	public ReserveDTO getPatientd(Map<String, String> paraMap) {
+		ReserveDTO rdto = dao.getPatientd(paraMap);
 		return rdto;
 	}
 	
@@ -270,6 +275,86 @@ public class MypageService_imple implements MypageService {
 	public MemberDTO getPatientInfo(String userid) {
 		MemberDTO mdto = dao.getPatientInfo(userid);
 		return mdto;
+	}
+
+	// (검색통계) T0 데이터 가져오기
+	@Override
+	public Map<String, List<String>> getT0data(Map<String, String> paraMap) {
+		
+		Map<String,List<String>> resultMap = new HashMap<>();
+		
+		if(paraMap.get("opr").equals("r0")) { // 1주일
+			
+			List<String> dayList = new ArrayList<>();
+			List<String> sourceList = new ArrayList<>();
+	        LocalDate today = LocalDate.now();
+	        int todayDayOfWeek = today.getDayOfWeek().getValue();
+	        for (int i = 1; i <= 7; i++) {
+	            int dayOfWeek = (todayDayOfWeek + i) % 7;
+	            dayList.add(Myutil.getDayOfWeekString(dayOfWeek));
+	        }
+	        
+	        resultMap.put("xAxis",dayList);
+	        
+	        for(int i=0 ; i<7;i++) {
+	        	LocalDate date = today.minusDays(6).plusDays(i);
+	        	String formattedDate =  date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        	Map<String,String> t0Map = new HashMap<String, String>();
+	        	t0Map.put("date",formattedDate);
+	        	t0Map.put("opu",paraMap.get("opu"));
+	        	int source = dao.getT0data(t0Map);
+	        	sourceList.add(String.valueOf(source));
+	        }
+	        
+	        resultMap.put("data",sourceList);
+	        
+		}else { // 1달
+			
+			List<String> dayList = new ArrayList<>();
+			List<String> sourceList = new ArrayList<>();
+	        LocalDate startdate = LocalDate.now().minusDays(30);
+
+	        int interval = 5;
+
+	        for (int i = 0; i <= 6; i++) {
+	            LocalDate date = startdate.plusDays(i * interval);
+	            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	            Map<String,String> t0Map = new HashMap<String, String>();
+	        	t0Map.put("date",formattedDate);
+	        	t0Map.put("opu",paraMap.get("opu"));
+	            int source = dao.getT0data(t0Map);
+	        	sourceList.add(String.valueOf(source));
+	            dayList.add(formattedDate);
+	        }
+
+	        resultMap.put("xAxis",dayList);
+	        resultMap.put("data",sourceList);
+			
+		}
+		
+		return resultMap;
+	}
+
+	// (검색통계) T1 데이터 가져오기
+	@Override
+	public List<Map<String, String>> getT1data(Map<String, String> paraMap) {
+		
+		Map<String,String> t1Map = new HashMap<String, String>();
+
+		LocalDate today = LocalDate.now();
+		t1Map.put("today",today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		
+		if(paraMap.get("opr").equals("r0")) {
+			LocalDate StartDay = today.minusDays(7);
+			t1Map.put("startday",StartDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}else {
+			LocalDate StartDay = today.minusDays(30);
+			t1Map.put("startday",StartDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+		
+		t1Map.put("opu", paraMap.get("opu"));
+		
+		return dao.getT1data(t1Map);
 	}
 	
 }

@@ -23,8 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
-import com.spring.app.domain.AddADTO;
-import com.spring.app.domain.AddQDTO;
+import com.spring.app.domain.AddQnADTO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
@@ -222,15 +221,6 @@ public class QuestionController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/questionWrite.bibo")
 	public ModelAndView isLogin_questionWrite(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
@@ -257,15 +247,18 @@ public class QuestionController {
 												, MultipartHttpServletRequest mrequest
 												, ModelAndView mav) {
 		
-		String imgsrc = "";
+		String qidx = qdto.getQidx();
 		
+		String imgsrc = qdto.getImgsrc();
+		
+		System.out.println("imgsrc : "+imgsrc);
 		
 		try {
 			MultipartFile filesrc = qdto.getFilesrc();
 			
 			System.out.println(filesrc);
 			
-			if(filesrc != null) {
+			if(filesrc != null && (imgsrc == null || imgsrc.isBlank())) {
 				System.out.println(filesrc);
 				// MultipartFile[field="filesrc", filename=귀여미인형.png, contentType=image/png, size=386470]
 				
@@ -300,9 +293,9 @@ public class QuestionController {
 				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 				// 첨부되어진 파일을 업로드 하는 것이다. (파일내용, 원래파일명, 경로)
 				
-				System.out.println(newFileName);
+				System.out.println("newFileName : "+newFileName);
 				// 202406271207351276805640675800.png
-				System.out.println(originalFilename);
+				System.out.println("originalFilename : "+originalFilename);
 				// 귀여미인형.png
 				
 			/*
@@ -317,7 +310,7 @@ public class QuestionController {
 				
 				fileSize = filesrc.getSize();  // 첨부파일의 크기(단위는 byte 임)
 				//boardvo.setFileSize(String.valueOf(fileSize));
-				System.out.println(fileSize);
+				System.out.println("fileSize : "+fileSize);
 				
 				// imgsrc 에는 모두 합친문자열로 저장 구분자는 / 로 간다.
 				if(newFileName != null) {
@@ -330,31 +323,56 @@ public class QuestionController {
 				qdto.setImgsrc(imgsrc);
 				
 			}// end of if---
-			else {
-				imgsrc = "";
-				qdto.setImgsrc(imgsrc);
+			else { // 파일이 없는 경우
+				
+				if(imgsrc == null || imgsrc=="") {
+					imgsrc = "";
+					qdto.setImgsrc(imgsrc);
+				}
 			}
 			
 			
 			
 			int n = 0;
 			
-			n = questionservice.questionWriteEnd(qdto);
-			
-			if(n==1) {
+			if(qidx == null) {
+				n = questionservice.questionWriteEnd(qdto);
 				
-				mav.addObject("message", "질문등록을 성공하였습니다.");
-				mav.addObject("loc", request.getContextPath()+"/questionList.bibo");
-				
-				mav.setViewName("msg");
-			    //  /list.action 페이지로 redirect(페이지이동)해라는 말이다.
+				if(n==1) {
+					
+					mav.addObject("message", "질문등록을 성공하였습니다.");
+					mav.addObject("loc", request.getContextPath()+"/questionList.bibo");
+					
+					mav.setViewName("msg");
+				    //  /list.action 페이지로 redirect(페이지이동)해라는 말이다.
+				}
+				else {
+					mav.addObject("message", "질문등록을 실패하였습니다.");
+					mav.addObject("loc", request.getContextPath()+"/questionWrite.bibo");
+					
+					mav.setViewName("msg");
+				}
 			}
 			else {
-				mav.addObject("message", "질문등록을 실패하였습니다.");
-				mav.addObject("loc", request.getContextPath()+"/questionWrite.bibo");
+				n = questionservice.questionUpdate(qdto);
 				
-				mav.setViewName("msg");
+				if(n==1) {
+					
+					mav.addObject("message", "질문수정을 성공하였습니다.");
+					mav.addObject("loc", request.getContextPath()+"/questionView.bibo?qidx="+qidx);
+					
+					mav.setViewName("msg");
+				    //  /list.action 페이지로 redirect(페이지이동)해라는 말이다.
+				}
+				else {
+					mav.addObject("message", "질문등록을 실패하였습니다.");
+					mav.addObject("loc", request.getContextPath()+"/questionView.bibo?qidx="+qidx);
+					
+					mav.setViewName("msg");
+				}
+				
 			}
+			
 			
 			
 		} catch (Exception e) {
@@ -377,8 +395,6 @@ public class QuestionController {
 		if(readCountMark == null || "null".equalsIgnoreCase(readCountMark)) {
 			readCountMark = "no";
 		}
-		
-		session.removeAttribute("readCountMark");
 		
 		String redirect = "question/questionView.tiles";
 		
@@ -410,12 +426,15 @@ public class QuestionController {
 			String str_qidx = request.getParameter("qidx");
 			
 			if(str_qidx == null) {
-				str_qidx = "22";
+				redirect = "redirect:/questionList.bibo";
+				return redirect;
 			}
-			
-			// System.out.println(str_qidx);
-			
+
 			int qidx = Integer.parseInt(str_qidx);
+			
+			if("yes".equalsIgnoreCase(readCountMark)) {
+				questionservice.viewCountIncrease(qidx);
+			}
 			
 			// 글정보 조회
 			MediQDTO qdto = questionservice.questionView(qidx);
@@ -423,38 +442,187 @@ public class QuestionController {
 			if(qdto == null) {
 				redirect = "redirect:/questionList.bibo";
 			}
+			else {
+				
+				
+				totalcontent.put("qdto", qdto);
+			}
 			
 			// 답변 조회
 			List<MediADTO> adtoList = questionservice.answerView(qidx);
-			
-			if(adtoList.size() > 0) {
+	/*		
+			for(MediADTO adto : adtoList) {
+				System.out.println(adto.getAddqnadtoList());
+				List<AddQnADTO> addqnadtoList = adto.getAddqnadtoList();
 				
-				// 추가 질문 및 답변이 있는지 확인
-				for(MediADTO adto : adtoList) {
-					String adix = adto.getAidx();
-					
-					
-					
-					
-					
-					
+				for(AddQnADTO asb : addqnadtoList) {
+					System.out.println(asb.getAidx());
 				}
-				
-				
 			}
+	*/		
+			
+			totalcontent.put("adtoList", adtoList);
+			
+			request.setAttribute("totalcontent", totalcontent);
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-
-		
 		}catch(Exception e) {
+			e.printStackTrace();
+			redirect = "redirect:/questionList.bibo";
+		}
+		
+		session.removeAttribute("readCountMark");
+		
+		return redirect;
+	}
+	
+	
+	
+	@ResponseBody
+	@PostMapping("/answerWrite.bibo")
+	public String answerWrite(MediADTO mdto) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		// qnacnt 는 기본값 0 이므로 추가답변 추가될 때마다 +1 해야함
+		
+		int result = questionservice.answerWrite(mdto);
+		
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/addQAUpload.bibo")
+	public String addQAUpload(AddQnADTO addqadto) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		// qnacnt 는 기본값 0 이므로 추가질문 추가될 때마다 +1 해야함
+		// 추가질문시 넘겨받은 cntnum 값은 qnanum+1 이다.
+		// 추가답변시 넘겨받은 cntnum 은 추가질문의 cntnum 이다.
+		
+		int result = questionservice.addqaUpload(addqadto);
+		
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	
+	@ResponseBody
+	@PostMapping("/addQAUpdate.bibo")
+	public String addQAUpdate(AddQnADTO addqadto) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		int result = questionservice.addqaUpdate(addqadto);
+		
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	@ResponseBody
+	@GetMapping("/addQADelete.bibo")
+	public String addQADelete(AddQnADTO addqadto) {
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		int result = questionservice.addqaDelete(addqadto);
+		
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/answerUdate.bibo")
+	public String answerUdate(MediADTO adto, HttpServletRequest request) {
+		
+		JSONObject jsonObj = new JSONObject();
+		int result = 0;
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		if(loginuser.getUserid().equalsIgnoreCase(adto.getUserid())) {
+			result = questionservice.answerUpdate(adto);
+		}
+
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	@ResponseBody
+	@PostMapping("/answerDelete.bibo")
+	public String answerDelete(MediADTO adto, HttpServletRequest request) {
+		
+		JSONObject jsonObj = new JSONObject();
+		int result = 0;
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		if(loginuser.getUserid().equalsIgnoreCase(adto.getUserid())) {
+			result = questionservice.answerDelete(adto);
+			
+			if(result >= 1) {
+				result = 1;
+			}
+		}
+
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/questionDelete.bibo")
+	public String questionDelete(MediQDTO qdto, HttpServletRequest request) {
+		
+		JSONObject jsonObj = new JSONObject();
+		int result = 0;
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		if(loginuser.getUserid().equalsIgnoreCase(qdto.getUserid())) {
+			result = questionservice.questionDelete(qdto.getQidx());
+
+		}
+
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	@RequestMapping(value="/questionUpdate.bibo")
+	public String questionUpdate(MediQDTO qdto, HttpServletRequest request) {
+		
+		String method = request.getMethod();
+		String redirect = "question/questionUpdate.tiles";
+		
+		if("post".equalsIgnoreCase(method)) {
+			System.out.println("수정하러 와쪄염");
+			
+			HttpSession session = request.getSession();
+			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+			String qidx = qdto.getQidx();
+			if(loginuser.getUserid().equalsIgnoreCase(qdto.getUserid())) {
+				// 글정보 가져오기
+				MediQDTO originqdto = questionservice.questionView(Integer.parseInt(qidx));
+				request.setAttribute("originqdto", originqdto);
+			}
+			else {
+				redirect = "redirect:/questionView.bibo?qidx="+qdto.getQidx();
+			}
+		}
+		else {
 			redirect = "redirect:/questionList.bibo";
 		}
 		
@@ -462,18 +630,35 @@ public class QuestionController {
 	}
 	
 	
+	// 첨부파일 다운
+	@GetMapping("/question/filedownload.bibo")
+	public ModelAndView filedownload(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		String filename = request.getParameter("filename");
+		String originFilename = request.getParameter("originFilename");
+		String qidx = request.getParameter("qidx");
+		
+		try {
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "resources" + File.separator + "files";
 	
+			boolean flag = fileManager.doFileDownload(filename, originFilename, path, response);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+			if (!flag) {
+				mav.addObject("message", "다운로드 실패");
+				mav.addObject("loc", request.getContextPath()+"/questionList.bibo");
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("msg");
+		
+		return mav;
+		
+	}
 	
 	
 	

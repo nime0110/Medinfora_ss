@@ -92,7 +92,7 @@ span#filechoice:hover{
 }
 
 .warming {
-	border: solid 1px red !important;
+	border: solid 4px #ff9999 !important;
 }
 
 
@@ -105,7 +105,29 @@ span#filechoice:hover{
 $(document).ready(function() {
 	$("input:file[name='filesrc']").hide();
 	
-	
+	const isfile = $("input:file[name='filesrc']");
+    const fc = $("span#filechoice");
+    
+    // 파일 등록 및 삭제
+    $("span#filechoice").click(function(e){
+    	
+    	const gubun = $(e.target).html();
+    	
+    	
+    	if(gubun == "파일 삭제"){
+    		$("span#filename").html("업로드할 파일을 선택하세요");
+    		isfile.val("");
+    		$(e.target).html("파일 선택");
+    	}
+    	else if(gubun == "파일 선택"){
+    		isfile.click();
+    	}
+    	
+    });
+    
+    if(isfile == null && ab.html() == "파일 삭제"){
+    	fc.html("파일 선택");
+	}
 	
 	// 공개여부에 따라 비밀번호 활성화
 	$("select[name='open']").on("change", function(e){
@@ -125,6 +147,7 @@ $(document).ready(function() {
 	$("input:file[name='filesrc']").change(function() {
         const fileName = $(this).val().split("\\").pop();
         $("span#filename").text(fileName);
+        fc.html("파일 삭제");
     });
 	
 	
@@ -309,7 +332,7 @@ function gowrite(obj){
 			<tr class="">
 				<th>첨부파일</th>
 					<td>
-						<label class="add_file w-100" for="filesrc">
+						<label class="add_file w-100">
 							<span style="padding-top: 0.4rem;" id='filename'>업로드할 파일을 선택하세요</span>
 							<span class="nanum-b" id="filechoice">파일 선택</span>
 						</label>
