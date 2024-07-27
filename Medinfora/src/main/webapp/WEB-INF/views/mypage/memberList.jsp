@@ -200,14 +200,14 @@ function Page(pageNo) {
 		
 			const arr_memberId = new Array();
 			
-			$("input:option[name='subject']:selected").each(function(index, item){
+			$("select[name='subject']").each(function(index, item){
 				arr_memberId.push($(item).val());
 			});
 			const frm = document.searchFrm;
 			frm.arr_memberId;
 			
 			frm.method = "post"; 
-			frm.action="<%= ctxPath%>/emp/downloadExcelFile.bibo";
+			frm.action="<%= ctxPath%>/downloadExcelFile.bibo";
 			frm.submit();
 	});
 	
@@ -236,7 +236,7 @@ function Page(pageNo) {
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
 <form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
-   <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 업로드 </button> 
+   <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드 </button> 
 </form>
 <form name="memberListForm">
     <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
