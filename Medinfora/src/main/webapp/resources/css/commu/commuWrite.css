@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+table input:focus, select {
+  outline: none;
+}
+
+
+button.write {
+  width: 120px;
+  height: 50px;
+  background-color: white;
+  border: solid 1px var(--text-black-color);
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  
+}
+
+button.write_w:hover{
+  background-color: var(--primary-background-color);
+  color: var(--text-white-color);
+  border: none;
+  
+}
+
+button.write_c:hover{
+  background-color: #8b95a1;
+  border: none;
+  
+}
+
+
+.container {
+  padding: 0 10%;
+}
+
+
+.table tr {
+  vertical-align: middle;
+}
+
+.table th {
+  padding-left: 2%;
+}
+
+.table select{
+  border: 1px solid #d1d6db;
+  height: 40px;
+  padding-left: 15px;
+}
+
+.table input{
+  border: 1px solid #d1d6db;
+  padding-left: 15px;
+  width: 100%;
+  height: 40px;
+}
+
+.add_file{
+  height: 40px;
+  border: 1px solid #d1d6db;
+  padding: 0 0 0 0.8rem;
+  display: flex;
+  border-radius: 0.6rem;
+  background-color: #f9fafb;
+
+}
+
+.add_file:hover{
+  cursor: pointer;
+
+}
+
+span#filechoice{
+  padding: 0.3rem 1.5rem;
+  border: 1px solid #d1d6db;
+  border-radius: 0.5rem;
+  margin-left: auto;
+  background-color: #f2f4f6;
+  color: black;
+}
+
+span#filechoice:hover{
+  background-color: #d1d6db;
+}
+
+div.fileDrop{ display: inline-block; 
+              width: 100%; 
+              height: 100px;
+              overflow: auto;
+              background-color: #fff;
+              padding-left: 10px;
+              }
+
+
+.warning {
+	border: solid 1px red !important;
+}
+
