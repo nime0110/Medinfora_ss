@@ -19,12 +19,12 @@
 		    	</div>
 		  	</div>
 	  	</a>
-	  	<a href="<%=ctxPath%>/status/#.bibo">
+	  	<a href="<%=ctxPath%>/status/facilities.bibo">
 		  	<div class="col">
 		    	<div class="status_card card">
 		      		<img src="<%=ctxPath %>/resources/img/hospitalisation_icon.png" class="card-img-top p-5" />
 		      		<div class="card-body">
-		        		<h5 class="card-title text-center nanum-b">통계2</h5>
+		        		<h5 class="card-title text-center nanum-b">시도별 주요시설 현황</h5>
 		      		</div>
 		    	</div>
 		  	</div>

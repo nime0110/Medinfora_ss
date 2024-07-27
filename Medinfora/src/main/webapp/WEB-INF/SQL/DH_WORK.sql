@@ -186,4 +186,33 @@ from(
     from HOSPITAL
     where Hpname like '%'||'비타민'||'%'
     group by HPNAME, HPADDR, AGENCY, HPTEL
-)
+);
+
+select count(*)
+from SEARCHLOG where substr(REGISTERDAY,0,10) = '2024-07-23'
+and userid != 'Anonymous';
+
+select searchword, count
+from
+(
+select row_number() over (order by count(*) desc) as rno, SEARCHWORD, count(*) as count
+ from (select SEARCHWORD
+       from SEARCHLOG
+       where substr(REGISTERDAY, 0, 10) between substr(to_char(sysdate-7,'yyyy-mm-dd'), 0, 10)) and substr(to_char(sysdate,'yyyy-mm-dd'), 0, 10))
+ group by SEARCHWORD
+) where rno between 1 and 7;
+
+
+select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,qidx
+		from (
+		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,QIDX
+		    from MEDIQ
+		    where OPEN = 1 and (TITLE like '%'||'사이트'||'%' or CONTENT like '%'||'사이트'||'%')
+		)where rno between 1 and 5
+
+select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT, QIDX
+		from (
+		    select row_number() over (order by MEDIA.WRITEDAY desc) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount, MEDIQ.QIDX as qidx
+		    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
+		    where OPEN = 1 and MEDIA.CONTENT like '%'||'중고'||'%'
+		)where rno between 1 and 5

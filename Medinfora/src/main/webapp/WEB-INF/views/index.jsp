@@ -43,13 +43,13 @@
           <div class="icon"><img src=""></div>
           <span class="nanum-b size-s">병원찾기</span>
         </a>
-        <a href="#">
+        <a href="<%=ctxPath %>/reserve/choiceDr.bibo">
           <div class="icon"><img src=""></div>
-          <span class="nanum-b size-s">의원예약하기</span>
+          <span class="nanum-b size-s">진료예약</span>
         </a>
-        <a href="<%=ctxPath %>/mypage/myinfo.bibo">
+        <a href="<%=ctxPath %>/commu/commuList.bibo">
           <div class="icon"><img src=""></div>
-          <span class="nanum-b size-s">마이페이지</span>
+          <span class="nanum-b size-s">커뮤니티</span>
         </a>
       </div>
       <div class="sim_promo_section_banner_notice">

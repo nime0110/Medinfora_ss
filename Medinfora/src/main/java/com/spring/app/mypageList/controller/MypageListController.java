@@ -1,11 +1,13 @@
 package com.spring.app.mypageList.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,70 +29,73 @@ public class MypageListController {
 	private MypageListService service;
 	
 	@GetMapping("memberList.bibo")
-	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response, 
-                                   @RequestParam(defaultValue = "") String userid,   
-                                   @RequestParam(defaultValue = "1") int pageNo ) 
+	public ModelAndView isAdmin_memberList(ModelAndView mav,HttpServletRequest request,HttpServletResponse response) 
 	{
-        Map<String, Object> paraMap = new HashMap<>();
-       
-        int pageSize = 10;// 페이지당 보여줄 회원 수
-        
-        paraMap.put("pageNo", pageNo);
-        paraMap.put("pageSize", pageSize);  
-        
-        
-        int start = (pageNo - 1) * pageSize + 1;
-        int end = pageNo * pageSize;
-        paraMap.put("start", start);
-        paraMap.put("end", end);
+	
+	 // 검색 조건 처리
+		String userid = request.getParameter("userid");
+	    String subject = request.getParameter("subject"); // 검색 기준 ("0" 전체, "1" 회원명,"2" 병원명)
+	    String word = request.getParameter("word"); // 검색어
+	    String str_currentPageNo = request.getParameter("pageNo"); // 현재 페이지 번호
+	    
+	    // 페이지 관련 변수 설정
+	    int sizePerPage = 10; // 한 페이지당 항목 수
+	    int currentPageNo = 1; // 기본값 설정
+	   
+	    if (str_currentPageNo != null && !str_currentPageNo.isEmpty()) {
+	        try {
+	            currentPageNo = Integer.parseInt(str_currentPageNo);
+	            if (currentPageNo < 1) {
+	                currentPageNo = 1;
+	            }
+	        } catch (NumberFormatException e) {
+	            currentPageNo = 1;
+	        }
+	    }
 
-        
-        if (!userid.isEmpty()) {
-            paraMap.put("userid", userid);
-        }
-        
-        // 검색 조건 처리
-        String subject = request.getParameter("subject");
-        String word = request.getParameter("word");
-        
-        if(subject != null && !subject.isEmpty()) { // subject가 null이 아니고 빈 문자열이 아닌 경우
-        	if(word != null && !word.isEmpty()) { // word가 null이 아니고 빈 문자열이 아닌 경우
-        		paraMap.put("subject", subject);
-        		paraMap.put("word", word);
-        		
-        	}
-        }
-        
-        
-        // 페이징 처리
-      /*  String pageNo = request.getParameter("pageNo");
-        if(pageNo == null || pageNo.isEmpty()) {
-        	System.out.println("PageNo is not set or empty");
-        	pageNo = "1";
-        }
-        paraMap.put("pageNo", Integer.parseInt(pageNo));
-        paraMap.put("pageSize", 10); // 페이지당 보여줄 회원 수 
-*/
-        // 서비스단에 회원 목록가져와서 mav에 추가 
-        List<MemberDTO> memberList = service.getMemberList(paraMap);
-        int totalCount = service.getTotalCount(paraMap);
-		/* int totalPage = service.getTotalPage(paraMap); */
-        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
-        
-        
-        
-        // 페이지바 만들기
-        String pagebar = service.makePageBar(pageNo, totalPage, totalCount, subject, word);  
-      
-        mav.addObject("memberList", memberList);
-        mav.addObject("totalPage", totalPage);
-        mav.addObject("pagebar", pagebar);
-        mav.addObject("subject", subject);
-        mav.addObject("word", word);
-        mav.addObject("currentPageNo", pageNo);
-     
-        mav.setViewName("mypage/memberList.info");
-        return mav;
+	    int start = ((currentPageNo - 1) * sizePerPage) + 1;
+	    int end = start + sizePerPage - 1;
+	    // 검색과 페이징을 위한 파라미터 맵 설정
+	    Map<String, Object> paraMap = new HashMap<>();
+	    paraMap.put("userid", userid);
+	    paraMap.put("subject", subject);
+	    paraMap.put("word", word);
+	    paraMap.put("start", start);
+	    paraMap.put("end", end);
+	    paraMap.put("pageNo", currentPageNo);
+	    paraMap.put("sizePerPage", sizePerPage);
+	    // 회원 목록과 총 게시물 수를 가져오는 서비스 호출
+	    List<MemberDTO> memberList = service.getMemberList(paraMap);
+	    int totalCount = service.getTotalCount(paraMap); // 검색 조건을 포함한 총 레코드 수
+	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage); // 총 페이지 수 계산
+
+		/*
+		 * System.out.println("totalPage : " + totalPage);
+		 * System.out.println("totalCount : " + totalCount);
+		 * System.out.println("sizePerPage : " + sizePerPage);
+		 */  
+	    // 현재 페이지 번호가 총 페이지 수를 초과하지 않도록 조정
+	    currentPageNo = Math.min(currentPageNo, totalPage);
+	 // totalPage가 0이 되는 것을 방지
+	    totalPage = Math.max(1, totalPage);
+	    
+	    // 페이지 바 생성
+	    String pagebar = service.makePageBar(currentPageNo, totalPage, totalCount, subject, word);
+
+	    
+
+	    // 모델에 데이터 추가
+	    mav.addObject("memberList", memberList);
+	    mav.addObject("currentPageNo", currentPageNo);
+	    mav.addObject("totalPage", totalPage);
+	    mav.addObject("subject", subject);
+	    mav.addObject("word", word);
+	    mav.addObject("userid", userid);
+	    mav.addObject("pagebar", pagebar);
+	    mav.addObject("totalCount", totalCount);
+	    // 뷰 이름 설정
+	    mav.setViewName("mypage/memberList.info");
+	    return mav;
     }
 
     @ResponseBody
@@ -156,4 +161,12 @@ public class MypageListController {
         
         return jsonObj.toString();
     }
+    
+    
+    @RequestMapping("/downloadExcelFile.bibo")
+    public void downloadExcelFile(HttpServletResponse response) throws IOException{
+    	
+    	
+    }
+    
 }
