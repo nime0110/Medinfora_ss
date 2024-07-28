@@ -201,6 +201,10 @@
 		
 	}
 	
+	function goNews(){
+		location.href = "<%=ctxPath%>/news/main.bibo";
+	}
+	
 	$(document).on("click",'.popwordsearch',(e) => {
 		
 		let target = $(e.target);
@@ -271,7 +275,7 @@
   	<div class="tog_title">의료 정보</div>
   	<ul class="tog_ul">
   		<li class="tog_li" onclick="javascript:location.href='<%=ctxPath%>/status/view.bibo'">의료 통계</li>
-  		<li class="tog_li">의료 뉴스</li>
+  		<li class="tog_li" onclick="goNews()">의료 뉴스</li>
   		<li class="tog_li" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</li>
   	</ul>
   </div>
@@ -297,7 +301,7 @@
   	
   	<div class="media_tog_title">의료 정보</div>
   	<div class="media_tog_sub">의료 통계</div>
-  	<div class="media_tog_sub">의료 뉴스</div>
+  	<div class="media_tog_sub" onclick="goNews()">의료 뉴스</div>
   	<div class="media_tog_sub" onclick="javascript:location.href='<%=ctxPath%>/questionList.bibo'">Q &amp; A</div>
   </div>
   
