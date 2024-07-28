@@ -82,10 +82,16 @@ button.write:hover{
 	
 }
 
-
-div.pagebar{
-	display: grid;
-    place-items: center;
-	margin-top: 10px;
+.list--item:hover {
+	background-color: #f0f0f0;
+	cursor: pointer;
 }
 
+
+/* 페이지네이션  */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    align-items: center;
+}

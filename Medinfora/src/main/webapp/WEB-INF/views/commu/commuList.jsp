@@ -65,8 +65,9 @@
 		<div class="mb-5 px-3" id="commuArea">
 			<c:if test="${not empty requestScope.CommuBoardList}">
 				<c:forEach var="cbdto" items="${requestScope.CommuBoardList}"  varStatus="status">
-					<div class="row text-center py-3 nanum-n size-s b_border">
+					<div class="row text-center py-3 nanum-n size-s b_border list--item">
 						<input type="hidden" value="${cbdto.cidx}" name="no${status.index}"/>
+						<input type="hidden" value="${totalPage}" id="totalPage"/>
 						<span class="col-2">
 							${cbdto.category}
 						</span>
@@ -87,7 +88,7 @@
 	</div>
 	
 	<%-- 페이지 바 --%>
-	<div class="pagebar" style="text-align: center;"></div>
+    <div class="pagination" style="text-align: center;" id="rpageNumber"></div>
 	
 	<div class="py-5 text-center">
 		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>

@@ -86,7 +86,7 @@ public class CommuController {
 		CommuBoardList = service.getCommuBoardList(paraMap);
 		
 		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
-		
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		//첨부파일이 있을 경우
 		List<String> fileSeqList = null;
 		fileSeqList = service.getfileSeqList();
@@ -98,7 +98,7 @@ public class CommuController {
 		
 		mav.addObject("CommuBoardList", CommuBoardList);
 		mav.addObject("fileSeqList", fileSeqList);
-		mav.addObject("totalCount", totalCount);
+		mav.addObject("totalPage", totalPage);
 		mav.addObject("sizePerPage", sizePerPage);
 		mav.addObject("currentShowPageNo", currentShowPageNo);
 		
@@ -133,6 +133,8 @@ public class CommuController {
 		CommuBoardList = service.getCommuBoardList(paraMap);
 		
 		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
 		
 		List<String> fileSeqList = null;
 		fileSeqList = service.getfileSeqList();
@@ -148,7 +150,6 @@ public class CommuController {
 				if(fileSeqList != null) {
 					for(String file : fileSeqList) {
 						if(file.equals(cbdto.getCidx())) {
-							System.out.println("file" + file);
 							jsonObj.put("fileTrue", fileTrue);
 						}
 					}
@@ -162,6 +163,7 @@ public class CommuController {
 				jsonObj.put("userid", cbdto.getUserid());
 				jsonObj.put("writeday", cbdto.getWriteday());
 				jsonObj.put("viewcnt", cbdto.getViewcnt());
+				jsonObj.put("totalPage", totalPage);
 				
 				
 				jsonArr.put(jsonObj);
@@ -227,6 +229,7 @@ public class CommuController {
 		
 		int n = 0;
 		n = service.add(cbdto);
+		jsonObj.put("result", n);
 		
 		if(fileList != null && fileList.size() > 0) { 
 			for(MultipartFile mfile : fileList) {
@@ -235,12 +238,12 @@ public class CommuController {
 					originalFilename = mfile.getOriginalFilename();
 					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 					
-					System.out.println(newFileName);
-					System.out.println(originalFilename);
+					//System.out.println(newFileName);
+					//System.out.println(originalFilename);
 					
 					fileSize = mfile.getSize();
 					
-					System.out.println(fileSize);
+					//System.out.println(fileSize);
 					
 					String cseq = service.getSeqCommu();
 
@@ -250,6 +253,8 @@ public class CommuController {
 					cfdto.setFileSize(String.valueOf(fileSize));
 					
 					service.add_File(cfdto); //파일첨부 테이블에 넣음
+					
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
