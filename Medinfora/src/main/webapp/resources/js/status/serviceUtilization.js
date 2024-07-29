@@ -1,3 +1,14 @@
+$(document).ready(function(){
+
+    const midx = $("div.midx").text();
+    
+    if(midx == 1){
+        ageChart();
+        genderChart();
+    }
+
+})  // end of $(document).ready(function(){------------
+
 // xml 을 json 타입으로 변환
 function xmlToJson(xml) {
     var obj = {};
@@ -209,7 +220,6 @@ function createChart(result){
     option && myChart.setOption(option);
 }
 
-ageChart();
 function ageChart(){
 
     let dataByage_fi = [];
@@ -342,6 +352,10 @@ function ageChart(){
                 })  // end of $.ajax({-------------------
 
             }
+            else{
+                $("div#byAge").hide();
+                $("span.personalChartprev").text("동일 성별에 따른 의료서비스율(2017년, 2018년, 2019년)");
+            }
         },
         error: function(request) {
             alert("code : " + request.status);
@@ -352,7 +366,7 @@ function ageChart(){
 }   // end of function ageChart(){------------------
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-genderChart();
+
 function genderChart(){
 
     let dataBygender_fi = [];

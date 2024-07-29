@@ -22,18 +22,54 @@
 #chatContent{
 	border: solid 1px black;
 	height: 800px;
+	overflow-y: auto;
 }
 
 #userInput{
-	width: 85%;
     margin: 5px 10px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
     outline: none;
+    width: 75%;
 }
 
 .sendbox{
-	height: 100px;
+	height: 70px;
+	background-color: var(--blue200);
+	border: solid 1px black;
+	border-top: none;
+}
+
+#sendBtn{
+	background-color: var(--navy800);
+	color: var(--text-white-color);
+	border-radius: 0.5rem;
+}
+
+/*============================================*/
+
+.user-message {
+    background-color: var(--blue100);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    margin-right: 10px;
+    max-width: 70%;
+    align-self: flex-end;
+    word-wrap: break-word;
+    font: var(--font);
+}
+
+.gpt-message {
+    background-color: var(--navy200);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    margin-left: 10px;
+    max-width: 70%;
+    align-self: flex-start;
+    word-wrap: break-word;
+    font: var(--font);
 }
