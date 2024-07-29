@@ -37,7 +37,7 @@ public class ChatGptService {
             return executeRequestWithRetry(request, 5); // 최대 5번 재시도
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return "Error communicating with GPT: " + e.getMessage();
+            return "에러메시지 : " + e.getMessage();
         }
     }
 
@@ -52,16 +52,15 @@ public class ChatGptService {
                     if (retryAfter != null) {
                         backoffTime = Integer.parseInt(retryAfter);
                     }
-                    System.out.println("429 Too Many Requests. Attempt " + attempt + " of " + retries);
-                    System.out.println("Waiting for " + backoffTime + " seconds before retrying...");
+                    System.out.println("429 시도횟수 " + attempt + " / " + retries);
+                    System.out.println("경과시간 " + backoffTime + "초");
                     TimeUnit.SECONDS.sleep(backoffTime);
                     backoffTime *= 2; // 백오프 시간 증가
                 } else {
-                    System.out.println("Unexpected response code: " + response.code() + " - " + response.message());
                     throw new IOException("Unexpected code " + response);
                 }
             }
         }
-        throw new IOException("Exceeded max retries for request");
+        throw new IOException("시도횟수 초과");
     }
 }
