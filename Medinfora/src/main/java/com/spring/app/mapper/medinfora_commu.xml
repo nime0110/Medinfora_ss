@@ -3,5 +3,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.app.commu.model.CommuDAO">
+	<!-- 시퀀스 채번 -->
+	<select id="getSeqCommu" resultType="String">
+		SELECT cidx as seq
+		  FROM (
+		         SELECT cidx, row_number() over(order by writeday desc) AS rno
+		           FROM commu
+		       )
+		 WHERE rno = 1
+	</select>
+	
+	<!-- 글 등록 -->
+	<insert id="add" parameterType="CommuBoardDTO">
+		insert into commu(cidx, userid, category, title, content, writeday, updateday, commentcount)
+		values(seq_cidx.nextval, #{userid}, #{category}, #{title}, #{content}, default, default, default)
+	</insert>
+	
+	<!-- 파일 등록 -->
+	<insert id="add_File" parameterType="CommuFilesDTO">
+		insert into commufiles(cidx, filename, orgname, filesize)
+		values(#{cidx}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+
+	<!-- 게시글 select (커뮤 게시판 리스트 뷰잉) -->
+	<select id="getCommuBoardList" parameterType="HashMap" resultType="CommuBoardDTO">
+		select cidx, category, title, commentcount, userid, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, viewcnt
+		from commu
+		where 1=1
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type != "z"'> 
+		    <if test='type == "title"'>
+		        and ( lower(title) like '%'||lower(#{title})||'%' )
+		    </if>
+		    <if test='type == "content"'>
+		        and ( lower(content) like '%'||lower(#{content})||'%' )
+		    </if>
+		    <if test='type == "userid"'>
+		        and ( lower(userid) like '%'||lower(#{userid})||'%' )
+		    </if>
+		</if>
+		<if test='word != ""'> 
+		    and ( lower(word) like '%'||lower(#{word})||'%' )
+		</if>	
+	</select>
+	
+	<!-- 첨부파일 유무 시퀀스  -->
+	<select id="getfileSeqList" resultType="String">
+		select distinct(A.cidx) 
+		from commu A JOIN commufiles B
+		ON A.cidx = B.cidx
+	</select>
+	
+	<!-- 커뮤 게시판 페이지네이션 관련 전체갯수  -->
+	<select id="getCBListTotalCount" parameterType="HashMap" resultType="int">
+	    SELECT count(*)
+        FROM (
+		select cidx
+		from commu
+		where 1=1
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type != "z"'> 
+		    <if test='type == "title"'>
+		        and ( lower(title) like '%'||lower(#{title})||'%' )
+		    </if>
+		    <if test='type == "content"'>
+		        and ( lower(content) like '%'||lower(#{content})||'%' )
+		    </if>
+		    <if test='type == "userid"'>
+		        and ( lower(userid) like '%'||lower(#{userid})||'%' )
+		    </if>
+		</if>
+		<if test='word != ""'> 
+		    and ( lower(word) like '%'||lower(#{word})||'%' )
+		</if>	
+		GROUP BY cidx)
+	</select>
+
+
+	
 
 </mapper>

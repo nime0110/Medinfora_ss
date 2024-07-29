@@ -160,5 +160,61 @@ SELECT DISTINCT A.HIDX, A.HPNAME, A.HPADDR, A.HPTEL, B.CLASSNAME, A.AGENCY, A.WG
 
 select * from HOSPITAL;
 
+-- 시퀀스 
+select cidx from commu 
+group by cidx
+order by writeday
+
+select * from commu;
+select * from commufiles;
+
+-- 상위 1개 seq 구하기 
+SELECT cidx as seq
+  FROM (
+         SELECT cidx, row_number() over(order by writeday desc) AS rno
+           FROM commu
+       )
+ WHERE rno = 1
+
+select * from commu
+
+select category, title, commentcount, userid, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd'), viewcnt
+from commu
+where 1=1
+--검색시
+<if test='category != "0"'> --구분 이 아닐 경우
+    and category = #{category}
+</if>
+<if test='type != "z"'> -- 전체 가 아닐경우
+    --만약 글제목이라면
+    <if test='type == "title"'>
+        and ( lower(title) like '%'||lower(#{title})||'%' )
+    </if>
+    --만약 글내용 이라면
+    <if test='type == "content"'>
+        and ( lower(content) like '%'||lower(#{content})||'%' )
+    </if>
+    -- 만약 작성자 이라면
+    <if test='type == "userid"'>
+        and ( lower(userid) like '%'||lower(#{userid})||'%' )
+    </if>
+</if>
+<if test='word != ""'> 
+    and ( lower(word) like '%'||lower(#{word})||'%' )
+</if>
 
 
+
+<if test='category != "0"'>
+   
+</if>
+
+        <if test='classcode != ""'>
+            AND H.classcode = #{classcode}
+        </if>
+        <if test='agency != ""'>
+            AND H.agency = #{agency}
+        </if>
+        <if test='hpname != ""'>
+            AND H.hpname LIKE '%' || #{hpname} || '%'
+        </if>;

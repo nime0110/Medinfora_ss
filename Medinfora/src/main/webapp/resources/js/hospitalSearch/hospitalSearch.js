@@ -1,4 +1,4 @@
-  let map;
+let map;
 let clusterer;
 let markers = [];
 let infowindows = [];
