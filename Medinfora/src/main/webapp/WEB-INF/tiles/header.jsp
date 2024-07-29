@@ -350,7 +350,7 @@
 	<div class="icon" onclick="gocustomerService()">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">Chatbot</a>
     </li>
   </ul>
 </aside>

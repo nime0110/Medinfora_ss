@@ -72,21 +72,27 @@
     <h1 class="sh_title nanum-b size-b">Infora</h1>
 
     <div class="sh_card-inner card-inner first">
-      <a href="<%=ctxPath %>/hpsearch/hospitalSearch.bibo" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-         <h4 class="nanum-n sh_font" style="font-weight: bold;">병원찾기</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p class="sh_text">
-            주변 또는 찾고싶은 지역으로 병원을 검색할 수 있습니다.
-          </p>
-          <div class="img-content">
-            <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-          </div>
-        </div>
-      </a>
+		<a href="<%=ctxPath %>/status/serviceUtilization.bibo" class="sh-card">
+        	<div class="sh_card-front">
+          		<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#" />
+         		<h4 class="nanum-n sh_font" style="font-weight: bold;">의료서비스 이용률</h4>
+        	</div>
+        	<div class="sh_card-text">
+          		<h4 class="sh_card-title">
+          			의료서비스 이용률 
+          			<i class="bi bi-arrow-right"></i>
+          		</h4>
+          		<p class="sh_text">
+			 		특정연도의 연령별 입원 비율
+			 		<br>
+			 		개인 연령(15세 이상), 성별 에 해당하는 의료서비스 이용률을 확인하실 수 있습니다.
+          		</p>
+	          	<div class="img-content">
+	            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
+	          	</div>
+        	</div>
+      	</a>
+      	
       <a href="" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
@@ -136,95 +142,23 @@
           </div>
         </div>
       </a>
-    </div>
-    <div class="sh_card-inner card-inner first">
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-         <h4 class="nanum-s sh_font " style="font-weight: bold;">구입 가능한 의약품</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" alt="#">
-          <h4 class="nanum-n sh_font" style="font-weight: bold;">의약품 복용법</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" style= "border-radius: 30px" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-        <h4 class="nanum-n sh_font"style="font-weight: bold;">의약품 사용법</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-         <h4 class="nanum-n sh_font" style="font-weight: bold;">통계 자료</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-          </div> 
-        </div>
-      </a>
-    </div>  
-    </div>
+    </div> 
+</div>
     
     <div id="carouselExampleIndicators" class="sh_car carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-          <div class="plz carousel-item active gohpsearch">
-              <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-          </div>
-          <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-              
+		<div class="carousel-inner">
+			<div class="plz carousel-item active gohpsearch">
+            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
+          	<div class="carousel-item">
+              	<img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
+          	<div class="carousel-item">
+              	<img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
             </div>
-          <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-          
-            </div>
-          <div class="carousel-item">
-            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-         
-          </div>
-        <div class="carousel-item">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-        </div>
-      <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-       
-      </div>
-      <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-      </div>
-    <div class="carousel-item">
-      <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-  </div>
+          	<div class="carousel-item">
+            	<img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
           <span class="carousel-control-prev-icon icconfig" aria-hidden="true"></span>
