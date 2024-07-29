@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.midx{
+	display:none;	
+}
+
 .name{
 	font-size: 2.5em;	
 }

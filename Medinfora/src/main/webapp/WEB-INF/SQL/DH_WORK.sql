@@ -208,11 +208,16 @@ select title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,qidx
 		    select row_number() over (order by WRITEDAY desc) as rno,title, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT,QIDX
 		    from MEDIQ
 		    where OPEN = 1 and (TITLE like '%'||'사이트'||'%' or CONTENT like '%'||'사이트'||'%')
-		)where rno between 1 and 5
+		)where rno between 1 and 5;
 
 select TITLE, CONTENT, WRITEDAY, ACOUNT, VIEWCOUNT, QIDX
 		from (
 		    select row_number() over (order by MEDIA.WRITEDAY desc) as rno, MEDIA.CONTENT, TITLE, MEDIA.WRITEDAY,acount, viewcount, MEDIQ.QIDX as qidx
 		    from MEDIA join mediq on MEDIA.QIDX = mediq.QIDX
 		    where OPEN = 1 and MEDIA.CONTENT like '%'||'중고'||'%'
-		)where rno between 1 and 5
+		)where rno between 1 and 5;
+
+select SEARCHWORD,REGISTERDAY
+from SEARCHLOG where userid = 'redtree2379'
+order by  REGISTERDAY desc;
+

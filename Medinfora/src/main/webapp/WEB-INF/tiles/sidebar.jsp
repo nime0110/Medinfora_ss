@@ -24,7 +24,7 @@
            </div>
            <ul class="sidebar_list_ul">
                <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myinfo.bibo'">내 정보수정</li>
-               <li class="sidebar_list_li">내 검색내역</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mysearchlog.bibo'">내 검색내역</li>
                <li class="sidebar_list_li">회원 탈퇴</li>
            </ul>
            
@@ -39,8 +39,7 @@
            </c:if>
            
            <c:if test="${sessionScope.loginuser.mIdx==2}">
-           <div class="sidebar_list_title">
-               의료인 메뉴&nbsp;<i class="fa-solid fa-user-doctor"></i>
+           <div class="sidebar_list_title">의료인 메뉴&nbsp;<i class="fa-solid fa-user-doctor"></i>
            </div>
            <ul class="sidebar_list_ul">
                <li class="sidebar_list_li">내 답변내용</li>

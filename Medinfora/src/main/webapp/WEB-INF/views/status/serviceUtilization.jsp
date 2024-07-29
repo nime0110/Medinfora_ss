@@ -11,8 +11,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/status/serviceUtilization.js"></script>
 
-
-<c:if test="${sessionScope.loginuser != null}">
+<div class="midx">${sessionScope.loginuser.mIdx}</div>
+<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.mIdx == 1}">
 	<div class="personalChart mb-3">
 		<span class="nanum-b name">
 			&nbsp;&nbsp;${sessionScope.loginuser.name}&nbsp;님
@@ -20,7 +20,7 @@
 		<div class="nanum-n my-2">
 			&nbsp;
 			<i class="fa-solid fa-arrow-right"></i>
-			&nbsp;동일 연령대 및 성별에 따른 의료서비스율(2017년, 2018년, 2019년)
+			<span class="personalChartprev">&nbsp;동일 연령대 및 성별에 따른 의료서비스율(2017년, 2018년, 2019년)</span>
 		</div>
 		<div id="byAge">
 			<div class="text-center nanum-b size-n">
