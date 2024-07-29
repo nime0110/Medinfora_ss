@@ -356,5 +356,10 @@ public class MypageService_imple implements MypageService {
 		
 		return dao.getT1data(t1Map);
 	}
+
+	@Override
+	public List<Map<String, String>> getmyslog(MemberDTO loginuser) {
+		return dao.getmyslog(loginuser);
+	}
 	
 }
