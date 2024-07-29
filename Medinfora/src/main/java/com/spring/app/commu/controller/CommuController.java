@@ -3,6 +3,9 @@ package com.spring.app.commu.controller;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.FileManager;
+import com.spring.app.common.Myutil;
 import com.spring.app.commu.service.CommuService;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MediQDTO;
@@ -60,8 +64,137 @@ public class CommuController {
 	    }
 	}
 
+	@GetMapping(value="/commu/commuList.bibo")
+	public ModelAndView commuList(ModelAndView mav, HttpServletRequest request,
+	                              @RequestParam(value="category", defaultValue = "0") String category,
+	                              @RequestParam(value="type", defaultValue = "z") String type,
+	                              @RequestParam(value="word", defaultValue = "") String word,
+	                              @RequestParam(value="currentPageNo", defaultValue = "1") String str_currentPageNo) {
+
+		Map<String, String> paraMap = new HashMap<>();
+		
+	    // 유효성 검사(사용자가 url 쿼리문 장난칠때)
+	    List<String> categoryList = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+	    List<String> typeList = Arrays.asList("z", "title", "content", "userid");
+
+	    if (!categoryList.contains(category)) {
+	        category = "0";
+	        paraMap.put("category", category);
+	    }
+
+	    if (!typeList.contains(type)) {
+	        type = "z";
+	        paraMap.put("type", type);
+	    }
+
+		
+	    paraMap.put("category", category);
+	    paraMap.put("type", type);
+	    paraMap.put("word", word);
+
+	    int totalCount = 0;        // 총 게시물 건수
+	    int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
+	    int currentPageNo = 0;     // 현재 페이지 번호
+	    int totalPage = 0;         // 총 페이지 수
+
+	    try {
+	        // 총 게시물 건수 가져오기
+	        totalCount = service.getCBListTotalCount(paraMap);
+	        totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+
+	        // 현재 페이지 번호 설정 및 유효성 검사
+	        try {
+	            currentPageNo = Integer.parseInt(str_currentPageNo);
+	            if(currentPageNo < 1 || currentPageNo > totalPage) {
+	                currentPageNo = 1;
+	            } 
+	        } catch (NumberFormatException e) {
+	            currentPageNo = 1;
+	        }
+
+	        // 시작 행번호와 끝 행번호 계산
+	        int startRno = ((currentPageNo - 1) * sizePerPage) + 1;
+	        int endRno = startRno + sizePerPage - 1;
+
+	        paraMap.put("startRno", String.valueOf(startRno));
+	        paraMap.put("endRno", String.valueOf(endRno));
+
+	        // 게시물 리스트 가져오기(페이징처리됨)
+	        List<CommuBoardDTO> commuBoardList = service.getCommuBoardList(paraMap);
+
+	        // 첨부파일이 있을 경우 첨부파일 리스트 가져오기
+	        List<String> fileSeqList = service.getfileSeqList();
+
+	        
+	        // 카테고리 텍스트 변환
+	        for (CommuBoardDTO cbdto : commuBoardList) {
+	            cbdto.setCategory(getCategoryText(cbdto.getCategory()));
+	        }
+
+	        // 페이지 바 만들기
+	        int blockSize = 10;
+	        int loop = 1;
+	        int pageNo = ((currentPageNo - 1) / blockSize) * blockSize + 1;
+	        
+	        String pageBar = "<ul style='list-style:none; '>";
+	        String url = "commuList.bibo";
+
+	        // [맨처음][이전]
+	        if(pageNo != 1) {
+	            pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='" + url + 
+	                    "?category="+category+"&type="+type+"&word="+word+"&currentPageNo=1'>[맨처음]</a></li>";
+	        }
+
+	        while (!(loop > blockSize || pageNo > totalPage)) {
+	            if(pageNo == currentPageNo) {
+	                pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px skyblue; color:white; background-color: skyblue; padding:1px 3px;'>"+pageNo+"</li>";
+	            } else {
+	                pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='" + url + 
+	                        "?category="+category+"&type="+type+"&word="+word+"&currentPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+	            }
+	            loop++;
+	            pageNo++;
+	        }
+
+	        // [다음][마지막]
+	        if(pageNo <= totalPage) {
+	            pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='" + url + 
+	                    "?category="+category+"&type="+type+"&word="+word+"&currentPageNo="+totalPage+"'>[마지막]</a></li>";
+	        }
+
+	        pageBar += "</ul>";
+
+	        String goBackURL = Myutil.getCurrentURL(request);
+	        
+	        mav.addObject("goBackURL", goBackURL);
+	        mav.addObject("pageBar", pageBar);
+	        mav.addObject("paraMap", paraMap); //검색용 맵  category, type, word 들어가 있음.
+	        
+	        // ModelAndView에 데이터 추가
+	        mav.addObject("CommuBoardList", commuBoardList);
+	        mav.addObject("fileSeqList", fileSeqList);
+	        mav.addObject("totalPage", totalPage);
+	        mav.addObject("currentShowPageNo", currentPageNo);
+	        mav.addObject("sizePerPage", sizePerPage);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    // 뷰 설정
+	    mav.setViewName("commu/commuList.tiles");
+
+	    return mav;
+	}
+
+	
+	
+	
+	
+	
 	
 	// 글 리스트
+	/*
 	@GetMapping(value="/commu/commuList.bibo")
 	public ModelAndView commuList(ModelAndView mav, HttpServletRequest request
 			,@RequestParam(value="category", defaultValue = "0")String category
@@ -73,7 +206,7 @@ public class CommuController {
 
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
 		int endRno = startRno + sizePerPage - 1;
-
+		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("category", category);
 		paraMap.put("type", type);
@@ -87,6 +220,7 @@ public class CommuController {
 		
 		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
 		//첨부파일이 있을 경우
 		List<String> fileSeqList = null;
 		fileSeqList = service.getfileSeqList();
@@ -98,6 +232,7 @@ public class CommuController {
 		
 		mav.addObject("CommuBoardList", CommuBoardList);
 		mav.addObject("fileSeqList", fileSeqList);
+		mav.addObject("totalCount", totalCount);
 		mav.addObject("totalPage", totalPage);
 		mav.addObject("sizePerPage", sizePerPage);
 		mav.addObject("currentShowPageNo", currentShowPageNo);
@@ -106,7 +241,7 @@ public class CommuController {
 		
 		return mav;
 	}
-	
+	*/
 	//글 검색하기
 	@ResponseBody
 	@GetMapping(value = "/commu/commuSearch.bibo", produces = "text/plain;charset=UTF-8")
@@ -249,7 +384,7 @@ public class CommuController {
 
 					cfdto.setCidx(cseq);
 					cfdto.setFileName(newFileName);
-					cfdto.setOrgFilename(originalFilename);
+					cfdto.setOrgname(originalFilename);
 					cfdto.setFileSize(String.valueOf(fileSize));
 					
 					service.add_File(cfdto); //파일첨부 테이블에 넣음
@@ -264,8 +399,131 @@ public class CommuController {
 			}
 		}
 		
-	    
 		return jsonObj.toString();
+	}
+	
+	
+	// 글 보기
+	@RequestMapping("/commu/commuView.bibo")
+	public ModelAndView commuView(ModelAndView mav, HttpServletRequest request) {
 		
+		String cidx = request.getParameter("cidx");
+		String goBackURL = request.getParameter("goBackURL");
+		
+		//${requestScope.goBackURL}
+		System.out.println("cidx: " + cidx);
+				
+		// 글 select
 
-	}}
+		CommuBoardDTO cbdto = null;
+		List<CommuFilesDTO> fileList = null;
+		
+		if(cidx != null) {
+			//조회수증가랑 같이 글 하나 보기
+			cbdto = service.getCommuDetail(cidx);		
+			//첨부파일 가져오기
+			fileList = service.getAttachfiles(cidx);
+		}
+		
+		mav.addObject("cbdto", cbdto);
+		mav.addObject("fileList", fileList);
+		mav.addObject("goBackURL", goBackURL);
+		
+		mav.setViewName("commu/commuView.tiles");
+		
+		return mav;
+	}
+	
+	// === #183. 첨부파일 다운로드 받기 ===  
+	@GetMapping("/commu/download.bibo")
+	public ModelAndView download(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		String filename = request.getParameter("filename");
+		String originFilename = request.getParameter("originFilename");
+		String cidx = request.getParameter("cidx");
+		
+		try {
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "resources" + File.separator + "commu_attach_file";
+	
+			boolean flag = fileManager.doFileDownload(filename, originFilename, path, response);
+	
+			if (!flag) {
+				mav.addObject("message", "다운로드 실패");
+				mav.addObject("loc", request.getContextPath()+"/questionList.bibo");
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("msg");
+		
+		return mav;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 글 수정
+	
+	// 글 삭제
+	
+	// 댓글 쓰기
+	
+	// 댓글 수정
+	
+	// 댓글 삭제
+	
+	// 북마크 
+	
+	// 추천
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+}
