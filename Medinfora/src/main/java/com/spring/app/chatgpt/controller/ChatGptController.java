@@ -70,7 +70,7 @@ public class ChatGptController {
             return jsonNode.at("/choices/0/message/content").asText();
         } catch (Exception e) {
             e.printStackTrace();
-            return "◆ 오류 ◆";
+            return "죄송합니다. 다시 한번 입력해주세요.";
         }
 	}	// end of private String extractContentFromResponse(String fullResponse) {------
 }

@@ -67,7 +67,8 @@ async function sendToGPT(message) {
 		<div class="img_container mt-5">
 			<img src="<%=ctxPath %>/resources/img/customerService_icon.png" class="icon serviceIcon"/>
 		</div>
-		<span class="nanum-b size-n">&nbsp;&nbsp;Medinfora&nbsp;문의</span>
+		<span class="nanum-b size-n">&nbsp;&nbsp;Medinfora&nbsp;BOT</span>
+		<h5 class="size-s nanum-n">궁금한 지식에 대해 작성해주세요.</h5>
 		<hr>
 	</div>
 	<div class="gptContainer">
@@ -75,6 +76,10 @@ async function sendToGPT(message) {
 		<div id="chatBox">
             <div id="chatContent" class="d-flex flex-column">
             	<%-- 채팅내용 --%>
+            	<div class="gpt-message">
+            		Medinfora 채팅봇입니다.<br>
+            		의학용어나 운동법 등 궁금한 사항을 입력해주세요.
+            	</div>
             </div>
             <div class="sendbox text-center">
 	            <input type="text" id="userInput" placeholder="궁금한 사항을 입력해주세요."/>
