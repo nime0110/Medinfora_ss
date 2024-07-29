@@ -17,5 +17,4 @@ public class NewsController {
 		return mav;
 	}
 	
-	
 }

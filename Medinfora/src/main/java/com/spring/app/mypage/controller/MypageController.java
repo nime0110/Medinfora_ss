@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -599,6 +598,20 @@ public class MypageController {
 		}
 		
 		return result;
+	}
+	
+	@GetMapping("mysearchlog.bibo")
+	public ModelAndView isLogin_mysearchlog(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+		
+		List<Map<String,String>> searchlogList = service.getmyslog(loginuser);
+		
+		mav.addObject("searchlogList",searchlogList);
+		mav.setViewName("mypage/mysearchlog.info");
+		
+		return mav;
 	}
 	
 }
