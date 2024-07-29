@@ -28,18 +28,19 @@ async function goSend() {
     // 스크롤을 가장 아래로 이동
     chatContent.scrollTop(chatContent[0].scrollHeight);
 
-    // 대화내용 전송(GPT 에게)
+    // 대화내용 전송(GPT 에게) - 답장 받기 전까지 기다리기
     await sendToGPT(content);
 }
 
-//대화내용 전송(GPT 에게)
+// 대화내용 전송(GPT 에게)
 async function sendToGPT(message) {
     try {
 
+    	// fetch API
         const response = await fetch('<%= ctxPath %>/api/chat.bibo', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json',		// 전송 타입 : json 타입
             },
             body: JSON.stringify({ message: message }),
         });
