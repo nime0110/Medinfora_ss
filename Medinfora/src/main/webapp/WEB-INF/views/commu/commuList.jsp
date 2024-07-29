@@ -7,6 +7,12 @@
 %>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/commu/commuList.css" />
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/commu/commuList.js"></script>
+<script type="text/javascript">
+
+
+</script>
+
+
 <div class="container" style="margin-top: 100px;">
     <div class="py-4" align="center">
         <h2 class="nanum-eb size-n">커뮤니티 게시판</h2>
@@ -63,7 +69,8 @@
         <div class="mb-5 px-3" id="commuArea">
             <c:if test="${not empty requestScope.CommuBoardList}">
                 <c:forEach var="cbdto" items="${requestScope.CommuBoardList}"  varStatus="status">
-                    <div class="row text-center py-3 nanum-n size-s b_border list--item">
+                    <div class="row text-center py-3 nanum-n size-s b_border list--item" 
+                    	 onclick="listOneClick('${cbdto.cidx}', '${requestScope.currentShowPageNo}', '${paraMap.category}', '${paraMap.type}', '${paraMap.word}')">
                         <input type="hidden" value="${cbdto.cidx}" name="commuNo"/>
                         <input type="hidden" value="${totalPage}" id="totalPage"/>
                         <span class="col-2">
@@ -85,7 +92,6 @@
     
     </div>
     
-    <%-- 페이지 바 --%>
     <div class="pagination" style="text-align: center;" id="rpageNumber">
         ${requestScope.pageBar}
     </div>
@@ -93,12 +99,15 @@
     <div class="py-5 text-center">
         <button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>
     </div>
+     
 </div>
- 
+  
 <form name="searchFrm" id="searchFrm">
     <input type="hidden" name="cidx"/>
     <input type="hidden" name="goBackURL" value="${requestScope.goBackURL}"/>
+    <input type="hidden" name="currentShowPageNo" value="${requestScope.currentShowPageNo}"/>
     <input type="hidden" id="category" value="${paraMap.category}"/>
     <input type="hidden" id="type" value="${paraMap.type}"/>
     <input type="hidden" id="word" value="${paraMap.word}"/>
 </form>
+ 

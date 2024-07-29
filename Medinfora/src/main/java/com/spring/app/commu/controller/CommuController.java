@@ -403,37 +403,46 @@ public class CommuController {
 	}
 	
 	
-	// 글 보기
 	@RequestMapping("/commu/commuView.bibo")
 	public ModelAndView commuView(ModelAndView mav, HttpServletRequest request) {
-		
-		String cidx = request.getParameter("cidx");
-		String goBackURL = request.getParameter("goBackURL");
-		
-		//${requestScope.goBackURL}
-		System.out.println("cidx: " + cidx);
-				
-		// 글 select
 
-		CommuBoardDTO cbdto = null;
-		List<CommuFilesDTO> fileList = null;
-		
-		if(cidx != null) {
-			//조회수증가랑 같이 글 하나 보기
-			cbdto = service.getCommuDetail(cidx);		
-			//첨부파일 가져오기
-			fileList = service.getAttachfiles(cidx);
-		}
-		
-		mav.addObject("cbdto", cbdto);
-		mav.addObject("fileList", fileList);
-		mav.addObject("goBackURL", goBackURL);
-		
-		mav.setViewName("commu/commuView.tiles");
-		
-		return mav;
+	    String cidx = request.getParameter("cidx");
+	    System.out.println("~~~cidx:" + cidx);
+	    String currentShowPageNo = request.getParameter("currentShowPageNo");
+	    System.out.println("~~~currentShowPageNo:" + currentShowPageNo);
+	    String category = request.getParameter("category");
+	    String type = request.getParameter("type");
+	    String word = request.getParameter("word");
+
+	    if (cidx == null || cidx.isEmpty()) {
+	        // cidx가 null이거나 비어있을 때의 처리
+	    	mav.setViewName("redirect:/commu/commuList.bibo");
+	        return mav;
+	    }
+
+	    // 글 select
+	    CommuBoardDTO cbdto = null;
+	    List<CommuFilesDTO> fileList = null;
+
+	    if (cidx != null) {
+	        // 조회수 증가랑 같이 글 하나 보기
+	        cbdto = service.getCommuDetail(cidx);
+	        // 첨부파일 가져오기
+	        fileList = service.getAttachfiles(cidx);
+	    }
+
+	    mav.addObject("cbdto", cbdto);
+	    mav.addObject("fileList", fileList);
+	    mav.addObject("currentShowPageNo", currentShowPageNo);
+	    mav.addObject("category", category);
+	    mav.addObject("type", type);
+	    mav.addObject("word", word);
+
+	    mav.setViewName("commu/commuView.tiles");
+
+	    return mav;
 	}
-	
+
 	// === #183. 첨부파일 다운로드 받기 ===  
 	@GetMapping("/commu/download.bibo")
 	public ModelAndView download(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {

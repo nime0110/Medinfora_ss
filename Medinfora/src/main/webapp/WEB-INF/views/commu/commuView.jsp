@@ -10,15 +10,21 @@
 
 <div class="commu-container">
 
-    <div class="board_title1">
+    <div class="title_area">
         <span class="nanum-eb">${cbdto.title}</span>
+        <span class="nanum-eb">🕛${cbdto.writeday}</span>
     </div>
 
-    <div class="commu-info">
-        <span class="commu-userid">작성자: ${cbdto.userid}</span>
-        <span class="commu-date">날짜: ${cbdto.writeday}</span>
-        <span class="commu-viewcount">조회수: ${cbdto.viewcnt}</span>
-        
+    <div class="idDayCnt_erea">
+        <span class="commu-userid">${cbdto.userid}</span>
+        <div class="idDayCnt_erea_right">
+	        <span class="commu-date">수정일자: ${cbdto.updateday}</span>
+	        <c:if test="${cbdto.writeday != cbdto.updateday}">
+	        </c:if>
+	        <span class="commu-viewcount">👁️‍🗨️${cbdto.viewcnt}</span>
+        </div>
+    </div>
+     <div>
         <div class="commu-info2">
 			<c:if test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == requestScope.cbdto.userid}">
 				<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}'">
@@ -27,7 +33,6 @@
 				<button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
 			</c:if>        
         </div>
-         
          <div class="commu-attachment">
          	<c:if test="${not empty requestScope.fileList}">
                 <span class="attach-file">
@@ -47,50 +52,45 @@
         <p>${cbdto.content}</p>
     </div>
     
-	<c:if test="${not empty sessionScope.loginuser}">
-		<h3 style="margin-top: 50px;">댓글쓰기</h3>
-		<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
-			<table class="table" style="width: 1024px">
-				<tr style="height: 30px;">
-					<th width="10%">성명</th>
-					<td>
-						<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}" readonly /> 
-					</td>
-				</tr>
-				<tr style="height: 30px;">
-					<th>댓글내용</th>
-					<td>
-						<input type="text" name="content" size="100" maxlength="1000"/>
-						<input type="hidden" name="parentSeq" value="${requestScope.boardvo.seq}" readonly/>
-					</td>
-				</tr>
-				<tr>
-                  	<th colspan="2">
-                     	<button type="button" class="btn btn-success btn-sm mr-3" onclick="goAddWrite()">댓글쓰기 확인</button>
-                     	<button type="reset" class="btn btn-success btn-sm">댓글쓰기 취소</button>
-                  	</th>
-               	</tr>
-			</table>
-		</form>
-	</c:if>
-		
-    <table class="table" style="width: 1024px; margin-top: 2%; margin-bottom: 3%;">
-      <thead>
-	      <tr>
-	         <th style="text-align: center;">내용</th>
-	         <th style="width: 8%;  text-align: center;">작성자</th>
-	         <th style="width: 12%; text-align: center;">작성일자</th>
-	         <th style="width: 12%; text-align: center;">수정/삭제</th>
-	      </tr>
-      </thead>
-      <tbody id="commentDisplay"></tbody>
-    </table>
+	<div class="button-list-area">
+	<!-- 목록으로 돌아가기 버튼 -->
+<button type="button" class="commu-button nanum-b" 
+    onclick="location.href='<%= ctxPath %>/commu/commuList.bibo?currentPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
+    목록
+</button>
+		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">목록</button>
+		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🌟추천</button>
+		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🔖북마크 </button>
+	</div>
+    <!-- 댓글이 보여짐 , 대댓글 까지만 되고 대댓글 한 경우 아이디가 @아이디 되도록? -->
+    <div id="commentDisplay">
+	
 	<%-- #155. 댓글페이지바가 보여지는 곳  시작--%>
 	<div style="display: flex; margin-bottom: 50px;">
          <div id="pageBar" style="margin: auto; text-align: center;"></div>
       </div>
 	<%-- #155. 댓글페이지바가 보여지는 곳 끝 --%>
+	</div>
+	 
+	<c:if test="${not empty sessionScope.loginuser}">
+		<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
+			<div id="commentArea">
+				<form class="answer" name="answer">
+					<input type="text" value="${requestScope.cbdto.cidx}" name="answer" />
+					<input type="text" value="${sessionScope.loginuser.userid}" name="userid" />
+					<textarea class="form-control" name="content"
+						placeholder="답변 내용을 입력하세요." maxlength="150"></textarea>
+					<div style="text-align: right;">
+						<button class="nanum-b commu-button" id="upload" type="button" onclick="answerupload()">등록</button>
+						<button class="nanum-b commu-button" id="acancle" type="button" onclick="answercanle()">취소</button>
+					</div>
+				</form>
+			</div>
+		</form>
+	</c:if>
 </div>
+
+
 
 
 <%-- 글 삭제 모달 --%>
@@ -110,14 +110,6 @@
     </div>
 </div>
 
-<div class="commu-button text-center mt-3">
-	<button type="button" class="commu-btn" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">돌아가기</button>
-</div>
 
-<form name="goViewFrm" style="display:none;">
-    <input type="text" name="cidx" />
-    <input type="text" name="goBackURL" />
-</form>
 
 </body>
->

@@ -23,10 +23,7 @@ $(function() {
         $("input[name='word']").val(word);
     }
 
-    // 하나의 글 클릭시 
-    $(document).on("click", ".list--item", function() {
-        listOneClick($(this));
-    });
+
 
     // 페이지네이션 클릭 이벤트
     /*
@@ -137,23 +134,12 @@ function removedisplayPagination() {
     $('#rpageNumber').empty();
 }
 */
-function listOneClick(obj) {
-    let cidx = obj.find('input[name="commuNo"]').val();
+function listOneClick(cidx, currentShowPageNo, category, type, word) {
 
     console.log("cidx: " + cidx);
-    const frm = document.forms['searchFrm']; // 폼을 정확하게 가져옴
-
-    // cidx 값 설정 확인
-    frm.cidx.value = cidx;
-    console.log("Form cidx value: " + frm.cidx.value);
-    frm.method = "post";
-    frm.action = contextPath + "/commu/commuView.bibo";
-    frm.submit();
 
 
 
-
-
-    //location.href = contextPath + "/commu/commuView.bibo?cidx=" + cidx;
+    location.href = contextPath + "/commu/commuView.bibo?cidx=" + cidx + "&currentShowPageNo=" + currentShowPageNo + "&category=" + category + "&type=" + type + "&word=" + word;
 
 }
