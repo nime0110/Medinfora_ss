@@ -51,6 +51,12 @@ public interface QuestionService {
 	// 조회수 증가
 	void viewCountIncrease(int qidx);
 	
+	// 메인페이지 FAQ 보여줄 질문리스트
+	List<MediQDTO> getQuestion();
+	
+	// 메인페이지 FAQ 보여줄 답변
+	String getAnswer(String string);
+	
 	
 	
 

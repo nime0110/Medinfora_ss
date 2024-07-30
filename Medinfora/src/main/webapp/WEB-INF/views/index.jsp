@@ -242,18 +242,20 @@
 <!-- 동혁 작업 영역 시작 -->
 <div id="FAQ" class="mb-5 sizearr">
   <h2 class="nanum-eb size-n mb-4">FAQ & 묻고 답하기</h2>
+  <c:set var="question"  value="${requestScope.qdtoList}" />
+  <c:set var="answer"  value="${requestScope.answerList}" />
     <div class="accordion" id="accordionExample">
       <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                   <span class="nanum-b">Q1.</span>&nbsp;
-                  <span class="nanum-n">첫번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[0].title}</span>
               </button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;첫번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[0]}</span>
               </div>
           </div>
       </div>
@@ -261,13 +263,13 @@
           <h2 class="accordion-header" id="headingTwo">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   <span class="nanum-b">Q2.</span>&nbsp;
-                  <span class="nanum-n">두번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[1].title}</span>
               </button>
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;두번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[1]}</span>
               </div>
           </div>
       </div>
@@ -275,13 +277,13 @@
           <h2 class="accordion-header" id="headingThree">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   <span class="nanum-b">Q3.</span>&nbsp;
-                  <span class="nanum-n">세번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[2].title}</span>
               </button>
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;세번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[2]}</span>
               </div>
           </div>
       </div>

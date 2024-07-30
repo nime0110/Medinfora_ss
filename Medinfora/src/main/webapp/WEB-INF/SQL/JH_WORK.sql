@@ -643,6 +643,24 @@ ON Q.qidx = A.qidx
 where 1=1 and A.userid = 'medi002' and subject=to_number('1');
 
 
+WITH Q
+AS(
+    select row_number() over(order by viewcount desc) AS rno
+      ,qidx, title, viewCount
+    from mediq
+)
+SELECT qidx, title, viewCount 
+FROM Q
+WHERE rno between 1 and 3;
+
+select *
+from media;
+
+delete from media
+where aidx =11;
+
+commit;
+
 
 
 

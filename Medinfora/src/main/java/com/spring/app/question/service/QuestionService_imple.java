@@ -92,7 +92,7 @@ public class QuestionService_imple implements QuestionService {
 					String classname = "";
 					for(String code : classList) {
 						String classcode = qdao.getClasscode(code);
-						//System.out.println(classcode);
+						// System.out.println(classcode);
 						
 						classname += classcode+"/";
 					}
@@ -116,7 +116,11 @@ public class QuestionService_imple implements QuestionService {
 		
 		int result = 0;
 		
+		// 답변등록
 		result = qdao.answerWrite(mdto);
+		
+		// 질문답변수 증가
+		result = qdao.qacountplus(mdto);
 		
 		return result;
 	}
@@ -182,6 +186,18 @@ public class QuestionService_imple implements QuestionService {
 	@Override
 	public void viewCountIncrease(int qidx) {
 		qdao.viewCountIncrease(qidx);
+	}
+
+	@Override
+	public List<MediQDTO> getQuestion() {
+		List<MediQDTO> qdtoList = qdao.qdtoFAQ();
+		return qdtoList;
+	}
+
+	@Override
+	public String getAnswer(String qidx) {
+		String answer = qdao.answerFAQ(qidx);
+		return answer;
 	}
 	
 	

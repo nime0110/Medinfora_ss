@@ -209,15 +209,6 @@ function goList(){
 								<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
 							</c:otherwise>
 						</c:choose>
-						<%--
-						<c:if test='${sessionScope.loginuser.mIdx == "2" or sessionScope.loginuser.userid == requestScope.totalcontent.qdto.userid}'>
-							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> 
-							<a id="download" href="<%=ctxPath%>/question/filedownload.bibo?filename=${requestScope.totalcontent.qdto.filename}&originFilename=${requestScope.totalcontent.qdto.originFilename}&qidx=${requestScope.totalcontent.qdto.qidx}">${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</a>
-						</c:if>
-						<c:if test='${sessionScope.loginuser.userid != requestScope.totalcontent.qdto.userid}'>
-							<i class="fa-solid fa-paperclip" style="color: #535965;"></i> <span>${requestScope.totalcontent.qdto.originFilename}&nbsp;&nbsp;(<span><fmt:formatNumber pattern="#,###" value="${requestScope.totalcontent.qdto.size}"/></span>&nbsp;&nbsp;Byte)</span>
-						</c:if>
-						--%>
 					</div>
 				</div>
 			</c:if>
@@ -227,7 +218,7 @@ function goList(){
 	
 	<%-- 질문 수정삭제 --%>
 	<form name="questionUpdate" method="post">
-		<input type="hidden" id="writer" name="userid" value="${requestScope.totalcontent.qdto.userid}">
+		<input type="hidden" id="writer" value="${requestScope.totalcontent.qdto.userid}">
 		<input type="hidden" name="qidx" value="${requestScope.totalcontent.qdto.qidx}">
 	</form>
 	<c:if test="${not empty sessionScope.loginuser and  sessionScope.loginuser.userid eq requestScope.totalcontent.qdto.userid}">

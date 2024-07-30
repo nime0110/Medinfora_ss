@@ -40,6 +40,9 @@ public interface QuestionDAO {
 	// 답변등록
 	int answerWrite(MediADTO mdto);
 	
+	// 질문답변수 추가
+	int qacountplus(MediADTO mdto);
+	
 	// 추가질답 등록
 	int addqaUpload(AddQnADTO addqadto);
 	
@@ -75,6 +78,12 @@ public interface QuestionDAO {
 		
 	// 병원 진료과목
 	String getClasscode(String classcode);
+	
+	// 메인 FAQ 관련
+	List<MediQDTO> qdtoFAQ();
+	String answerFAQ(String qidx);
+	
+	
 	
 	
 

@@ -227,6 +227,12 @@
 		values(seq_aidx.nextval, #{qidx}, #{userid}, #{content}, default, default)
 	</insert>
 	
+	<!-- 질문답변수 업데이트  -->
+	<update id="qacountplus" parameterType="MediADTO">
+		update mediq set acount = acount+1
+		where qidx = to_number(#{qidx})
+	</update>
+	
 	<!-- 추가질답 등록 -->
 	<insert id="addqaUpload" parameterType ="AddQnADTO">
 		insert into addqna(qaidx, aidx, cntnum, qnastatus, qcontent, writeday)
@@ -308,6 +314,36 @@
 		from classcode
 		where classcode = #{classcode}
 	</select>
+	
+	<!-- 메인 FAQ 관련 -->
+	<select id="qdtoFAQ" resultType="MediQDTO">
+		WITH Q
+		AS(
+			select row_number() over(order by viewcount desc) AS rno
+			  ,qidx, title, viewCount
+			from mediq
+			where acount > 0
+		)
+		SELECT qidx, title, viewCount 
+		FROM Q
+		WHERE rno between 1 and 3
+	</select>
+	
+	
+	<select id="answerFAQ" parameterType="String" resultType="String">
+		WITH A
+		AS(
+			select row_number() over(order by writeday asc) AS rno
+				  ,content
+			from media
+			where qidx = #{qidx}
+		)
+		SELECT content
+		FROM A
+		WHERE RNO = 1
+	</select>
+	
+	
 	
 
 </mapper>
