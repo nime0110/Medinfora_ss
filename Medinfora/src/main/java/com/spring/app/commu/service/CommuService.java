@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.app.common.FileManager;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 
 public interface CommuService {
+
 
 	// 시퀀스 채번하기
 	String getSeqCommu();
@@ -36,6 +38,18 @@ public interface CommuService {
 
 	//조회수 증가 없이 글 상세 select
 	CommuBoardDTO getCommuDetail_no_increase_viewCnt(String cidx);
+
+	//글 수정하기
+	int edit(CommuBoardDTO cbdto);
+
+	//첨부파일수정하기
+	int edit_file(CommuFilesDTO cfdto);
+
+	//폴더 내 첨부파일 삭제
+	void folderFileDel(Map<String, String> paraMap);
+
+	//테이블에서 첨부파일 삭제
+	int fileDel(Map<String, String> paraMap);
 
 
 
