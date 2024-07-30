@@ -1,6 +1,7 @@
 package com.spring.app.question.controller;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class QuestionController {
 									,@RequestParam(value="PageNo", defaultValue = "1")String str_currentPageNo) {
 		
 		List<MediQDTO> qList = null;
-		System.out.println(str_currentPageNo);
+		// System.out.println(str_currentPageNo);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("readCountMark", "yes");
@@ -57,6 +58,8 @@ public class QuestionController {
 		paraMap.put("searchSubject", searchSubject);
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("userid", "");
+		paraMap.put("midx", "");
 		
 		int totalCount = 0;        // 총 게시물 건수
 		int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
@@ -66,7 +69,7 @@ public class QuestionController {
 		try {
 			totalCount = questionservice.totalquestion(paraMap);
 			
-			System.out.println("확인용 totalCount "+totalCount);
+			// System.out.println("확인용 totalCount "+totalCount);
 			totalPage = (int) Math.ceil((double)totalCount/sizePerPage); 
 			
 			if(str_currentPageNo == null) {
@@ -90,27 +93,23 @@ public class QuestionController {
 				paraMap.put("endRno", String.valueOf(endRno));
 				
 				qList = questionservice.totalquestionList(paraMap);
+
+				Map<String, Object> qdtoMap = new HashMap<>();
+				qdtoMap.put("qList", qList);
+				qdtoMap.put("totalCount", totalCount);
 				
-				if(qList != null) {
-					
-					Map<String, Object> qdtoMap = new HashMap<>();
-					qdtoMap.put("qList", qList);
-					qdtoMap.put("totalCount", totalCount);
-					
-					// 페이지바 관련
-					int blockSize = 10; // blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수이다.
-					int loop = 1;
-					int pageNo = ((currentPageNo - 1)/blockSize) * blockSize + 1;
-					
-					qdtoMap.put("blockSize", blockSize);
-					qdtoMap.put("loop", loop);
-					qdtoMap.put("pageNo", pageNo);
-					qdtoMap.put("currentPageNo", currentPageNo);
-					qdtoMap.put("totalPage", totalPage);
-					
-					mav.addObject("qdtoMap", qdtoMap);
-					
-				}
+				// 페이지바 관련
+				int blockSize = 10; // blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수이다.
+				int loop = 1;
+				int pageNo = ((currentPageNo - 1)/blockSize) * blockSize + 1;
+				
+				qdtoMap.put("blockSize", blockSize);
+				qdtoMap.put("loop", loop);
+				qdtoMap.put("pageNo", pageNo);
+				qdtoMap.put("currentPageNo", currentPageNo);
+				qdtoMap.put("totalPage", totalPage);
+				
+				mav.addObject("qdtoMap", qdtoMap);
 				
 			}
 			
@@ -149,6 +148,8 @@ public class QuestionController {
 		paraMap.put("searchSubject", searchSubject);
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("userid", "");
+		paraMap.put("midx", "");
 		
 		int totalCount = 0;        // 총 게시물 건수
 		int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
@@ -424,6 +425,7 @@ public class QuestionController {
 		
 			// 먼저 글번호를 가져오자
 			String str_qidx = request.getParameter("qidx");
+			System.out.println(str_qidx);
 			
 			if(str_qidx == null) {
 				redirect = "redirect:/questionList.bibo";
@@ -632,11 +634,14 @@ public class QuestionController {
 	
 	// 첨부파일 다운
 	@GetMapping("/question/filedownload.bibo")
-	public ModelAndView filedownload(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+	public void filedownload(HttpServletRequest request, HttpServletResponse response){
 		
 		String filename = request.getParameter("filename");
 		String originFilename = request.getParameter("originFilename");
-		String qidx = request.getParameter("qidx");
+		// String qidx = request.getParameter("qidx");
+		response.setContentType("text/html; charset=UTF-8");
+
+		PrintWriter out = null;
 		
 		try {
 			HttpSession session = request.getSession();
@@ -646,31 +651,14 @@ public class QuestionController {
 			boolean flag = fileManager.doFileDownload(filename, originFilename, path, response);
 	
 			if (!flag) {
-				mav.addObject("message", "다운로드 실패");
-				mav.addObject("loc", request.getContextPath()+"/questionList.bibo");
+				out = response.getWriter();
+				out.println("<script type='text/javascript'>alert('파일이 존재하지 않습니다.'); location.reload();</script>");
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		mav.setViewName("msg");
-		
-		return mav;
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

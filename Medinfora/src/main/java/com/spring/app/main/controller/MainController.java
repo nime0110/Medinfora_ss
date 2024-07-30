@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +29,21 @@ import com.spring.app.common.FileManager;
 import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MediADTO;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.service.MainService;
+import com.spring.app.question.service.QuestionService;
 
 @Controller
 public class MainController {
 
 	@Autowired
 	private MainService service;
+	
+	@Autowired
+	private QuestionService questionservice;
 	
 	@Autowired
 	private FileManager fileManager;
@@ -55,7 +62,18 @@ public class MainController {
 		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
 		
+		// FAQ
+		List<MediQDTO> qdtoList = questionservice.getQuestion();
+		List<String> answerList = new ArrayList<>();
+		for(MediQDTO qdto :qdtoList) {
+			String answer = "";
+			answer = questionservice.getAnswer(qdto.getQidx());
+			answerList.add(answer);
+		}
 		
+		mav.addObject("qdtoList", qdtoList);
+		mav.addObject("answerList", answerList);
+
 		mav.addObject("ndtoList",ndtoList);
 		mav.setViewName("index.tiles");
 		
@@ -301,5 +319,6 @@ public class MainController {
 		
 		return jsonArr.toString();
 	}
+	
 	
 }

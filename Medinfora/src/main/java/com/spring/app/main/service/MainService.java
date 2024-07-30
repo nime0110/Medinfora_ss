@@ -11,6 +11,7 @@ import com.spring.app.domain.ClasscodeDTO;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 

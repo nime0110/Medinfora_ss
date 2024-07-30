@@ -27,9 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.mypage.service.MypageService;
+import com.spring.app.question.service.QuestionService;
 
 @Controller
 @RequestMapping(value="/mypage/")
@@ -37,6 +39,9 @@ public class MypageController {
 	
 	@Autowired
 	private MypageService service;
+	
+	@Autowired
+	private QuestionService questionservice;
 
 	@Autowired
     private AES256 aES256;
@@ -613,5 +618,77 @@ public class MypageController {
 		
 		return mav;
 	}
+	
+	@GetMapping("myquestion.bibo")
+	public ModelAndView isLogin_myquestion(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/myquestion.info");
+		
+		return mav;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="myQnA.bibo", produces="text/plain;charset=UTF-8")
+	public String myQnA(HttpServletRequest request) {
+		
+		String searchSubject = request.getParameter("subject");
+		String searchType = request.getParameter("type");
+		String searchWord = request.getParameter("word");
+		String str_currentPageNo = request.getParameter("currentPageNo");
+		
+
+		HttpSession session = request.getSession();
+		session.setAttribute("readCountMark", "yes");
+
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		List<MediQDTO> qList = null;
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchSubject", searchSubject);
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("midx", String.valueOf(loginuser.getmIdx()));
+		
+		int totalCount = 0;
+		int sizePerPage = 10;
+		int currentPageNo = 1;
+		int totalPage = 0;
+		
+		totalCount = questionservice.totalquestion(paraMap);
+		
+		totalPage = (int) Math.ceil((double)totalCount/sizePerPage); 
+		
+		if(str_currentPageNo == null) {
+			currentPageNo = 1;
+		}
+		
+		try {
+			currentPageNo = Integer.parseInt(str_currentPageNo);
+		} catch (Exception e) {
+			currentPageNo = 1;
+		}
+		
+		int startRno = ((currentPageNo - 1) * sizePerPage) + 1; 
+		int endRno = startRno + sizePerPage - 1;
+		
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		qList = questionservice.totalquestionList(paraMap);
+		
+		Map<String, Object> qdtoMap = new HashMap<>();
+		qdtoMap.put("qList", qList);
+		qdtoMap.put("totalPage", totalPage);
+		
+		jsonObj.put("qdtoMap", qdtoMap);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	
 	
 }
