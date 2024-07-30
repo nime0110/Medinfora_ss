@@ -625,13 +625,53 @@ public class CommuController {
 
 	
 	
-
-	
-	
-	
-	
-	
 	// 글 삭제 (첨부파일 삭제)
+	@ResponseBody
+	@PostMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
+	public String questionDelete(HttpServletRequest request) {
+		String cidx = request.getParameter("cidx");
+		
+		
+		JSONObject jsonObj = new JSONObject();
+
+		//해당 게시글의 첨부파일 리스트 가져오기
+	    List<CommuFilesDTO> fileList = null;
+
+	    if (cidx != null) {
+	        fileList = service.getAttachfiles(cidx);
+	    }
+	    
+	    HttpSession session = request.getSession();
+	    String root = session.getServletContext().getRealPath("/");
+	    String path = root + "resources" + File.separator + "commu_attach_file";
+	    System.out.println("path: " + path);
+	    
+		Map<String, String> paraMap = new HashMap<>();
+	    
+		paraMap.put("path", path);
+		paraMap.put("cidx", cidx);
+		String fileName ="";
+		int n= 0;
+		//게시글 삭제
+		
+		if(!(fileList.isEmpty())) {
+			// 테이블 파일 삭제
+			service.fileDelAll(cidx);
+			//폴더 내 파일삭제
+			for(CommuFilesDTO cfdto : fileList) {			
+				paraMap.put("fileName", cfdto.getFileName());
+				service.folderFileDel(paraMap);        	
+			}
+
+		}
+		n = service.del(cidx);
+        
+        jsonObj.put("result", n);
+        
+        return jsonObj.toString();
+	
+	}
+	
 	
 	
 	

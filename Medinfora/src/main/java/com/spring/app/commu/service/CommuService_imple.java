@@ -107,6 +107,17 @@ public class CommuService_imple implements CommuService {
 		return cmdao.fileDel(paraMap);
 	}
 
+	@Override
+	public int fileDelAll(String cidx) {
+		return cmdao.fileDelAll(cidx);
+	}
+
+	@Override
+	public int del(String cidx) {
+		// TODO Auto-generated method stub
+		return cmdao.del(cidx);
+	}
+
 
 
 

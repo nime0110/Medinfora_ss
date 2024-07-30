@@ -30,7 +30,7 @@
 				<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}&currentShowPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
 					글수정하기
 				</button>
-				<button type="button" class="btn btn-secondary btn-sm" id="btnOpenModal">삭제하기</button>
+				<button type="button" class="btn btn-secondary btn-sm" onclick="del('${requestScope.cbdto.cidx}')">삭제하기</button>
 			</c:if>        
         </div>
          <div class="commu-attachment">
@@ -92,7 +92,7 @@
 
 
 
-<%-- 글 삭제 모달 --%>
+<%--
 <div id="deleteModal" class="modal modal-dialog">
     <div class="modal-content nanum-n">
         <span class="close nanum-n" style="text-align: right;">&times;</span>
@@ -108,7 +108,7 @@
         </form>
     </div>
 </div>
-
+--%>
 
 
 </body>

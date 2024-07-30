@@ -51,6 +51,12 @@ public interface CommuService {
 	//테이블에서 첨부파일 삭제
 	int fileDel(Map<String, String> paraMap);
 
+	//테이블에서 모든 첨부파일 삭제
+	int fileDelAll(String cidx);
+
+	//게시글 삭제
+	int del(String cidx);
+
 
 
 }

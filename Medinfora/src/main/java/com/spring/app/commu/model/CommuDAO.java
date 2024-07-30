@@ -40,6 +40,10 @@ public interface CommuDAO {
 
 	int fileDel(Map<String, String> paraMap);
 
+	int fileDelAll(String cidx);
+
+	int del(String cidx);
+
 
 	
 
