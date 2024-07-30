@@ -7,7 +7,32 @@ public class MediADTO {
 
 	private String aidx, qidx, userid, content, writeday, qnacnt;
 	
+	// 추가질답
+	private List<AddQnADTO> addqnadtoList;
 	
+	// 병원정보
+	private List<MemberDTO> memberList;
+	
+	private String classcode;
+	
+	
+	
+	public String getClasscode() {
+		return classcode;
+	}
+
+	public void setClasscode(String classcode) {
+		this.classcode = classcode;
+	}
+
+	public List<MemberDTO> getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(List<MemberDTO> memberList) {
+		this.memberList = memberList;
+	}
+
 	public String getQnacnt() {
 		return qnacnt;
 	}
@@ -15,8 +40,6 @@ public class MediADTO {
 	public void setQnacnt(String qnacnt) {
 		this.qnacnt = qnacnt;
 	}
-
-	private List<AddQnADTO> addqnadtoList;
 	
 
 	public List<AddQnADTO> getAddqnadtoList() {

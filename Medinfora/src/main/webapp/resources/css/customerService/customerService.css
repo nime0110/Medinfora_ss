@@ -15,13 +15,9 @@
 	background-color:var(--blue300);
 }
 
-.gptContainer{
-	height: 900px;
-}
-
 #chatContent{
 	border: solid 1px black;
-	height: 800px;
+	height: 600px;
 	overflow-y: auto;
 }
 

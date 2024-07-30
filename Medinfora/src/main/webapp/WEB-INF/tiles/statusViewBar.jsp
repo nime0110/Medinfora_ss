@@ -13,7 +13,7 @@
  				의료서비스 이용률
            </div>
            <div class="sidebar_list_title">
- 				통계2
+ 				시도별 일반 입원실 시설 현황
            </div>
            <div class="sidebar_list_title">
  				통계3
