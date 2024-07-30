@@ -7,7 +7,6 @@ public class CommuBoardDTO {
 	private String cidx, category, title, content, writeday, updateday, 
 				   userid, suggestioncnt, viewcnt, commentCount;
 	
-
 	// getter / setter
 	public String getCidx() {
 		return cidx;
@@ -88,6 +87,7 @@ public class CommuBoardDTO {
 	public void setCommentCount(String commentCount) {
 		this.commentCount = commentCount;
 	}
+
 
 
 	

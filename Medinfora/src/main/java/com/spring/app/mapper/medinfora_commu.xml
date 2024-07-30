@@ -22,31 +22,36 @@
 	<!-- 파일 등록 -->
 	<insert id="add_File" parameterType="CommuFilesDTO">
 		insert into commufiles(cidx, filename, orgname, filesize)
-		values(#{cidx}, #{fileName}, #{orgFilename}, #{fileSize})
+		values(#{cidx}, #{fileName}, #{orgname}, #{fileSize})
 	</insert>
 
 	<!-- 게시글 select (커뮤 게시판 리스트 뷰잉) -->
 	<select id="getCommuBoardList" parameterType="HashMap" resultType="CommuBoardDTO">
-		select cidx, category, title, commentcount, userid, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, viewcnt
-		from commu
-		where 1=1
+		select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt
+		from (
+		    select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt, ROW_NUMBER() OVER (ORDER BY cidx DESC) AS rno
+		    from commu
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
 		<if test='category != "0"'> 
 		    and category = #{category}
 		</if>
 		<if test='type != "z"'> 
-		    <if test='type == "title"'>
-		        and ( lower(title) like '%'||lower(#{title})||'%' )
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
 		    </if>
-		    <if test='type == "content"'>
-		        and ( lower(content) like '%'||lower(#{content})||'%' )
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
 		    </if>
-		    <if test='type == "userid"'>
-		        and ( lower(userid) like '%'||lower(#{userid})||'%' )
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
 		    </if>
 		</if>
-		<if test='word != ""'> 
-		    and ( lower(word) like '%'||lower(#{word})||'%' )
-		</if>	
+		order by cidx desc
 	</select>
 	
 	<!-- 첨부파일 유무 시퀀스  -->
@@ -67,23 +72,41 @@
 		    and category = #{category}
 		</if>
 		<if test='type != "z"'> 
-		    <if test='type == "title"'>
-		        and ( lower(title) like '%'||lower(#{title})||'%' )
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
 		    </if>
-		    <if test='type == "content"'>
-		        and ( lower(content) like '%'||lower(#{content})||'%' )
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
 		    </if>
-		    <if test='type == "userid"'>
-		        and ( lower(userid) like '%'||lower(#{userid})||'%' )
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
 		    </if>
 		</if>
-		<if test='word != ""'> 
-		    and ( lower(word) like '%'||lower(#{word})||'%' )
-		</if>	
 		GROUP BY cidx)
 	</select>
-
-
+	<!-- 게시글 상세  -->
+	<select id="getCommuDetail" parameterType="String" resultType="CommuBoardDTO" >
+		select cidx, category, title, commentcount, userid, content, 
+				to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as writeday, 
+       			to_char(to_date(updateday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as updateday, 
+       			viewcnt, suggestioncnt
+		from commu
+		where cidx = #{cidx}
+	</select>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="viewCntIncrease" parameterType="String">
+		update commu set viewcnt = viewcnt + 1
+		where cidx = #{cidx}
+	</update>
+		
+	<!-- 게시글 1개당 첨부파일 리스트 -->		
+	<select id="getAttachfiles" parameterType="String" resultType="CommuFilesDTO">
+		select filename, orgname, filesize
+		from commufiles
+		where cidx = #{cidx}
+	</select>
+	
 	
 
 </mapper>

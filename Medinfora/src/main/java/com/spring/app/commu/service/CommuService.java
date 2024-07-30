@@ -28,5 +28,15 @@ public interface CommuService {
 	//첨부파일 유무 알기 위해 DB select
 	List<String> getfileSeqList();
 
+	//조회수 증가 포함 글 상세 select 
+	CommuBoardDTO getCommuDetail(String cidx);
+
+	//첨부파일 가져오기
+	List<CommuFilesDTO> getAttachfiles(String cidx);
+
+	//조회수 증가 없이 글 상세 select
+	CommuBoardDTO getCommuDetail_no_increase_viewCnt(String cidx);
+
+
 
 }
