@@ -16,6 +16,7 @@ import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
 
 @Repository
@@ -260,6 +261,11 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public List<HospitalDTO> gethdtoList(Map<String, String> paraMap) {
 		return sqlsession.selectList("medinfora.gethdtoList",paraMap);
+	}
+
+	@Override
+	public int newsInputer(NewsDTO newsDTO) {
+		return sqlsession.insert("medinfora.newsInputer", newsDTO);
 	}
 
 

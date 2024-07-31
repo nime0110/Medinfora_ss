@@ -357,4 +357,9 @@
 		)where rno between #{sn} and #{en}
 	</select>
 	
+	<insert id="newsInputer" parameterType="NewsDTO">
+		INSERT INTO NEWS (NIDX, TITLE, CONTENT, IMGSRC, REGISTERDAY)
+		VALUES (SEQ_NIDX.nextval, #{title}, #{content}, #{imgsrc}, DEFAULT)
+	</insert>
+	
 </mapper>

@@ -35,13 +35,14 @@ $(document).ready(function(){
 
 
 // 질문 관련
+// 질문수정
 function questionupdate(){
     const frm = document.questionUpdate;
     frm.action = "questionUpdate.bibo";
     frm.submit();
 }
 
-
+// 질문 삭제
 function questionDelete(qidx){
     if(confirm("질문을 정말로 삭제하겠습니까?")){
         $.ajax({

@@ -68,5 +68,7 @@ public interface MypageService {
 	// (검색통계) T1 데이터 가져오기
 	List<Map<String, String>> getT1data(Map<String, String> paraMap);
 
+	List<Map<String, String>> getmyslog(MemberDTO loginuser);
+
 
 }

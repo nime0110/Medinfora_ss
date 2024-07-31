@@ -26,6 +26,26 @@ public interface CommuDAO {
 
 	List<String> getfileSeqList();
 
+	CommuBoardDTO getCommuDetail(String cidx);
+	
+	int viewCntIncrease(String cidx);
+
+	List<CommuFilesDTO> getAttachfiles(String cidx);
+
+	CommuBoardDTO getCommuDetail_no_increase_viewCnt(String cidx);
+
+	int edit(CommuBoardDTO cbdto);
+
+	int edit_file(CommuFilesDTO cfdto);
+
+	int fileDel(Map<String, String> paraMap);
+
+	int fileDelAll(String cidx);
+
+	int del(String cidx);
+
+
+	
 
 
 
