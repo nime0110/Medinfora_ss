@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.spring.app.domain.AddQnADTO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
+import com.spring.app.domain.MemberDTO;
 
 @Mapper
 public interface QuestionDAO {
@@ -39,6 +40,9 @@ public interface QuestionDAO {
 	// 답변등록
 	int answerWrite(MediADTO mdto);
 	
+	// 질문답변수 추가
+	int qacountplus(MediADTO mdto);
+	
 	// 추가질답 등록
 	int addqaUpload(AddQnADTO addqadto);
 	
@@ -65,5 +69,22 @@ public interface QuestionDAO {
 
 	// 조회수 증가
 	void viewCountIncrease(int qidx);
+	
+	// 병원정보 가져오기
+	List<MemberDTO> memberView(String userid);
+	
+	// 병원진료과목 수
+	List<String> getClassSize(String userid);
+		
+	// 병원 진료과목
+	String getClasscode(String classcode);
+	
+	// 메인 FAQ 관련
+	List<MediQDTO> qdtoFAQ();
+	String answerFAQ(String qidx);
+	
+	
+	
+	
 
 }

@@ -18,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.NewsDTO;
 
 public class Myutil {
 
@@ -283,5 +284,35 @@ public class Myutil {
                 return "";
         }
     }
+
+	public static List<NewsDTO> newsInputer(String localAddr) throws IOException, ParseException {
+		
+		List<NewsDTO> ndtoList = null;
+		
+		JSONParser parser = new JSONParser();
+		
+		Reader reader = new FileReader(localAddr);
+		
+		JSONArray jsonArr = (JSONArray) parser.parse(reader);
+				
+		if(jsonArr.size()>0) {
+			ndtoList = new ArrayList<NewsDTO>();
+			
+			for(int i=0; i<jsonArr.size();i++) {
+				
+				JSONObject jobj = (JSONObject) jsonArr.get(i);
+				
+				NewsDTO ndto = new NewsDTO();
+				ndto.setTitle((String)jobj.get("title"));
+				ndto.setContent((String)jobj.get("content"));
+				ndto.setImgsrc((String)jobj.get("imgSrc"));
+				
+				ndtoList.add(ndto);
+			}
+			
+		}
+		
+		return ndtoList;
+	}
 	
 }

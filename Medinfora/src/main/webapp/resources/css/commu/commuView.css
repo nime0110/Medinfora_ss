@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.commu-container {
+	width: 100%;
+    max-width: 80rem;
+	padding: 10vh 0 50px 0;
+    margin: 0 auto;
+}
+
+.title_area {
+	display: flex;
+    justify-content: space-between;
+    padding: 11px;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background: #FCFCFC;
+    line-height: 1.5em;
+    white-space: nowrap;
+}
+
+.idDayCnt_erea {
+    border-bottom: 1px solid #EEE;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2vh;
+    border-top: 1px solid #EEE;
+}
+
+.commu-button {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    height: 37px;
+    line-height: 25px;
+    padding: 0px 12px;
+    margin: 0;
+    border: 1px solid #ccc;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+}
+
+.button-list-area {
+	display: flex;
+    justify-content: space-between;
+}
+
+

@@ -178,7 +178,7 @@ SELECT cidx as seq
 
 select * from commu
 
-select category, title, commentcount, userid, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd'), viewcnt
+select category, title, commentcount, userid, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, viewcnt
 from commu
 where 1=1
 --검색시
@@ -218,3 +218,20 @@ where 1=1
         <if test='hpname != ""'>
             AND H.hpname LIKE '%' || #{hpname} || '%'
         </if>;
+
+select * from commu;
+
+-- 상세 쿼리
+select cidx, category, title, commentcount, userid, content, 
+       to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as writeday, 
+       to_char(to_date(updateday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as updateday, 
+       viewcnt, suggestioncnt
+from commu JOIN 
+
+where cidx = 23
+
+
+select filename 
+from commufiles A join commu B
+on A.cidx = B.cidx;
+

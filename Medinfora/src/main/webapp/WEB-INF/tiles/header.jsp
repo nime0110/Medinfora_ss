@@ -328,13 +328,12 @@
 			</c:if>
 					<i class="fa-solid fa-circle-question setcon"></i>
 				</a>
-			
 		</div>
 		<c:if test="${sessionScope.loginuser.mIdx == 1}">
-			<a href="#"  class="nanum-b size-s">내 질문</a>
+			<a href="<%=ctxPath%>/mypage/myquestion.bibo"  class="nanum-b size-s">내 질문</a>
 		</c:if>
 		<c:if test="${sessionScope.loginuser.mIdx == 2}">
-			<a href="#"  class="nanum-b size-s">내 답변</a>
+			<a href="<%=ctxPath%>/mypage/myquestion.bibo"  class="nanum-b size-s">내 답변</a>
 		</c:if>
 		<c:if test="${sessionScope.loginuser.mIdx != 1 and sessionScope.loginuser.mIdx != 2}">
 			<a href="<%=ctxPath%>/questionList.bibo"  class="nanum-b size-s">Q&A</a>
@@ -350,7 +349,7 @@
 	<div class="icon" onclick="gocustomerService()">
 			<i class="fa-solid fa-circle-info setcon"></i>
 		</div>
-		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">고객센터</a>
+		<a href="<%=ctxPath %>/customerService.bibo" class="nanum-b size-n">Chatbot</a>
     </li>
   </ul>
 </aside>

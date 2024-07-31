@@ -72,21 +72,27 @@
     <h1 class="sh_title nanum-b size-b">Infora</h1>
 
     <div class="sh_card-inner card-inner first">
-      <a href="<%=ctxPath %>/hpsearch/hospitalSearch.bibo" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-         <h4 class="nanum-n sh_font" style="font-weight: bold;">병원찾기</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">병원찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p class="sh_text">
-            주변 또는 찾고싶은 지역으로 병원을 검색할 수 있습니다.
-          </p>
-          <div class="img-content">
-            <img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
-          </div>
-        </div>
-      </a>
+		<a href="<%=ctxPath %>/status/serviceUtilization.bibo" class="sh-card">
+        	<div class="sh_card-front">
+          		<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#" />
+         		<h4 class="nanum-n sh_font" style="font-weight: bold;">의료서비스 이용률</h4>
+        	</div>
+        	<div class="sh_card-text">
+          		<h4 class="sh_card-title">
+          			의료서비스 이용률 
+          			<i class="bi bi-arrow-right"></i>
+          		</h4>
+          		<p class="sh_text">
+			 		특정연도의 연령별 입원 비율
+			 		<br>
+			 		개인 연령(15세 이상), 성별 에 해당하는 의료서비스 이용률을 확인하실 수 있습니다.
+          		</p>
+	          	<div class="img-content">
+	            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
+	          	</div>
+        	</div>
+      	</a>
+      	
       <a href="" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
@@ -136,95 +142,23 @@
           </div>
         </div>
       </a>
-    </div>
-    <div class="sh_card-inner card-inner first">
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-         <h4 class="nanum-s sh_font " style="font-weight: bold;">구입 가능한 의약품</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title card-title">구입 가능한 의약품 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" alt="#">
-          <h4 class="nanum-n sh_font" style="font-weight: bold;">의약품 복용법</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">의약품 복용법 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" style= "border-radius: 30px" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-        <h4 class="nanum-n sh_font"style="font-weight: bold;">의약품 사용법</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">의약품 사용법 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-         <h4 class="nanum-n sh_font" style="font-weight: bold;">통계 자료</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">통계 자료 <i class="bi bi-arrow-right"></i></h4>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_tongae.png" alt="#">
-          </div> 
-        </div>
-      </a>
-    </div>  
-    </div>
+    </div> 
+</div>
     
     <div id="carouselExampleIndicators" class="sh_car carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-          <div class="plz carousel-item active gohpsearch">
-              <img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-          </div>
-          <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-              
+		<div class="carousel-inner">
+			<div class="plz carousel-item active gohpsearch">
+            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
+          	<div class="carousel-item">
+              	<img src="<%=ctxPath %>/resources/img/sh_medi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
+          	<div class="carousel-item">
+              	<img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
             </div>
-          <div class="carousel-item">
-              <img src="<%=ctxPath %>/resources/img/sh_emer.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-          
-            </div>
-          <div class="carousel-item">
-            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-         
-          </div>
-        <div class="carousel-item">
-          <img src="<%=ctxPath %>/resources/img/sh_salemed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-        </div>
-      <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_eatmed.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-       
-      </div>
-      <div class="carousel-item">
-        <img src="<%=ctxPath %>/resources/img/sh_usemedi.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-      </div>
-    <div class="carousel-item">
-      <img src="<%=ctxPath %>/resources/img/sh_tongae.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
-     
-  </div>
+          	<div class="carousel-item">
+            	<img src="<%=ctxPath %>/resources/img/sh_findcl.png" class="d-block w-25 img-fluid mx-auto choveritem" alt="...">
+          	</div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
           <span class="carousel-control-prev-icon icconfig" aria-hidden="true"></span>
@@ -242,18 +176,20 @@
 <!-- 동혁 작업 영역 시작 -->
 <div id="FAQ" class="mb-5 sizearr">
   <h2 class="nanum-eb size-n mb-4">FAQ & 묻고 답하기</h2>
+  <c:set var="question"  value="${requestScope.qdtoList}" />
+  <c:set var="answer"  value="${requestScope.answerList}" />
     <div class="accordion" id="accordionExample">
       <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                   <span class="nanum-b">Q1.</span>&nbsp;
-                  <span class="nanum-n">첫번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[0].title}</span>
               </button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;첫번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[0]}</span>
               </div>
           </div>
       </div>
@@ -261,13 +197,13 @@
           <h2 class="accordion-header" id="headingTwo">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   <span class="nanum-b">Q2.</span>&nbsp;
-                  <span class="nanum-n">두번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[1].title}</span>
               </button>
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;두번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[1]}</span>
               </div>
           </div>
       </div>
@@ -275,13 +211,13 @@
           <h2 class="accordion-header" id="headingThree">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   <span class="nanum-b">Q3.</span>&nbsp;
-                  <span class="nanum-n">세번째 질문 내용이 들어갈 예정</span>
+                  <span class="nanum-n">${question[2].title}</span>
               </button>
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                   <i class="fa-regular fa-hand-point-right"></i>
-                  <span class="nanum-b">A.&nbsp;세번째 질문에 대한 답변이 들어갈 예정</span>
+                  <span class="nanum-b">A.&nbsp;${answer[2]}</span>
               </div>
           </div>
       </div>

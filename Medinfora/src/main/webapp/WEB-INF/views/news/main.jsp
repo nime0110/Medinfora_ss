@@ -107,24 +107,24 @@ div#oneqdto:hover{
 	<div>
 		<!-- 목차  -->
 		<div class="mt-4 px-3 subject">
-			<div class="row text-center py-3 nanum-eb size-s">
+			<div class="row text-center py-3 nanum-eb size-s" style="justify-content: space-around !important;">
+				<span class="col-2"></span>
 				<span class="col-5">제목</span>
-				<span class="col-2">작성일자</span>
-				<span class="col-1">조회수</span>
+				<span class="col-2" style="text-align: right">작성일자</span>
 			</div>
 		</div>
 		
 		<!-- 여기에 리스트 띄우면 됨 -->
 		<div class="mb-5 px-3" id="questionArea">
-				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">
-					<span class="col-5" align="left">
-						제목&nbsp;
+				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto" style="justify-content: space-around !important;">
+					<span class="col-2">
+						<div style="border:solid 1px black; height: 100px; width:100px"></div>
 					</span>
-					<span class="col-2" align="left">
-						작성일자&nbsp;
+					<span class="col-5" style="text-align: left; padding-top: 35px;">
+						어찌고저찌고 해서 어찌고 저찌고함&nbsp;
 					</span>
-					<span class="col-1" align="left">
-						조회수&nbsp;
+					<span class="col-2" style="text-align: right; padding-top: 35px;">
+						2024-07-31&nbsp;
 					</span>
 				</div>
 		</div>
@@ -133,9 +133,5 @@ div#oneqdto:hover{
 	
 	<%-- 페이지 바 --%>
 	<div class="pagebar" style="text-align: center;"></div>
-	
-	<div class="py-5 text-center">
-		<button class="write nanum-eb size-s" type="button" onclick="gowrite()">등록</button>
-	</div>
 	
 </div>

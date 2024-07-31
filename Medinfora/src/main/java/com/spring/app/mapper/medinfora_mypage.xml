@@ -824,4 +824,15 @@
 		where rno between 1 and 7
 	</select>
 	
+	<resultMap type="java.util.HashMap" id="slogmap">
+		<result property="searchword" column="searchword" javaType="java.lang.String"/>
+		<result property="registerday" column="registerday" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<select id="getmyslog" parameterType="MemberDTO" resultMap="slogmap">
+		select SEARCHWORD,REGISTERDAY
+		from SEARCHLOG where userid = #{userid}
+		order by  REGISTERDAY desc
+	</select>
+	
 </mapper>

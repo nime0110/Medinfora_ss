@@ -11,6 +11,7 @@ import com.spring.app.common.Myutil;
 import com.spring.app.domain.HolidayVO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
+import com.spring.app.domain.NewsDTO;
 import com.spring.app.main.service.MainService;
 
 
@@ -22,6 +23,7 @@ public class TestController {
 	
 	@RequestMapping(value="/test.bibo")
 	public ModelAndView commom(ModelAndView mav) {
+		
 		
 		if(true) {
 			try {
@@ -96,6 +98,28 @@ public class TestController {
 				e.printStackTrace();
 			}
 		}
+		
+		try {
+			String localAddr = "";
+			
+			List<NewsDTO> ndtoList = Myutil.newsInputer(localAddr);
+			
+			System.out.println("데이터 입력시작");
+			int totalSize = ndtoList.size();
+			for(int i=0;i<ndtoList.size();i++) {
+				
+				System.out.print("진행상황 ["+(i+1)+"/"+totalSize+"]");
+				if(service.newsInputer(ndtoList.get(i))==1) {
+					System.out.println("...성공");
+				}else {
+					System.out.println("...실패");
+				}
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		mav.setViewName("redirect:index.bibo");
 		
 		return mav;
