@@ -234,6 +234,8 @@ function Page(currentShowPageNo){
             else{
                 v_html = `예약이 존재하지 않습니다.`;
                 $("div.reserveBox").html(v_html);
+                $("div.reserveBox").addClass("noReserve");
+                
                 let pageBar = ``;
                 $("div#ReserveHP_PageBar").html(pageBar);
             }   // end of if~else----------
