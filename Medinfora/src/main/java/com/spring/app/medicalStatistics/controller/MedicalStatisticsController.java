@@ -164,7 +164,7 @@ public class MedicalStatisticsController {
 		String age = request.getParameter("age");
 		String year = request.getParameter("year");
 		
-		System.out.println(cancer);
+		// System.out.println(cancer);
 		
 		String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey="+key+"&itmId=16117ac000101+16117AC000107+&objL1="+cancer+"&objL2="+gender+"&objL3="+age+"&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe="+year+"&endPrdDe="+year+"&outputFields=NM+ITM_NM+PRD_DE+&orgId=117&tblId=DT_117N_A00023";
 		

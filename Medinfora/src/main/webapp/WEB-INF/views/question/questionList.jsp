@@ -118,10 +118,38 @@ $(document).ready(function(){
 	
 	$("div#oneqdto").click(function(e){
 		
-		const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
-		// alert("확인용 : "+qidx);
+		const midx = $("input:hidden[name='midx']").val();
 		
-		goView(qidx);
+		const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
+		const writer = $(e.target).closest("div#oneqdto").find("input[name='writer']").val();
+		const open = $(e.target).closest("div#oneqdto").find("input[name='open']").val();
+		// const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
+		// alert("확인용 : "+qidx);
+
+		// 글공개 여부 확인 후 검사
+		if(open == "2"){
+			if(midx == "0" || midx == "2"){	// 관리자 또는 의료회원
+				goView(qidx);
+			}
+			else if(midx == "9999"){	// 로그인 안한 유저
+				alert("비공개 글입니다.");
+				return;
+			}
+			else{	// 로그인한 일반유저
+				const userid = $("input:hidden[name='userid']").val();
+				if(userid == writer ){
+					goView(qidx);
+				}
+				else{
+					alert("비공개 글입니다.");
+					return;
+				}
+
+			}
+		}
+		else{
+			goView(qidx);
+		}
 	});
 	
 	
@@ -223,7 +251,9 @@ function searchList(pageNo, subject, type, word){
 				
 				questionArea += `<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">
 									<input type="hidden" value="\${item.qidx}" name="qidx"/>
-									<input type="hidden" value="\${item.userid}"/>
+									<input type="hidden" value="\${item.userid}" name="writer" />
+									<input type="hidden" value="\${item.open}" name="open" />
+									<input type="hidden" value="\${item.pwd}" name="pwd" />
 									<span class="col-2">`;
 									
 				if(item.subject == "1"){
@@ -241,6 +271,10 @@ function searchList(pageNo, subject, type, word){
 								 
 				if(item.imgsrc.trim() != ""){
 					questionArea += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>&nbsp;`;
+				}
+
+				if(item.open == "2"){
+					questionArea += `&nbsp;&nbsp;<i class="fa-solid fa-lock fa-sm" style="color: #535965;"></i>`;
 				}
 				
 				if(item.newwrite == "0"){
@@ -286,7 +320,7 @@ function searchList(pageNo, subject, type, word){
 			$("input:text[name='word']").val(word);
 			
 			
-			<%-- 망할 페이지바  코드중복...--%>
+			<%-- 페이지바 --%>
 			const blockSize = json.qdtoMap.blockSize;
 			let loop = json.qdtoMap.loop;
 			let pageNo = json.qdtoMap.pageNo;
@@ -337,13 +371,42 @@ function searchList(pageNo, subject, type, word){
 			$("div.pagebar").html(pageBar);
 			
 			
-			
+			// 글조회
 			$("div#oneqdto").click(function(e){
+
+				const midx = $("input:hidden[name='midx']").val();
 				
 				const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
+				const writer = $(e.target).closest("div#oneqdto").find("input[name='writer']").val();
+				const open = $(e.target).closest("div#oneqdto").find("input[name='open']").val();
+				// const qidx = $(e.target).closest("div#oneqdto").find("input[name='qidx']").val();
 				// alert("확인용 : "+qidx);
-				
-				goView(qidx);
+
+				// 글공개 여부 확인 후 검사
+				if(open == "2"){
+					if(midx == "0" || midx == "2"){	// 관리자 또는 의료회원
+						goView(qidx);
+					}
+					else if(midx == "9999"){	// 로그인 안한 유저
+						alert("비공개 글입니다.");
+						return;
+					}
+					else{	// 로그인한 일반유저
+						const userid = $("input:hidden[name='userid']").val();
+						if(userid == writer ){
+							goView(qidx);
+						}
+						else{
+							alert("비공개 글입니다.");
+							return;
+						}
+
+					}
+				}
+				else{
+					goView(qidx);
+				}
+
 			});
 			
 
@@ -429,12 +492,24 @@ function goView(qidx){
 			</div>
 		</div>
 		
+		<%-- 비밀글 관련 --%>
+		<c:if test="${not empty sessionScope.loginuser}">
+			<input type="hidden" value="${sessionScope.loginuser.mIdx}" name="midx"/>
+			<input type="hidden" value="${sessionScope.loginuser.userid}" name="userid"/>
+		</c:if>
+		<c:if test="${empty sessionScope.loginuser}">
+			<input type="hidden" value="9999" name="midx"/>
+		</c:if>
+		
 		<%-- 리스트 보여지는 곳 --%>
 		<div class="mb-5 px-3" id="questionArea">
+			
 			<c:forEach var="qdto" items="${requestScope.qdtoMap.qList}"  varStatus="status">
 				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto">
 					<input type="hidden" value="${qdto.qidx}" name="qidx"/>
-					<input type="hidden" value="${qdto.userid}"/>
+					<input type="hidden" value="${qdto.userid}" name="writer"/>
+					<input type="hidden" value="${qdto.open}" name="open" />
+					<input type="hidden" value="${qdto.pwd}" name="pwd" />
 					<span class="col-2">
 						<c:if test="${qdto.subject eq '1'}">건강상담</c:if>
 						<c:if test="${qdto.subject eq '2'}">식생활,식습관</c:if>
@@ -442,6 +517,7 @@ function goView(qidx){
 					</span>
 					<span class="col-5" align="left">
 						${qdto.title}&nbsp;<c:if test="${qdto.imgsrc != ' '}"><i class="fa-solid fa-paperclip" style="color: #535965;"></i></c:if>&nbsp;
+						<c:if test="${qdto.open eq '2'}"><i class="fa-solid fa-lock fa-sm" style="color: #535965;"></i></c:if>&nbsp;
 						<c:if test="${qdto.newwrite eq '0'}"><i class="fa-solid fa-n fa-sm" style="color: #ffa34d;"></i></c:if>
 					
 					</span>

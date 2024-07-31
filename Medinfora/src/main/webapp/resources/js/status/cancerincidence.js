@@ -87,6 +87,7 @@ function getData(){
             //console.log(JSON.stringify(json));
           
             multichart(json);
+
         },
         error : function(errcode){
             console.log("error :"+errcode);
@@ -109,8 +110,11 @@ function multichart(json){
   const incidence = [];  // 조발생률 연령대
   const occurrences_woman = []; // 발생자수 여자
   const occurrences_man = []; // 발생자수 남자
-  const man = []; // 발생자수 여자
+  const man = []; // 발생자수 남자
   const woman = []; // 발생자수 여자
+  const man_i = []; // 조발생률 남자
+  const woman_i = []; // 조발생률 여자
+
   const age = []; // 연령대
 
   let cancer = json[0].C1_NM; // 암종류
@@ -252,6 +256,51 @@ function multichart(json){
     });
 
   }
+
+  // 조발생률 남자
+  $.each(incidence_man, function(index, item){
+
+    let num1 = item.DT;
+
+    if(num1 == "-"){
+      num1 = 0;
+    }
+
+    if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+      const sum = Number(num1);
+      man_i.push(Math.round(sum * 10)/10);
+
+    }
+    else{
+      const sum2 = Number(num1);
+      man_i[man_i.length - 1] += Math.round(sum2 * 10)/10;
+    }
+
+  });
+
+  // 조발생률 여자
+  $.each(incidence_woman, function(index, item){
+
+    let num1 = item.DT;
+
+    if(num1 == "-"){
+      num1 = 0;
+    }
+
+    if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+      const sum = Number(num1);
+      woman_i.push(Math.round(sum * 10)/10);
+
+    }
+    else{
+      const sum2 = Number(num1);
+      woman_i[woman_i.length - 1] += Math.round(sum2 * 10)/10;
+    }
+
+  });
+
 
 
   // 발생자수(연령대별 구하기)
@@ -397,11 +446,86 @@ function multichart(json){
   };
 
   $("div#chart").empty();
+  $("div#dataArea").empty();
 
 
   let chart = new ApexCharts(document.querySelector("#chart"), options);
   chart.render();
 
+
+
+  /*
+  const incidence_total = []; // 조발생률 총
+  const occurrences_total = []; // 발생자수 총
+  const incidence_woman = []; // 조발생률 여자
+  const incidence_man = [];  // 조발생률 남자
+  const incidence = [];  // 조발생률
+  const occurrences_woman = []; // 발생자수 여자
+  const occurrences_man = []; // 발생자수 남자
+  const man = []; // 발생자수 여자
+  const woman = []; // 발생자수 여자
+  const age = []; // 연령대
+  */
+
+  let dataTable = `<table class="table-bordered" id="datatable">
+                    <thead style="background-color: var(--object-skyblue-color);">
+                      <tr>
+                          <th rowspan="2" width="150">암종류</th>
+                          <th rowspan="2" width="100">성별</th>
+                          <th rowspan="2" width="150">연령대</th>
+                          <th colspan="2">${year}년</th>
+                      </tr>
+                      <tr>
+                        <th width="150">발생자수(명)</th>
+                        <th width="250">조발생률(명/10만명)</th>
+                      </tr>
+                    </thead>`;
+  
+  dataTable += `<tbody class="nanum-b">`;
+
+
+  $.each(man, function(index, item){
+    if(index == 0){
+      dataTable += `<tr>
+                      <td rowspan='${man.length+woman.length}'>${cancer}</td>
+                      <td rowspan='${man.length}'>남자</td>
+                      <td>${age[index]}</td>
+                      <td>${item}</td>
+                      <td>${Number(man_i[index]).toFixed(1)}</td>
+                    </tr>`;
+    }
+    else{
+      dataTable += `<tr>
+                      <td>${age[index]}</td>
+                      <td>${item}</td>
+                      <td>${Number(man_i[index]).toFixed(1)}</td>
+                    </tr>`;
+    }
+  });
+
+  $.each(woman, function(index, item){
+    if(index == 0){
+      dataTable += `<tr>
+                      <td rowspan='${woman.length}'>여자</td>
+                      <td>${age[index]}</td>
+                      <td>${item}</td>
+                      <td>${Number(woman_i[index]).toFixed(1)}</td>
+                    </tr>`;
+    }
+    else{
+      dataTable += `<tr>
+                      <td>${age[index]}</td>
+                      <td>${item}</td>
+                      <td>${Number(woman_i[index]).toFixed(1)}</td>
+                    </tr>`;
+    }
+  });
+
+  dataTable += `  </tbody>
+		            </table>`;
+
+
+  $("div#dataArea").html(dataTable);
 
 }
 

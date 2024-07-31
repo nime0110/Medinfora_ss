@@ -614,14 +614,15 @@ public class QuestionController {
 			
 			HttpSession session = request.getSession();
 			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
-			String qidx = qdto.getQidx();
-			if(loginuser.getUserid().equalsIgnoreCase(qdto.getUserid())) {
+			String qidx = request.getParameter("qidx");
+			String writer = request.getParameter("writer");
+			if(loginuser.getUserid().equalsIgnoreCase(writer)) {
 				// 글정보 가져오기
 				MediQDTO originqdto = questionservice.questionView(Integer.parseInt(qidx));
 				request.setAttribute("originqdto", originqdto);
 			}
 			else {
-				redirect = "redirect:/questionView.bibo?qidx="+qdto.getQidx();
+				redirect = "redirect:/questionView.bibo?qidx="+qidx;
 			}
 		}
 		else {

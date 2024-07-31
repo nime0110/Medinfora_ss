@@ -223,7 +223,7 @@
       </div>
     </div>
   <div class="lookupdiv">
-    <h3 class="nanum-n nanum-b lookupfnq">더보기</h3>
+    <h3 class="nanum-n nanum-b lookupfnq" onclick='location.href="<%=ctxPath%>/questionList.bibo"'>더보기</h3>
   </div>
 </div>
 <!-- 동혁 작업 영역 끝 -->

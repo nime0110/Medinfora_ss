@@ -10,18 +10,6 @@
 
 <style type="text/css">
 
-.b_red {
-   border: solid 1px red;
-}
- 
-.b_blue {
-   border: solid 1px blue;
-}
- 
-.b_black {
-   border: solid 1px black;
-}
-
 .subject {
    border-top: 3px solid black;
    border-bottom: 1px solid black;
@@ -124,6 +112,8 @@ div.wrap-text {
     white-space: normal;
 }
 
+
+
 div#medinfo {
 	background-color: #d8eaff;
 }
@@ -194,7 +184,7 @@ function goList(){
 
 		</div>
 		<div class="py-2 w-75">
-			<div class="nanum-b wrap-text">${requestScope.totalcontent.qdto.content}</div>
+			<div class="nanum-b size-s wrap-text">${requestScope.totalcontent.qdto.content}</div>
 			
 			<c:if test="${not empty requestScope.totalcontent.qdto.filename}">
 				<div class="mt-5 w-75" style="background-color: aquamarine;">
@@ -218,7 +208,7 @@ function goList(){
 	
 	<%-- 질문 수정삭제 --%>
 	<form name="questionUpdate" method="post">
-		<input type="hidden" id="writer" value="${requestScope.totalcontent.qdto.userid}">
+		<input type="hidden" id="writer" name="writer" value="${requestScope.totalcontent.qdto.userid}">
 		<input type="hidden" name="qidx" value="${requestScope.totalcontent.qdto.qidx}">
 	</form>
 	<c:if test="${not empty sessionScope.loginuser and  sessionScope.loginuser.userid eq requestScope.totalcontent.qdto.userid}">
