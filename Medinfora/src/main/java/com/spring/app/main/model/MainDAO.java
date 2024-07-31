@@ -10,6 +10,7 @@ import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
 
 public interface MainDAO {
@@ -109,6 +110,8 @@ public interface MainDAO {
 
 	// (검색) 병원추가검색
 	public List<HospitalDTO> gethdtoList(Map<String, String> paraMap);
+
+	public int newsInputer(NewsDTO newsDTO);
 
 
 

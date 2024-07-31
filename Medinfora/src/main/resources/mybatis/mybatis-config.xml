@@ -18,6 +18,7 @@
 		<typeAlias type="com.spring.app.domain.MediQDTO" alias="MediQDTO"/>
 		<typeAlias type="com.spring.app.domain.MediADTO" alias="MediADTO"/>
 		<typeAlias type="com.spring.app.domain.AddQnADTO" alias="AddQnADTO"/>
+		<typeAlias type="com.spring.app.domain.NewsDTO" alias="NewsDTO"/>
 		<typeAlias type="com.spring.app.domain.commu.BookmarkDTO" alias="BookmarkDTO"/>
 		<typeAlias type="com.spring.app.domain.commu.CommuBoardDTO" alias="CommuBoardDTO"/>
 		<typeAlias type="com.spring.app.domain.commu.CommuCommentDTO" alias="CommuCommentDTO"/>

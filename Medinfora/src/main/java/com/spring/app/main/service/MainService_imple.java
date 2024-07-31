@@ -24,6 +24,7 @@ import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.main.model.MainDAO;
 
@@ -446,6 +447,14 @@ public class MainService_imple implements MainService {
 		}
 		
 		return hdtoList;
+	}
+
+	@Override
+	public int newsInputer(NewsDTO newsDTO) {
+		
+		System.out.print(" "+newsDTO.getTitle());
+		
+		return dao.newsInputer(newsDTO);
 	}
 	
 }

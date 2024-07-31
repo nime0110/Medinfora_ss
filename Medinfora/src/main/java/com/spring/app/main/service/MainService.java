@@ -13,6 +13,7 @@ import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.KoreaAreaVO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
+import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
 
 public interface MainService {
@@ -90,5 +91,7 @@ public interface MainService {
 
 	// (검색) 병원 추가 검색
 	public List<HospitalDTO> getmorehinfo(Map<String, String> paraMap);
+
+	public int newsInputer(NewsDTO newsDTO);
 	
 }
