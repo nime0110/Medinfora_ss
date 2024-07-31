@@ -107,21 +107,6 @@ public class MedicalStatisticsController {
 		mav.setViewName("status/facilities.status");
 		return mav;
 	}
-	
-	@ResponseBody
-	@GetMapping("getFacilityData.bibo")
-	public String getFacilityData(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		// 상대 주소 가져오기 
-		String useridAdress = (String) session.getAttribute("address");
 
-		JSONObject jsonObj = new JSONObject();
-		
-	    jsonObj.put("categories", new String[]{"Category1", "Category2", "Category3"});
-        jsonObj.put("values", new int[]{100, 200, 300});
-		
-		
-		return jsonObj.toString();
-	}
 	
 }

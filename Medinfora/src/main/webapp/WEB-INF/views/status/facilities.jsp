@@ -182,10 +182,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="nanum-n my-2" id="main2" style="width: 100%; height: 600px;"></div>    
     ${sessionScope.loginuser.address}
     </div>
-    
+    <hr>
 </c:if>
 
-<hr>
+
 <div style="text-align:center;">
     <span class="nanum-b size-n name mt-5">
         시도별 일반 입원실 시설 현황
