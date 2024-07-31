@@ -55,3 +55,12 @@ input:focus, select {
 	border: solid 2px var(--text-black-color);
 	border-radius: 0.5rem;
 }
+
+.noReserve{
+	text-align:center;
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 1.3rem !important;
+	color: var(--object-lightpurple-font-color);
+	font:var(--font);
+}
