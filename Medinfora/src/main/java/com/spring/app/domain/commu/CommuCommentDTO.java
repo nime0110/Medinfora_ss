@@ -2,8 +2,10 @@ package com.spring.app.domain.commu;
 
 public class CommuCommentDTO {
 
+	// 글번호, 유저아이디, 내용, 작성일자, 수정일자, 대댓글그룹번호, 뎁스(공간 띄우기용), 대댓글번호, 대댓글구분번호
 	private String cidx, userid, content, writeday, updateday, groupno, depthno, fk_cmidx, cmidx;
 
+	
 	// getter / setter
 	public String getCidx() {
 		return cidx;

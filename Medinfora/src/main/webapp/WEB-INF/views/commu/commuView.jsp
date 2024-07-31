@@ -62,34 +62,43 @@
 		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🔖북마크 </button>
 	</div>
     <!-- 댓글이 보여짐 , 대댓글 까지만 되고 대댓글 한 경우 아이디가 @아이디 되도록? -->
-    <div id="commentDisplay">
-	
-	<%-- #155. 댓글페이지바가 보여지는 곳  시작--%>
+    <ul id="commentDisplay"></ul>
+    
+    
+	<%-- 
 	<div style="display: flex; margin-bottom: 50px;">
          <div id="pageBar" style="margin: auto; text-align: center;"></div>
       </div>
-	<%-- #155. 댓글페이지바가 보여지는 곳 끝 --%>
-	</div>
+	 댓글페이지바가 보여지는 곳 끝 --%>
 	 
+	<div class="pagination" id="rpageNumber"></div>
+	<%-- 댓글쓰기 --%>
+	
 	<c:if test="${not empty sessionScope.loginuser}">
 		<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
 			<div id="commentArea">
-				<form class="answer" name="answer">
-					<input type="text" value="${requestScope.cbdto.cidx}" name="answer" />
-					<input type="text" value="${sessionScope.loginuser.userid}" name="userid" />
-					<textarea class="form-control" name="content"
-						placeholder="답변 내용을 입력하세요." maxlength="150"></textarea>
-					<div style="text-align: right;">
-						<button class="nanum-b commu-button" id="upload" type="button" onclick="answerupload()">등록</button>
-						<button class="nanum-b commu-button" id="acancle" type="button" onclick="answercanle()">취소</button>
-					</div>
-				</form>
+				<textarea class="form-control" name="content"
+					placeholder="댓글 내용을 입력하세요." maxlength="150"></textarea>
+				<div style="text-align: right;">
+					<button class="nanum-b commu-button" type="button" onclick="goAddWrite()">등록</button>
+					<button class="nanum-b commu-button" type="button" onclick="answercanle()">취소</button>
+				</div>
+				<%--
+				<button type="button" class="btn btn-secondary btn-sm mr-3"
+				 onclick="javascript:location.href='<%= ctxPath%>/commu/addComment.bibo?groupno=${requestScope.boardvo.groupno}&fk_seq=${requestScope.boardvo.seq}&depthno=${requestScope.boardvo.depthno}'"
+				>
+					답댓글쓰기
+				</button>
+				 댓글쓰기 --%>
 			</div>
 		</form>
 	</c:if>
 </div>
 
-
+<input type="hidden" value="${requestScope.cbdto.cidx}" name="cidx" id="cidx" /> <%-- 원글번호 --%>
+<input type="hidden" value="${sessionScope.loginuser.userid}" name="userid" id="loginuserid"/>  <%-- 로그인하고있는내아이디 --%>
+<input type="hidden" value="${sessionScope.cbdto.commentCount}" name="commentCount" id="commentCount" />  <%-- 댓글여부 --%>
+	
 
 
 <%--

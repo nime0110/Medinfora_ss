@@ -78,6 +78,9 @@
                         </span>
                         <span class="col-5" align="left">
                             ${cbdto.title}
+                            <c:if test="${cbdto.commentCount != 0}">                            
+	                            [${cbdto.commentCount}]
+                            </c:if>
                             <c:forEach var="seq" items="${requestScope.fileSeqList}"  varStatus="status">
                                 <c:if test="${cbdto.cidx == seq}"><i class="fa-solid fa-paperclip" style="color: #535965;"></i></c:if>
                             </c:forEach>
