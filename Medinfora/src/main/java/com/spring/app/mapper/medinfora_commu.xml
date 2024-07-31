@@ -107,6 +107,26 @@
 		where cidx = #{cidx}
 	</select>
 	
+	<!-- 글 수정하기 -->
+	<update id="edit" parameterType="CommuBoardDTO" >
+		update commu set category = #{category}, title = #{title}, content = #{content}, updateday = default
+		where cidx = #{cidx}
+	</update>
+	<!-- 특정 첨부파일 삭제하기 -->
+	<delete id="fileDel" parameterType="String">
+		delete from commufiles
+		 where cidx = #{cidx} and filename = #{fileName}
+	</delete>
 	
+	<!-- 모든 첨부파일 삭제하기 -->
+	<delete id="fileDelAll" parameterType="String">
+		 delete from commufiles
+		 where cidx = #{cidx}
+	</delete>
+	<!-- 글 삭제하기 -->
+	<delete id="del" parameterType="String">
+		 delete from commu
+		 where cidx = #{cidx}
+	</delete>
 
 </mapper>

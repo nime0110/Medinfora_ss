@@ -188,11 +188,6 @@ public class CommuController {
 	}
 
 	
-	
-	
-	
-	
-	
 	// 글 리스트
 	/*
 	@GetMapping(value="/commu/commuList.bibo")
@@ -331,11 +326,11 @@ public class CommuController {
 		
 		
 		CommuBoardDTO cbdto = new CommuBoardDTO();
-		CommuFilesDTO cfdto = new CommuFilesDTO();
 		
 		cbdto.setCategory(category);
 		cbdto.setTitle(title);
 		cbdto.setContent(content);
+		CommuFilesDTO cfdto = new CommuFilesDTO();
 
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
@@ -407,9 +402,7 @@ public class CommuController {
 	public ModelAndView commuView(ModelAndView mav, HttpServletRequest request) {
 
 	    String cidx = request.getParameter("cidx");
-	    System.out.println("~~~cidx:" + cidx);
 	    String currentShowPageNo = request.getParameter("currentShowPageNo");
-	    System.out.println("~~~currentShowPageNo:" + currentShowPageNo);
 	    String category = request.getParameter("category");
 	    String type = request.getParameter("type");
 	    String word = request.getParameter("word");
@@ -473,50 +466,221 @@ public class CommuController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 글 수정
+	@GetMapping("/commu/commuEdit.bibo")
+	public ModelAndView isLogin_commuEdit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		//수정완료후 돌아갈 곳으로 보내기위해서 쿼리문을 받아옴
+	    String currentShowPageNo = request.getParameter("currentShowPageNo");
+	    String category = request.getParameter("category");
+	    String type = request.getParameter("type");
+	    String word = request.getParameter("word");
+		
+		
+		//글 수정해야할 글번호 가져오기
+		String cidx = request.getParameter("cidx");
+		String message = "";
+		try {
+			if (Integer.parseInt(cidx) <= 0) {
+				message = "글 수정이 불가합니다.";
+			}
+			
+		    CommuBoardDTO cbdto = null;
+		    List<CommuFilesDTO> fileList = null;
+
+		    if (cidx != null) {
+		        // 조회수 증가랑 같이 글 하나 보기
+		        cbdto = service.getCommuDetail(cidx);
+		        // 첨부파일 가져오기
+		        fileList = service.getAttachfiles(cidx);
+		    }
+
+			//로그인된 유저와 글쓴이가 같은지 
+			if(cbdto == null) {
+				message = "글 수정이 불가합니다.";
+			} else {
+				HttpSession session = request.getSession();
+				MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+				if( !loginuser.getUserid().equals(cbdto.getUserid()) ) { //다른사람글수정
+					message = "다른 사용자의 글은 수정이 불가합니다.";
+				} else {
+					//자신의 글을 수정할 경우
+					//가져온 1개 글을 글수정할 폼이 있는 view단으로 보내준다
+					mav.addObject("cbdto", cbdto);
+					mav.addObject("fileList", fileList);
+				    mav.addObject("currentShowPageNo", currentShowPageNo);
+				    mav.addObject("category", category);
+				    mav.addObject("type", type);
+				    mav.addObject("word", word);
+					mav.setViewName("commu/commuEdit.tiles");
+					return mav;
+				}
+			}
+			
+		} catch (NumberFormatException e) {
+			message = "글 수정이 불가합니다.";
+		}
+		String loc = "javascript:history.back()";
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		return mav;
+	}
 	
-	// 글 삭제
+	// 글 수정 완료
+	@ResponseBody
+	@PostMapping(value="/commu/commuUpdateEnd.bibo", produces="text/plain;charset=UTF-8")
+	public String editEnd(CommuBoardDTO cbdto, MultipartHttpServletRequest mtp_request, HttpServletRequest request, HttpServletResponse response) {
+	    String cidx = cbdto.getCidx();
+	    
+	    HttpSession session = request.getSession();
+	    session = mtp_request.getSession();
+	    
+	    List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
+	    System.out.println("fileList:" + fileList);
+	    
+	    String root = session.getServletContext().getRealPath("/");
+	    String path = root + "resources" + File.separator + "commu_attach_file";
+	    
+	    CommuFilesDTO cfdto = new CommuFilesDTO();
+	    
+	    byte[] bytes = null;
+	    long fileSize = 0;
+	    
+	    JSONObject jsonObj = new JSONObject();
+	    String originalFilename = "";
+	    String newFileName = "";
+	    
+	    int n = 0;
+	    
+	    // 글 수정하기
+	    n = service.edit(cbdto);
+	    jsonObj.put("result", n);
+	    
+	    if(fileList != null && fileList.size() > 0) { 
+	        try {
+	        	 // 첨부파일 테이블 비우기 및 파일경로에서 해당첨부파일 삭제
+	            // 새로운 파일 업로드
+	            for (MultipartFile mfile : fileList) {
+	                bytes = mfile.getBytes();
+	                originalFilename = mfile.getOriginalFilename();
+	                newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+	                fileSize = mfile.getSize();
+	                
+	                cfdto.setCidx(cidx);
+	                cfdto.setFileName(newFileName);
+	                cfdto.setOrgname(originalFilename);
+	                cfdto.setFileSize(String.valueOf(fileSize));
+	                
+	                // 첨부파일 테이블 입력하기
+	                service.add_File(cfdto); //파일첨부 테이블에 넣음
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            jsonObj.put("result", 0);
+	        }
+	    }
+	    
+	    return jsonObj.toString();
+	}
+
 	
-	// 댓글 쓰기
+	//첨부파일 사용자가 선택한것만 삭제
+	@ResponseBody
+	@PostMapping(value = "/commu/commuDeleteFile.bibo", produces = "text/plain;charset=UTF-8")
+	public String commuSearch(HttpServletRequest request){
+		
+		String cidx = request.getParameter("cidx");
+		String fileName = request.getParameter("fileName");
+		System.out.println("cidx: " + cidx); //36 
+		System.out.println("fileName: " + fileName); //20240730194746113119567455400.jpg
+		
+		Map<String, String> paraMap = new HashMap<>();
+        List<CommuFilesDTO> existFileList = service.getAttachfiles(cidx);
+        
+	    HttpSession session = request.getSession();
+	    
+	    String root = session.getServletContext().getRealPath("/");
+	    String path = root + "resources" + File.separator + "commu_attach_file";
+	    System.out.println("path: " + path);
+        
+        paraMap.put("cidx", cidx);
+        paraMap.put("path", path);
+        paraMap.put("fileName", fileName);
+        
+        int n= 0;
+        
+        // 테이블 파일 삭제
+        n = service.fileDel(paraMap);
+        if(n == 1) {
+        	//폴더 내 파일삭제
+        	service.folderFileDel(paraMap);        	
+        }
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("result", n);
+        
+        return jsonObj.toString();
+		
+	}
+
 	
-	// 댓글 수정
 	
-	// 댓글 삭제
+	// 글 삭제 (첨부파일 삭제)
+	@ResponseBody
+	@PostMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
+	public String questionDelete(HttpServletRequest request) {
+		String cidx = request.getParameter("cidx");
+		
+		
+		JSONObject jsonObj = new JSONObject();
+
+		//해당 게시글의 첨부파일 리스트 가져오기
+	    List<CommuFilesDTO> fileList = null;
+
+	    if (cidx != null) {
+	        fileList = service.getAttachfiles(cidx);
+	    }
+	    
+	    HttpSession session = request.getSession();
+	    String root = session.getServletContext().getRealPath("/");
+	    String path = root + "resources" + File.separator + "commu_attach_file";
+	    System.out.println("path: " + path);
+	    
+		Map<String, String> paraMap = new HashMap<>();
+	    
+		paraMap.put("path", path);
+		paraMap.put("cidx", cidx);
+		String fileName ="";
+		int n= 0;
+		//게시글 삭제
+		
+		if(!(fileList.isEmpty())) {
+			// 테이블 파일 삭제
+			service.fileDelAll(cidx);
+			//폴더 내 파일삭제
+			for(CommuFilesDTO cfdto : fileList) {			
+				paraMap.put("fileName", cfdto.getFileName());
+				service.folderFileDel(paraMap);        	
+			}
+
+		}
+		n = service.del(cidx);
+        
+        jsonObj.put("result", n);
+        
+        return jsonObj.toString();
+	
+	}
+	
+	
+	
+	
+	
+	// 댓글(대댓글) 쓰기
+	
+	// 댓글(대댓글) 수정
+	
+	// 댓글(대댓글) 삭제
 	
 	// 북마크 
 	
