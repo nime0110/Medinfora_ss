@@ -60,6 +60,15 @@ input:focus, select {
 	border-radius: 0.5rem;
 }
 
+.reserveBox{
+	text-align:center;
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 1.3rem !important;
+	color: var(--object-lightpurple-font-color);
+	font:var(--font);
+}
+
 /* 모달 css start */
 .modal-content {
     border-radius: 15px;
