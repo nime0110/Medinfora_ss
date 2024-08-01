@@ -1,4 +1,7 @@
 @charset "UTF-8";
+ul {
+	padding: 0;
+}
 
 .commu-container {
 	width: 100%;
@@ -45,5 +48,46 @@
 	display: flex;
     justify-content: space-between;
 }
+/* 댓글 css start ----- */
+.cmt-day {
+	padding: 0 12px;
+    font-size: 11px;
+    color: #888;
+}
+
+
+.cmt-li {
+	width: 100%;
+	padding: 12px 12px 10px 10px;
+    border-bottom: 1px solid #EEE;
+    transition: background .5s;
+}
+.cmt-flexbox {
+	display: flex;
+    width: 100%;
+}
+
+.cmt-writecon {
+	display:flex;
+	justify-content: space-between;
+}
+.cmt-right {
+	width: 100%;
+	
+}
+.recmt-content {
+	width: 100%;	
+}
+
+.recmt-write {
+	display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+.cmt-rotate-icon {
+	transform: rotate(180deg);
+	opacity: 20%;
+}
+/* 댓글 css end ----- */
 
 

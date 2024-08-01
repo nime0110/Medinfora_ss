@@ -63,14 +63,7 @@
 	</div>
     <!-- 댓글이 보여짐 , 대댓글 까지만 되고 대댓글 한 경우 아이디가 @아이디 되도록? -->
     <ul id="commentDisplay"></ul>
-    
-    
-	<%-- 
-	<div style="display: flex; margin-bottom: 50px;">
-         <div id="pageBar" style="margin: auto; text-align: center;"></div>
-      </div>
-	 댓글페이지바가 보여지는 곳 끝 --%>
-	 
+
 	<div class="pagination" id="rpageNumber"></div>
 	<%-- 댓글쓰기 --%>
 	

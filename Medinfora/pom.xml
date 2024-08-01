@@ -301,6 +301,14 @@
           	<version>5.2.3</version>
       	</dependency>
       	
+      	<!-- 엑셀관련 -->
+      	<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
+     	<dependency>
+        	<groupId>org.apache.xmlbeans</groupId>
+	        <artifactId>xmlbeans</artifactId>
+	        <version>5.2.0</version>
+     	</dependency>
+      	
       	<!-- ===== #12. log4j 관련1 jar 추가하기 ===== -->
       	<dependency>
          	<groupId>org.lazyluke</groupId>
