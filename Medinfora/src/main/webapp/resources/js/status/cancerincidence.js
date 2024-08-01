@@ -85,8 +85,251 @@ function getData(){
         async : true,
         success:function(json){
             //console.log(JSON.stringify(json));
-          
-            multichart(json);
+
+            // 데이터를 구별해서 넣어준다.
+
+            // 저장할 배열
+            const incidence_total = []; // 조발생률 총
+            const occurrences_total = []; // 발생자수 총
+            const incidence_woman = []; // 조발생률 여자
+            const incidence_man = [];  // 조발생률 남자
+            const incidence = [];  // 조발생률 연령대
+            const occurrences_woman = []; // 발생자수 여자
+            const occurrences_man = []; // 발생자수 남자
+            const man = []; // 발생자수 남자
+            const woman = []; // 발생자수 여자
+            const man_i = []; // 조발생률 남자
+            const woman_i = []; // 조발생률 여자
+
+            const age = []; // 연령대
+
+            let cancer = json[0].C1_NM; // 암종류
+            cancer = cancer.substr(0, cancer.indexOf('('));
+
+            const year = json[0].PRD_DE; // 기간
+
+
+            // 경우의 수 1번
+            // C1_NM = 모든암
+
+            // 먼저 조발생률 과 발생자수 필터링
+            $.each(json, function(index, item){
+
+              if(item.ITM_NM == "조발생률"){
+                incidence_total.push(item);
+              }
+
+              if(item.ITM_NM == "발생자수"){
+                occurrences_total.push(item);
+              }
+
+            });
+
+            // 조발생률 및 발생자수 성별 분리
+            $.each(incidence_total, function(index, item){
+
+              if(item.C2_NM == "남자"){
+                incidence_man.push(item);
+              }
+
+              if(item.C2_NM == "여자"){
+                incidence_woman.push(item);
+              }
+            });
+
+
+            $.each(occurrences_total, function(index, item){
+
+              if(item.C2_NM == "남자"){
+                occurrences_man.push(item);
+              }
+
+              if(item.C2_NM == "여자"){
+                occurrences_woman.push(item);
+              }
+            });
+
+            // console.log(occurrences_man);
+            // console.log(occurrences_woman);
+
+            // console.log(incidence_man);
+            // console.log(incidence_woman);
+
+            if(incidence_man.length > 0 && incidence_woman.length > 0){
+
+              $.each(incidence_man, function(index, item){
+                const item2 = incidence_woman[index];
+
+                let num1 = item.DT;
+                let num2 = item2.DT;
+
+                if(num1 == "-"){
+                  num1 = 0;
+                }
+
+                if(num2 == "-"){
+                  num2 = 0;
+                }
+
+
+                if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+                  const sum = Number(num1) + Number(num2);
+
+                  incidence.push(Math.round(sum * 100)/100 );
+
+                  let agerange = ageRangeChange(item.C3_NM);
+
+                  age.push(agerange);
+
+                }
+                else{
+                  const sum2 = Number(num1) + Number(num2);
+                  incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
+                }
+
+              });
+
+            }
+            else if(incidence_woman.length <= 0){
+
+              $.each(incidence_man, function(index, item){
+
+                let num1 = item.DT;
+
+                if(num1 == "-"){
+                  num1 = 0;
+                }
+
+                if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+                  const sum = Number(num1);
+                  incidence.push(Math.round(sum * 100)/100);
+
+                  let agerange = ageRangeChange(item.C3_NM);
+
+                  age.push(agerange);
+                }
+                else{
+                  const sum2 = Number(num1);
+                  incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
+                }
+
+              });
+
+            }
+            else if(incidence_man.length <= 0){
+
+              $.each(incidence_woman, function(index, item){
+
+                let num1 = item.DT;
+
+                if(num1 == "-"){
+                  num1 = 0;
+                }
+
+                if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+                  const sum = Number(num1);
+                  incidence.push(Math.round(sum * 100)/100);
+
+                  ageRangeChange(item.C3_NM);
+                }
+                else{
+                  const sum2 = Number(num1);
+                  incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
+                }
+
+              });
+
+            }
+
+            // 조발생률 남자
+            $.each(incidence_man, function(index, item){
+
+              let num1 = item.DT;
+
+              if(num1 == "-"){
+                num1 = 0;
+              }
+
+              if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+                const sum = Number(num1);
+                man_i.push(Math.round(sum * 10)/10);
+
+              }
+              else{
+                const sum2 = Number(num1);
+                man_i[man_i.length - 1] += Math.round(sum2 * 10)/10;
+              }
+
+            });
+
+            // 조발생률 여자
+            $.each(incidence_woman, function(index, item){
+
+              let num1 = item.DT;
+
+              if(num1 == "-"){
+                num1 = 0;
+              }
+
+              if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+
+                const sum = Number(num1);
+                woman_i.push(Math.round(sum * 10)/10);
+
+              }
+              else{
+                const sum2 = Number(num1);
+                woman_i[woman_i.length - 1] += Math.round(sum2 * 10)/10;
+              }
+
+            });
+
+
+
+            // 발생자수(연령대별 구하기)
+            if(occurrences_man.length > 0 && occurrences_woman.length > 0){
+
+              $.each(occurrences_man, function(index, item){
+                const item2 = occurrences_woman[index];
+
+                let num1 = item.DT;
+                let num2 = item2.DT;
+
+                if(num1 == "-"){
+                  num1 = 0;
+                }
+
+                if(num2 == "-"){
+                  num2 = 0;
+                }
+
+
+                if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
+                  man.push(Math.round(Number(num1)*100)/100);
+                  woman.push(Math.round(Number(num2)*100)/100);
+                }
+                else{
+                  man[man.length - 1] += Math.round(Number(num1)*100)/100;
+                  woman[woman.length - 1] += Math.round(Number(num2)*100)/100;
+                }
+
+              });
+
+            }
+
+            multichart(man, man_i, woman, woman_i, incidence, age, year, cancer);
+
+            // 엑셀다운용 데이터
+            $("input:hidden[name='man']").val(man.join(","));
+            $("input:hidden[name='man_i']").val(man_i.join(","));
+            $("input:hidden[name='woman']").val(woman.join(","));
+            $("input:hidden[name='woman_i']").val(woman_i.join(","));
+            $("input:hidden[name='age']").val(age.join(","));
+            $("input:hidden[name='year']").val(year);
+            $("input:hidden[name='cancer']").val(cancer);
 
         },
         error : function(errcode){
@@ -98,250 +341,15 @@ function getData(){
 }
 
 
-function multichart(json){
+// 차트&데이터 보여주기
+function multichart(man, man_i, woman, woman_i, incidence, age, year, cancer){
 
-  // 데이터를 구별해서 넣어준다.
-
-  // 저장할 배열
-  const incidence_total = []; // 조발생률 총
-  const occurrences_total = []; // 발생자수 총
-  const incidence_woman = []; // 조발생률 여자
-  const incidence_man = [];  // 조발생률 남자
-  const incidence = [];  // 조발생률 연령대
-  const occurrences_woman = []; // 발생자수 여자
-  const occurrences_man = []; // 발생자수 남자
-  const man = []; // 발생자수 남자
-  const woman = []; // 발생자수 여자
-  const man_i = []; // 조발생률 남자
-  const woman_i = []; // 조발생률 여자
-
-  const age = []; // 연령대
-
-  let cancer = json[0].C1_NM; // 암종류
-  cancer = cancer.substr(0, cancer.indexOf('('));
-
-  const year = json[0].PRD_DE; // 기간
-
-
-  // 경우의 수 1번
-  // C1_NM = 모든암
-
-  // 먼저 조발생률 과 발생자수 필터링
-  $.each(json, function(index, item){
-
-    if(item.ITM_NM == "조발생률"){
-      incidence_total.push(item);
-    }
-
-    if(item.ITM_NM == "발생자수"){
-      occurrences_total.push(item);
-    }
-
-  });
-
-  // 조발생률 및 발생자수 성별 분리
-  $.each(incidence_total, function(index, item){
-
-    if(item.C2_NM == "남자"){
-      incidence_man.push(item);
-    }
-
-    if(item.C2_NM == "여자"){
-      incidence_woman.push(item);
-    }
-  });
-
-
-  $.each(occurrences_total, function(index, item){
-
-    if(item.C2_NM == "남자"){
-      occurrences_man.push(item);
-    }
-
-    if(item.C2_NM == "여자"){
-      occurrences_woman.push(item);
-    }
-  });
-
-  // console.log(occurrences_man);
-  // console.log(occurrences_woman);
-
-  // console.log(incidence_man);
-  // console.log(incidence_woman);
-
-  if(incidence_man.length > 0 && incidence_woman.length > 0){
-
-    $.each(incidence_man, function(index, item){
-      const item2 = incidence_woman[index];
-
-      let num1 = item.DT;
-      let num2 = item2.DT;
-
-      if(num1 == "-"){
-        num1 = 0;
-      }
-
-      if(num2 == "-"){
-        num2 = 0;
-      }
-
-
-      if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-
-        const sum = Number(num1) + Number(num2);
-
-        incidence.push(Math.round(sum * 100)/100 );
-
-        let agerange = ageRangeChange(item.C3_NM);
-
-        age.push(agerange);
-
-      }
-      else{
-        const sum2 = Number(num1) + Number(num2);
-        incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
-      }
-
-    });
-
-  }
-  else if(incidence_woman.length <= 0){
-
-    $.each(incidence_man, function(index, item){
-
-      let num1 = item.DT;
-
-      if(num1 == "-"){
-        num1 = 0;
-      }
-
-      if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-
-        const sum = Number(num1);
-        incidence.push(Math.round(sum * 100)/100);
-
-        let agerange = ageRangeChange(item.C3_NM);
-
-        age.push(agerange);
-      }
-      else{
-        const sum2 = Number(num1);
-        incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
-      }
-
-    });
-
-  }
-  else if(incidence_man.length <= 0){
-
-    $.each(incidence_woman, function(index, item){
-
-      let num1 = item.DT;
-
-      if(num1 == "-"){
-        num1 = 0;
-      }
-
-      if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-        const sum = Number(num1);
-        incidence.push(Math.round(sum * 100)/100);
-
-        ageRangeChange(item.C3_NM);
-      }
-      else{
-        const sum2 = Number(num1);
-        incidence[incidence.length - 1] += Math.round(sum2 * 100)/100;
-      }
-
-    });
-
-  }
-
-  // 조발생률 남자
-  $.each(incidence_man, function(index, item){
-
-    let num1 = item.DT;
-
-    if(num1 == "-"){
-      num1 = 0;
-    }
-
-    if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-
-      const sum = Number(num1);
-      man_i.push(Math.round(sum * 10)/10);
-
-    }
-    else{
-      const sum2 = Number(num1);
-      man_i[man_i.length - 1] += Math.round(sum2 * 10)/10;
-    }
-
-  });
-
-  // 조발생률 여자
-  $.each(incidence_woman, function(index, item){
-
-    let num1 = item.DT;
-
-    if(num1 == "-"){
-      num1 = 0;
-    }
-
-    if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-
-      const sum = Number(num1);
-      woman_i.push(Math.round(sum * 10)/10);
-
-    }
-    else{
-      const sum2 = Number(num1);
-      woman_i[woman_i.length - 1] += Math.round(sum2 * 10)/10;
-    }
-
-  });
-
-
-
-  // 발생자수(연령대별 구하기)
-  if(occurrences_man.length > 0 && occurrences_woman.length > 0){
-
-    $.each(occurrences_man, function(index, item){
-      const item2 = occurrences_woman[index];
-
-      let num1 = item.DT;
-      let num2 = item2.DT;
-
-      if(num1 == "-"){
-        num1 = 0;
-      }
-
-      if(num2 == "-"){
-        num2 = 0;
-      }
-
-
-      if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
-        man.push(Math.round(Number(num1)*100)/100);
-        woman.push(Math.round(Number(num2)*100)/100);
-      }
-      else{
-        man[man.length - 1] += Math.round(Number(num1)*100)/100;
-        woman[woman.length - 1] += Math.round(Number(num2)*100)/100;
-      }
-
-    });
-
-  }
 
   // console.log(incidence);
   // console.log(man);
   // console.log(woman);
   // console.log(age);
   
-  
-
-
   var options = {
     series: [{
       name: '남자',
@@ -564,4 +572,12 @@ function ageRangeChange(agenum){
 
   return ageRange;
 
+}
+
+
+function downloadExcel(){
+  const frm = document.excelData;
+  frm.method = "post";
+  frm.action = "downloadStatisics.bibo";
+  frm.submit();
 }
