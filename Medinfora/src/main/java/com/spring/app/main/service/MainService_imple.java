@@ -10,11 +10,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.common.GoogleMail;
 import com.spring.app.common.Myutil;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.ClasscodeDTO;
@@ -40,6 +42,8 @@ public class MainService_imple implements MainService {
 	@Autowired
     private AES256 aES256;
 	
+	
+		
 	// 회원가입(중복체크)
 	@Override
 	public MemberDTO isExistCheck(Map<String, String> paraMap) {
@@ -456,5 +460,18 @@ public class MainService_imple implements MainService {
 		
 		return dao.newsInputer(newsDTO);
 	}
+
+	// 이름과 이메일 담는 
+	@Override
+	public MemberDTO findIdByNameAndEmail(String name, String email) {
+		return dao.findIdByNameAndEmail(name, email);
+	}
+
+	 @Override
+	    public void sendCertificationCode(String email, String certificationCode) {
+	        return dao.sendCerificationCode(email, certificationCode);
+	    }
+	
+
 	
 }

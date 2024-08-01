@@ -93,5 +93,14 @@ public interface MainService {
 	public List<HospitalDTO> getmorehinfo(Map<String, String> paraMap);
 
 	public int newsInputer(NewsDTO newsDTO);
+
+	// 이름과 아이디 찾기 
+	public MemberDTO findIdByNameAndEmail(String name, String email);
+
+	// 이메일 전송 
+	public void sendIdByEmail(String email, String userid);
+
+	void sendCertificationCode(String email, String certificationCode);
+
 	
 }
