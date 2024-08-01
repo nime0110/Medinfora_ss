@@ -31,4 +31,4 @@ local.properties
 /Medinfora/target/m2e-wtp/web-resources/META-INF/maven/com.spring/app
 
 ## commit 제외 파일 ##
-/Medinfora/src/main/resources/application.properties
+Medinfora/src/main/resources/application.properties
