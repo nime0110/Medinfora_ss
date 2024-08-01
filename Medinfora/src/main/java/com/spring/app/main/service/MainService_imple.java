@@ -467,10 +467,6 @@ public class MainService_imple implements MainService {
 		return dao.findIdByNameAndEmail(name, email);
 	}
 
-	 @Override
-	    public void sendCertificationCode(String email, String certificationCode) {
-	        return dao.sendCerificationCode(email, certificationCode);
-	    }
 	
 
 	
