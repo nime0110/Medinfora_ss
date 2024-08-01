@@ -128,12 +128,11 @@ public class CommuService_imple implements CommuService {
 	public int addComment(CommuCommentDTO cmtdto) {
 	    int n1 = 0, n2 = 0, result = 0;
 	    
-	    System.out.println("cmtdto.getFk_cmidx():" + cmtdto.getFk_cmidx());
 	    //댓글이 댓글인지 답댓글인지 구분해야함, 원댓글쓰기의 경우
 	    if("".equals(cmtdto.getFk_cmidx())) {
 			int groupno = cmdao.getGroupnoMax()+1;
 			cmtdto.setGroupno(String.valueOf(groupno));
-			System.out.println("cmtdto.groupno:" + groupno);
+			System.out.println("cmtdto.groupno:" + groupno); //22 
 	    }
 	    
 	    
