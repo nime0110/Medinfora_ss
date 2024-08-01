@@ -538,7 +538,7 @@ public class CommuController {
 	    session = mtp_request.getSession();
 	    
 	    List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
-	    System.out.println("fileList:" + fileList);
+	    //System.out.println("fileList:" + fileList);
 	    
 	    String root = session.getServletContext().getRealPath("/");
 	    String path = root + "resources" + File.separator + "commu_attach_file";
@@ -593,8 +593,8 @@ public class CommuController {
 		
 		String cidx = request.getParameter("cidx");
 		String fileName = request.getParameter("fileName");
-		System.out.println("cidx: " + cidx); //36 
-		System.out.println("fileName: " + fileName); //20240730194746113119567455400.jpg
+		//System.out.println("cidx: " + cidx); //36 
+		//System.out.println("fileName: " + fileName); //20240730194746113119567455400.jpg
 		
 		Map<String, String> paraMap = new HashMap<>();
         List<CommuFilesDTO> existFileList = service.getAttachfiles(cidx);
@@ -646,7 +646,7 @@ public class CommuController {
 	    HttpSession session = request.getSession();
 	    String root = session.getServletContext().getRealPath("/");
 	    String path = root + "resources" + File.separator + "commu_attach_file";
-	    System.out.println("path: " + path);
+	    //System.out.println("path: " + path);
 	    
 		Map<String, String> paraMap = new HashMap<>();
 	    
@@ -696,9 +696,9 @@ public class CommuController {
 		String userid = request.getParameter("userid");
 		String content = request.getParameter("content");
 		
-		System.out.println("cidx" + cidx);
-		System.out.println("userid" + userid);
-		System.out.println("content" + content);
+		//System.out.println("cidx" + cidx);
+		//System.out.println("userid" + userid);
+		//System.out.println("content" + content);
 		
 		cmtdto.setCidx(cidx);
 		cmtdto.setUserid(userid);
@@ -711,19 +711,28 @@ public class CommuController {
 		String fk_userid = request.getParameter("fk_userid"); //원 댓글
 		
 		System.out.println("fk_cmidx" + fk_cmidx);
+		System.out.println("fk_userid" + fk_userid);
+		System.out.println("groupno" + groupno);
+		System.out.println("depthno" + depthno);
+		
+		
 		if(fk_cmidx == null) {
 			fk_cmidx = "";
+		}
+		if(fk_userid == null) {
+			fk_userid = "";
 		}
 		
 		cmtdto.setGroupno(groupno);
 		cmtdto.setDepthno(depthno);
 		cmtdto.setFk_cmidx(fk_cmidx);
+		cmtdto.setFk_userid(fk_userid);
+		
 		
 		if(cidx == null) {
 			cidx = "";
 		}
 		
-		// 댓글쓰기에 첨부파일이 없는 경우 
 		int n = 0;
 		try {
 			n = service.addComment(cmtdto);
@@ -759,7 +768,7 @@ public class CommuController {
         paraMap.put("startRno", String.valueOf(startRno));
         paraMap.put("endRno", String.valueOf(endRno));
 		
-        // 현재 페이지 번호 설정 및 유효성 검사
+        // 현재 페이지 번호 설정 및 유효성 검사addComment
 
 		
 		List<CommuCommentDTO> commentList = service.getCommentList(paraMap);
@@ -785,6 +794,10 @@ public class CommuController {
 				jsonObj.put("groupno", cmtdto.getGroupno()); 
 				jsonObj.put("depthno", cmtdto.getDepthno());
 				jsonObj.put("fk_cmidx", cmtdto.getFk_cmidx());
+	            // null 체크 후 빈 문자열로 대체
+	            String fk_userid = cmtdto.getFk_userid() == null ? "" : cmtdto.getFk_userid();
+	            jsonObj.put("fk_userid", fk_userid);
+				//System.out.println("json fk_userid" + cmtdto.getFk_userid());
 				
 				jsonObj.put("totalPage", totalPage);
 				jsonObj.put("sizePerPage", sizePerPage);
