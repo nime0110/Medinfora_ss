@@ -196,20 +196,16 @@ function Page(pageNo) {
 }
 
 <%--  엑셀 파일로 다운로드 시작 --%>
-	$("button#btnExcel").click(function(){
-		
-			const arr_memberId = new Array();
-			
-			$("select[name='subject']").each(function(index, item){
-				arr_memberId.push($(item).val());
-			});
-			const frm = document.searchFrm;
-			frm.arr_memberId;
-			
-			frm.method = "post"; 
-			frm.action="<%= ctxPath%>/downloadExcelFile.bibo";
-			frm.submit();
-	});
+$(document).ready(function() {
+    // 엑셀 파일로 다운로드
+    $("button#btnExcel").click(function(){
+        const frm = document.createElement('form');
+        frm.method = "GET"; 
+        frm.action = "<%= ctxPath %>/mypage/downloadExcelFile.bibo";
+        document.body.appendChild(frm);
+        frm.submit();
+    });
+});
 	
 
 </script>
@@ -235,10 +231,10 @@ function Page(pageNo) {
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
-<form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
-   <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드 </button> 
-</form>
-<form name="memberListForm">
+    <form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
+        <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드</button> 
+    </form>
+    <form name="memberListForm">
     <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
     <c:if test="${not empty requestScope.mbrList}">
         <span style="display: inline-block;">회원 구분 </span>
