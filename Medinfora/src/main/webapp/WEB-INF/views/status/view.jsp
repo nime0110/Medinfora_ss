@@ -34,7 +34,7 @@
 		    	<div class="status_card card">
 		      		<img src="<%=ctxPath %>/resources/img/hospitalisation_icon.png" class="card-img-top p-5" />
 		      		<div class="card-body">
-		        		<h5 class="card-title text-center nanum-b">연도별 암발생률</h5>
+		        		<h5 class="card-title text-center nanum-b">연도별 암발생자 현황</h5>
 		    		</div>
 		  		</div>
 			</div>

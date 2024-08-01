@@ -16,7 +16,7 @@
  				시도별 일반 입원실 시설 현황
            </div>
            <div class="sidebar_list_title">
- 				통계3
+ 				연도별 암발생자현황
            </div>
        </div>
    </div>

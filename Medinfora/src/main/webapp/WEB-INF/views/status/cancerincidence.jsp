@@ -55,7 +55,7 @@ div#datadown{
 </script>
 
 
-<div class="b_black">
+<div>
 
 	<div class="py-4" align="center">
 		<h2 class="nanum-eb size-n">연도별 암발생현황(~2021)</h2>
