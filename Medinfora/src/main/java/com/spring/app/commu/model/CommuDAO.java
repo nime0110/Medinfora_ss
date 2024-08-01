@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 
 
@@ -43,6 +44,18 @@ public interface CommuDAO {
 	int fileDelAll(String cidx);
 
 	int del(String cidx);
+
+	int addComment(CommuCommentDTO cmtdto);
+
+	int updateCommentCount(String cidx);
+
+	int getGroupnoMax();
+
+	List<CommuCommentDTO> getCommentList(Map<String, String> paraMap);
+
+	int getCommentTotalCount(String cmidx);
+
+	int allCommentDel(String cidx);
 
 
 	

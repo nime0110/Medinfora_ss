@@ -84,6 +84,7 @@
 		</if>
 		GROUP BY cidx)
 	</select>
+	
 	<!-- 게시글 상세  -->
 	<select id="getCommuDetail" parameterType="String" resultType="CommuBoardDTO" >
 		select cidx, category, title, commentcount, userid, content, 
@@ -112,6 +113,7 @@
 		update commu set category = #{category}, title = #{title}, content = #{content}, updateday = default
 		where cidx = #{cidx}
 	</update>
+	
 	<!-- 특정 첨부파일 삭제하기 -->
 	<delete id="fileDel" parameterType="String">
 		delete from commufiles
@@ -123,10 +125,68 @@
 		 delete from commufiles
 		 where cidx = #{cidx}
 	</delete>
+	
 	<!-- 글 삭제하기 -->
 	<delete id="del" parameterType="String">
 		 delete from commu
 		 where cidx = #{cidx}
 	</delete>
 
+	<!-- 댓글 쓰기 -->
+	<insert id="addComment" parameterType="CommuCommentDTO">
+		<!-- 댓글 쓰기인 경우 -->	
+		<if test='fk_cmidx.equals("")'>
+			insert into commucomment(cmidx, cidx, userid, content, writeday, updateday, groupno, fk_cmidx, depthno)
+			values(seq_cmidx.nextval, #{cidx}, #{userid}, #{content}, default, default, #{groupno}, default, default)
+		</if>
+		
+		<if test='!fk_cmidx.equals("")'>
+			insert into commucomment(cmidx, cidx, userid, content, writeday, updateday, groupno, fk_cmidx, depthno)
+			values(seq_cmidx.nextval, #{cidx}, #{userid}, #{content}, default, default, #{groupno}, #{fk_cmidx},
+            <choose>
+                <when test="depthno != 1">
+                    #{depthno} + 1
+                </when>
+                <otherwise>
+                    1
+                </otherwise>
+            </choose>
+			)
+		</if>
+	</insert>
+	
+	<!-- commentCount 컬럼 1증가(update) -->
+	<update id="updateCommentCount" parameterType="String">
+		update commu set commentcount = commentcount + 1
+		where cidx = #{cidx}
+	</update>
+	
+	<!-- 커뮤댓글의 그룹넘버 알아오기 -->
+	<select id="getGroupnoMax" resultType="int">
+		select nvl(max(groupno), 0)
+		from COMMUCOMMENT
+	</select>
+
+	<!-- 댓글 조회 -->
+	<select id="getCommentList" parameterType="HashMap" resultType="CommuCommentDTO">
+		select CMIDX, USERID, content, WRITEDAY, updateday, GROUPNO, DEPTHNO, FK_CMIDX
+		from
+		(select row_number() over(order by CMIDX desc) AS rno,
+		        CMIDX, USERID, content, to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh:dd') AS WRITEDAY,
+		        to_char(to_date(updateday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh:dd') AS updateday, GROUPNO, DEPTHNO, FK_CMIDX
+		from COMMUCOMMENT
+		where CIDX = #{cidx}
+		order by CMIDX desc
+		) V
+		WHERE rno Between #{startRno} AND #{endRno}
+	</select>
+	
+	<!-- 댓글 전체갯수 조회(페이징처리용) -->
+	<select id="getCommentTotalCount" parameterType="String" resultType="int">
+		select count(*)
+		from COMMUCOMMENT
+		where cidx = #{cidx}
+	</select>
+	
+	
 </mapper>

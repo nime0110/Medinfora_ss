@@ -25,6 +25,30 @@
 .b_black {
 	border: solid 1px black;
 }
+
+.table-container {
+    display: flex; 
+    justify-content: center; 
+}
+table {
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+div#datadown{
+	text-align: right;
+	width: 800px;
+	margin-bottom: -40px;
+}
+
+.qwe{
+	display: flex;
+	justify-content: center !important; 
+}
 </style>
 
 <script type="text/javascript">
@@ -68,6 +92,22 @@
 	<div class="my-5 b_blue" id="chart">차트</div>
 
 	<%-- 데이터구역 --%>
-	<div class="my-5 b_red">데이터</div>
-
+	<div class="nanum-eb text-center size-n" style="margin-bottom: -30px;">[&nbsp;데이터&nbsp;]</div>
+	<div class="qwe">
+		<div id="datadown" >
+			<button class="btn btn-dark" type="button" onclick="downloadExcel()">엑셀파일</button>
+		</div>
+	</div>
+	<div class="my-5 table-container" id="dataArea"></div>
+	
+	<%-- 데이터 다운용 데이터 --%>
+	<form name="excelData">
+		<input type="hidden" name="man" />
+		<input type="hidden" name="man_i" />
+		<input type="hidden" name="woman" />
+		<input type="hidden" name="woman_i" />
+		<input type="hidden" name="age" />
+		<input type="hidden" name="year" />
+		<input type="hidden" name="cancer" />
+	</form>
 </div>
