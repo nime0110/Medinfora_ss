@@ -167,7 +167,7 @@ public class MedicalStatisticsController {
 	
 	
 	@PostMapping("downloadStatisics.bibo")
-	public String downloadStatisicsExcel(HttpServletRequest request, Model model,
+	public String downloadStatisicsExcel(Model model,
 										 @RequestParam(required = false) String man
 										,@RequestParam(required = false) String man_i
 										,@RequestParam(required = false) String woman
@@ -176,9 +176,21 @@ public class MedicalStatisticsController {
 										,@RequestParam(required = false) String year
 										,@RequestParam(required = false) String cancer) {
 		 
-		System.out.println(man);
+		System.out.println(woman_i);
 		
-		return "";
+		
+		Map<String, Object> paraMap = new HashMap<>();
+		paraMap.put("man", man);
+		paraMap.put("man_i", man_i);
+		paraMap.put("woman", woman);
+		paraMap.put("woman_i", woman_i);
+		paraMap.put("age", age);
+		paraMap.put("year", year);
+		paraMap.put("cancer", cancer);
+		
+		service.statisicsExcel(paraMap, model);
+		
+		return "excelDownloadView";
 	}
 	
 	

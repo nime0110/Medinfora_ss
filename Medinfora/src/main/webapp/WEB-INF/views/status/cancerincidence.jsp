@@ -89,7 +89,7 @@ div#datadown{
 	</div>
 	
 	<%-- 차트구역 --%>
-	<div class="my-5 b_blue" id="chart">차트</div>
+	<div class="my-5" id="chart"></div>
 
 	<%-- 데이터구역 --%>
 	<div class="nanum-eb text-center size-n" style="margin-bottom: -30px;">[&nbsp;데이터&nbsp;]</div>
