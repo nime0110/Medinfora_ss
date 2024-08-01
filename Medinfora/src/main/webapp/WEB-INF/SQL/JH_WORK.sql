@@ -656,10 +656,6 @@ WHERE rno between 1 and 3;
 select *
 from media;
 
-delete from media
-where aidx =11;
-
-commit;
 
 
 
