@@ -301,7 +301,7 @@ function checkCapsLock(event)  {
 	    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
 	    <div class="login_idpw_register mb-4">
       		<button class="nanum-n" type="button" onclick="javascript:window.parent.goregister();">회원가입</button><span class="lineG">
-	      	</span><button class="nanum-n" type="button">아이디 찾기</button><span class="lineG">
+	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.gofindId();">아이디 찾기</button><span class="lineG">
 	      	</span><button class="nanum-n" type="button">비밀번호 찾기</button>
 	    </div>
 	</form>

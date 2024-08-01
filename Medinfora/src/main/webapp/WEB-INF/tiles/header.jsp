@@ -192,6 +192,9 @@
 	function gocustomerService(){
 		location.href="<%=ctxPath%>/customerService.bibo";
 	}
+	function gofindId(){
+		location.href="<%= ctxPath%>/findId.bibo"
+	}
 	
 	function doSearch(){
 		
