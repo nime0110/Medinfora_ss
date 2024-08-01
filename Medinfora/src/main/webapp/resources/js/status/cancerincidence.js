@@ -249,7 +249,7 @@ function getData(){
               let num1 = item.DT;
 
               if(num1 == "-"){
-                num1 = 0;
+                num1 = Number(0);
               }
 
               if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
@@ -271,7 +271,7 @@ function getData(){
               let num1 = item.DT;
 
               if(num1 == "-"){
-                num1 = 0;
+                num1 = Number(0);
               }
 
               if(index % 2 == 0){ // 짝수번째 일때(시작 0부터)
