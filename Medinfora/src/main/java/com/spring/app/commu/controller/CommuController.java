@@ -35,6 +35,7 @@ import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 
 
@@ -630,6 +631,7 @@ public class CommuController {
 	@PostMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
 	public String questionDelete(HttpServletRequest request) {
 		String cidx = request.getParameter("cidx");
+		String commentCount = request.getParameter("commentCount");
 		
 		
 		JSONObject jsonObj = new JSONObject();
@@ -664,7 +666,14 @@ public class CommuController {
 			}
 
 		}
+		/*
+		if(!commentCount.equals("0")) {
+			//댓글개수가 1개 이상이면
+			//n = service.allCommentDel(cidx);
+		}
+		*/
 		n = service.del(cidx);
+
         
         jsonObj.put("result", n);
         
@@ -674,13 +683,122 @@ public class CommuController {
 	
 	
 	
-	
-	
 	// 댓글(대댓글) 쓰기
+	
+	// === #84. 댓글쓰기(Ajax로 처리) === //
+	@ResponseBody
+	@PostMapping(value="/commu/addComment.bibo", produces="text/plain;charset=UTF-8") 
+	// 스프링에서 json 또는 gson을 사용한 ajax 구현시 데이터를 화면에 출력해 줄때 한글로 된 데이터가 '?'로 출력되어 한글이  깨지는 현상 방지를 위한 produes
+	public String addComment(HttpServletRequest request) {
+		
+		CommuCommentDTO cmtdto = new CommuCommentDTO();
+		String cidx = request.getParameter("cidx");
+		String userid = request.getParameter("userid");
+		String content = request.getParameter("content");
+		
+		System.out.println("cidx" + cidx);
+		System.out.println("userid" + userid);
+		System.out.println("content" + content);
+		
+		cmtdto.setCidx(cidx);
+		cmtdto.setUserid(userid);
+		cmtdto.setContent(content);
+		
+		//답댓글 쓰기인 경우
+		String groupno = request.getParameter("groupno");
+		String depthno = request.getParameter("depthno");
+		String fk_cmidx = request.getParameter("fk_cmidx");
+		String fk_userid = request.getParameter("fk_userid"); //원 댓글
+		
+		System.out.println("fk_cmidx" + fk_cmidx);
+		if(fk_cmidx == null) {
+			fk_cmidx = "";
+		}
+		
+		cmtdto.setGroupno(groupno);
+		cmtdto.setDepthno(depthno);
+		cmtdto.setFk_cmidx(fk_cmidx);
+		
+		if(cidx == null) {
+			cidx = "";
+		}
+		
+		// 댓글쓰기에 첨부파일이 없는 경우 
+		int n = 0;
+		try {
+			n = service.addComment(cmtdto);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		} 
+		// 이 결과물을 json 으로 보여줘야 한다.(ajax)
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+		
+		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		jsonObj.put("n", n); // 성공됐다면 {"n":1} 이런 형태가 됨
+		jsonObj.put("userid", cmtdto.getUserid()); // 성공됐다면 {"n":1, "name":"엄정화} 또는  {"n":0, "name":"허성심"}-이땐 포인트 300넘엇을때) 이런 형태가 됨
+		return jsonObj.toString();
+	}
+	
+
+	// 댓글(대댓글) 조회
+	@ResponseBody
+	@GetMapping(value="/commu/commentList.bibo", produces="text/plain;charset=UTF-8") 
+	public String readComment(HttpServletRequest request) {
+		
+		String cidx = request.getParameter("cidx");
+		String pageNo = request.getParameter("pageNo");
+		
+		// 페이징 처리
+		int sizePerPage = 15; //한 페이지당 15개의 댓글을 보여줄 것임
+		
+		int startRno = ((Integer.parseInt(pageNo) - 1) * sizePerPage) + 1; // 시작 행번호 
+        int endRno = startRno + sizePerPage - 1; // 끝 행번호
+		
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("cidx", cidx);
+        paraMap.put("startRno", String.valueOf(startRno));
+        paraMap.put("endRno", String.valueOf(endRno));
+		
+        // 현재 페이지 번호 설정 및 유효성 검사
+
+		
+		List<CommuCommentDTO> commentList = service.getCommentList(paraMap);
+		int totalCount = service.getCommentTotalCount(cidx); //페이징 처리시 보여주는 순번을 위함
+
+	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);        // 총 페이지 수
+
+		
+		JSONArray jsonArr = new JSONArray(); //[]
+		
+		//만약 댓글이없는 글일때 commentList 는 null ==>CommentVO의 필드가 null 이기 때문에..데이터가 없는경우 데이터바인딩이 안되서 CommentVO 필드가 null이된다. 
+		if(commentList != null) {
+			for(CommuCommentDTO cmtdto : commentList) {
+				JSONObject jsonObj = new JSONObject(); //{}
+				
+				
+				jsonObj.put("cidx", cmtdto.getCidx()); 
+				jsonObj.put("cmidx", cmtdto.getCmidx()); 
+				jsonObj.put("content", cmtdto.getContent()); 
+				jsonObj.put("userid", cmtdto.getUserid()); 
+				jsonObj.put("writeday", cmtdto.getWriteday()); 
+				jsonObj.put("updateday", cmtdto.getUpdateday()); 
+				jsonObj.put("groupno", cmtdto.getGroupno()); 
+				jsonObj.put("depthno", cmtdto.getDepthno());
+				jsonObj.put("fk_cmidx", cmtdto.getFk_cmidx());
+				
+				jsonObj.put("totalPage", totalPage);
+				jsonObj.put("sizePerPage", sizePerPage);
+				
+				jsonArr.put(jsonObj);
+			}//end of for---------------------------
+		}
+		
+		return jsonArr.toString(); // "[]" 또는  [{ "seq":"1", "fk_userid":nime0110, "name":서영학, "content":"첫번째 댓글입니다. ㅎㅎㅎ ", "regdate":"2024-06-18 15:36:33"}] 
+	}
 	
 	// 댓글(대댓글) 수정
 	
-	// 댓글(대댓글) 삭제
+	// 댓글(대댓글) 삭제 -> delete 말고 update로 content만 '해당 댓글이 삭제되었습니다.' 로 변경
 	
 	// 북마크 
 	

@@ -7,10 +7,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.app.common.FileManager;
 import com.spring.app.commu.model.CommuDAO;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 import com.spring.app.hpsearch.model.HpsearchDAO;
 import com.spring.app.main.model.MainDAO;
@@ -114,9 +119,49 @@ public class CommuService_imple implements CommuService {
 
 	@Override
 	public int del(String cidx) {
-		// TODO Auto-generated method stub
 		return cmdao.del(cidx);
 	}
+
+	// 댓글쓰기와 함께 commu 테이블의 해당 글 댓글수 칼럼 증가
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int addComment(CommuCommentDTO cmtdto) {
+	    int n1 = 0, n2 = 0, result = 0;
+	    
+	    System.out.println("cmtdto.getFk_cmidx():" + cmtdto.getFk_cmidx());
+	    //댓글이 댓글인지 답댓글인지 구분해야함, 원댓글쓰기의 경우
+	    if("".equals(cmtdto.getFk_cmidx())) {
+			int groupno = cmdao.getGroupnoMax()+1;
+			cmtdto.setGroupno(String.valueOf(groupno));
+			System.out.println("cmtdto.groupno:" + groupno);
+	    }
+	    
+	    
+	    n1 = cmdao.addComment(cmtdto); // 댓글쓰기
+	    //System.out.println("~~~ 확인용 n1: " + n1);
+	    
+	    if(n1 == 1) {
+	        n2 = cmdao.updateCommentCount(cmtdto.getCidx()); // commu 테이블에 commentCount 컬럼이 1증가(update) =>cidx = 원글번호
+	    }
+	    
+	    if(n2 == 1) {
+	        result = 1; // 두 작업이 모두 성공했을 때만 결과를 1로 설정
+	    }
+	    
+	    return result;
+	}
+
+	//댓글 조회
+	@Override
+	public List<CommuCommentDTO> getCommentList(Map<String, String> paraMap) {
+		return cmdao.getCommentList(paraMap);
+	}
+
+	@Override
+	public int getCommentTotalCount(String cmidx) {
+		return cmdao.getCommentTotalCount(cmidx);
+	}
+
 
 
 

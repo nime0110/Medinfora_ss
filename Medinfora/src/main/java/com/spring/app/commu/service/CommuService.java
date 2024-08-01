@@ -7,6 +7,7 @@ import java.util.Map;
 import com.spring.app.common.FileManager;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 
 public interface CommuService {
@@ -56,6 +57,16 @@ public interface CommuService {
 
 	//게시글 삭제
 	int del(String cidx);
+
+	// 댓글쓰기와 함께 commu 테이블의 해당 글 댓글수 칼럼 증가
+	int addComment(CommuCommentDTO cmtdto);
+
+	// 댓글 조회
+	List<CommuCommentDTO> getCommentList(Map<String, String> paraMap);
+
+	// 댓글 페이징 처리 관련 카운트
+	int getCommentTotalCount(String cmidx);
+
 
 
 
