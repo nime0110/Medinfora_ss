@@ -813,12 +813,10 @@ public class CommuController {
 		
 		CommuCommentDTO cmtdto = new CommuCommentDTO();
 		String cmidx = request.getParameter("cmidx");
-		String userid = request.getParameter("userid");
 		String content = request.getParameter("content");
 		
 	
 		cmtdto.setCmidx(cmidx);
-		cmtdto.setUserid(userid);
 		cmtdto.setContent(content);
 
 		
@@ -832,6 +830,26 @@ public class CommuController {
 	}
 	
 	// 댓글(대댓글) 삭제 -> delete 말고 update로 content만 '해당 댓글이 삭제되었습니다.' 로 변경
+	@ResponseBody
+	@PostMapping(value="/commu/commentDelete.bibo", produces="text/plain;charset=UTF-8") 
+	public String commentDelete(HttpServletRequest request) {
+		
+		CommuCommentDTO cmtdto = new CommuCommentDTO();
+		String cmidx = request.getParameter("cmidx");
+		
+
+		
+		int n = service.deleteComment(cmidx);
+		
+		// 이 결과물을 json 으로 보여줘야 한다.(ajax)
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+		
+		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		return jsonObj.toString();
+	}
+	
+	
+	
 	
 	// 북마크 
 	

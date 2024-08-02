@@ -88,6 +88,19 @@ ul {
 	transform: rotate(180deg);
 	opacity: 20%;
 }
+
+.cmt-fkuserid {
+	color: var(--blue600);
+    background: var(--blue50);
+    border-radius: 4px;
+    padding: 4px;
+    margin-right: 0.6em;
+}
+
+.opacity-5 {
+	opacity: 0.5;	
+}
+
 /* 댓글 css end ----- */
 
 

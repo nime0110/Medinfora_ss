@@ -45,6 +45,13 @@ function goAddWrite() {
   let userid = $("input:hidden[name='userid']").val();
   let content = $("textarea[name='content']").val();
 
+
+  if(content == "해당 댓글은 삭제되었습니다.") {
+    alert("해당 내용으로 댓글 작성은 불가합니다.");
+    $("textarea[name='content']").val("");
+    return;
+  }
+
   $.ajax({
       type: "post",
       url: contextPath + "/commu/addComment.bibo",
@@ -169,32 +176,38 @@ function goViewComment(currentPage) {
                     <a href="#popup_menu_area" class="member_0" onclick="return false">${item.userid}</a>
                     <span class="cmt-day">${item.writeday}</span>`;
 
-                  if(item.writeday != item.updateday){
+                  if(item.writeday !== item.updateday){
                     v_html += `<span class="cmt-day" style="color:blue;">마지막 수정 : ${item.updateday}</span>`;
                   }
                   v_html += `
                             </div>
                             <div class="cmt-writecon-right">`;
+                // 댓글 내용이 "삭제되었습니다."인 경우 수정 및 삭제 버튼을 숨김
+                if(item.content !== "해당 댓글은 삭제되었습니다.") {
                   if(loginuserid === item.userid){
-                    v_html += ` 
-                    <button class="commu-button nanum-b cmt-updatebtn">수정</button>   
-                    <input type='hidden' value='${item.cmidx}'/>
-                    <button class="commu-button nanum-b cmt-deletebtn">삭제</button>`;
+                      v_html += ` 
+                      <button class="commu-button nanum-b cmt-updatebtn">수정</button>   
+                      <input type='hidden' value='${item.cmidx}'/>
+                      <button class="commu-button nanum-b cmt-deletebtn">삭제</button>`;
                   }
                   v_html += `<input type='hidden' value='${currentPage}' class='currentShowPageNo'/>`;
-                  //로그인한 사람만
+                  // 로그인한 사람만
                   if(loginuserid != "" && loginuserid != item.userid){
-                  v_html += `<button class="commu-button nanum-b" onclick="goCommentPlusAdd('${item.userid}', '${item.cmidx}', '${item.groupno}', '${item.depthno}')" >답글</button>`;
+                      v_html += `<button class="commu-button nanum-b" onclick="goCommentPlusAdd('${item.userid}', '${item.cmidx}', '${item.groupno}', '${item.depthno}')" >답글</button>`;
                   }
-
+                }
                   v_html += ` </div>
                               </div>
                               <div class="cmt-content">`;
                   if(item.fk_userid != "" && item.depthno > 1 && (item.fk_userid != item.userid)){ //자기자신한테 답댓글 안됨
                     v_html += `<span class="cmt-fkuserid">@${item.fk_userid}</span>`;
                   }
-                              
-                  v_html +=  `<p class="cmt-con-${item.cmidx}">${item.content}</p>
+                  if(item.content == "해당 댓글은 삭제되었습니다.") {
+                    v_html +=  `<p class="cmt-con-${item.cmidx} opacity-5">${item.content}</p>`;
+                  } else {
+                    v_html +=  `<p class="cmt-con-${item.cmidx}">${item.content}</p>`;
+                  }
+                  v_html += `
                               </div>
                             </div>
                             </div>
@@ -213,7 +226,7 @@ function goViewComment(currentPage) {
 } //end of function goViewComment(currentShowPageNo)
 
 //댓글 수정하기
-
+let origin_comment_content = "";
 $(document).on("click", $(".cmt-updatebtn"), function(e) {
 
   let cmidx = $(e.target).next().val();
@@ -221,7 +234,7 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
 
   if($(e.target).text() == "수정") { //수정버튼 클릭시
     
-    const content = $(".cmt-con-" + cmidx); //해당 댓글의 태그  -$content의 의미는 선택자(태그)를 말함
+    const content = $(".cmt-con-" + cmidx); 
     console.log("cmidx" + cmidx);
 
     origin_comment_content = content.text(); //수정전 댓글내용
@@ -230,7 +243,7 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
     $("#comment_update"+cmidx).val(origin_comment_content); //수정전 댓글내용을 textarea에 넣어줌
 
     $(e.target).text("완료");
-    $(e.target).next().text("취소");
+    $(e.target).next().next().text("취소");
     
   //update 버튼 클릭시
     console.log("$(e.target).text():" + $(e.target).text());
@@ -247,13 +260,13 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
     }
   
     
+    const currentShowPageNo = $(e.target).parent().parent().find("input.currentShowPageNo").val();
     $.ajax({
       type: "post",
       url: contextPath + "/commu/commentUpdate.bibo",
       data: {"cmidx": cmidx, "content": updatecontent}, 
       dataType: "json",
       success: function(json) {
-        const currentShowPageNo = $(e.target).parent().parent().find("input.currentShowPageNo").val();
         $(e.target).text("수정").addClass("btn-secondary");
         $(e.target).next().next().text("삭제");
         goViewComment(currentShowPageNo);//페이징처리한댓글읽어오기
@@ -266,23 +279,41 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
 });
 
 
+//댓글 삭제하기
+$(document).on("click", ".cmt-deletebtn", function(e) {
+  let cmidx = $(e.target).prev().val();
 
-function goCommentDelete(userid, cmidx) {
-  $.ajax({
-    type: "post",
-    url: contextPath + "/commu/commentDelete.bibo",
-    data: {"cmidx": cmidx, "userid": userid}, 
-    dataType: "json",
-    success: function(json) {
-      console.log(JSON.stringify(json));
-      alert("댓글이 수정되었습니다.");
-    },
-    error: function(status, error) {
-        console.error("AJAX 요청 실패: ", status, error);
+  if($(e.target).text()=="취소") { 
+    
+    const content = $(".cmt-con-" + cmidx);
+    content.html(origin_comment_content); // 원래 댓글 내용을 복원
+
+    $(e.target).text("삭제");
+    $(e.target).prev().prev().text("수정");
+
+  }
+  else if($(e.target).text()=="삭제") {
+    if(confirm("댓글을 삭제하시겠습니까?")) {
+      //alert("삭제버튼누름");
+      //alert($(e.target).prev().val()); //삭제해야할 댓글 시퀀스 번호
+      const currentShowPageNo = $(e.target).parent().parent().find("input.currentShowPageNo").val();
+      $.ajax({
+          type: "post",
+          url: contextPath + "/commu/commentDelete.bibo",
+          data: {"cmidx": cmidx}, 
+          dataType: "json",
+          success: function (json) {
+            goViewComment(currentShowPageNo);//페이징처리한댓글읽어오기
+          },
+          error: function(request, status, error){
+              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+        });
     }
-  });
 
-}
+  }
+  
+});
 
 
 

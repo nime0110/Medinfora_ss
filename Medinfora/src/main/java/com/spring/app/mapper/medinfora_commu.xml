@@ -172,7 +172,7 @@
 		SELECT CMIDX, USERID, content, WRITEDAY, updateday, GROUPNO, DEPTHNO, FK_CMIDX, FK_USERID
 		FROM (
 		    SELECT CMIDX, USERID, content, WRITEDAY, updateday, GROUPNO, DEPTHNO, FK_CMIDX, FK_USERID,
-		           ROW_NUMBER() OVER (ORDER BY groupno DESC, CMIDX ASC) AS rno
+		           ROW_NUMBER() OVER (ORDER BY groupno ASC, CMIDX ASC) AS rno
 		    FROM (
 		        SELECT CMIDX, USERID, content,
 		               to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') AS WRITEDAY,
@@ -182,10 +182,10 @@
 		        WHERE CIDX = #{cidx}
 		        START WITH FK_CMIDX = 0
 		        CONNECT BY PRIOR CMIDX = FK_CMIDX
-		        ORDER SIBLINGS BY CMIDX ASC
+		        ORDER SIBLINGS BY CMIDX asc
 		    )
 		)
-		WHERE rno Between #{startRno} AND #{endRno}
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
 	</select>
 	
 	<!-- 댓글 전체갯수 조회(페이징처리용) -->
@@ -195,8 +195,15 @@
 		where cidx = #{cidx}
 	</select>
 	
+	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="CommuCommentDTO">
-		update commucomment set content = #{content}
+		update commucomment set content = #{content}, updateday = default
+		where cmidx = #{cmidx}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteComment" parameterType="String">
+		update commucomment set content = '해당 댓글은 삭제되었습니다.'
 		where cmidx = #{cmidx}
 	</update>
 	

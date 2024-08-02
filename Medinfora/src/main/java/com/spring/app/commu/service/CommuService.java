@@ -70,6 +70,9 @@ public interface CommuService {
 	// 댓글 수정
 	int updateComment(CommuCommentDTO cmtdto);
 
+	// 댓글 삭제
+	int deleteComment(String cmidx);
+
 
 
 

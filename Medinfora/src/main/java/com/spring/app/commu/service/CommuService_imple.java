@@ -166,7 +166,11 @@ public class CommuService_imple implements CommuService {
 	@Override
 	public int updateComment(CommuCommentDTO cmtdto) {
 		return cmdao.updateComment(cmtdto);
-		
+	}
+
+	@Override
+	public int deleteComment(String cmidx) {
+		return cmdao.deleteComment(cmidx);
 	}
 
 
