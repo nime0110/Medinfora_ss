@@ -67,6 +67,9 @@ public interface CommuService {
 	// 댓글 페이징 처리 관련 카운트
 	int getCommentTotalCount(String cmidx);
 
+	// 댓글 수정
+	int updateComment(CommuCommentDTO cmtdto);
+
 
 
 

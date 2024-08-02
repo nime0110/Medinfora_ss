@@ -57,6 +57,8 @@ public interface CommuDAO {
 
 	int allCommentDel(String cidx);
 
+	int updateComment(CommuCommentDTO cmtdto);
+
 
 	
 

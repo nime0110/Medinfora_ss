@@ -155,10 +155,18 @@ public class CommuService_imple implements CommuService {
 	public List<CommuCommentDTO> getCommentList(Map<String, String> paraMap) {
 		return cmdao.getCommentList(paraMap);
 	}
-
+	
+	//댓글 페이징 처리용 총 갯수
 	@Override
 	public int getCommentTotalCount(String cmidx) {
 		return cmdao.getCommentTotalCount(cmidx);
+	}
+
+	//댓글 수정 
+	@Override
+	public int updateComment(CommuCommentDTO cmtdto) {
+		return cmdao.updateComment(cmtdto);
+		
 	}
 
 

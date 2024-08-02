@@ -45,7 +45,6 @@ function goAddWrite() {
   let userid = $("input:hidden[name='userid']").val();
   let content = $("textarea[name='content']").val();
 
-
   $.ajax({
       type: "post",
       url: contextPath + "/commu/addComment.bibo",
@@ -89,11 +88,8 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
     $("#commentDisplay .cmt-li-"+fk_cmidx).append(v_html);
   }
 
-  
-  
-  
   //버튼 클릭시 대댓글 등록
-  $(document).on("click", ".cmt-plus-end", function() {
+  $(document).on("click", ".cmt-plus-end", function(e) {
     
     //댓글 입력 안했을 경우 입력하라는 알림
     if($(".recmt-content").val() == ""){
@@ -116,7 +112,7 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
           "fk_userid" : fk_userid,
           "fk_cmidx" : fk_cmidx,
           "groupno" : groupno,
-          "depthno" : depthno,
+          "depthno" : depthno
               },
         dataType: "json",
         success: function (json) {
@@ -124,8 +120,8 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
             if(json.n == 0) {
               alert("댓글쓰기 실패");
             } else {
-              //goReadComment(); // 페이징 처리 안 한 댓글 읽어오기
-              goViewComment(1);// 페이징 처리한 댓글 읽어오기
+              const currentShowPageNo = $(e.target).parent().parent().find("input.currentShowPageNo").val();
+              goViewComment(currentShowPageNo);//페이징처리한댓글읽어오기
             }
             
             $("textarea.recmt-content").val(""); 
@@ -138,13 +134,6 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
   });
 
 } 
-
-
-
-
-
-
-
 
 
 //댓글보기
@@ -160,7 +149,7 @@ function goViewComment(currentPage) {
       data: {"cidx": cidx, "pageNo": currentPage}, 
       dataType: "json",
       success: function(json) {
-          console.log(JSON.stringify(json));
+          //console.log(JSON.stringify(json));
           let v_html = ``;
           if (json.length > 0) {
               json.forEach((item, index) => {
@@ -188,9 +177,11 @@ function goViewComment(currentPage) {
                             <div class="cmt-writecon-right">`;
                   if(loginuserid === item.userid){
                     v_html += ` 
-                    <button class="commu-button nanum-b">수정</button>   
-                    <button class="commu-button nanum-b">삭제</button>`;
+                    <button class="commu-button nanum-b cmt-updatebtn">수정</button>   
+                    <input type='hidden' value='${item.cmidx}'/>
+                    <button class="commu-button nanum-b cmt-deletebtn">삭제</button>`;
                   }
+                  v_html += `<input type='hidden' value='${currentPage}' class='currentShowPageNo'/>`;
                   //로그인한 사람만
                   if(loginuserid != "" && loginuserid != item.userid){
                   v_html += `<button class="commu-button nanum-b" onclick="goCommentPlusAdd('${item.userid}', '${item.cmidx}', '${item.groupno}', '${item.depthno}')" >답글</button>`;
@@ -198,13 +189,12 @@ function goViewComment(currentPage) {
 
                   v_html += ` </div>
                               </div>
-                              <div class="cmt-content">  					
-                                <p>`;
+                              <div class="cmt-content">`;
                   if(item.fk_userid != "" && item.depthno > 1 && (item.fk_userid != item.userid)){ //자기자신한테 답댓글 안됨
                     v_html += `<span class="cmt-fkuserid">@${item.fk_userid}</span>`;
                   }
                               
-                  v_html +=  `${item.content}</p>
+                  v_html +=  `<p class="cmt-con-${item.cmidx}">${item.content}</p>
                               </div>
                             </div>
                             </div>
@@ -221,6 +211,80 @@ function goViewComment(currentPage) {
       }
   });
 } //end of function goViewComment(currentShowPageNo)
+
+//댓글 수정하기
+
+$(document).on("click", $(".cmt-updatebtn"), function(e) {
+
+  let cmidx = $(e.target).next().val();
+
+
+  if($(e.target).text() == "수정") { //수정버튼 클릭시
+    
+    const content = $(".cmt-con-" + cmidx); //해당 댓글의 태그  -$content의 의미는 선택자(태그)를 말함
+    console.log("cmidx" + cmidx);
+
+    origin_comment_content = content.text(); //수정전 댓글내용
+
+    content.html(`<textarea class="form-control" placeholder="댓글 내용을 입력하세요." id='comment_update${cmidx}' maxlength="150" ></textarea>`); //댓글내용을 수정할수 있도록 input태그를 만들어줌
+    $("#comment_update"+cmidx).val(origin_comment_content); //수정전 댓글내용을 textarea에 넣어줌
+
+    $(e.target).text("완료");
+    $(e.target).next().text("취소");
+    
+  //update 버튼 클릭시
+    console.log("$(e.target).text():" + $(e.target).text());
+  } else if($(e.target).text()=="완료") {
+    const updatecontent = $("textarea#comment_update" + cmidx).val()//수정후 댓글내용
+    
+    console.log(" --- updatecontent: " + updatecontent);
+
+    let regex = /<[^>]*>/g;
+
+    if (regex.test(updatecontent)) {
+        alert('HTML 태그는 사용불가능합니다.');
+        e.preventDefault();
+    }
+  
+    
+    $.ajax({
+      type: "post",
+      url: contextPath + "/commu/commentUpdate.bibo",
+      data: {"cmidx": cmidx, "content": updatecontent}, 
+      dataType: "json",
+      success: function(json) {
+        const currentShowPageNo = $(e.target).parent().parent().find("input.currentShowPageNo").val();
+        $(e.target).text("수정").addClass("btn-secondary");
+        $(e.target).next().next().text("삭제");
+        goViewComment(currentShowPageNo);//페이징처리한댓글읽어오기
+      },
+      error: function(status, error) {
+          console.error("AJAX 요청 실패: ", status, error);
+      }
+    });
+  }
+});
+
+
+
+function goCommentDelete(userid, cmidx) {
+  $.ajax({
+    type: "post",
+    url: contextPath + "/commu/commentDelete.bibo",
+    data: {"cmidx": cmidx, "userid": userid}, 
+    dataType: "json",
+    success: function(json) {
+      console.log(JSON.stringify(json));
+      alert("댓글이 수정되었습니다.");
+    },
+    error: function(status, error) {
+        console.error("AJAX 요청 실패: ", status, error);
+    }
+  });
+
+}
+
+
 
   
 function displayPagination(totalPage, currentPage) {
@@ -243,7 +307,7 @@ function displayPagination(totalPage, currentPage) {
 
       for (let i = firstPage; i <= lastPage; i++) {
           let link = $('<span class="page-link"></span>').text(i).attr('data-page', i);
-          if (i === currentPage) {
+          if (i == currentPage) {
               link.addClass('active');
           }
           paginationDiv.append(link);

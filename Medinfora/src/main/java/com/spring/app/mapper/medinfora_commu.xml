@@ -195,5 +195,9 @@
 		where cidx = #{cidx}
 	</select>
 	
+	<update id="updateComment" parameterType="CommuCommentDTO">
+		update commucomment set content = #{content}
+		where cmidx = #{cmidx}
+	</update>
 	
 </mapper>

@@ -94,23 +94,4 @@
 	
 
 
-<%--
-<div id="deleteModal" class="modal modal-dialog">
-    <div class="modal-content nanum-n">
-        <span class="close nanum-n" style="text-align: right;">&times;</span>
-        <h2>정말로 글을 삭제하시겠습니까?</h2>
-        <form name="delFrm" style=" display: inline-block; text-align: center;">
-            <div>
-          		<input type="hidden" name="cidx" value="${cbdto.cidx}" />
-	            <div class="nanum-n commu-buttons">
-	               <button type="button" class="btn btn-secondary" id="btnDelete">삭제</button>
-	               <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
-	            </div>
-            </div>
-        </form>
-    </div>
-</div>
---%>
-
-
 </body>
