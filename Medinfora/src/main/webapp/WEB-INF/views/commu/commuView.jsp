@@ -11,7 +11,12 @@
 <div class="commu-container">
 
     <div class="title_area">
-        <span class="nanum-eb">${cbdto.title}</span>
+        <span class="nanum-eb">
+        	${cbdto.title}
+        	<c:if test="${cbdto.commentCount != 0}">
+        		[${cbdto.commentCount}]
+            </c:if>
+        </span>
         <span class="nanum-eb">🕛${cbdto.writeday}</span>
     </div>
 
@@ -58,10 +63,10 @@
 		    onclick="location.href='<%= ctxPath %>/commu/commuList.bibo?currentPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
 		    목록
 		</button>
-		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🌟추천</button>
-		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🔖북마크 </button>
+		<button type="button" class="commu-button nanum-b" onclick="suggestionPost('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🌟추천 ${requestScope.cbdto.suggestioncnt}</button>
+		<button type="button" class="commu-button nanum-b" onclick="bookMark('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🔖북마크 </button>
 	</div>
-    <!-- 댓글이 보여짐 , 대댓글 까지만 되고 대댓글 한 경우 아이디가 @아이디 되도록? -->
+
     <ul id="commentDisplay"></ul>
 
 	<div class="pagination" id="rpageNumber"></div>

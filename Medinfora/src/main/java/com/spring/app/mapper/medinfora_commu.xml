@@ -207,4 +207,23 @@
 		where cmidx = #{cmidx}
 	</update>
 	
+	<!-- 글 추천 -->
+	<insert id="suggestionPost" parameterType="SuggestionDTO">
+		insert into suggestion(cidx, userid)
+		values(#{cidx}, #{userid})
+	</insert>
+	
+	<!-- 추천된 글 있는지 보기 -->
+	<select id="checkSuggestion" parameterType="SuggestionDTO" resultType="int">
+		select count(*)
+		from SUGGESTION
+		where USERID = #{userid} and CIDX = #{cidx}
+	</select>
+	
+	<!-- 글 추천시 커뮤 게시판 추천 1증가 -->
+	<update id="postSuggestionUpdate" parameterType="SuggestionDTO">
+		update commu set suggestioncnt = suggestioncnt + 1
+		where cidx = #{cidx}
+	</update>
+
 </mapper>

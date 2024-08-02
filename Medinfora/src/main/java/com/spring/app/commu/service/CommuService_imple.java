@@ -17,6 +17,7 @@ import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 import com.spring.app.hpsearch.model.HpsearchDAO;
 import com.spring.app.main.model.MainDAO;
 
@@ -171,6 +172,21 @@ public class CommuService_imple implements CommuService {
 	@Override
 	public int deleteComment(String cmidx) {
 		return cmdao.deleteComment(cmidx);
+	}
+
+	@Override
+	public int suggestionPost(SuggestionDTO sdto) {
+		return cmdao.suggestionPost(sdto);
+	}
+
+	@Override
+	public int postSuggestionUpdate(SuggestionDTO sdto) {
+		return cmdao.postSuggestionUpdate(sdto);
+	}
+
+	@Override
+	public int checkSuggestion(SuggestionDTO sdto) {
+		return cmdao.checkSuggestion(sdto);
 	}
 
 

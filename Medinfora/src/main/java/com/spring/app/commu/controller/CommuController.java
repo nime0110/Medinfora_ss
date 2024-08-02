@@ -37,6 +37,7 @@ import com.spring.app.domain.NoticeDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 
 
 @Controller
@@ -826,6 +827,7 @@ public class CommuController {
 		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
 		
 		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		jsonObj.put("n", n); // 성공됐다면 {"n":1} 이런 형태가 됨
 		return jsonObj.toString();
 	}
 	
@@ -834,10 +836,7 @@ public class CommuController {
 	@PostMapping(value="/commu/commentDelete.bibo", produces="text/plain;charset=UTF-8") 
 	public String commentDelete(HttpServletRequest request) {
 		
-		CommuCommentDTO cmtdto = new CommuCommentDTO();
 		String cmidx = request.getParameter("cmidx");
-		
-
 		
 		int n = service.deleteComment(cmidx);
 		
@@ -849,11 +848,40 @@ public class CommuController {
 	}
 	
 	
-	
-	
-	// 북마크 
-	
 	// 추천
+	@ResponseBody
+	@GetMapping(value="/commu/suggestionPost.bibo", produces="text/plain;charset=UTF-8") 
+	public String suggestionPost(HttpServletRequest request) {
+		
+		SuggestionDTO sdto = new SuggestionDTO();
+		
+		String userid = request.getParameter("userid");
+		String cidx = request.getParameter("cidx");
+		
+		sdto.setUserid(userid);
+		sdto.setCidx(cidx);
+		
+		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		
+		int n = 0;
+		int alreadySuggestion = 0;
+
+        // 먼저 이미 추천한 기록이 있는지 확인
+		alreadySuggestion = service.checkSuggestion(sdto);
+        System.out.print("alreadySuggestion:" + alreadySuggestion);
+		
+		if(alreadySuggestion != 1) {
+			n = service.suggestionPost(sdto);
+			n = service.postSuggestionUpdate(sdto);
+		}
+		
+		jsonObj.put("n", n);
+		jsonObj.put("alreadySuggestion", alreadySuggestion);
+		return jsonObj.toString();
+	}
+	
+
+		
 	
 	
 	

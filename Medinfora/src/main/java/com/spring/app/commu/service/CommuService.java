@@ -9,6 +9,7 @@ import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 
 public interface CommuService {
 
@@ -72,6 +73,15 @@ public interface CommuService {
 
 	// 댓글 삭제
 	int deleteComment(String cmidx);
+
+	// 추천테이블 삽입
+	int suggestionPost(SuggestionDTO sdto);
+
+	// 추천시 글테이블 추천 1증가
+	int postSuggestionUpdate(SuggestionDTO sdto);
+
+	//이미 추천된 게 있는지 조회
+ 	int checkSuggestion(SuggestionDTO sdto);
 
 
 

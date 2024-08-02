@@ -10,6 +10,7 @@ import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 
 
 @Mapper
@@ -61,9 +62,11 @@ public interface CommuDAO {
 
 	int deleteComment(String cmidx);
 
+	int suggestionPost(SuggestionDTO sdto);
 
-	
+	int postSuggestionUpdate(SuggestionDTO sdto);
 
+	int checkSuggestion(SuggestionDTO sdto);
 
 
 }

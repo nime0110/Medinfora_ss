@@ -18,15 +18,13 @@ function del(cidx) {
 				data:{"cidx":cidx, "commentCount":commentCount},
 				dataType:"json",
 				success:function(json){
-						console.log(JSON.stringify(json));
-
+						// console.log(JSON.stringify(json));
 						if(json.result == '1'){
 								alert("글이 삭제되었습니다.");
 								location.href = contextPath + "/commu/commuList.bibo";
 						} else {
               alert("글 삭제에 실패했습니다.");
             }
-
 				},
 				error: function(request, status, error){
 						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -37,6 +35,37 @@ function del(cidx) {
       return;
   }
 }
+
+
+function suggestionPost(userid, cidx) {
+
+  console.log("userid : " + userid, "cidx : " + cidx);
+  //만약 로그인한 사람이 없으면
+  if(userid == "") {
+    alert("로그인이 필요한 서비스입니다.");
+    return;
+  }
+  console.log("userid : " + userid, "cidx : " + cidx);
+  
+  $.ajax({
+    url: contextPath + "/commu/suggestionPost.bibo",
+    data: {"userid":userid, "cidx":cidx},
+    dataType:"json",
+    success: function (json) {
+      console.log(JSON.stringify(json));
+      if(json.alreadySuggestion == 1) {
+        alert("이미 추천한 글입니다.");
+      }
+    },
+    error: function(request, status, error){
+        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    }
+  });
+}
+
+
+
+/* 댓글쓰기 관련 start */
 
 // 댓글쓰기 
 function goAddWrite() {
@@ -362,3 +391,6 @@ function displayPagination(totalPage, currentPage) {
 function removedisplayPagination() {
   $('#rpageNumber').empty();
 }
+
+
+/* 댓글쓰기 관련 end */
