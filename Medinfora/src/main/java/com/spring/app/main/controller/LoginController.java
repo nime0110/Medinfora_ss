@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+//import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.common.GoogleMail;
 import com.spring.app.common.KakaoApi;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
@@ -35,6 +37,12 @@ public class LoginController {
 	
 	@Autowired
 	private KakaoApi KakaoApi;
+	
+	
+
+	// ==== #243. 빈으로 등록 되어진 GoogleMail 클래스 DI 하기
+		@Autowired
+		private GoogleMail mail;
 	
 	// 회원가입 선택 페이지
 	@RequestMapping("/register/registerchoice.bibo")
@@ -617,4 +625,14 @@ public class LoginController {
 		return jsonObj.toString();
 	}
 	
+
+	// 아이디 찾기 및 페이지 이동
+	
+	@GetMapping("/findId.bibo")
+	public ModelAndView gofindId(ModelAndView mav, HttpServletRequest request) {
+		mav.setViewName("login/findId.tiles");
+		return mav;
+	}
+	
+
 }
