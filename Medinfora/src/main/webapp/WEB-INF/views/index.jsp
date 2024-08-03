@@ -72,14 +72,24 @@
         	<c:choose>
         		<c:when test="${sessionScope.loginuser.mIdx==1}">
         			<li class="pango">
-	        			${requestScope.hpname}
-	        			<span>${requestScope.checkin}</span>
+        				<c:if test="${not empty requestScope.hpname}">
+		        			${requestScope.hpname}
+		        			<span>${requestScope.checkin}</span>
+	        			</c:if>
+	        			<c:if test="${empty requestScope.hpname}">
+	        				현재 진료예약이 존재하지 않습니다.
+	        			</c:if>
         			</li>
         		</c:when>
         		<c:when test="${sessionScope.loginuser.mIdx==2}">
         			<li class="pango">
-	        			${requestScope.patientInfo}
-	        			<span>${requestScope.checkin}</span>
+        				<c:if test="${not empty requestScope.patientInfo}">
+		        			${requestScope.patientInfo}
+		        			<span>${requestScope.checkin}</span>
+	        			</c:if>
+	        			<c:if test="${empty requestScope.patientInfo}">
+	        				현재 진료예약이 존재하지 않습니다.
+	        			</c:if>
         			</li>
         		</c:when>
         		<c:otherwise>
