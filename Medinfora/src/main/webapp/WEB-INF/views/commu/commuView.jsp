@@ -88,7 +88,7 @@
 			<div id="commentArea">
 				<textarea class="form-control" name="content"
 					placeholder="댓글 내용을 입력하세요." maxlength="150"></textarea>
-				<div style="text-align: right;">
+				<div style="text-align: right; margin-top: 10px;">
 					<button class="nanum-b commu-button" type="button" onclick="goAddWrite()">등록</button>
 					<button class="nanum-b commu-button" type="button" onclick="answercanle()">취소</button>
 				</div>
