@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
+import com.spring.app.domain.commu.CommuBoardDTO;
 
 public interface MypageService {
 	
@@ -69,6 +70,9 @@ public interface MypageService {
 	List<Map<String, String>> getT1data(Map<String, String> paraMap);
 
 	List<Map<String, String>> getmyslog(MemberDTO loginuser);
+
+	// (마이페이지) 내가쓴글 리스트 가져오기
+	List<CommuBoardDTO> getmyPostList(Map<String, String> paraMap);
 
 
 }

@@ -37,6 +37,14 @@
 	               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/myreserve.bibo'">진료 예약 내역</li>
 	           </ul>
            </c:if>
+           <div class="sidebar_list_title">
+               	커뮤니티&nbsp;<i class="fa-solid fa-comments"></i>
+           </div>
+           <ul class="sidebar_list_ul">
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mypost.bibo'">작성글</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mycomment.bibo'">작성댓글</li>
+               <li class="sidebar_list_li" onclick="location.href='<%=ctxPath%>/mypage/mybookmark.bibo'">북마크</li>
+           </ul>
            
            <c:if test="${sessionScope.loginuser.mIdx==2}">
            <div class="sidebar_list_title">의료인 메뉴&nbsp;<i class="fa-solid fa-user-doctor"></i>

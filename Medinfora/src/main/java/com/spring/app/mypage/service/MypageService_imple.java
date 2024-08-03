@@ -20,6 +20,7 @@ import com.spring.app.common.Myutil;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
+import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.mypage.model.MypageDAO;
 
 @Service
@@ -360,6 +361,11 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public List<Map<String, String>> getmyslog(MemberDTO loginuser) {
 		return dao.getmyslog(loginuser);
+	}
+
+	@Override
+	public List<CommuBoardDTO> getmyPostList(Map<String, String> paraMap) {
+		return dao.getmyPostList(paraMap);
 	}
 	
 }

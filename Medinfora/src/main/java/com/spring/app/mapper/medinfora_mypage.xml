@@ -835,4 +835,41 @@
 		order by  REGISTERDAY desc
 	</select>
 	
+	<!-- 마이페이지 게시글 select (커뮤 게시판 리스트 뷰잉) -->
+	<select id="getmyPostList" parameterType="HashMap" resultType="CommuBoardDTO">
+		select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt
+		from (
+		    select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt, ROW_NUMBER() OVER (ORDER BY cidx DESC) AS rno
+		    from commu
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		<if test='userid != ""'>
+			and userid = #{userid}
+		</if>
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if> 
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+		order by cidx desc
+	</select>
+	
+	
+	
 </mapper>
