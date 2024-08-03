@@ -56,10 +56,41 @@
         <div class="sim_promo_section_banner_notice_flexbox">
           <h1>🔔</h1>
           <h4 class="nanum-b size-n">알려드립니다</h4>
-          <a href="#">더보기 →</a>
+          <c:choose>
+          	<c:when test="${sessionScope.loginuser.mIdx==1}">
+          		<a href="<%=ctxPath%>/mypage/myreserve.bibo">더보기 →</a>
+          	</c:when>
+          	<c:when test="${sessionScope.loginuser.mIdx==2}">
+          		<a href="<%=ctxPath%>/mypage/reserveSchedule.bibo">더보기 →</a>
+          	</c:when>
+          	<c:otherwise>
+          		<a href="<%=ctxPath%>/notice/noticeList.bibo">더보기 →</a>
+          	</c:otherwise>
+          </c:choose>
         </div>
         <ul class="nanum-n size-n">
-          <li>팡고팡고<span>2022.09.29</span></li>
+        	<c:choose>
+        		<c:when test="${sessionScope.loginuser.mIdx==1}">
+        			<li class="pango">
+	        			${requestScope.hpname}
+	        			<span>${requestScope.checkin}</span>
+        			</li>
+        		</c:when>
+        		<c:when test="${sessionScope.loginuser.mIdx==2}">
+        			<li class="pango">
+	        			${requestScope.patientInfo}
+	        			<span>${requestScope.checkin}</span>
+        			</li>
+        		</c:when>
+        		<c:otherwise>
+        			<c:if test="${not empty requestScope.ndtoList}">
+	        			<li class="pango" onclick="location.href='<%=ctxPath %>/notice/view.bibo?nidx=${requestScope.ndtoList[0].nidx}'">
+	        				${requestScope.ndtoList[0].title}
+	        				<span>${requestScope.ndtoList[0].writeday}</span>
+	        			</li>
+        			</c:if>
+        		</c:otherwise>
+        	</c:choose>
         </ul>
       </div>
     </div>
@@ -74,7 +105,7 @@
     <div class="sh_card-inner card-inner first">
 		<a href="<%=ctxPath %>/status/serviceUtilization.bibo" class="sh-card">
         	<div class="sh_card-front">
-          		<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#" />
+          		<img src="<%=ctxPath %>/resources/img/sh_hospital.png" />
          		<h4 class="nanum-n sh_font" style="font-weight: bold;">의료서비스 이용률</h4>
         	</div>
         	<div class="sh_card-text">
@@ -85,47 +116,55 @@
           		<p class="sh_text">
 			 		특정연도의 연령별 입원 비율
 			 		<br>
-			 		개인 연령(15세 이상), 성별 에 해당하는 의료서비스 이용률을 확인하실 수 있습니다.
+			 		개인 연령(15세 이상), 성별에 해당하는 의료서비스 이용률을 확인하실 수 있습니다.
           		</p>
 	          	<div class="img-content">
-	            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" alt="#">
+	            	<img src="<%=ctxPath %>/resources/img/sh_hospital.png" />
 	          	</div>
         	</div>
       	</a>
       	
-      <a href="" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
-         <h4 class="nanum-n sh_font" style="font-weight: bold;">약국 찾기</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4  class="sh_card-title">약국 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p class="sh_text">
-
-            주변 또는 찾고 싶은 지역으로 약국을 검색할 수 있습니다
-          </p>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_medi.png" alt="#">
-          </div>
-        </div>
-      </a>
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
-          <h4 class="nanum-n sh_font" style="font-weight: bold;">응급실 찾기</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">응급실 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p class="sh_text">
-		 주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
-          </p>
-          <div class="img-content">
-
-            <img src="<%=ctxPath %>/resources/img/sh_emer.png" alt="#">
-          </div>
-        </div>
-      </a>
+      	<a href="<%=ctxPath %>/status/facilities.bibo" class="sh-card">
+        	<div class="sh_card-front">
+          		<img src="<%=ctxPath %>/resources/img/hospitalisationPatient.png" />
+         		<h4 class="nanum-n sh_font" style="font-weight: bold;">시도별 일반입원실<br>시설 현황</h4>
+        	</div>
+        	<div class="sh_card-text">
+          		<h4  class="sh_card-title">
+          			시도별 일반입원실 시설 현황 
+          			<i class="bi bi-arrow-right"></i>
+          		</h4>
+          		<p class="sh_text">
+           			시도별 일반입원실 시설 현황
+           			<br>
+           			실거주 지역 보건의료기관 현황을 확인하실 수 있습니다.
+         		</p>
+          		<div class="img-content">
+            		<img src="<%=ctxPath %>/resources/img/hospitalisationPatient.png" />
+          		</div>
+        	</div>
+      	</a>
+      	
+      	<a href="<%=ctxPath %>/status/cancerincidence.bibo" class="sh-card">
+        	<div class="sh_card-front">
+          		<img src="<%=ctxPath %>/resources/img/hospitalisation_icon.png" />
+          		<h4 class="nanum-n sh_font" style="font-weight: bold;">연도별 암발생률</h4>
+        	</div>
+        	<div class="sh_card-text">
+	          	<h4 class="sh_card-title">
+	          		연도별 암발생률 
+	          		<i class="bi bi-arrow-right"></i>
+	          	</h4>
+	          	<p class="sh_text">
+			 		연도별, 종류별, 연령대별<br>암발생현황
+			 		검색 결과를 통해 나온 데이터를 다운받으실 수 있습니다.
+	          	</p>
+	          	<div class="img-content">
+	            	<img src="<%=ctxPath %>/resources/img/hospitalisation_icon.png" />
+	          	</div>
+	        </div>
+      	</a>
+      	
       <a href="#" class="sh-card">
         <div class="sh_card-front">
           <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
