@@ -676,7 +676,8 @@ select * from hospital
 
 
 
-
+select *
+from member
 
 
 SELECT * FROM (
