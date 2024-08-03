@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -616,5 +617,26 @@ public class LoginController {
 				
 		return jsonObj.toString();
 	}
+	
+	
+	
+	// 아이디 찾기
+	@GetMapping("/login/find.bibo")
+	public ModelAndView findIDnadPWD(ModelAndView mav , @RequestParam String wf) {
+		
+		// System.out.println(wf);
+		
+		if("1".equals(wf) || "2".equals(wf)) {
+			mav.addObject("wf", wf);
+			mav.setViewName("login/findIDnPWD.tiles");
+		}
+		else {
+			mav.setViewName("redirect:/index.bibo");
+		}
+
+		return mav;
+	}
+	
+	
 	
 }

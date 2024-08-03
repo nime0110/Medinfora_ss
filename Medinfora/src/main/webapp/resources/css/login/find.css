@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+.findContainer{
+  width: 100%;
+  /* height: 700px; */
+  /* border: solid 1px red; */
+  margin: 10% auto;
+  text-align: center;
+  
+}
+
+.b_blue{
+  border: solid 1px blue;
+}
+
+.b_green{
+  border: solid 1px green;
+}
+
+.b_red{
+  border: solid 1px red;
+}
+
+.b_black{
+  border: solid 1px black;
+}
+
+.next_button{
+  width: 30%;
+  height: 58px;
+  background-color: #d9d9d9;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.next_button:hover{
+	background-color: #999999;
+}
+
+
+.label_st{
+  width: 30%;
+  height: 50px;
+  border: none;
+  border-bottom: solid 1px #e6e6e6;
+  display: flex;
+  z-index: 1;
+  
+}
+
+#cmt_name, #cmt_email, #cmt_code{
+	width: 30%;
+	color: red;
+}
+
+input:focus {
+  outline: none;
+}
+
+.qwer{
+	display: flex;
+	justify-content: center; 
+}
+
+.btn_st{
+  font-size: 1rem;
+  width: 200px;
+  height: 40px;
+}
+
+
+#reset_btn{
+  margin-top: 9px;
+  margin-right: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background-color: #a6a6a6;
+  z-index: 10;
+  padding-top: 4px;
+}
+
+
+#reset_btn:hover{
+  background-color: black;
+}
+
+#in_name, #in_email, #in_code{
+  border: none;
+  width: 100%;
+  font-size: 1.2rem;
