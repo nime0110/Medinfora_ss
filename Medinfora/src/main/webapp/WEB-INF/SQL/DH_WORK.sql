@@ -228,4 +228,6 @@ where rno between 1 and 10;
 
 select title,CONTENT,IMGSRC,REGISTERDAY
 from NEWS
-where NIDX =
+where NIDX = 1;
+
+delete from NEWS where NIDX = 11;
