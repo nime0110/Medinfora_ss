@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.app.common.FileManager;
 import com.spring.app.commu.model.CommuDAO;
 import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.commu.BookmarkDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
@@ -187,6 +188,21 @@ public class CommuService_imple implements CommuService {
 	@Override
 	public int checkSuggestion(SuggestionDTO sdto) {
 		return cmdao.checkSuggestion(sdto);
+	}
+
+	@Override
+	public int alreadyMarking(BookmarkDTO bdto) {
+		return cmdao.alreadyMarking(bdto);
+	}
+
+	@Override
+	public int bookmarkPost(BookmarkDTO bdto) {
+		return cmdao.bookmarkPost(bdto);
+	}
+
+	@Override
+	public int delBookMark(BookmarkDTO bdto) {
+		return cmdao.delBookMark(bdto);
 	}
 
 

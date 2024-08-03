@@ -9,7 +9,14 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/commu/commuView.js"></script>
 
 <div class="commu-container">
-
+    <div class="commu-info2">
+		<c:if test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == requestScope.cbdto.userid}">
+			<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}&currentShowPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
+					글수정하기
+			</button>
+			<button type="button" class="btn btn-secondary btn-sm" onclick="del('${requestScope.cbdto.cidx}')">삭제하기</button>
+		</c:if>        
+	</div>
     <div class="title_area">
         <span class="nanum-eb">
         	${cbdto.title}
@@ -30,14 +37,6 @@
         </div>
     </div>
      <div>
-        <div class="commu-info2">
-			<c:if test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == requestScope.cbdto.userid}">
-				<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}&currentShowPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
-					글수정하기
-				</button>
-				<button type="button" class="btn btn-secondary btn-sm" onclick="del('${requestScope.cbdto.cidx}')">삭제하기</button>
-			</c:if>        
-        </div>
          <div class="commu-attachment">
          	<c:if test="${not empty requestScope.fileList}">
                 <span class="attach-file">
@@ -64,7 +63,19 @@
 		    목록
 		</button>
 		<button type="button" class="commu-button nanum-b" onclick="suggestionPost('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🌟추천 ${requestScope.cbdto.suggestioncnt}</button>
-		<button type="button" class="commu-button nanum-b" onclick="bookMark('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🔖북마크 </button>
+		<button type="button" class="commu-button nanum-b" onclick="bookMark('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">
+			<c:if test="${requestScope.cbdto.bidx != null && sessionScope.loginuser.userid != null}">
+			    ✅북마크 
+			</c:if>
+			<c:if test="${requestScope.cbdto.bidx == null || sessionScope.loginuser.userid == null}">
+			    🔖북마크
+			</c:if>
+		 </button>
+		 <!-- BIDX 값 확인 -->
+	</div>
+
+	<div class="commentcount-display">
+		<span class="comment_color"><i class="fas fa-comment" style="margin-right:8px;"></i><b>댓글 '${cbdto.commentCount}'개</b></span>
 	</div>
 
     <ul id="commentDisplay"></ul>

@@ -34,6 +34,7 @@ import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
+import com.spring.app.domain.commu.BookmarkDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
@@ -399,7 +400,7 @@ public class CommuController {
 		return jsonObj.toString();
 	}
 	
-	
+	//글 상세보기 
 	@RequestMapping("/commu/commuView.bibo")
 	public ModelAndView commuView(ModelAndView mav, HttpServletRequest request) {
 
@@ -425,6 +426,7 @@ public class CommuController {
 	        // 첨부파일 가져오기
 	        fileList = service.getAttachfiles(cidx);
 	    }
+	    System.out.println("cbdto.getBidx()" + cbdto.getBidx());
 
 	    mav.addObject("cbdto", cbdto);
 	    mav.addObject("fileList", fileList);
@@ -880,9 +882,60 @@ public class CommuController {
 		return jsonObj.toString();
 	}
 	
-
+	// 북마크	
+	@ResponseBody
+	@GetMapping(value="/commu/bookMark.bibo", produces="text/plain;charset=UTF-8") 
+	public String bookMark(HttpServletRequest request) {
 		
-	
+		BookmarkDTO bdto = new BookmarkDTO();
+		//String userid, cidx, bidx;
+		
+		String userid = request.getParameter("userid");
+		String cidx = request.getParameter("cidx");
+		
+		bdto.setUserid(userid);
+		bdto.setCidx(cidx);
+		
+		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		
+		int n = 0;
+		int alreadyBookmark = 0;
+
+		alreadyBookmark = service.alreadyMarking(bdto);
+		
+		if(alreadyBookmark != 1) {
+			n = service.bookmarkPost(bdto);
+		}
+		
+		jsonObj.put("n", n);
+		jsonObj.put("alreadyBookmark", alreadyBookmark);
+		return jsonObj.toString();
+	}
+		
+	// 북마크 해제
+	@ResponseBody
+	@GetMapping(value="/commu/delBookMark.bibo", produces="text/plain;charset=UTF-8") 
+	public String delBookMark(HttpServletRequest request) {
+		
+		BookmarkDTO bdto = new BookmarkDTO();
+		//String userid, cidx, bidx;
+		
+		String userid = request.getParameter("userid");
+		String cidx = request.getParameter("cidx");
+		
+		bdto.setUserid(userid);
+		bdto.setCidx(cidx);
+		
+		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		
+
+		int n = 0;
+		n = service.delBookMark(bdto);
+		
+		
+		jsonObj.put("n", n);
+		return jsonObj.toString();
+	}
 	
 	
 	

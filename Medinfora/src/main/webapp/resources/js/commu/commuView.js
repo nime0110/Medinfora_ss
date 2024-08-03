@@ -63,6 +63,59 @@ function suggestionPost(userid, cidx) {
   });
 }
 
+function bookMark(userid, cidx) {
+
+  console.log("userid : " + userid, "cidx : " + cidx);
+  //만약 로그인한 사람이 없으면
+  if(userid == "") {
+    alert("로그인이 필요한 서비스입니다.");
+    return;
+  }
+  console.log("userid : " + userid, "cidx : " + cidx);
+  
+  $.ajax({
+    url: contextPath + "/commu/bookMark.bibo",
+    data: {"userid":userid, "cidx":cidx},
+    dataType:"json",
+    success: function (json) {
+      //console.log(JSON.stringify(json));
+      if(json.alreadyBookmark == 1) {
+        if(confirm("북마크를 해제하시겠습니까?")) {
+          delBookMark(userid, cidx);
+        }
+      } else {
+        alert("북마크 되었습니다.");
+        //새로고침
+        location.reload();
+      }
+    },
+    error: function(request, status, error){
+        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    }
+  });
+}
+
+//북마크 해제 
+function delBookMark(userid, cidx) {
+  $.ajax({
+    url: contextPath + "/commu/delBookMark.bibo",
+    data: {"userid":userid, "cidx":cidx},
+    dataType:"json",
+    success: function (json) {
+      //console.log(JSON.stringify(json));
+      if(json.n == 0) {
+        alert("북마크 해제 실패");
+      } else {
+        location.reload();
+      }
+    },
+    error: function(request, status, error){
+        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+    }
+  });
+}
+
+
 
 
 /* 댓글쓰기 관련 start */

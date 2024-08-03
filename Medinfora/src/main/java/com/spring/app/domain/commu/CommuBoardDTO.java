@@ -7,6 +7,9 @@ public class CommuBoardDTO {
 	private String cidx, category, title, content, writeday, updateday, 
 				   userid, suggestioncnt, viewcnt, commentCount;
 	
+	//select 용 필드
+	private String bidx;
+	
 	// getter / setter
 	public String getCidx() {
 		return cidx;
@@ -86,6 +89,14 @@ public class CommuBoardDTO {
 
 	public void setCommentCount(String commentCount) {
 		this.commentCount = commentCount;
+	}
+
+	public String getBidx() {
+		return bidx;
+	}
+
+	public void setBidx(String bidx) {
+		this.bidx = bidx;
 	}
 
 
