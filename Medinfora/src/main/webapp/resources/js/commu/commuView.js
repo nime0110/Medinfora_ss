@@ -44,7 +44,7 @@ function suggestionPost(userid, cidx) {
     data: {"userid":userid, "cidx":cidx},
     dataType:"json",
     success: function (json) {
-      console.log(JSON.stringify(json));
+      //console.log(JSON.stringify(json));
       if(json.alreadySuggestion == 1) {
         alert("이미 추천한 글입니다.");
       }
@@ -61,7 +61,6 @@ function bookMark(userid, cidx) {
     alert("로그인이 필요한 서비스입니다.");
     return;
   }
-  console.log("userid : " + userid, "cidx : " + cidx);
   
   $.ajax({
     url: contextPath + "/commu/bookMark.bibo",
@@ -102,18 +101,20 @@ function delBookMark(userid, cidx) {
   });
 }
 
-
-
-
 /* 댓글쓰기 관련 start */
-
 // 댓글쓰기 
 function goAddWrite() {
 
   let cidx = $("#cidx").val();
   let userid = $("input:hidden[name='userid']").val();
   let content = $("textarea[name='content']").val();
+  //마지막 페이지로 이동
 
+  let currentShowPageNo = $(".pagination span:last-child").text();
+  
+  if(currentShowPageNo == "") {
+    currentShowPageNo = 1;
+  }
   if(content == "해당 댓글은 삭제되었습니다.") {
     alert("해당 내용으로 댓글 작성은 불가합니다.");
     $("textarea[name='content']").val("");
@@ -133,7 +134,7 @@ function goAddWrite() {
           if(json.n == 0) {
             alert("댓글쓰기 실패");
           } else {
-            goViewComment(1);
+            goViewComment(currentShowPageNo);
           }
           $("textarea[name='content']").val(""); 
       },
@@ -359,9 +360,12 @@ function displayPagination(totalPage, currentPage) {
   let paginationDiv = $('#rpageNumber');
   paginationDiv.empty();
 
-  let pageGroup = Math.ceil(currentPage / 5);
-  let lastPage = pageGroup * 5;
-  let firstPage = lastPage - 4;
+  // 한 페이지 그룹에 표시할 페이지 수
+  let pageSize = 5;  
+  let pageGroup = Math.ceil(currentPage / pageSize);
+
+  let lastPage = pageGroup * pageSize;  
+  let firstPage = lastPage - (pageSize - 1);  
 
   if (lastPage > totalPage) {
       lastPage = totalPage;

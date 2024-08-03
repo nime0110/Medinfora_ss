@@ -639,10 +639,9 @@ public class CommuController {
 	// 댓글(대댓글) 조회
 	@ResponseBody
 	@GetMapping(value="/commu/commentList.bibo", produces="text/plain;charset=UTF-8") 
-	public String readComment(HttpServletRequest request) {
+	public String readComment(HttpServletRequest request, @RequestParam(value="pageNo", defaultValue = "1") String pageNo) {
 		
 		String cidx = request.getParameter("cidx");
-		String pageNo = request.getParameter("pageNo");
 		
 		// 페이징 처리
 		int sizePerPage = 15; //한 페이지당 15개의 댓글을 보여줄 것임
@@ -650,6 +649,7 @@ public class CommuController {
 		int startRno = ((Integer.parseInt(pageNo) - 1) * sizePerPage) + 1; // 시작 행번호 
         int endRno = startRno + sizePerPage - 1; // 끝 행번호
 		
+
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put("cidx", cidx);
         paraMap.put("startRno", String.valueOf(startRno));
@@ -661,6 +661,7 @@ public class CommuController {
 
 	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);      
 
+	    
 		JSONArray jsonArr = new JSONArray(); 
 
 		if(commentList != null) {
