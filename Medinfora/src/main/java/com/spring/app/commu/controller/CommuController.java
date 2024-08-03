@@ -1,7 +1,4 @@
 package com.spring.app.commu.controller;
-
-
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,7 +36,6 @@ import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
 import com.spring.app.domain.commu.SuggestionDTO;
-
 
 @Controller
 public class CommuController {
@@ -90,7 +86,6 @@ public class CommuController {
 	        paraMap.put("type", type);
 	    }
 
-		
 	    paraMap.put("category", category);
 	    paraMap.put("type", type);
 	    paraMap.put("word", word);
@@ -166,7 +161,6 @@ public class CommuController {
 	        }
 
 	        pageBar += "</ul>";
-
 	        String goBackURL = Myutil.getCurrentURL(request);
 	        
 	        mav.addObject("goBackURL", goBackURL);
@@ -183,63 +177,11 @@ public class CommuController {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-
 	    // 뷰 설정
 	    mav.setViewName("commu/commuList.tiles");
-
 	    return mav;
 	}
 
-	
-	// 글 리스트
-	/*
-	@GetMapping(value="/commu/commuList.bibo")
-	public ModelAndView commuList(ModelAndView mav, HttpServletRequest request
-			,@RequestParam(value="category", defaultValue = "0")String category
-			,@RequestParam(value="type", defaultValue = "z")String type
-			,@RequestParam(value="word", defaultValue = "")String word
-			,@RequestParam(value="currentShowPageNo", defaultValue = "1")String currentShowPageNo) {
-		
-		int sizePerPage = 10;// 한 페이지당 10개 
-
-		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
-		int endRno = startRno + sizePerPage - 1;
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("category", category);
-		paraMap.put("type", type);
-		paraMap.put("word", word);
-		paraMap.put("startRno", String.valueOf(startRno));
-		paraMap.put("endRno", String.valueOf(endRno));
-
-		List<CommuBoardDTO> CommuBoardList = null;
-		
-		CommuBoardList = service.getCommuBoardList(paraMap);
-		
-		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
-		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
-		
-		//첨부파일이 있을 경우
-		List<String> fileSeqList = null;
-		fileSeqList = service.getfileSeqList();
-		
-        // 카테고리 텍스트 변환
-        for (CommuBoardDTO cbdto : CommuBoardList) {
-            cbdto.setCategory(getCategoryText(cbdto.getCategory()));
-        }
-		
-		mav.addObject("CommuBoardList", CommuBoardList);
-		mav.addObject("fileSeqList", fileSeqList);
-		mav.addObject("totalCount", totalCount);
-		mav.addObject("totalPage", totalPage);
-		mav.addObject("sizePerPage", sizePerPage);
-		mav.addObject("currentShowPageNo", currentShowPageNo);
-		
-		mav.setViewName("commu/commuList.tiles");
-		
-		return mav;
-	}
-	*/
 	//글 검색하기
 	@ResponseBody
 	@GetMapping(value = "/commu/commuSearch.bibo", produces = "text/plain;charset=UTF-8")
@@ -268,7 +210,6 @@ public class CommuController {
 		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		
-		
 		List<String> fileSeqList = null;
 		fileSeqList = service.getfileSeqList();
 		JSONArray jsonArr = new JSONArray();
@@ -287,7 +228,6 @@ public class CommuController {
 						}
 					}
 				}
-				
 				cbdto.setCategory(getCategoryText(cbdto.getCategory()));
 				
 				jsonObj.put("category", cbdto.getCategory());
@@ -298,36 +238,29 @@ public class CommuController {
 				jsonObj.put("viewcnt", cbdto.getViewcnt());
 				jsonObj.put("totalPage", totalPage);
 				
-				
 				jsonArr.put(jsonObj);
 			}	
 		}
 		return jsonArr.toString();
 	}
-
-	
 	
 	// 글 작성하기 페이지로 이동 
 	@GetMapping("/commu/commuWrite.bibo")
 	public ModelAndView isLogin_commuWrite(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
 		mav.setViewName("commu/commuWrite.tiles");
-		
 		return mav;
 	}
 
-		
 	// 글 작성 성공
 	@ResponseBody
 	@PostMapping(value="/commu/commuWriteEnd.bibo", produces="text/plain;charset=UTF-8")
 	public String isLogin_commuWriteEnd(MultipartHttpServletRequest mtp_request, HttpServletRequest request, HttpServletResponse response) {
-		
-		
+
 		String category = mtp_request.getParameter("category");
 		String title = mtp_request.getParameter("title");
 		String content = mtp_request.getParameter("content");
-		
-		
+
 		CommuBoardDTO cbdto = new CommuBoardDTO();
 		
 		cbdto.setCategory(category);
@@ -340,7 +273,6 @@ public class CommuController {
 		
 		cbdto.setUserid(loginuser.getUserid());
 
-
 		List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
 		
 		session = mtp_request.getSession();
@@ -348,7 +280,6 @@ public class CommuController {
 		String path = root + "resources" + File.separator + "commu_attach_file";
 		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
 
-		
 		byte[] bytes = null;
 		// 첨부파일의 내용물을 담는 것
 		
@@ -371,13 +302,7 @@ public class CommuController {
 					originalFilename = mfile.getOriginalFilename();
 					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 					
-					//System.out.println(newFileName);
-					//System.out.println(originalFilename);
-					
 					fileSize = mfile.getSize();
-					
-					//System.out.println(fileSize);
-					
 					String cseq = service.getSeqCommu();
 
 					cfdto.setCidx(cseq);
@@ -387,8 +312,6 @@ public class CommuController {
 					
 					service.add_File(cfdto); //파일첨부 테이블에 넣음
 					
-					
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 					jsonObj.put("result", 0);
@@ -396,7 +319,6 @@ public class CommuController {
 				} 
 			}
 		}
-		
 		return jsonObj.toString();
 	}
 	
@@ -436,11 +358,10 @@ public class CommuController {
 	    mav.addObject("word", word);
 
 	    mav.setViewName("commu/commuView.tiles");
-
 	    return mav;
 	}
 
-	// === #183. 첨부파일 다운로드 받기 ===  
+	// 첨부파일 다운로드 받기
 	@GetMapping("/commu/download.bibo")
 	public ModelAndView download(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
@@ -465,7 +386,6 @@ public class CommuController {
 		}
 		
 		mav.setViewName("msg");
-		
 		return mav;
 		
 	}
@@ -473,12 +393,10 @@ public class CommuController {
 	// 글 수정
 	@GetMapping("/commu/commuEdit.bibo")
 	public ModelAndView isLogin_commuEdit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		//수정완료후 돌아갈 곳으로 보내기위해서 쿼리문을 받아옴
 	    String currentShowPageNo = request.getParameter("currentShowPageNo");
 	    String category = request.getParameter("category");
 	    String type = request.getParameter("type");
 	    String word = request.getParameter("word");
-		
 		
 		//글 수정해야할 글번호 가져오기
 		String cidx = request.getParameter("cidx");
@@ -584,10 +502,8 @@ public class CommuController {
 	            jsonObj.put("result", 0);
 	        }
 	    }
-	    
 	    return jsonObj.toString();
 	}
-
 	
 	//첨부파일 사용자가 선택한것만 삭제
 	@ResponseBody
@@ -624,10 +540,7 @@ public class CommuController {
         jsonObj.put("result", n);
         
         return jsonObj.toString();
-		
 	}
-
-	
 	
 	// 글 삭제 (첨부파일 삭제)
 	@ResponseBody
@@ -635,8 +548,7 @@ public class CommuController {
 	public String questionDelete(HttpServletRequest request) {
 		String cidx = request.getParameter("cidx");
 		String commentCount = request.getParameter("commentCount");
-		
-		
+			
 		JSONObject jsonObj = new JSONObject();
 
 		//해당 게시글의 첨부파일 리스트 가져오기
@@ -649,7 +561,6 @@ public class CommuController {
 	    HttpSession session = request.getSession();
 	    String root = session.getServletContext().getRealPath("/");
 	    String path = root + "resources" + File.separator + "commu_attach_file";
-	    //System.out.println("path: " + path);
 	    
 		Map<String, String> paraMap = new HashMap<>();
 	    
@@ -669,21 +580,12 @@ public class CommuController {
 			}
 
 		}
-		/*
-		if(!commentCount.equals("0")) {
-			//댓글개수가 1개 이상이면
-			//n = service.allCommentDel(cidx);
-		}
-		*/
 		n = service.del(cidx);
-
-        
+		
         jsonObj.put("result", n);
-        
         return jsonObj.toString();
 	
 	}
-	
 	
 	// 댓글(대댓글) 쓰기
 	@ResponseBody
@@ -695,11 +597,7 @@ public class CommuController {
 		String cidx = request.getParameter("cidx");
 		String userid = request.getParameter("userid");
 		String content = request.getParameter("content");
-		
-		//System.out.println("cidx" + cidx);
-		//System.out.println("userid" + userid);
-		//System.out.println("content" + content);
-		
+				
 		cmtdto.setCidx(cidx);
 		cmtdto.setUserid(userid);
 		cmtdto.setContent(content);
@@ -710,24 +608,16 @@ public class CommuController {
 		String fk_cmidx = request.getParameter("fk_cmidx");
 		String fk_userid = request.getParameter("fk_userid"); //원 댓글
 		
-		System.out.println("fk_cmidx" + fk_cmidx);
-		System.out.println("fk_userid" + fk_userid);
-		System.out.println("groupno" + groupno);
-		System.out.println("depthno" + depthno);
-		
-		
 		if(fk_cmidx == null) {
 			fk_cmidx = "";
 		}
 		if(fk_userid == null) {
 			fk_userid = "";
 		}
-		
 		cmtdto.setGroupno(groupno);
 		cmtdto.setDepthno(depthno);
 		cmtdto.setFk_cmidx(fk_cmidx);
 		cmtdto.setFk_userid(fk_userid);
-		
 		
 		if(cidx == null) {
 			cidx = "";
@@ -739,16 +629,13 @@ public class CommuController {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} 
-		// 이 결과물을 json 으로 보여줘야 한다.(ajax)
-		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		
-		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
-		jsonObj.put("n", n); // 성공됐다면 {"n":1} 이런 형태가 됨
-		jsonObj.put("userid", cmtdto.getUserid()); // 성공됐다면 {"n":1, "name":"엄정화} 또는  {"n":0, "name":"허성심"}-이땐 포인트 300넘엇을때) 이런 형태가 됨
+	
+		JSONObject jsonObj = new JSONObject(); 
+		jsonObj.put("n", n);
+		jsonObj.put("userid", cmtdto.getUserid());
 		return jsonObj.toString();
 	}
 	
-
 	// 댓글(대댓글) 조회
 	@ResponseBody
 	@GetMapping(value="/commu/commentList.bibo", produces="text/plain;charset=UTF-8") 
@@ -769,17 +656,13 @@ public class CommuController {
         paraMap.put("endRno", String.valueOf(endRno));
 		
         // 현재 페이지 번호 설정 및 유효성 검사addComment
-
-		
 		List<CommuCommentDTO> commentList = service.getCommentList(paraMap);
-		int totalCount = service.getCommentTotalCount(cidx); //페이징 처리시 보여주는 순번을 위함
+		int totalCount = service.getCommentTotalCount(cidx); 
 
-	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);        // 총 페이지 수
+	    int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);      
 
-		
-		JSONArray jsonArr = new JSONArray(); //[]
-		
-		//만약 댓글이없는 글일때 commentList 는 null ==>CommentVO의 필드가 null 이기 때문에..데이터가 없는경우 데이터바인딩이 안되서 CommentVO 필드가 null이된다. 
+		JSONArray jsonArr = new JSONArray(); 
+
 		if(commentList != null) {
 			for(CommuCommentDTO cmtdto : commentList) {
 				JSONObject jsonObj = new JSONObject(); //{}
@@ -796,40 +679,32 @@ public class CommuController {
 	            // null 체크 후 빈 문자열로 대체
 	            String fk_userid = cmtdto.getFk_userid() == null ? "" : cmtdto.getFk_userid();
 	            jsonObj.put("fk_userid", fk_userid);
-				//System.out.println("json fk_userid" + cmtdto.getFk_userid());
 				
 				jsonObj.put("totalPage", totalPage);
 				jsonObj.put("sizePerPage", sizePerPage);
 				
 				jsonArr.put(jsonObj);
-			}//end of for---------------------------
+			}
 		}
-		
-		return jsonArr.toString(); // "[]" 또는  [{ "seq":"1", "fk_userid":nime0110, "name":서영학, "content":"첫번째 댓글입니다. ㅎㅎㅎ ", "regdate":"2024-06-18 15:36:33"}] 
+		return jsonArr.toString(); 
 	}
 	
 	// 댓글(대댓글) 수정
 	@ResponseBody
 	@PostMapping(value="/commu/commentUpdate.bibo", produces="text/plain;charset=UTF-8") 
-	// 스프링에서 json 또는 gson을 사용한 ajax 구현시 데이터를 화면에 출력해 줄때 한글로 된 데이터가 '?'로 출력되어 한글이  깨지는 현상 방지를 위한 produes
 	public String commentUpdate(HttpServletRequest request) {
 		
 		CommuCommentDTO cmtdto = new CommuCommentDTO();
 		String cmidx = request.getParameter("cmidx");
 		String content = request.getParameter("content");
-		
 	
 		cmtdto.setCmidx(cmidx);
 		cmtdto.setContent(content);
-
-		
+	
 		int n = service.updateComment(cmtdto);
 		
-		// 이 결과물을 json 으로 보여줘야 한다.(ajax)
-		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		
-		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
-		jsonObj.put("n", n); // 성공됐다면 {"n":1} 이런 형태가 됨
+		JSONObject jsonObj = new JSONObject(); 
+		jsonObj.put("n", n); 
 		return jsonObj.toString();
 	}
 	
@@ -842,13 +717,10 @@ public class CommuController {
 		
 		int n = service.deleteComment(cmidx);
 		
-		// 이 결과물을 json 으로 보여줘야 한다.(ajax)
-		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		
 		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
+		jsonObj.put("n", n);
 		return jsonObj.toString();
 	}
-	
 	
 	// 추천
 	@ResponseBody
@@ -886,9 +758,7 @@ public class CommuController {
 	@ResponseBody
 	@GetMapping(value="/commu/bookMark.bibo", produces="text/plain;charset=UTF-8") 
 	public String bookMark(HttpServletRequest request) {
-		
 		BookmarkDTO bdto = new BookmarkDTO();
-		//String userid, cidx, bidx;
 		
 		String userid = request.getParameter("userid");
 		String cidx = request.getParameter("cidx");
@@ -915,10 +785,9 @@ public class CommuController {
 	// 북마크 해제
 	@ResponseBody
 	@GetMapping(value="/commu/delBookMark.bibo", produces="text/plain;charset=UTF-8") 
-	public String delBookMark(HttpServletRequest request) {
+	public String delBookMark(HttpServletRequest request) {	
 		
 		BookmarkDTO bdto = new BookmarkDTO();
-		//String userid, cidx, bidx;
 		
 		String userid = request.getParameter("userid");
 		String cidx = request.getParameter("cidx");
@@ -926,27 +795,12 @@ public class CommuController {
 		bdto.setUserid(userid);
 		bdto.setCidx(cidx);
 		
-		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
-		
+		JSONObject jsonObj = new JSONObject(); 
 
 		int n = 0;
-		n = service.delBookMark(bdto);
-		
-		
+		n = service.delBookMark(bdto);		
 		jsonObj.put("n", n);
 		return jsonObj.toString();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
 }
