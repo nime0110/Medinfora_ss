@@ -24,16 +24,19 @@ $(document).on('click','.resulthp',(e) => {
         closeset.find(".hospital_name").addClass("choicefontcolor");
         closeset.find(".hospital_addr").addClass("choicefontcolor");
 
+        $("input[name='hidx']").val(closeset.find('.hidx').text());
+        $("input[name='sel_hpname'").val(closeset.find(".hospital_name").text());
+
     }else{ //이미 체크 한 경우
         ckeckeditem.prop("checked",false);
         customitem.prop("checked",false);
         closeset.removeClass("choiceHospital");
         closeset.find(".hospital_name").removeClass("choicefontcolor");
         closeset.find(".hospital_addr").removeClass("choicefontcolor");
+    
+        $("input[name='hidx']").val("");
+        $("input[name='sel_hpname'").val("");
     }
-
-    $("input[name='hidx']").val(closeset.find('.hidx').text());
-    $("input[name='sel_hpname'").val(closeset.find(".hospital_name").text());
 });
 
 $(document).on("mouseover",$(".resulthp"),(e)=>{
