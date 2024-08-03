@@ -515,7 +515,7 @@ public class ReserveController {
 		String message = "", loc = "";
 		if(n==1) {
 			message = "예약이 접수되었습니다.";
-			loc = request.getContextPath() + "/index.bibo";
+			loc = request.getContextPath() + "/mypage/myreserve.bibo";
 		}
 		mav.addObject("message",message);
 		mav.addObject("loc",loc);
