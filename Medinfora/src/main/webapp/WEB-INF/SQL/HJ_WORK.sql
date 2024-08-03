@@ -585,3 +585,38 @@ select func_age(birthday) as age
 from member
 where (midx = 1 and userid != 'Anonymous')
     and userid = #{userid};
+
+-- === 최신 예약 정보(일반) === --
+select ridx, userid, reportday, checkin, rcode, hidx
+from reserve
+where userid = 'hemint'
+    and checkin =
+        (
+            select min(checkin)
+            from reserve
+            where userid = 'hemint'
+                and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > sysdate
+        );
+        
+-- === 위의 해당하는 병원이름 === --
+select hpname
+from hospital
+where hidx = '#{hidx}'
+
+-- === 최신 예약 정보(의료) === --
+select ridx, userid, reportday, checkin, rcode, hidx
+from
+(
+    select ridx, userid, reportday, checkin, rcode, hidx
+    from reserve
+    where hidx =
+        (
+            select hidx
+            from classcodemet
+            where userid = 'md20395'
+            group by hidx
+        )
+        and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > sysdate
+        order by to_date(checkin,'yyyy-mm-dd hh24:mi:ss')
+)
+where rownum =1

@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendar = new FullCalendar.Calendar(calendarEl, {
     	timeZone: 'SEOUL',
     	locale: "ko",
-      	initialView: 'listWeek',
+    	// 첫모습은 월 내용이 다 보이는 것으로 표시
+      	initialView: 'dayGridMonth',
 
 		// 버튼이름 커스텀
       	views: {

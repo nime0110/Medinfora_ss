@@ -26,6 +26,7 @@ import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
+import com.spring.app.domain.ReserveDTO;
 import com.spring.app.main.model.MainDAO;
 
 import oracle.net.aso.h;
@@ -455,6 +456,41 @@ public class MainService_imple implements MainService {
 		System.out.print(" "+newsDTO.getTitle());
 		
 		return dao.newsInputer(newsDTO);
+	}
+
+	// 최신 예약 정보(일반)
+	@Override
+	public ReserveDTO getRdto_p(String userid) {
+		ReserveDTO rdto = dao.getRdto_p(userid);
+		return rdto;
+	}
+
+	// 최신 예약된 병원 이름
+	@Override
+	public String gethpname(String hidx) {
+		String hpname = dao.gethpname(hidx);
+		return hpname;
+	}
+	
+	// 최신 예약 정보(의료)
+	@Override
+	public ReserveDTO getRdto_m(String userid) {
+		ReserveDTO rdto = dao.getRdto_m(userid);
+		return rdto;
+	}
+
+	// 최신 예약된 환자 이름
+	@Override
+	public String getname(String patientID) {
+		String patient = dao.getname(patientID);
+		return patient;
+	}
+
+	// 최신 예약된 환자의 나이
+	@Override
+	public String getAge(String patientID) {
+		String age = dao.getAge(patientID);
+		return age;
 	}
 	
 }

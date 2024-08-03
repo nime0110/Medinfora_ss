@@ -12,6 +12,7 @@ import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
+import com.spring.app.domain.ReserveDTO;
 
 public interface MainDAO {
 
@@ -113,9 +114,19 @@ public interface MainDAO {
 
 	public int newsInputer(NewsDTO newsDTO);
 
+	// 최신 예약 정보(일반)
+	public ReserveDTO getRdto_p(String userid);
 
-
-
+	// 최신 예약된 병원 이름
+	public String gethpname(String hidx);
 	
+	// 최신 예약 정보(의료)
+	public ReserveDTO getRdto_m(String userid);
+
+	// 최신 예약된 환자 이름
+	public String getname(String patientID);
+
+	// 최신 예약된 환자의 나이
+	public String getAge(String patientID);
 	
 }

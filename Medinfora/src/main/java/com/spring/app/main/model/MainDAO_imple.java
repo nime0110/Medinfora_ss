@@ -18,6 +18,7 @@ import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NewsDTO;
 import com.spring.app.domain.NoticeDTO;
+import com.spring.app.domain.ReserveDTO;
 
 @Repository
 public class MainDAO_imple implements MainDAO{
@@ -268,7 +269,34 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.insert("medinfora.newsInputer", newsDTO);
 	}
 
+	// 최신 예약 정보(일반)
+	@Override
+	public ReserveDTO getRdto_p(String userid) {
+		return sqlsession.selectOne("medinfora.getRdto_p", userid);
+	}
 
+	// 최신 예약 된 병원 이름
+	@Override
+	public String gethpname(String hidx) {
+		return sqlsession.selectOne("medinfora.gethpname", hidx);
+	}
 	
+	// 최신 예약 정보(의료)
+	@Override
+	public ReserveDTO getRdto_m(String userid) {
+		return sqlsession.selectOne("medinfora.getRdto_m", userid);
+	}
+
+	// 최신 예약된 환자 이름
+	@Override
+	public String getname(String patientID) {
+		return sqlsession.selectOne("medinfora.getname", patientID);
+	}
+
+	// 최신 예약된 환자의 나이
+	@Override
+	public String getAge(String patientID) {
+		return sqlsession.selectOne("medinfora.getAge", patientID);
+	}
 
 }
