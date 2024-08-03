@@ -268,19 +268,6 @@ public class MainDAO_imple implements MainDAO{
 		return sqlsession.insert("medinfora.newsInputer", newsDTO);
 	}
 
-	@Override
-	public MemberDTO findIdByNameAndEmail(String name, String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object sendCerificationCode(String email, String certificationCode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 
 
 

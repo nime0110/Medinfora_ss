@@ -113,11 +113,6 @@ public interface MainDAO {
 
 	public int newsInputer(NewsDTO newsDTO);
 
-	// 이름과 이메일로 아이디 찾기
-	public MemberDTO findIdByNameAndEmail(String name, String email);
-
-	public Object sendCerificationCode(String email, String certificationCode);
-
 
 
 

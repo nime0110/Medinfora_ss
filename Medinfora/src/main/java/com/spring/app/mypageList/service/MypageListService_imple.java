@@ -4,10 +4,35 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+/*import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+*/
 import com.spring.app.common.AES256;
 import com.spring.app.common.Sha256;
 import com.spring.app.domain.MemberDTO;
@@ -143,4 +168,95 @@ public class MypageListService_imple implements MypageListService {
 		return mdao.getTotalCount(paraMap);
 
 	}
-}
+
+	 // 엑셀 파일 다운로드 
+    @Override
+    public void userid_to_Excel(Map<String, Object> paraMap, Model model) {
+    	// 엑셀 워크북 생성
+    			SXSSFWorkbook workbook = new SXSSFWorkbook();
+    			// 임시파일을 만드는 것임 
+    			/*
+    			 * SXSSFWorkbook
+					XSSFWorkbook
+					HSSFWorkbook 
+    			 */
+    			// 시트 생성
+    			SXSSFSheet sheet = workbook.createSheet("회원 목록");
+    			
+    			// 열 너비 설정
+    	        sheet.setColumnWidth(0, 4000);
+    	        sheet.setColumnWidth(1, 4000);
+    	        sheet.setColumnWidth(2, 4000);
+    	        sheet.setColumnWidth(3, 4000);
+    	        sheet.setColumnWidth(4, 4000);
+    	        sheet.setColumnWidth(5, 4000);
+    			
+    			// 행의 위치를 나타내는 변수
+    			int rowLocation = 0;
+    			
+    	        // 헤더 스타일 설정
+    	        CellStyle headerStyle = workbook.createCellStyle();
+    	        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+    	        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+    	        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+    	        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+    	        // 헤더 행 생성
+    	        Row headerRow = sheet.createRow(rowLocation++);
+    	        String[] headers = {"아이디", "회원 유형", "성명", "성별", "가입일자", "관리"};
+    	        
+    	        for (int i = 0; i < headers.length; i++) {
+    	            Cell headerCell = headerRow.createCell(i);
+    	            headerCell.setCellValue(headers[i]);
+    	            headerCell.setCellStyle(headerStyle);
+    	        }
+
+    	        // 회원 목록 가져오기
+    	        List<MemberDTO> getMemberList = getMemberList(paraMap);
+
+    	        // 회원 목록을 엑셀 파일에 추가
+    	        for (int i = 0; i < getMemberList.size(); i++) {
+    	            MemberDTO member = getMemberList.get(i);
+    	            Row bodyRow = sheet.createRow(rowLocation++);
+    	            
+    	            Cell bodyCell = bodyRow.createCell(0);
+    	            bodyCell.setCellValue(member.getUserid());
+    	            
+    	            bodyCell = bodyRow.createCell(1);
+    	            bodyCell.setCellValue(getMemberType(member.getmIdx()));
+    	            
+    	            bodyCell = bodyRow.createCell(2);
+    	            bodyCell.setCellValue(member.getName());
+    	            
+    	            bodyCell = bodyRow.createCell(3);
+    	            bodyCell.setCellValue(member.getGender() == 1 ? "남" : "여");
+    	            
+    	            bodyCell = bodyRow.createCell(4);
+    	            bodyCell.setCellValue(member.getRegisterday());
+    	            
+    	            bodyCell = bodyRow.createCell(5);
+    	            bodyCell.setCellValue("관리"); // 예: 관리 버튼 텍스트
+    	        }
+
+    	        // 모델에 엑셀 워크북 추가
+    	        model.addAttribute("locale", Locale.KOREA);
+    	        model.addAttribute("workbook", workbook);
+    	        model.addAttribute("workbookName", "회원 목록");
+    	    }
+    	    
+    	    // 회원 유형을 문자열로 변환
+    	    private String getMemberType(int mIdx) {
+    	        switch (mIdx) {
+    	            case 0: return "관리자";
+    	            case 1: return "일반회원";
+    	            case 2: return "의료종사자";
+    	            case 3: return "일반회원(휴면)";
+    	            case 4: return "의료종사자(휴면)";
+    	            case 8: return "정지회원";
+    	            case 9: return "탈퇴회원";
+    	            default: return "일반회원";
+    	        }
+    	        
+   } // end of 	public void userid_to_Excel(Map<String, Object> paraMap, Model model)
+
+} // end of public class MypageListService_imple implements MypageListService

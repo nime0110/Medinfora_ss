@@ -461,11 +461,6 @@ public class MainService_imple implements MainService {
 		return dao.newsInputer(newsDTO);
 	}
 
-	// 이름과 이메일 담는 
-	@Override
-	public MemberDTO findIdByNameAndEmail(String name, String email) {
-		return dao.findIdByNameAndEmail(name, email);
-	}
 
 	
 

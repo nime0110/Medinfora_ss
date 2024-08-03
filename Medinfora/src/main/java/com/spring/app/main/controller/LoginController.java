@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+//import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -634,24 +634,5 @@ public class LoginController {
 		return mav;
 	}
 	
-	 // 아이디 찾기 및 이메일 전송
-	@ResponseBody //JSON 또는 XML 형식의 데이터를 반환할 때 사용
-	@PostMapping(value = "/findId", produces = "application/json;charset=UTF-8")
-	public Map<String, Object> findId(@RequestParam("name") String name, @RequestParam("email") String email) {
-	    Map<String, Object> result = new HashMap<>();
-	    try {
-	        MemberDTO member = service.findIdByNameAndEmail(name, email);
-	        if (member != null) {
-	        	service.sendIdByEmail(email, member.getUserid());
-	            result.put("success", true);
-	            result.put("userid", member.getUserid());
-	        } else {
-	            result.put("success", false);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        result.put("success", false);
-	    }
-	    return result;
-	}
+
 }
