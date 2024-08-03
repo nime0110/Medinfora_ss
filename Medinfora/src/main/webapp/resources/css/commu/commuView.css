@@ -10,6 +10,16 @@ ul {
     margin: 0 auto;
 }
 
+.commu-info2 {
+	display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+.commu-info2 button:first-child {
+	margin-right: 7px;
+}
+
+
 .title_area {
 	display: flex;
     justify-content: space-between;
@@ -54,6 +64,25 @@ ul {
     font-size: 11px;
     color: #888;
 }
+
+.commu-content {
+	height: auto;
+    min-height: 50vh;
+    border-bottom: 1px solid var(--bs-gray-300);
+    margin-bottom: 18px;
+}
+
+
+.commentcount-display {
+	padding: 7px 12px;
+    border: 1px solid #CCC;
+    border-radius: 0px;
+    background: #FCFCFC;
+    margin-top: 28px;
+    margin-bottom: 18px;	
+}
+
+
 
 
 .cmt-li {
