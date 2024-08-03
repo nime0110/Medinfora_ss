@@ -33,6 +33,7 @@ import com.spring.app.domain.MediADTO;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.NoticeDTO;
+import com.spring.app.domain.ReserveDTO;
 import com.spring.app.main.service.MainService;
 import com.spring.app.question.service.QuestionService;
 
@@ -57,7 +58,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/index.bibo")
-	public ModelAndView index(ModelAndView mav) {
+	public ModelAndView index(ModelAndView mav, HttpServletRequest request) {
 		
 		// index 공지리스트 가져오기
 		List<NoticeDTO> ndtoList = service.getIdxNdtoList();
@@ -69,6 +70,47 @@ public class MainController {
 			String answer = "";
 			answer = questionservice.getAnswer(qdto.getQidx());
 			answerList.add(answer);
+		}
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("loginuser")!=null) {	// 로그인한 경우
+			MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
+			
+			String userid = loginuser.getUserid();
+			
+			if(loginuser.getmIdx()==1) {
+				// 최신 예약 정보(일반)
+				ReserveDTO rdto_p = service.getRdto_p(userid);
+				if(rdto_p != null) {
+					String hidx = rdto_p.getHidx();
+					
+					// 최신 예약된 병원 이름
+					String hpname = service.gethpname(hidx);
+					String checkin = rdto_p.getCheckin().substring(0,16);
+					
+					mav.addObject("hpname", hpname);
+					mav.addObject("checkin", checkin);
+				}
+			}
+			else if(loginuser.getmIdx()==2) {				
+				// 최신 예약 정보(의료)
+				ReserveDTO rdto_m = service.getRdto_m(userid);
+				if(rdto_m != null) {
+					String patientID = rdto_m.getUserid();
+					// 최신 예약된 환자이름
+					String patient = service.getname(patientID);
+					// 최신 예약된 환자의 나이
+					String age = service.getAge(patientID);
+					
+					String patientInfo = patient + "( 만 " + age + " 세 )";
+					String checkin = rdto_m.getCheckin().substring(0,16);
+					
+					mav.addObject("patientInfo", patientInfo);
+					mav.addObject("checkin", checkin);
+				}
+			}
+			
 		}
 		
 		mav.addObject("qdtoList", qdtoList);

@@ -97,7 +97,19 @@ div#oneqdto:hover{
 	cursor: pointer;
 }
 
+.pagebarbox{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
 </style>
+
+<script type="text/javascript">
+	function goviewpage(nidx){
+		location.href="<%=ctxPath%>/news/view.bibo?nidx="+nidx;
+	}
+</script>
 
 <div class="container" style="margin-top: 100px;">
 
@@ -116,22 +128,26 @@ div#oneqdto:hover{
 		
 		<!-- 여기에 리스트 띄우면 됨 -->
 		<div class="mb-5 px-3" id="questionArea">
-				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto" style="justify-content: space-around !important;">
+			<c:forEach var="ndto" items="${requestScope.ndtolist}">
+				<div class="row text-center py-3 nanum-n size-s b_border" id="oneqdto" style="justify-content: space-around !important;" onclick="goviewpage('${ndto.nidx}')">
 					<span class="col-2">
-						<div style="border:solid 1px black; height: 100px; width:100px"></div>
+						<img src="${ndto.imgsrc}" style="width: 100px; height: 100px;">
 					</span>
 					<span class="col-5" style="text-align: left; padding-top: 35px;">
-						어찌고저찌고 해서 어찌고 저찌고함&nbsp;
+						${ndto.title}
 					</span>
 					<span class="col-2" style="text-align: right; padding-top: 35px;">
-						2024-07-31&nbsp;
+						${ndto.registerday}
 					</span>
 				</div>
+			</c:forEach>
 		</div>
 	
 	</div>
 	
 	<%-- 페이지 바 --%>
-	<div class="pagebar" style="text-align: center;"></div>
+	<div class="pagebarbox">
+		${requestScope.pageBar}
+	</div>
 	
 </div>

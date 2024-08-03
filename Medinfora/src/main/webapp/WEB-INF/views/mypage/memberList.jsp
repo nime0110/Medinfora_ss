@@ -45,6 +45,8 @@ div.pagebar{
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	
+	
 	  // Ensure pageNo element exists
     if (document.querySelector("input[name='pageNo']")) {
         // Your existing code
@@ -199,10 +201,26 @@ function Page(pageNo) {
 $(document).ready(function() {
     // 엑셀 파일로 다운로드
     $("button#btnExcel").click(function(){
-        const frm = document.createElement('form');
-        frm.method = "GET"; 
+       	
+    	const arr_userid = new Array();
+       	
+       	$("input:checkbox[name='userid']:checked").each(function(index, item){
+       		add_userid.push($(item).val());
+       	});
+       	
+       	const namebar = arr_userid.join()
+       	
+       	console.log("확인용 userid"  + arr_userid );
+       	
+       	
+       	
+       	
+       	const frm = document.memberListForm;
+       
+       	
+        frm.method = "post"; 
         frm.action = "<%= ctxPath %>/mypage/downloadExcelFile.bibo";
-        document.body.appendChild(frm);
+       
         frm.submit();
     });
 });
@@ -231,9 +249,9 @@ $(document).ready(function() {
 
 <div class="container" style="padding:3% 0;">
 <p class="text-center nanum-b size-n">회원 전체 목록</p>
-    <form style="margin-bottom: 10px;" name="excel_upload_frm" method="post" enctype="multipart/form-data">
-        <button type="button" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드</button> 
-    </form>
+    <form name="excel_upload_frm" method="post" action="<%= ctxPath %>/mypage/downloadExcelFile.bibo" enctype="multipart/form-data">
+    <button type="submit" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드</button> 
+</form>
     <form name="memberListForm">
     <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
     <c:if test="${not empty requestScope.mbrList}">
@@ -253,7 +271,7 @@ $(document).ready(function() {
 	
 	<form>
 	 <fieldset>
-        <div class="p-4 searchBar" align="center" style="background-color: var(--object-skyblue-color);">
+        <div class="namebar p-4 searchBar" align="center" style="background-color: var(--object-skyblue-color);">
             <span>
                 <select class="sclist search_ch sel_0 nanum-b" name="subject">
                     <option value='0'>전체</option>
@@ -262,7 +280,7 @@ $(document).ready(function() {
                 </select>
             </span>
             <span>
-                <input class="inputsc search_ch sel_1 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none"/>
+                <input class="inputsc search_ch sel_1 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none" value="${requestScope.word}"/>
             </span>
             <span>
                 <button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()" style="margin: 1px;
@@ -272,6 +290,7 @@ $(document).ready(function() {
     </fieldset>
     </form>
 </form>
+
 
    <!--  <input type="hidden" name="userid" /> -->
     

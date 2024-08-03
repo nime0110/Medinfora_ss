@@ -362,4 +362,58 @@
 		VALUES (SEQ_NIDX.nextval, #{title}, #{content}, #{imgsrc}, DEFAULT)
 	</insert>
 	
+	<!-- 최신 예약 정보(일반)-->
+	<select id="getRdto_p" parameterType="String" resultType="ReserveDTO">
+		select ridx, userid, reportday, checkin, rcode, hidx
+		from reserve
+		where userid = #{userid}
+		    and checkin =
+		        (
+		            select min(checkin)
+		            from reserve
+		            where userid = 'hemint'
+		                and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > sysdate
+		        )
+	</select>
+	
+	<!-- 최신 예약 된 병원이름  -->
+	<select id="gethpname" parameterType="String" resultType="String">
+		select hpname
+		from hospital
+		where hidx = #{hidx}
+	</select>
+	
+	<!-- 최신 예약 정보(의료)  -->
+	<select id="getRdto_m" parameterType="String" resultType="ReserveDTO">
+		select ridx, userid, reportday, checkin, rcode, hidx
+		from
+		(
+			select ridx, userid, reportday, checkin, rcode, hidx
+			from reserve
+			where hidx =
+			    (
+			        select hidx
+			        from classcodemet
+			        where userid = #{userid}
+			        group by hidx
+			    )
+			    and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > sysdate
+			    order by to_date(checkin,'yyyy-mm-dd hh24:mi:ss')
+		)
+		where rownum =1
+	</select>
+	
+	<!-- 최신 예약된 환자 이름 -->
+	<select id="getname" parameterType="String" resultType="String">
+		select name
+		from member
+		where userid = #{patientID}
+	</select>
+	
+	<!-- 최신 예약된 환자 나이 -->
+	<select id="getAge" parameterType="String" resultType="String">
+		select func_age(birthday) as age
+		from member
+		where userid = #{patientID}
+	</select>
 </mapper>

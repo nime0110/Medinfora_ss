@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.ui.Model;
+
 import com.spring.app.domain.MemberDTO;
 
 public interface MypageListService {
@@ -23,6 +25,8 @@ public interface MypageListService {
 	String makePageBar(int parseInt, int totalPage, int totalCount, String subject, String word);
 
 	int getTotalCount(Map<String, Object> paraMap);
+
+	void userid_to_Excel(Map<String, Object> paraMap, Model model);
 
 
 	

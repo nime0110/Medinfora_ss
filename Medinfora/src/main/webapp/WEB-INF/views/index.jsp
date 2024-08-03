@@ -56,10 +56,51 @@
         <div class="sim_promo_section_banner_notice_flexbox">
           <h1>🔔</h1>
           <h4 class="nanum-b size-n">알려드립니다</h4>
-          <a href="#">더보기 →</a>
+          <c:choose>
+          	<c:when test="${sessionScope.loginuser.mIdx==1}">
+          		<a href="<%=ctxPath%>/mypage/myreserve.bibo">더보기 →</a>
+          	</c:when>
+          	<c:when test="${sessionScope.loginuser.mIdx==2}">
+          		<a href="<%=ctxPath%>/mypage/reserveSchedule.bibo">더보기 →</a>
+          	</c:when>
+          	<c:otherwise>
+          		<a href="<%=ctxPath%>/notice/noticeList.bibo">더보기 →</a>
+          	</c:otherwise>
+          </c:choose>
         </div>
         <ul class="nanum-n size-n">
-          <li>팡고팡고<span>2022.09.29</span></li>
+        	<c:choose>
+        		<c:when test="${sessionScope.loginuser.mIdx==1}">
+        			<li class="pango">
+        				<c:if test="${not empty requestScope.hpname}">
+		        			${requestScope.hpname}
+		        			<span>${requestScope.checkin}</span>
+	        			</c:if>
+	        			<c:if test="${empty requestScope.hpname}">
+	        				현재 진료예약이 존재하지 않습니다.
+	        			</c:if>
+        			</li>
+        		</c:when>
+        		<c:when test="${sessionScope.loginuser.mIdx==2}">
+        			<li class="pango">
+        				<c:if test="${not empty requestScope.patientInfo}">
+		        			${requestScope.patientInfo}
+		        			<span>${requestScope.checkin}</span>
+	        			</c:if>
+	        			<c:if test="${empty requestScope.patientInfo}">
+	        				현재 진료예약이 존재하지 않습니다.
+	        			</c:if>
+        			</li>
+        		</c:when>
+        		<c:otherwise>
+        			<c:if test="${not empty requestScope.ndtoList}">
+	        			<li class="pango" onclick="location.href='<%=ctxPath %>/notice/view.bibo?nidx=${requestScope.ndtoList[0].nidx}'">
+	        				${requestScope.ndtoList[0].title}
+	        				<span>${requestScope.ndtoList[0].writeday}</span>
+	        			</li>
+        			</c:if>
+        		</c:otherwise>
+        	</c:choose>
         </ul>
       </div>
     </div>
