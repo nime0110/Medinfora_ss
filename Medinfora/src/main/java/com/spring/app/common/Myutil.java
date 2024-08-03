@@ -220,7 +220,7 @@ public class Myutil {
 	}
 	
 	public static String makePageBar(int currentShowPageNo, int sizePerPage, int totalPage, String url) {
-		StringBuilder pageBar = new StringBuilder("<ul class='pagination'>");
+		StringBuilder pageBar = new StringBuilder("<ul class='pagination hj_pagebar nanum-n size-s'>");
 		
 		int blockSize = 10; // Page block size
 		int startPage = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;

@@ -4,4 +4,24 @@
 
 <mapper namespace="com.spring.app.news.model.NewsDAO">
 
+	<select id="totalcount" resultType="int">
+		select count(*)
+		from NEWS
+	</select>
+	
+	<select id="getndtolist" parameterType="HashMap" resultType="NewsDTO">
+		select NIDX,TITLE,CONTENT,IMGSRC,REGISTERDAY
+		from (
+			select row_number() over (order by NIDX desc) as rno,NIDX, TITLE, CONTENT, IMGSRC, REGISTERDAY
+		 	from NEWS
+		 	)
+		where rno between #{startRno} and #{endRno}
+	</select>
+
+	<select id="getndto" parameterType="int" resultType="NewsDTO">
+		select title,CONTENT,IMGSRC,REGISTERDAY
+		from NEWS
+		where NIDX = #{nidx}
+	</select>
+
 </mapper>
