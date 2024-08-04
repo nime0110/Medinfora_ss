@@ -237,15 +237,15 @@ function goLogin(){
 		
 		const loginData = {"userid":userid, "pwd":pwd};
 		
-		window.parent.postMessage(loginData, "http://localhost:9099");
+		window.parent.postMessage(loginData, window.location.origin);
 	}
 }// end of function goLogin()
 
 function loginWithKakao(){
 	// $("div#loaderArr").show();
 	
-	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}&prompt=login";
-	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=600";
+	const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=\${window.location.origin}<%=ctxPath%>/${requestScope.RedirectUri}&prompt=login`;
+	const setting = `menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=600`;
 	
 	window.open(url, 'url', setting);
 	
@@ -263,7 +263,7 @@ function loginWithKakaoEnd(iskakao, message){
 	if(iskakao != null){
 		const kakaoLogin = {"iskakao":iskakao, "message":message };
 		
-		window.parent.postMessage(kakaoLogin, "http://localhost:9099");
+		window.parent.postMessage(kakaoLogin, window.location.origin);
 	}
 	
 }

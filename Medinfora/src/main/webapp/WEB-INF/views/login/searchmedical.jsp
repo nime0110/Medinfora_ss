@@ -60,6 +60,8 @@ button#searchbtn{
 }
 
 
+
+
 </style>
 
 
@@ -317,14 +319,7 @@ function goSearch(currentPageNo){
 <%-- 검색한 결과 병원리스트를 보여준다.--%>
 <div class="gd mt-3">
 	<div class="nanum-eb size-s" name="searchtoal">검색결과&nbsp;&nbsp;<span name="size"></span>&nbsp;건</div>
-	<div class="mt-1" id="searchList">
-		<%-- 여기 이제 포문 돌리고 페이징 처리 
-		<div class="search_hp py-3">
-			<div class="nanum-eb size-s"> 서울병원의원</div>
-			<div class="nanum-n size-s">서울특별시 서초구 서초중앙로 26, 1층 109호 (서초동, 래미안 서초유니빌)</div>
-		</div>
-		--%>
-	</div>
+	<div class="mt-1" id="searchList"></div>
 
 
 </div>

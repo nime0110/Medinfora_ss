@@ -484,7 +484,7 @@ public class LoginController {
 		
 			String code = request.getParameter("code");
 			
-			String accessToken = KakaoApi.getAccessToken(code);
+			String accessToken = KakaoApi.getAccessToken(code, request);
 			
 			Map<String, Object> userInfo = KakaoApi.getUserInfo(accessToken);
 			
