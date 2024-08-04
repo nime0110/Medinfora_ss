@@ -741,7 +741,7 @@ public class MypageController {
         for (CommuBoardDTO cbdto : CommuBoardList) {
             cbdto.setCategory(commuController.getCategoryText(cbdto.getCategory()));
         }
-		int totalCount = commuService.getCBListTotalCount(paraMap); // 전체개수
+		int totalCount = service.getmyPostTotalCount(paraMap); // 전체개수
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		
 		List<String> fileSeqList = null;
@@ -803,6 +803,8 @@ public class MypageController {
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
 		
+		
+		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("category", category);
 		paraMap.put("type", type);
@@ -813,12 +815,14 @@ public class MypageController {
 
 		List<CommuBoardDTO> CommuBoardList = null;
 		
+		System.out.println("userid" + paraMap.get("userid"));
+		
 		CommuBoardList = service.getmyBookmarkList(paraMap);
         // 카테고리 텍스트 변환
         for (CommuBoardDTO cbdto : CommuBoardList) {
             cbdto.setCategory(commuController.getCategoryText(cbdto.getCategory()));
         }
-		int totalCount = service.getBMListTotalCount(loginuser.getUserid()); // 전체개수
+		int totalCount = service.getBMListTotalCount(paraMap); // 전체개수
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		
 		List<String> fileSeqList = null;

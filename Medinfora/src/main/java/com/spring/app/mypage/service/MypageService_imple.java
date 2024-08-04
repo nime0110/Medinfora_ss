@@ -367,15 +367,21 @@ public class MypageService_imple implements MypageService {
 	public List<CommuBoardDTO> getmyPostList(Map<String, String> paraMap) {
 		return dao.getmyPostList(paraMap);
 	}
-
+	
+	@Override
+	public int getmyPostTotalCount(Map<String, String> paraMap) {
+		return dao.getmyPostTotalCount(paraMap);
+	}
+	
+	
 	@Override
 	public List<CommuBoardDTO> getmyBookmarkList(Map<String, String> paraMap) {
 		return dao.getmyBookmarkList(paraMap);
 	}
-
 	@Override
-	public int getBMListTotalCount(String userid) {
-		return dao.getBMListTotalCount(userid);
+	public int getBMListTotalCount(Map<String, String> paraMap) {
+		return dao.getBMListTotalCount(paraMap);
 	}
+	
 	
 }

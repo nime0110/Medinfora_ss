@@ -48,7 +48,7 @@ function searchList(currentPage) {
                 });
                 displayPagination(json[0].totalPage, currentPage);
             } else {
-                v_html += `<div class="nosearch">검색 결과가 없습니다.</div>`;
+                v_html += `<div class="nosearch"> 글이 없습니다. </div>`;
                 removedisplayPagination();
             }
             $("div#commuArea").html(v_html);
