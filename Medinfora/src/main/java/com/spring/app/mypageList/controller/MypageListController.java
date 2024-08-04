@@ -174,8 +174,11 @@ public class MypageListController {
 			Map<String, Object> paraMap = new HashMap<>();
 			paraMap.put("subject", subject);
 			paraMap.put("word", word);
-	
-	
+			paraMap.put("start", 1); // 시작 범위 설정
+			paraMap.put("end", 100); // 끝 범위 설정
+			
+			//System.out.println("Controller paraMap: " + paraMap); // <---- 매개변수 로그 추가
+
 			service.userid_to_Excel(paraMap, model);
 	//userIdToExcel
 			//getUserIdToExcel 
