@@ -15,40 +15,28 @@ $(function() {
 });
 
 function searchList(currentPage) {
-    let category = $("select[name='category']").val();
-    let type = $("select[name='type']").val();
+
     let word = $("input[name='word']").val().trim();
-    console.log("category: " + category, "type: " + type, "word: " + word);
     $.ajax({
-        url: "bookmarklist.bibo",
-        data: {"category": category, 
-                "type": type, 
-                "word": word, 
+        url: "commentlist.bibo",
+        data: {"word": word, 
                 "currentShowPageNo": currentPage
                 }, 
         dataType: "json",
         success: function(json) {
-            console.log(JSON.stringify(json));
             let v_html = ``;
             if (json.length > 0) {
                 json.forEach((item, index) => {
-                    v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item" onclick="listOneClick('${item.cidx}')">
+                    v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item" onclick="listOneClick('${item.cidx}', '${item.cmidx}')">
                                    <input type="hidden" value="${item.cidx}" name="commuNo"/>
                                    <input type="hidden" value="${item.totalPage}" id="totalPage"/>
-                                   <span class="col-2">${item.category}</span>
-                                   <span class="col-5" align="left">${item.title}`;
-                    if (item.fileTrue) {
-                        v_html += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>`;
-                    }
-                    v_html += `</span>
-                               <span class="col-2">${item.userid}</span>
+                                   <span class="col-10">${item.content} </span>
                                <span class="col-2">${item.writeday}</span>
-                               <span class="col-1">${item.viewcnt}</span>
                                </div>`;
                 });
                 displayPagination(json[0].totalPage, currentPage);
             } else {
-                v_html += `<div class="nosearch"> 북마크한 글이 없습니다. </div>`;
+                v_html += `<div class="nosearch"> 작성한 댓글이 없습니다. </div>`;
                 removedisplayPagination();
             }
             $("div#commuArea").html(v_html);
@@ -107,6 +95,6 @@ function removedisplayPagination() {
 }
 
 
-function listOneClick(cidx) {
-    location.href = contextPath + "/commu/commuView.bibo?cidx=" + cidx;
+function listOneClick(cidx, cmidx) {
+    location.href = contextPath + "/commu/commuView.bibo?cidx=" + cidx + "#cmt-" + cmidx;
 }

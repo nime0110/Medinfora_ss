@@ -252,4 +252,21 @@
 		where USERID = #{userid} and CIDX = #{cidx}
 	</delete>
 	
+	<!-- 댓글위치 -->
+	<select id="getCommentPage" parameterType="CommuCommentDTO" resultType="int">
+		SELECT rno
+		FROM (
+		    SELECT CMIDX,
+		           ROW_NUMBER() OVER (ORDER BY groupno ASC, CMIDX ASC) AS rno
+		    FROM (
+		        SELECT CMIDX, GROUPNO, DEPTHNO, FK_CMIDX
+		        FROM COMMUCOMMENT
+		        WHERE CIDX = #{cidx}
+		        START WITH FK_CMIDX = 0
+		        CONNECT BY PRIOR CMIDX = FK_CMIDX
+		        ORDER SIBLINGS BY CMIDX ASC
+		    )
+		)
+		WHERE CMIDX = #{cmidx}
+	</select>
 </mapper>

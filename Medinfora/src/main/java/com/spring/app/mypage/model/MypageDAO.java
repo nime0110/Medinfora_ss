@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 
 @Mapper
 public interface MypageDAO {
@@ -121,6 +122,12 @@ public interface MypageDAO {
 
 	// (마이페이지) 북마크 전체개수
 	int getBMListTotalCount(Map<String, String> paraMap);
+
+	// (마이페이지) 내가 쓴 댓글 리스트 가져오기
+	List<CommuCommentDTO> getmycommentList(Map<String, String> paraMap);
+
+	// (마이페이지) 내가 쓴 댓글 전체갯수
+	int getmycmtTotalCount(Map<String, String> paraMap);
 
 
 	

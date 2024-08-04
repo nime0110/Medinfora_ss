@@ -75,5 +75,7 @@ public interface CommuDAO {
 
 	int delBookMark(BookmarkDTO bdto);
 
+	int getCommentPage(CommuCommentDTO cmtdto);
+
 
 }

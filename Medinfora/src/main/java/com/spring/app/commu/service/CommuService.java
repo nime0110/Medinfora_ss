@@ -93,6 +93,9 @@ public interface CommuService {
 	//북마크 해제
 	int delBookMark(BookmarkDTO bdto);
 
+	//댓글 위치 
+	int getCommentPage(CommuCommentDTO cmtdto);
+
 
 
 

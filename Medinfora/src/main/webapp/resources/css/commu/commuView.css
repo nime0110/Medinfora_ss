@@ -138,6 +138,11 @@ ul {
     display: flex;
     justify-content: center;
 }
+
+.highlight {
+	background-color: var(--blue50);
+}
+
 /* 댓글 css end ----- */
 
 

@@ -205,6 +205,11 @@ public class CommuService_imple implements CommuService {
 		return cmdao.delBookMark(bdto);
 	}
 
+	@Override
+	public int getCommentPage(CommuCommentDTO cmtdto) {
+		return cmdao.getCommentPage(cmtdto);
+	}
+
 
 
 

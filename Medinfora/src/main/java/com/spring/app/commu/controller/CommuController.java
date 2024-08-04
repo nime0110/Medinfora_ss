@@ -348,7 +348,6 @@ public class CommuController {
 	        // 첨부파일 가져오기
 	        fileList = service.getAttachfiles(cidx);
 	    }
-	    System.out.println("cbdto.getBidx()" + cbdto.getBidx());
 
 	    mav.addObject("cbdto", cbdto);
 	    mav.addObject("fileList", fileList);
@@ -459,7 +458,6 @@ public class CommuController {
 	    session = mtp_request.getSession();
 	    
 	    List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
-	    //System.out.println("fileList:" + fileList);
 	    
 	    String root = session.getServletContext().getRealPath("/");
 	    String path = root + "resources" + File.separator + "commu_attach_file";
@@ -512,9 +510,7 @@ public class CommuController {
 		
 		String cidx = request.getParameter("cidx");
 		String fileName = request.getParameter("fileName");
-		//System.out.println("cidx: " + cidx); //36 
-		//System.out.println("fileName: " + fileName); //20240730194746113119567455400.jpg
-		
+	
 		Map<String, String> paraMap = new HashMap<>();
         List<CommuFilesDTO> existFileList = service.getAttachfiles(cidx);
         
@@ -522,8 +518,7 @@ public class CommuController {
 	    
 	    String root = session.getServletContext().getRealPath("/");
 	    String path = root + "resources" + File.separator + "commu_attach_file";
-	    System.out.println("path: " + path);
-        
+     
         paraMap.put("cidx", cidx);
         paraMap.put("path", path);
         paraMap.put("fileName", fileName);
@@ -743,7 +738,6 @@ public class CommuController {
 
         // 먼저 이미 추천한 기록이 있는지 확인
 		alreadySuggestion = service.checkSuggestion(sdto);
-        System.out.print("alreadySuggestion:" + alreadySuggestion);
 		
 		if(alreadySuggestion != 1) {
 			n = service.suggestionPost(sdto);
@@ -801,6 +795,28 @@ public class CommuController {
 		int n = 0;
 		n = service.delBookMark(bdto);		
 		jsonObj.put("n", n);
+		return jsonObj.toString();
+	}
+	
+	//댓글 위치관련
+	@ResponseBody
+	@GetMapping(value="/commu/getCommentPage.bibo", produces="text/plain;charset=UTF-8") 
+	public String getCommentPage(HttpServletRequest request) {	
+		
+		CommuCommentDTO cmtdto = new CommuCommentDTO();
+		String cidx = request.getParameter("cidx");
+		String cmidx = request.getParameter("cmidx");
+				
+		cmtdto.setCidx(cidx);
+		cmtdto.setCmidx(cmidx);
+
+		int sizePerPage = 15; //한 페이지당 15개의 댓글을 보여줄 것임
+		int rno = service.getCommentPage(cmtdto);		
+		int pageNo = (int) Math.ceil((double) rno / sizePerPage);
+		
+		JSONObject jsonObj = new JSONObject(); 
+				
+		jsonObj.put("pageNo", pageNo);
 		return jsonObj.toString();
 	}
 	

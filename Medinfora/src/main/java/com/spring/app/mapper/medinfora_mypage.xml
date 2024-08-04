@@ -900,7 +900,6 @@
 		GROUP BY cidx)
 	</select>
 
-	
 	<!-- 북마크된 글 조회  -->
 	<select id="getmyBookmarkList" parameterType="HashMap" resultType="CommuBoardDTO">
 		select cidx, category, title, commentcount, userid, content,
@@ -959,5 +958,32 @@
 		    </if>
 		</if>
 	</select>
+	
+	<!-- 내가쓴 댓글 리스트 가져오기 -->
+	<select id="getmycommentList" parameterType="HashMap" resultType="CommuCommentDTO">
+		select cidx, content, USERID, CMIDX, writeday
+		from (
+		    select cidx, content, USERID,CMIDX,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        ROW_NUMBER() OVER (ORDER BY writeday DESC) AS rno
+		    from COMMUCOMMENT
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno} 
+		and userid = #{userid}
+	    <if test='word != ""'>
+	      and ( lower(content) like '%'||lower(#{word})||'%' )
+	    </if>
+	</select>
+	
+	<!-- 내가쓴 댓글 전체갯수 -->	
+	<select id="getmycmtTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from COMMUCOMMENT
+		where userid = #{userid}
+		<if test='word != ""'>
+	      and ( lower(content) like '%'||lower(#{word})||'%' )
+	    </if>
+	</select>
+
 
 </mapper>

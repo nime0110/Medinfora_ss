@@ -92,13 +92,6 @@
 					<button class="nanum-b commu-button" type="button" onclick="goAddWrite()">등록</button>
 					<button class="nanum-b commu-button" type="button" onclick="answercanle()">취소</button>
 				</div>
-				<%--
-				<button type="button" class="btn btn-secondary btn-sm mr-3"
-				 onclick="javascript:location.href='<%= ctxPath%>/commu/addComment.bibo?groupno=${requestScope.boardvo.groupno}&fk_seq=${requestScope.boardvo.seq}&depthno=${requestScope.boardvo.depthno}'"
-				>
-					답댓글쓰기
-				</button>
-				 댓글쓰기 --%>
 			</div>
 		</form>
 	</c:if>

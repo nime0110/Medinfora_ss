@@ -21,6 +21,7 @@ import com.spring.app.common.Sha256;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.mypage.model.MypageDAO;
 
 @Service
@@ -381,6 +382,27 @@ public class MypageService_imple implements MypageService {
 	@Override
 	public int getBMListTotalCount(Map<String, String> paraMap) {
 		return dao.getBMListTotalCount(paraMap);
+	}
+
+	@Override
+	public List<CommuCommentDTO> getmycommentList(Map<String, String> paraMap) {
+		
+		List<CommuCommentDTO> cmtList = dao.getmycommentList(paraMap);
+		/*
+	    for (CommuCommentDTO comment : cmtList) {
+	        // URL 템플릿 설정
+	    	String cidx = comment.getCidx();
+	    	String cmidx = comment.getCmidx();
+	        comment.setCommenturl("http://localhost:9099/Medinfora/commu/commuView.bibo?cidx="+ cidx + "#cmt-" + cmidx);
+	    }
+		*/
+		return cmtList;
+	}
+
+	@Override
+	public int getmycmtTotalCount(Map<String, String> paraMap) {
+		
+		return dao.getmycmtTotalCount(paraMap);
 	}
 	
 	

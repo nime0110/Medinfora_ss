@@ -34,6 +34,7 @@ import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.mypage.service.MypageService;
 import com.spring.app.question.service.QuestionService;
 
@@ -778,7 +779,67 @@ public class MypageController {
 		return jsonArr.toString();
 	}
 
-	// 자신이 작성한 글 보기 페이지로 가기
+	
+	// 자신이 작성한 댓글 보기 페이지로 가기
+	@GetMapping("mycomment.bibo")
+	public ModelAndView isLogin_myComment(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mycomment.info");
+		return mav;
+	}
+	
+	// 댓글 보여주기
+	
+	// 댓글(대댓글) 조회
+	@ResponseBody
+	@GetMapping(value = "commentlist.bibo", produces = "text/plain;charset=UTF-8")
+	public String commentList(HttpServletRequest request) {
+		
+		String word = request.getParameter("word");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		int sizePerPage = 10;// 한 페이지당 10개
+
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("word", word);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		List<CommuCommentDTO> commentList = null;
+		
+		commentList = service.getmycommentList(paraMap);
+		int totalCount = service.getmycmtTotalCount(paraMap); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
+		JSONArray jsonArr = new JSONArray();
+
+		if(commentList != null) {
+			for(CommuCommentDTO cmtdto : commentList) {
+				
+				JSONObject jsonObj = new JSONObject(); //{}
+	
+				jsonObj.put("cidx", cmtdto.getCidx()); 
+				jsonObj.put("cmidx", cmtdto.getCmidx()); 
+				jsonObj.put("content", cmtdto.getContent()); 
+				jsonObj.put("writeday", cmtdto.getWriteday()); 
+
+				
+				jsonObj.put("totalPage", totalPage);
+				jsonObj.put("sizePerPage", sizePerPage);
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		return jsonArr.toString(); 
+	}
+	
+	// 북마크 보기 페이지로 가기
 	@GetMapping("mybookmark.bibo")
 	public ModelAndView isLogin_myBookMark(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		mav.setViewName("mypage/mybookmark.info");
@@ -858,11 +919,6 @@ public class MypageController {
 		}
 		return jsonArr.toString();
 	}
-	
-	
-	
-	
-	
 	
 	// 커뮤니티 관련 마이페이지 end --
 	

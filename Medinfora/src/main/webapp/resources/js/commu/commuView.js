@@ -2,8 +2,50 @@ let currentPage = 1; // 현재 페이지
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
 $(function() {
-  goViewComment(currentPage);
+  goViewComment(currentPage, function() {
+    cmtmove();
+  });
 });
+function cmtmove() {
+  const hash = window.location.hash; 
+  console.log("Hash:", hash);
+  if (hash) {
+    const cmtId = hash.substring(1); 
+    const cmidx = cmtId.substring(4); 
+    findPageByCmidx(cmidx);
+    setTimeout(function() {
+      const hashcmtId = $('#' + cmtId);
+      if (hashcmtId.length) {
+        console.log("Scroll to:", hashcmtId.offset().top);
+        hashcmtId.addClass('highlight'); 
+        $('html, body').animate({
+          scrollTop: hashcmtId.offset().top
+        }, 1000); 
+        setTimeout(function() {
+          hashcmtId.removeClass('highlight');
+        }, 2000); 
+      } else {
+        console.log("hashcmtId가 존재하지 않습니다.");
+      }
+    }, 500);
+  } else {
+    console.log("URL 오류가 발생했습니다.");
+  }
+}
+
+function findPageByCmidx(cmidx) {
+  let cidx = $("#cidx").val();
+  $.ajax({
+    url: contextPath + '/commu/getCommentPage.bibo', 
+    data: { "cidx": cidx, "cmidx": cmidx }, 
+    dataType: 'json',
+    success: function(json) {
+      //console.log(JSON.stringify(json));
+      const pageNo = json.pageNo; 
+      goViewComment(pageNo);
+    }
+  });
+}
 
 
 function del(cidx) {
@@ -202,7 +244,7 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
 } 
 
 //댓글보기
-function goViewComment(currentPage) {
+function goViewComment(currentPage, callback) {
   let cidx = $("#cidx").val();
   let loginuserid = $("#loginuserid").val();
 
@@ -214,7 +256,7 @@ function goViewComment(currentPage) {
           let v_html = ``;
           if (json.length > 0) {
               json.forEach((item, index) => {
-                v_html += `<li class="cmt-li cmt-li-${item.cmidx}"> 
+                v_html += `<li class="cmt-li cmt-li-${item.cmidx}" id="cmt-${item.cmidx}"> 
                             <div class="cmt-flexbox">`;
                 
                 if(item.depthno > 0){ 
@@ -259,7 +301,8 @@ function goViewComment(currentPage) {
                   if(item.content == "해당 댓글은 삭제되었습니다.") {
                     v_html += `<p class="cmt-con-${item.cmidx} opacity-5">${item.content}</p>`;
                   } else {
-                    v_html += `<p class="cmt-con-${item.cmidx}">${item.content}</p>`;
+                    v_html += `<p class="cmt-con-${item.cmidx}">
+                              <a href="#cmt-li-${item.cmidx}" class="cmt-link">${item.content}</a></p>`;
                   }
 
                   v_html += `</div>
@@ -272,6 +315,10 @@ function goViewComment(currentPage) {
               v_html += ``;
           }
           $("#commentDisplay").html(v_html);
+                // 콜백 함수가 있으면 호출
+      if (typeof callback === 'function') {
+        callback();
+      }
       },
       error: function(status, error) {
           console.error("AJAX 요청 실패: ", status, error);
