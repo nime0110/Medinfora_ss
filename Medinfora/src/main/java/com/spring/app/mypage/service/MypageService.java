@@ -74,5 +74,11 @@ public interface MypageService {
 	// (마이페이지) 내가쓴글 리스트 가져오기
 	List<CommuBoardDTO> getmyPostList(Map<String, String> paraMap);
 
+	// (마이페이지) 북마크 리스트 가져오기
+	List<CommuBoardDTO> getmyBookmarkList(Map<String, String> paraMap);
+
+	// (마이페이지) 북마크 전체개수
+	int getBMListTotalCount(String userid);
+
 
 }

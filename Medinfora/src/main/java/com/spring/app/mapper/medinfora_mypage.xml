@@ -855,6 +855,9 @@
 		</if>
 		<if test='type == "z" and category == "0"'> 
 			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
 		</if> 
 		<if test='type != "z"'> 
 		    <if test='type == "title" and word != ""'>
@@ -870,6 +873,48 @@
 		order by cidx desc
 	</select>
 	
-	
-	
+	<!-- 북마크된 글 조회  -->
+	<select id="getmyBookmarkList" parameterType="HashMap" resultType="CommuBoardDTO">
+		select cidx, category, title, commentcount, userid, content,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        viewcnt
+		from (
+		    select A.cidx, category, title, commentcount, A.userid, content,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        viewcnt, ROW_NUMBER() OVER (ORDER BY A.cidx DESC) AS rno
+		    from commu A join BOOKMARK B
+		    ON A.CIDX = B.CIDX
+		    where A.USERID = #{userid}
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if> 
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+		order by cidx desc
+	</select>
+
+	<select id="getBMListTotalCount" parameterType="String" resultType="int">
+		select count(*)
+		from commu A join BOOKMARK B
+		ON A.CIDX = B.CIDX
+		where A.USERID = #{userid}
+	</select>
+
 </mapper>

@@ -777,6 +777,84 @@ public class MypageController {
 		}
 		return jsonArr.toString();
 	}
+
+	// 자신이 작성한 글 보기 페이지로 가기
+	@GetMapping("mybookmark.bibo")
+	public ModelAndView isLogin_myBookMark(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mybookmark.info");
+		return mav;
+	}
+	
+	//북마크한 글 목록 가져오기 
+	@ResponseBody
+	@GetMapping(value = "bookmarklist.bibo", produces = "text/plain;charset=UTF-8")
+	public String myBookMark(HttpServletRequest request){
+
+		String category = request.getParameter("category");
+		String type = request.getParameter("type");
+		String word = request.getParameter("word");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		int sizePerPage = 10;// 한 페이지당 10개
+
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("category", category);
+		paraMap.put("type", type);
+		paraMap.put("word", word);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		List<CommuBoardDTO> CommuBoardList = null;
+		
+		CommuBoardList = service.getmyBookmarkList(paraMap);
+        // 카테고리 텍스트 변환
+        for (CommuBoardDTO cbdto : CommuBoardList) {
+            cbdto.setCategory(commuController.getCategoryText(cbdto.getCategory()));
+        }
+		int totalCount = service.getBMListTotalCount(loginuser.getUserid()); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
+		List<String> fileSeqList = null;
+		fileSeqList = commuService.getfileSeqList();
+		JSONArray jsonArr = new JSONArray();
+		
+		Boolean fileTrue = true;
+		
+		if (CommuBoardList != null) {
+			for (CommuBoardDTO cbdto : CommuBoardList) {
+
+				JSONObject jsonObj = new JSONObject(); // {}
+				
+				if(fileSeqList != null) {
+					for(String file : fileSeqList) {
+						if(file.equals(cbdto.getCidx())) {
+							jsonObj.put("fileTrue", fileTrue);
+						}
+					}
+				}
+
+				jsonObj.put("category", cbdto.getCategory());
+				jsonObj.put("cidx", cbdto.getCidx());
+				jsonObj.put("title", cbdto.getTitle());
+				jsonObj.put("commentcount", cbdto.getCommentCount());
+				jsonObj.put("userid", cbdto.getUserid());
+				jsonObj.put("writeday", cbdto.getWriteday());
+				jsonObj.put("viewcnt", cbdto.getViewcnt());
+				jsonObj.put("totalPage", totalPage);
+				
+				jsonArr.put(jsonObj);
+			}	
+		}
+		return jsonArr.toString();
+	}
+	
 	
 	
 	

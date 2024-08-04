@@ -53,7 +53,7 @@
     </div>
     
     <div class="nanum-n commu-content" style="height: auto;">
-        <p>${cbdto.content}</p>
+        ${cbdto.content}
     </div>
     
 	<div class="button-list-area">

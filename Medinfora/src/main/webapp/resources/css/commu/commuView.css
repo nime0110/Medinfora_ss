@@ -54,6 +54,16 @@ ul {
     outline: none;
 }
 
+
+.commu-content {
+	height: auto;
+    min-height: 50vh;
+    border-bottom: 1px solid var(--bs-gray-300);
+    margin-bottom: 18px;
+    margin-top: 10px;
+    padding: 6px;
+}
+
 .button-list-area {
 	display: flex;
     justify-content: space-between;
@@ -65,12 +75,6 @@ ul {
     color: #888;
 }
 
-.commu-content {
-	height: auto;
-    min-height: 50vh;
-    border-bottom: 1px solid var(--bs-gray-300);
-    margin-bottom: 18px;
-}
 
 
 .commentcount-display {
