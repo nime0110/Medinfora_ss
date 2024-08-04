@@ -19,9 +19,13 @@
 	</select>
 
 	<select id="getndto" parameterType="int" resultType="NewsDTO">
-		select title,CONTENT,IMGSRC,REGISTERDAY
+		select nidx,title,CONTENT,IMGSRC,REGISTERDAY
 		from NEWS
 		where NIDX = #{nidx}
 	</select>
+	
+	<delete id="delndto" parameterType="int">
+		delete from NEWS where NIDX = #{nidx}
+	</delete>
 
 </mapper>

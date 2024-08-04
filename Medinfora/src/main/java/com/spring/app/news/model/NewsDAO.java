@@ -16,4 +16,6 @@ public interface NewsDAO {
 
 	NewsDTO getndto(int nidx);
 
+	int delndto(int nidx);
+
 }

@@ -1,12 +1,11 @@
 package com.spring.app.news.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,7 +88,7 @@ public class NewsController {
 			mav.addObject("ndtolist",ndtolist);
 			
 		}catch (Exception e) {
-			mav.setViewName("redirect:"+request.getContextPath()+"/index.bibo");
+			mav.setViewName("redirect:/index.bibo");
 			return mav;
 		}
 
@@ -109,17 +108,40 @@ public class NewsController {
 			NewsDTO ndto = service.getndto(nidx);
 			
 			if(ndto==null) {
-				mav.setViewName("redirect:"+request.getContextPath()+"/index.bibo");
+				mav.setViewName("redirect:/index.bibo");
 				return mav;
 			}
 		
 			mav.addObject("ndto",ndto);
 				
 		}catch (Exception e) {
-			mav.setViewName("redirect:"+request.getContextPath()+"/index.bibo");
+			mav.setViewName("redirect:/index.bibo");
 		}
 		
 		mav.setViewName("news/view.tiles");
+		
+		return mav;
+	}
+	
+	@GetMapping("del.bibo")
+	public ModelAndView isAdmin_del(ModelAndView mav, HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam(value="nidx",defaultValue = "0") String nidxStr) {
+		
+		try {
+			
+			int nidx = Integer.valueOf(nidxStr);
+			
+			int sus = service.del(nidx);
+			
+			if(sus!=1) {
+				mav.setViewName("redirect:/index.bibo");
+			}else {
+				mav.setViewName("redirect:/news/main.bibo");
+			}
+			
+		}catch (Exception e) {
+			mav.setViewName("redirect:/index.bibo");
+		}
 		
 		return mav;
 	}
