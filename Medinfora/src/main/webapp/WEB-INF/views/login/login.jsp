@@ -302,7 +302,7 @@ function checkCapsLock(event)  {
 	    <div class="login_idpw_register mb-4">
       		<button class="nanum-n" type="button" onclick="javascript:window.parent.goregister();">회원가입</button><span class="lineG">
 	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.finduserinfo('1');">아이디 찾기</button><span class="lineG">
-	      	</span><button class="nanum-n" type="button">비밀번호 찾기</button>
+	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.finduserinfo('2');">비밀번호 찾기</button>
 	    </div>
 	</form>
 

@@ -109,5 +109,11 @@ public interface MainService {
 
 	// 최신 예약된 환자의 나이
 	public String getAge(String patientID);
+	
+	// 아이디 비밀번호찾기
+	public MemberDTO finduserinfo(Map<String, String> paraMap);
+	
+	// 비밀번호 초기화
+	public int changepassword(Map<String, String> paraMap);
 
 }

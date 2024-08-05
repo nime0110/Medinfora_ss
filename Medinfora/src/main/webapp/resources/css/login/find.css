@@ -1,36 +1,36 @@
 @charset "UTF-8";
 
 .findContainer{
-  width: 100%;
-  /* height: 700px; */
-  /* border: solid 1px red; */
-  margin: 10% auto;
-  text-align: center;
+  	width: 100%;
+  	/* height: 700px; */
+  	/* border: solid 1px red; */
+  	margin: 10% auto;
+  	text-align: center;
   
 }
 
 .b_blue{
-  border: solid 1px blue;
+  	border: solid 1px blue;
 }
 
 .b_green{
-  border: solid 1px green;
+  	border: solid 1px green;
 }
 
 .b_red{
-  border: solid 1px red;
+  	border: solid 1px red;
 }
 
 .b_black{
-  border: solid 1px black;
+  	border: solid 1px black;
 }
 
 .next_button{
-  width: 30%;
-  height: 58px;
-  background-color: #d9d9d9;
-  border: none;
-  font-size: 1.5rem;
+  	width: 30%;
+  	height: 58px;
+  	background-color: #d9d9d9;
+  	border: none;
+  	font-size: 1.5rem;
 }
 
 .next_button:hover{
@@ -39,22 +39,22 @@
 
 
 .label_st{
-  width: 30%;
-  height: 50px;
-  border: none;
-  border-bottom: solid 1px #e6e6e6;
-  display: flex;
-  z-index: 1;
+  	width: 30%;
+  	height: 50px;
+  	border: none;
+  	border-bottom: solid 1px #e6e6e6;
+  	display: flex;
+  	z-index: 1;
   
 }
 
-#cmt_name, #cmt_email, #cmt_code{
+#cmt_name, #cmt_email, #cmt_code, #cmt_pwd, #cmt_pwddp{
 	width: 30%;
 	color: red;
 }
 
 input:focus {
-  outline: none;
+  	outline: none;
 }
 
 .qwer{
@@ -63,30 +63,40 @@ input:focus {
 }
 
 .btn_st{
-  font-size: 1rem;
-  width: 200px;
-  height: 40px;
+  	font-size: 1rem;
+  	width: 200px;
+  	height: 40px;
+  	z-index: 11;
 }
 
 
-#reset_btn{
-  margin-top: 9px;
-  margin-right: 20px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background-color: #a6a6a6;
-  z-index: 10;
-  padding-top: 4px;
+.reset_btn{
+  	margin-top: 9px;
+  	margin-right: 20px;
+  	width: 30px;
+  	height: 30px;
+  	border-radius: 50%;
+  	border: none;
+  	background-color: #a6a6a6;
+  	z-index: 10;
+  	padding-top: 4px;
+  	color: white;
+  	font-weight: bold;
 }
 
 
-#reset_btn:hover{
-  background-color: black;
+.reset_btn:hover{
+  	background-color: black;
 }
 
-#in_name, #in_email, #in_code{
-  border: none;
-  width: 100%;
-  font-size: 1.2rem;
+#in_name, #in_email, #in_code, #in_id, #in_pwd, #in_pwddp{
+  	border: none;
+  	width: 100%;
+  	font-size: 1rem;
+  
+}
+
+#timer{
+	margin: 0 30px;
+	padding-top: 10px;
+}	

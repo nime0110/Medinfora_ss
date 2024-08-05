@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,8 @@ import com.spring.app.common.KakaoApi;
 import com.spring.app.domain.HospitalDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.main.service.MainService;
+
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class LoginController {
@@ -645,5 +648,111 @@ public class LoginController {
 	}
 	
 	
+	// 인증코드 메일 발송
+	@ResponseBody
+	@PostMapping("/login/sendAuthcode.bibo")
+	public String sendAuthcode(HttpServletRequest request) {
+		
+		String recipient = request.getParameter("recipient");
+		
+		String result = "no";
+		JSONObject jsonObj = new JSONObject();
+		
+		Random rnd = new Random();
+
+		String certification_code = "";
+		// 인증키는 영문소문자 5글자 + 숫자 7글자
+
+		char randchar = ' ';
+		for(int i=0; i<5; i++) {  
+			randchar = (char) (rnd.nextInt('z' - 'a' + 1) + 'a');
+			certification_code += randchar;
+		}// end of for---------------------
+
+		int randnum = 0;
+		for(int i=0; i<7; i++) { 
+			randnum = rnd.nextInt(9 - 0 + 1) + 0;
+			certification_code += randnum;
+
+		}// end of for---------------------
+		
+		GoogleMail mail = new GoogleMail();
+		
+		try {
+			mail.send_certification_code(recipient, certification_code);
+			result = "yes";
+			jsonObj.put("code", certification_code);
+			System.out.println(certification_code);
+			
+		} catch (Exception e) {
+			result = "no";
+			e.printStackTrace();
+		}
+		
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	
+	@ResponseBody
+	@PostMapping("/login/findEnd.bibo")
+	public String findEnd(HttpServletRequest request) {
+		
+		String wf = request.getParameter("wf");
+		String data = request.getParameter("data");
+		String email = request.getParameter("email");
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("data", data);
+		paraMap.put("email", email);
+		paraMap.put("wf", wf);
+		
+		MemberDTO mdto = service.finduserinfo(paraMap);
+		String userid = mdto.getUserid();
+		paraMap.put("userid", userid);
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("result", paraMap);
+		
+		return jsonObj.toString();
+	}
+	
+	
+	@PostMapping("/login/changepwd.bibo")
+	public ModelAndView changepwd(ModelAndView mav, HttpServletRequest request) {
+		
+		String userid = request.getParameter("userid");
+		
+		mav.addObject("userid", userid);
+		mav.setViewName("login/changepwd.tiles");
+		return mav;
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/login/changepwdEnd.bibo")
+	public String changepwdEnd(HttpServletRequest request) {
+		
+		String userid = request.getParameter("userid");
+		String pwd = request.getParameter("pwd");
+		
+		String result = "no";
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("userid", userid);
+		paraMap.put("pwd", pwd);
+		
+		int n = service.changepassword(paraMap);
+		JSONObject jsonObj = new JSONObject();
+		
+		if(n== 1) {
+			result = "yes";
+			jsonObj.put("result", result);
+		}
+		
+		return jsonObj.toString();
+	}
 	
 }
