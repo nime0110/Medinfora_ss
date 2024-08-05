@@ -31,9 +31,10 @@
 
   <section class="sim_promo_section">
     <div class="sim_promo_section_banner">
-      <div class="sim_promo_section_banner_image">
-        <!-- <img src=""> -->
-        <h2 class="nanum-b size-n">사이트설명 이미지<br>홈페이지 소개글<br>1장</h2>
+      <div class="p-5">
+      	<a href="https://github.com/jjoung-2j/Medinfora">
+      		<img src="<%=ctxPath %>/resources/img/BannerIcon.png" class="img-fluid linkgithub"/>
+      	</a>
       </div>
     </div>
     <div class="sim_promo_section_services">
