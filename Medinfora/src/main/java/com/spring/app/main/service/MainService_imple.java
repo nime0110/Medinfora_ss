@@ -497,4 +497,31 @@ public class MainService_imple implements MainService {
 		return age;
 	}
 	
+	
+	// 아이디 비밀번호 찾기
+	@Override
+	public MemberDTO finduserinfo(Map<String, String> paraMap) {
+
+		try {
+			paraMap.put("email", aES256.encrypt(paraMap.get("email")));
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		MemberDTO mdto = null;
+		mdto = dao.findinfo(paraMap);
+
+		
+		return mdto;
+	}
+	
+	// 비밀번호 초기화
+	@Override
+	public int changepassword(Map<String, String> paraMap) {
+		String pwd = paraMap.get("pwd");
+		paraMap.put("pwd", Sha256.encrypt(pwd));
+
+		int n = dao.changepassword(paraMap);
+		return n;
+	}
+	
 }

@@ -653,8 +653,7 @@ SELECT qidx, title, viewCount
 FROM Q
 WHERE rno between 1 and 3;
 
-select *
-from media;
+select * from member;
 
 
 

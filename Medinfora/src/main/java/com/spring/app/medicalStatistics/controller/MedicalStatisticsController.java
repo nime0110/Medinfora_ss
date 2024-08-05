@@ -176,7 +176,7 @@ public class MedicalStatisticsController {
 										,@RequestParam(required = false) String year
 										,@RequestParam(required = false) String cancer) {
 		 
-		System.out.println(woman_i);
+		// System.out.println(woman_i);
 		
 		
 		Map<String, Object> paraMap = new HashMap<>();

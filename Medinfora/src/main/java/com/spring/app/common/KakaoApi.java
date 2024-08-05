@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -26,11 +28,18 @@ public class KakaoApi {
 	
 	private Logger log = LoggerFactory.getLogger(KakaoApi.class);
 	
-	public String getAccessToken(String code) {
+	public String getAccessToken(String code, HttpServletRequest requset) {
 		
 		String accessToken = "";
-		String refreshToken = "";
+		// String refreshToken = "";
 		String sendURL = "https://kauth.kakao.com/oauth/token";
+		
+		// System.out.println(requset.getHeader("Host"));
+		
+		String proto = requset.getScheme();
+		String host = requset.getHeader("Host");
+		String ctxPath = requset.getContextPath();
+		String redirect = proto+"://"+host+ctxPath+"/";
 		
 		
 		try {
@@ -47,7 +56,7 @@ public class KakaoApi {
 	        
 	        sb.append("grant_type=authorization_code");
 	        sb.append("&client_id=").append(kakaoApiKey);
-	        sb.append("&redirect_uri=http://localhost:9099/Medinfora/").append(redirectUri);
+	        sb.append("&redirect_uri="+redirect).append(redirectUri);
 	        sb.append("&code=").append(code);			
 			
 	        bw.write(sb.toString());
@@ -72,11 +81,15 @@ public class KakaoApi {
 	        }
 	        String result = responseSb.toString();
 	        log.info("responseBody = {}", result);
-
-	        JsonParser parser = new JsonParser();
-	        JsonElement element = parser.parse(result);
+	        
+	        // 구문법
+	        // JsonParser parser = new JsonParser();
+	        // JsonElement element = parser.parse(result);
+	        
+	        // 변경된 문법(gson) 사용함
+	        JsonElement element = JsonParser.parseString(result);
 	        accessToken = element.getAsJsonObject().get("access_token").getAsString();
-	        refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+	        // refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
 
 	        br.close();
 	        bw.close();
@@ -125,8 +138,7 @@ public class KakaoApi {
 	        String result = responseSb.toString();
 	        log.info("responseBody = {}", result);
 
-	        JsonParser parser = new JsonParser();
-	        JsonElement element = parser.parse(result);
+	        JsonElement element = JsonParser.parseString(result);
 	        
 	        // JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
 	        JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();

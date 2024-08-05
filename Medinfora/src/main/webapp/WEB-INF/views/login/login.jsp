@@ -237,15 +237,15 @@ function goLogin(){
 		
 		const loginData = {"userid":userid, "pwd":pwd};
 		
-		window.parent.postMessage(loginData, "http://localhost:9099");
+		window.parent.postMessage(loginData, window.location.origin);
 	}
 }// end of function goLogin()
 
 function loginWithKakao(){
 	// $("div#loaderArr").show();
 	
-	const url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=http://localhost:9099/Medinfora/${requestScope.RedirectUri}&prompt=login";
-	const setting = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=600";
+	const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${requestScope.kakaoApiKey}&redirect_uri=\${window.location.origin}<%=ctxPath%>/${requestScope.RedirectUri}&prompt=login`;
+	const setting = `menubar=no,location=no,resizable=no,scrollbars=yes,status=no,top=100, left=100, width=600,height=600`;
 	
 	window.open(url, 'url', setting);
 	
@@ -263,7 +263,7 @@ function loginWithKakaoEnd(iskakao, message){
 	if(iskakao != null){
 		const kakaoLogin = {"iskakao":iskakao, "message":message };
 		
-		window.parent.postMessage(kakaoLogin, "http://localhost:9099");
+		window.parent.postMessage(kakaoLogin, window.location.origin);
 	}
 	
 }
@@ -301,8 +301,8 @@ function checkCapsLock(event)  {
 	    <button class="rounded-pill login_button nanum-b" type="button" onclick="goLogin()">로그인</button>
 	    <div class="login_idpw_register mb-4">
       		<button class="nanum-n" type="button" onclick="javascript:window.parent.goregister();">회원가입</button><span class="lineG">
-	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.gofindId();">아이디 찾기</button><span class="lineG">
-	      	</span><button class="nanum-n" type="button">비밀번호 찾기</button>
+	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.finduserinfo('1');">아이디 찾기</button><span class="lineG">
+	      	</span><button class="nanum-n" type="button" onclick="javascript:window.parent.finduserinfo('2');">비밀번호 찾기</button>
 	    </div>
 	</form>
 

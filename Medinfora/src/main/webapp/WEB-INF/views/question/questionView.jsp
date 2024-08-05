@@ -295,9 +295,11 @@ function goList(){
 					<h5 class="nanum-b">이 답변의 추가 Q&A</h5>
 					<h6>질문자와 답변자가 추가로 묻고 답하며 지식을 공유할 수 있습니다.</h6>
 				</div>
+				<div class="mb-3" style="background-color: #fff4e6;">
 				<c:forEach var="add" items="${adto.addqnadtoList}" varStatus="addquestion">
+				
 					<c:if test='${add.qnastatus == "0"}'>
-						<div class="py-2">
+						<div class="p-2">
 							<div class="d-flex mb-1">
 								<div class="nanum-b">질문자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></div>
 								<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid eq adto.userid}">
@@ -305,7 +307,7 @@ function goList(){
 								</c:if>
 							</div>
 							
-							<div><span class="nanum-n" >${add.qcontent}</span></div>
+							<div class="px-1"><span class="nanum-n" >${add.qcontent}</span></div>
 							<form id="addA${addquestion.index}" name="addA">
 								<input type="hidden" value="${adto.aidx}" name="aidx"/>
 								<input type="hidden" value="1" name="qnastatus"/>
@@ -321,15 +323,15 @@ function goList(){
 					</c:if>
 					<c:if test='${add.qnastatus == "1"}'>
 						<div class="py-1" id="addanswerArea${addquestion.index}">
-							<div class="d-flex mb-1">
-								<div class="nanum-b">답변자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></div>
+							<div class="d-flex mb-1 px-3">
+								<div class="nanum-b"><i class="fa-solid fa-reply fa-rotate-180" style="color: #757575;"></i>&nbsp;&nbsp;답변자&nbsp;&nbsp;<span class="nanum-n" name="aqwriteday">${add.writeday}</span></div>
 								<c:if test='${not empty sessionScope.loginuser and sessionScope.loginuser.userid eq adto.userid}'>
 									<button class="btn btn-outline-dark btn-sm" type="button" id="addanswer_btn" onclick="showUpdateaddQ(${addquestion.index})">수정</button>
 									<button class="btn btn-outline-danger btn-sm" type="button" onclick="addAnswerdelete(${addquestion.index})">삭제</button>
 								</c:if>
 							</div>
 							
-							<div id="addanswer"><span class="nanum-n" id="qcontent">${add.qcontent}</span></div>
+							<div class="px-5" id="addanswer"><span class="nanum-n" id="qcontent">${add.qcontent}</span></div>
 							
 							<div id="updateaddA">
 								<input type="hidden" value="${add.qaidx}" name="qaidx"/>
@@ -341,7 +343,9 @@ function goList(){
 							</div>
 						</div>
 					</c:if>
+				
 				</c:forEach>
+				</div>
 				
 			</div>
 			

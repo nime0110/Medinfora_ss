@@ -208,6 +208,11 @@
 		location.href = "<%=ctxPath%>/news/main.bibo";
 	}
 	
+	function finduserinfo(wf){
+		location.href = `<%=ctxPath%>/login/find.bibo?wf=\${wf}`;
+	}
+	
+	
 	$(document).on("click",'.popwordsearch',(e) => {
 		
 		let target = $(e.target);

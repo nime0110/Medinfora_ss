@@ -1,5 +1,7 @@
 package com.spring.app.main.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -297,6 +299,30 @@ public class MainDAO_imple implements MainDAO{
 	@Override
 	public String getAge(String patientID) {
 		return sqlsession.selectOne("medinfora.getAge", patientID);
+	}
+	
+	// 아이디 비밀번호 찾기
+	@Override
+	public MemberDTO findinfo(Map<String, String> paraMap) {
+		String wf = paraMap.get("wf");
+		
+		MemberDTO mdto = null;
+		
+		if("1".equals(wf)) {
+			mdto = sqlsession.selectOne("finduserid", paraMap);
+		}
+		else {
+			mdto = sqlsession.selectOne("findpwd", paraMap);
+		}
+		
+		return mdto;
+	}
+	
+	// 비밀번호 초기화
+	@Override
+	public int changepassword(Map<String, String> paraMap) {
+		int n = sqlsession.update("changepassword", paraMap);
+		return n;
 	}
 
 }

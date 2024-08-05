@@ -416,4 +416,25 @@
 		from member
 		where userid = #{patientID}
 	</select>
+	
+	
+	<!-- 아이디 비밀번호 찾기 -->
+	<select id="finduserid" parameterType="HashMap" resultType="MemberDTO">
+		select userid
+		from member
+		where name = #{data} and email = #{email}
+	</select>
+	
+	<select id="findpwd" parameterType="HashMap" resultType="MemberDTO">
+		select userid
+		from member
+		where userid = #{data} and email = #{email}
+	</select>
+	
+	<!-- 비밀번호 초기화 -->
+	<update id="changepassword" parameterType="HashMap">
+		update member set pwd = #{pwd}
+		where uerid = #{userid}
+	</update>
+	
 </mapper>
