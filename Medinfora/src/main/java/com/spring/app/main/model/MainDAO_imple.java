@@ -278,7 +278,6 @@ public class MainDAO_imple implements MainDAO {
 	public String gethpname(String hidx) {
 		return sqlsession.selectOne("medinfora.gethpname", hidx);
 	}
-
 	// 최신 예약 정보(의료)
 	@Override
 	public ReserveDTO getRdto_m(String userid) {

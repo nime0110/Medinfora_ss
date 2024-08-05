@@ -487,5 +487,4 @@ public class MainService_imple implements MainService {
 		String age = dao.getAge(patientID);
 		return age;
 	}
-
 }

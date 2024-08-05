@@ -82,30 +82,33 @@ public class MainController {
 			if(loginuser.getmIdx()==1) {
 				// 최신 예약 정보(일반)
 				ReserveDTO rdto_p = service.getRdto_p(userid);
-				String hidx = rdto_p.getHidx();
-				
-				// 최신 예약된 병원 이름
-				String hpname = service.gethpname(hidx);
-				String checkin = rdto_p.getCheckin().substring(0,16);
-				
-				mav.addObject("hpname", hpname);
-				mav.addObject("checkin", checkin);
+				if(rdto_p != null) {
+					String hidx = rdto_p.getHidx();
+					
+					// 최신 예약된 병원 이름
+					String hpname = service.gethpname(hidx);
+					String checkin = rdto_p.getCheckin().substring(0,16);
+					
+					mav.addObject("hpname", hpname);
+					mav.addObject("checkin", checkin);
+				}
 			}
 			else if(loginuser.getmIdx()==2) {				
 				// 최신 예약 정보(의료)
 				ReserveDTO rdto_m = service.getRdto_m(userid);
-				String patientID = rdto_m.getUserid();
-				
-				// 최신 예약된 환자이름
-				String patient = service.getname(patientID);
-				// 최신 예약된 환자의 나이
-				String age = service.getAge(patientID);
-				
-				String patientInfo = patient + "( 만 " + age + " 세 )";
-				String checkin = rdto_m.getCheckin().substring(0,16);
-				
-				mav.addObject("patientInfo", patientInfo);
-				mav.addObject("checkin", checkin);
+				if(rdto_m != null) {
+					String patientID = rdto_m.getUserid();
+					// 최신 예약된 환자이름
+					String patient = service.getname(patientID);
+					// 최신 예약된 환자의 나이
+					String age = service.getAge(patientID);
+					
+					String patientInfo = patient + "( 만 " + age + " 세 )";
+					String checkin = rdto_m.getCheckin().substring(0,16);
+					
+					mav.addObject("patientInfo", patientInfo);
+					mav.addObject("checkin", checkin);
+				}
 			}
 			
 		}

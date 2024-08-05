@@ -221,3 +221,13 @@ select SEARCHWORD,REGISTERDAY
 from SEARCHLOG where userid = 'redtree2379'
 order by  REGISTERDAY desc;
 
+select TITLE,CONTENT,IMGSRC,REGISTERDAY
+from (select row_number() over (order by NIDX) as rno, TITLE, CONTENT, IMGSRC, REGISTERDAY
+ from NEWS)
+where rno between 1 and 10;
+
+select title,CONTENT,IMGSRC,REGISTERDAY
+from NEWS
+where NIDX = 1;
+
+delete from NEWS where NIDX = 11;

@@ -99,7 +99,6 @@ public interface MainService {
 
 	// 최신 예약 정보(일반)
 	public ReserveDTO getRdto_p(String userid);
-
 	// 최신 예약된 병원 이름
 	public String gethpname(String hidx);
 
