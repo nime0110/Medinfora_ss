@@ -12,6 +12,8 @@ $(function() {
     $("form").on("submit", function(e) {
         e.preventDefault(); 
     });
+
+
 });
 
 function searchList(currentPage) {
@@ -35,7 +37,9 @@ function searchList(currentPage) {
                     v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item" onclick="listOneClick('${item.cidx}')">
                                    <input type="hidden" value="${item.cidx}" name="commuNo"/>
                                    <input type="hidden" value="${item.totalPage}" id="totalPage"/>
-                                   <span class="col-2">${item.category}</span>
+                                   <p class="col-2">
+                                        <span class="category-span">${item.category}</span>
+                                    </p>
                                    <span class="col-5" align="left">${item.title}`;
                     if (item.fileTrue) {
                         v_html += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>`;
@@ -52,6 +56,17 @@ function searchList(currentPage) {
                 removedisplayPagination();
             }
             $("div#commuArea").html(v_html);
+            let categoryarr = ['임신·성고민', '다이어트·헬스', '마음 건강', '탈모 톡톡', '피부 고민', '뼈와 관절', '영양제', '질환 고민', '자유게시판']; // 카테고리 배열
+
+            $('.category-span').each(function() {
+                let categoryView = $(this).text().trim(); // 현재 요소의 텍스트를 가져옴
+                for (let i = 0; i < categoryarr.length; i++) {
+                    if (categoryView === categoryarr[i]) { // 텍스트가 배열의 값과 일치하는지 확인
+                        $(this).addClass('category' + i); // 일치하는 경우 클래스 추가
+                    }
+                }
+            });
+        
         },
         error: function(status, error) {
             console.error("AJAX 요청 실패: ", status, error);

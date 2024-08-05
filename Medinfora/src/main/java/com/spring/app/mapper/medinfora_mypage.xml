@@ -845,11 +845,7 @@
 		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
 		        viewcnt, ROW_NUMBER() OVER (ORDER BY cidx DESC) AS rno
 		    from commu
-		)
-		WHERE rno BETWEEN #{startRno} AND #{endRno}
-		<if test='userid != ""'>
-			and userid = #{userid}
-		</if>
+			where userid = #{userid}
 		<if test='category != "0"'> 
 		    and category = #{category}
 		</if>
@@ -870,6 +866,8 @@
 		        and ( lower(userid) like '%'||lower(#{word})||'%' )
 		    </if>
 		</if>
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
 		order by cidx desc
 	</select>
 	
@@ -967,12 +965,12 @@
 		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
 		        ROW_NUMBER() OVER (ORDER BY writeday DESC) AS rno
 		    from COMMUCOMMENT
+			WHERE userid = #{userid}
+		    <if test='word != ""'>
+		      and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
 		)
 		WHERE rno BETWEEN #{startRno} AND #{endRno} 
-		and userid = #{userid}
-	    <if test='word != ""'>
-	      and ( lower(content) like '%'||lower(#{word})||'%' )
-	    </if>
 	</select>
 	
 	<!-- 내가쓴 댓글 전체갯수 -->	
