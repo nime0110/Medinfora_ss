@@ -19,6 +19,7 @@
     </div>
     <form name="commuList" enctype="multipart/form-data">
         <input type="hidden" name="PageNo"/>
+        <input type="hidden" name="sort"/>
         <fieldset>
             <div class="p-4" id="search_flexbox" align="center">
                 <span>
@@ -54,7 +55,17 @@
         </fieldset>
     </form>
     
-    <div>
+    <div class="sort-container">
+	    <button id="sort-button"><i class="fa-solid fa-list"></i><span>최신순</span></button>
+	    <div id="sort-dropdown" class="dropdown-content">
+	        <a href="#" data-sort="latest">최신순</a>
+	        <a href="#" data-sort="suggestion">추천순</a>
+	        <a href="#" data-sort="comment">댓글순</a>
+	        <a href="#" data-sort="views">조회순</a>
+	    </div>
+	</div>
+
+    <div class="listshow">
         <!-- 타이틀 -->
         <div class="mt-4 px-3 subject">
             <div class="row text-center py-3 nanum-eb size-s">
@@ -70,12 +81,14 @@
             <c:if test="${not empty requestScope.CommuBoardList}">
                 <c:forEach var="cbdto" items="${requestScope.CommuBoardList}"  varStatus="status">
                     <div class="row text-center py-3 nanum-n size-s b_border list--item" 
-                    	 onclick="listOneClick('${cbdto.cidx}', '${requestScope.currentShowPageNo}', '${paraMap.category}', '${paraMap.type}', '${paraMap.word}')">
+                    	 onclick="listOneClick('${cbdto.cidx}', '${requestScope.currentShowPageNo}','${paraMap.sort}','${paraMap.category}', '${paraMap.type}', '${paraMap.word}')">
                         <input type="hidden" value="${cbdto.cidx}" name="commuNo"/>
                         <input type="hidden" value="${totalPage}" id="totalPage"/>
-                        <span class="col-2">
-                            ${cbdto.category}
-                        </span>
+	                    <p class="col-2" >
+	                        <span class="category-span">
+	                            ${cbdto.category}
+	                        </span>
+                        </p>
                         <span class="col-5" align="left">
                             ${cbdto.title}
                             <c:if test="${cbdto.commentCount != 0}">                            
@@ -112,5 +125,7 @@
     <input type="hidden" id="category" value="${paraMap.category}"/>
     <input type="hidden" id="type" value="${paraMap.type}"/>
     <input type="hidden" id="word" value="${paraMap.word}"/>
+    
+    <input type="hidden" id="sort" value="${paraMap.sort}"/>
 </form>
  

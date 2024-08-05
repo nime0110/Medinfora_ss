@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
+import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 
 public interface MypageService {
 	
@@ -69,6 +71,25 @@ public interface MypageService {
 	List<Map<String, String>> getT1data(Map<String, String> paraMap);
 
 	List<Map<String, String>> getmyslog(MemberDTO loginuser);
+
+	// (마이페이지) 내가쓴글 리스트 가져오기
+	List<CommuBoardDTO> getmyPostList(Map<String, String> paraMap);
+
+	// (마이페이지) 내가쓴글 전체갯수
+	int getmyPostTotalCount(Map<String, String> paraMap);
+
+	// (마이페이지) 북마크 리스트 가져오기
+	List<CommuBoardDTO> getmyBookmarkList(Map<String, String> paraMap);
+
+	// (마이페이지) 북마크 전체개수
+	int getBMListTotalCount(Map<String, String> paraMap);
+
+	// (마이페이지) 내가쓴댓글 리스트가져오기
+	List<CommuCommentDTO> getmycommentList(Map<String, String> paraMap);
+
+	// (마이페이지) 내가쓴댓글 전체갯수
+	int getmycmtTotalCount(Map<String, String> paraMap);
+
 
 
 }

@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.app.common.FileManager;
 import com.spring.app.commu.model.CommuDAO;
 import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.commu.BookmarkDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 import com.spring.app.hpsearch.model.HpsearchDAO;
 import com.spring.app.main.model.MainDAO;
 
@@ -155,10 +157,57 @@ public class CommuService_imple implements CommuService {
 	public List<CommuCommentDTO> getCommentList(Map<String, String> paraMap) {
 		return cmdao.getCommentList(paraMap);
 	}
-
+	
+	//댓글 페이징 처리용 총 갯수
 	@Override
 	public int getCommentTotalCount(String cmidx) {
 		return cmdao.getCommentTotalCount(cmidx);
+	}
+
+	//댓글 수정 
+	@Override
+	public int updateComment(CommuCommentDTO cmtdto) {
+		return cmdao.updateComment(cmtdto);
+	}
+
+	@Override
+	public int deleteComment(String cmidx) {
+		return cmdao.deleteComment(cmidx);
+	}
+
+	@Override
+	public int suggestionPost(SuggestionDTO sdto) {
+		return cmdao.suggestionPost(sdto);
+	}
+
+	@Override
+	public int postSuggestionUpdate(SuggestionDTO sdto) {
+		return cmdao.postSuggestionUpdate(sdto);
+	}
+
+	@Override
+	public int checkSuggestion(SuggestionDTO sdto) {
+		return cmdao.checkSuggestion(sdto);
+	}
+
+	@Override
+	public int alreadyMarking(BookmarkDTO bdto) {
+		return cmdao.alreadyMarking(bdto);
+	}
+
+	@Override
+	public int bookmarkPost(BookmarkDTO bdto) {
+		return cmdao.bookmarkPost(bdto);
+	}
+
+	@Override
+	public int delBookMark(BookmarkDTO bdto) {
+		return cmdao.delBookMark(bdto);
+	}
+
+	@Override
+	public int getCommentPage(CommuCommentDTO cmtdto) {
+		return cmdao.getCommentPage(cmtdto);
 	}
 
 

@@ -835,4 +835,155 @@
 		order by  REGISTERDAY desc
 	</select>
 	
+	<!-- 마이페이지 게시글 select (커뮤 게시판 리스트 뷰잉) -->
+	<select id="getmyPostList" parameterType="HashMap" resultType="CommuBoardDTO">
+		select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt
+		from (
+		    select cidx, category, title, commentcount, userid, content, 
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday, 
+		        viewcnt, ROW_NUMBER() OVER (ORDER BY cidx DESC) AS rno
+		    from commu
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		<if test='userid != ""'>
+			and userid = #{userid}
+		</if>
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if> 
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+		order by cidx desc
+	</select>
+	
+	<!-- 내가쓴글 전체갯수 -->
+	<select id="getmyPostTotalCount" parameterType="HashMap" resultType="int">
+	    SELECT count(*)
+        FROM (
+		select cidx
+		from commu
+		where userid = #{userid}
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(userid) like '%'||lower(#{word})||'%' )
+		</if> 
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+		GROUP BY cidx)
+	</select>
+
+	<!-- 북마크된 글 조회  -->
+	<select id="getmyBookmarkList" parameterType="HashMap" resultType="CommuBoardDTO">
+		select cidx, category, title, commentcount, userid, content,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        viewcnt
+		from (
+		    select A.cidx, category, title, commentcount, A.userid, content,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        viewcnt, ROW_NUMBER() OVER (ORDER BY A.cidx DESC) AS rno
+		    from commu A join BOOKMARK B
+		    ON A.CIDX = B.CIDX
+		    where B.USERID = #{userid}
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno}
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%' or lower(userid) like '%'||lower(#{word})||'%' )
+		</if>
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+		order by cidx desc
+	</select>
+
+	<!-- 북마크된글 갯수 조회  -->
+	<select id="getBMListTotalCount" parameterType="HashMap" resultType="int">
+	    SELECT count(*)
+        FROM commu A join BOOKMARK B
+		ON A.CIDX = B.CIDX
+		where B.USERID = #{userid}
+		<if test='category != "0"'> 
+		    and category = #{category}
+		</if>
+		<if test='type == "z" and category == "0"'> 
+			and (lower(title) like '%'||lower(#{word})||'%' or lower(content) like '%'||lower(#{word})||'%'  or lower(B.userid) like '%'||lower(#{word})||'%' )
+		</if> 
+		<if test='type != "z"'> 
+		    <if test='type == "title" and word != ""'>
+		        and ( lower(title) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "content" and word != ""'>
+		        and ( lower(content) like '%'||lower(#{word})||'%' )
+		    </if>
+		    <if test='type == "userid" and word != ""'>
+		        and ( lower(B.userid) like '%'||lower(#{word})||'%' )
+		    </if>
+		</if>
+	</select>
+	
+	<!-- 내가쓴 댓글 리스트 가져오기 -->
+	<select id="getmycommentList" parameterType="HashMap" resultType="CommuCommentDTO">
+		select cidx, content, USERID, CMIDX, writeday
+		from (
+		    select cidx, content, USERID,CMIDX,
+		        to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy/mm/dd') as writeday,
+		        ROW_NUMBER() OVER (ORDER BY writeday DESC) AS rno
+		    from COMMUCOMMENT
+		)
+		WHERE rno BETWEEN #{startRno} AND #{endRno} 
+		and userid = #{userid}
+	    <if test='word != ""'>
+	      and ( lower(content) like '%'||lower(#{word})||'%' )
+	    </if>
+	</select>
+	
+	<!-- 내가쓴 댓글 전체갯수 -->	
+	<select id="getmycmtTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from COMMUCOMMENT
+		where userid = #{userid}
+		<if test='word != ""'>
+	      and ( lower(content) like '%'||lower(#{word})||'%' )
+	    </if>
+	</select>
+
+
 </mapper>

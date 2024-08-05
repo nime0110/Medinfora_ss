@@ -7,9 +7,11 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.spring.app.domain.HospitalDTO;
+import com.spring.app.domain.commu.BookmarkDTO;
 import com.spring.app.domain.commu.CommuBoardDTO;
 import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.domain.commu.CommuFilesDTO;
+import com.spring.app.domain.commu.SuggestionDTO;
 
 
 @Mapper
@@ -57,9 +59,23 @@ public interface CommuDAO {
 
 	int allCommentDel(String cidx);
 
+	int updateComment(CommuCommentDTO cmtdto);
 
-	
+	int deleteComment(String cmidx);
 
+	int suggestionPost(SuggestionDTO sdto);
+
+	int postSuggestionUpdate(SuggestionDTO sdto);
+
+	int checkSuggestion(SuggestionDTO sdto);
+
+	int alreadyMarking(BookmarkDTO bdto);
+
+	int bookmarkPost(BookmarkDTO bdto);
+
+	int delBookMark(BookmarkDTO bdto);
+
+	int getCommentPage(CommuCommentDTO cmtdto);
 
 
 }

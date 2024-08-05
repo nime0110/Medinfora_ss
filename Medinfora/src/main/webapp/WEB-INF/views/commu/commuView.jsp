@@ -9,9 +9,21 @@
 <script type="text/javascript" src="<%= ctxPath%>/resources/js/commu/commuView.js"></script>
 
 <div class="commu-container">
-
+    <div class="commu-info2">
+		<c:if test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == requestScope.cbdto.userid}">
+			<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}&currentShowPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
+					글수정하기
+			</button>
+			<button type="button" class="btn btn-secondary btn-sm" onclick="del('${requestScope.cbdto.cidx}')">삭제하기</button>
+		</c:if>        
+	</div>
     <div class="title_area">
-        <span class="nanum-eb">${cbdto.title}</span>
+        <span class="nanum-eb">
+        	${cbdto.title}
+        	<c:if test="${cbdto.commentCount != 0}">
+        		[${cbdto.commentCount}]
+            </c:if>
+        </span>
         <span class="nanum-eb">🕛${cbdto.writeday}</span>
     </div>
 
@@ -25,14 +37,6 @@
         </div>
     </div>
      <div>
-        <div class="commu-info2">
-			<c:if test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == requestScope.cbdto.userid}">
-				<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= ctxPath%>/commu/commuEdit.bibo?cidx=${requestScope.cbdto.cidx}&currentShowPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
-					글수정하기
-				</button>
-				<button type="button" class="btn btn-secondary btn-sm" onclick="del('${requestScope.cbdto.cidx}')">삭제하기</button>
-			</c:if>        
-        </div>
          <div class="commu-attachment">
          	<c:if test="${not empty requestScope.fileList}">
                 <span class="attach-file">
@@ -49,7 +53,7 @@
     </div>
     
     <div class="nanum-n commu-content" style="height: auto;">
-        <p>${cbdto.content}</p>
+        ${cbdto.content}
     </div>
     
 	<div class="button-list-area">
@@ -58,10 +62,22 @@
 		    onclick="location.href='<%= ctxPath %>/commu/commuList.bibo?currentPageNo=${requestScope.currentShowPageNo}&category=${requestScope.category}&type=${requestScope.type}&word=${requestScope.word}'">
 		    목록
 		</button>
-		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🌟추천</button>
-		<button type="button" class="commu-button nanum-b" onclick="location.href='<%= ctxPath %>${requestScope.goBackURL}'">🔖북마크 </button>
+		<button type="button" class="commu-button nanum-b" onclick="suggestionPost('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🌟추천 ${requestScope.cbdto.suggestioncnt}</button>
+		<button type="button" class="commu-button nanum-b" onclick="bookMark('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">
+			<c:if test="${requestScope.cbdto.bidx != null && sessionScope.loginuser.userid != null}">
+			    ✅북마크 
+			</c:if>
+			<c:if test="${requestScope.cbdto.bidx == null || sessionScope.loginuser.userid == null}">
+			    🔖북마크
+			</c:if>
+		 </button>
+		 <!-- BIDX 값 확인 -->
 	</div>
-    <!-- 댓글이 보여짐 , 대댓글 까지만 되고 대댓글 한 경우 아이디가 @아이디 되도록? -->
+
+	<div class="commentcount-display">
+		<span class="comment_color"><i class="fas fa-comment" style="margin-right:8px;"></i><b>댓글 '${cbdto.commentCount}'개</b></span>
+	</div>
+
     <ul id="commentDisplay"></ul>
 
 	<div class="pagination" id="rpageNumber"></div>
@@ -72,17 +88,10 @@
 			<div id="commentArea">
 				<textarea class="form-control" name="content"
 					placeholder="댓글 내용을 입력하세요." maxlength="150"></textarea>
-				<div style="text-align: right;">
+				<div style="text-align: right; margin-top: 10px;">
 					<button class="nanum-b commu-button" type="button" onclick="goAddWrite()">등록</button>
 					<button class="nanum-b commu-button" type="button" onclick="answercanle()">취소</button>
 				</div>
-				<%--
-				<button type="button" class="btn btn-secondary btn-sm mr-3"
-				 onclick="javascript:location.href='<%= ctxPath%>/commu/addComment.bibo?groupno=${requestScope.boardvo.groupno}&fk_seq=${requestScope.boardvo.seq}&depthno=${requestScope.boardvo.depthno}'"
-				>
-					답댓글쓰기
-				</button>
-				 댓글쓰기 --%>
 			</div>
 		</form>
 	</c:if>
@@ -92,25 +101,6 @@
 <input type="hidden" value="${sessionScope.loginuser.userid}" name="userid" id="loginuserid"/>  <%-- 로그인하고있는내아이디 --%>
 <input type="hidden" value="${sessionScope.cbdto.commentCount}" name="commentCount" id="commentCount" />  <%-- 댓글여부 --%>
 	
-
-
-<%--
-<div id="deleteModal" class="modal modal-dialog">
-    <div class="modal-content nanum-n">
-        <span class="close nanum-n" style="text-align: right;">&times;</span>
-        <h2>정말로 글을 삭제하시겠습니까?</h2>
-        <form name="delFrm" style=" display: inline-block; text-align: center;">
-            <div>
-          		<input type="hidden" name="cidx" value="${cbdto.cidx}" />
-	            <div class="nanum-n commu-buttons">
-	               <button type="button" class="btn btn-secondary" id="btnDelete">삭제</button>
-	               <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
-	            </div>
-            </div>
-        </form>
-    </div>
-</div>
---%>
 
 
 </body>

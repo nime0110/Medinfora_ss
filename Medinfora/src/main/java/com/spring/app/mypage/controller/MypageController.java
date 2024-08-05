@@ -23,13 +23,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.common.AES256;
+import com.spring.app.commu.service.CommuService;
+import com.spring.app.commu.controller.CommuController;
 import com.spring.app.domain.MediQDTO;
 import com.spring.app.domain.MemberDTO;
 import com.spring.app.domain.ReserveDTO;
+import com.spring.app.domain.commu.CommuBoardDTO;
+import com.spring.app.domain.commu.CommuCommentDTO;
 import com.spring.app.mypage.service.MypageService;
 import com.spring.app.question.service.QuestionService;
 
@@ -42,6 +47,12 @@ public class MypageController {
 	
 	@Autowired
 	private QuestionService questionservice;
+	
+	@Autowired
+	private CommuService commuService;
+	
+	@Autowired
+	private CommuController commuController;
 
 	@Autowired
     private AES256 aES256;
@@ -688,7 +699,228 @@ public class MypageController {
 		return jsonObj.toString();
 	}
 	
+	// 커뮤니티 관련 마이페이지 start --
 	
+	
+	// 자신이 작성한 글 보기 페이지로 가기
+	@GetMapping("mypost.bibo")
+	public ModelAndView isLogin_myPost(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mypost.info");
+		return mav;
+	}
+	
+	//작성한 글 가져오기 
+	@ResponseBody
+	@GetMapping(value = "postlist.bibo", produces = "text/plain;charset=UTF-8")
+	public String postList(HttpServletRequest request){
+
+		String category = request.getParameter("category");
+		String type = request.getParameter("type");
+		String word = request.getParameter("word");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		int sizePerPage = 10;// 한 페이지당 10개
+
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("category", category);
+		paraMap.put("type", type);
+		paraMap.put("word", word);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		List<CommuBoardDTO> CommuBoardList = null;
+		
+		CommuBoardList = service.getmyPostList(paraMap);
+        // 카테고리 텍스트 변환
+        for (CommuBoardDTO cbdto : CommuBoardList) {
+            cbdto.setCategory(commuController.getCategoryText(cbdto.getCategory()));
+        }
+		int totalCount = service.getmyPostTotalCount(paraMap); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
+		List<String> fileSeqList = null;
+		fileSeqList = commuService.getfileSeqList();
+		JSONArray jsonArr = new JSONArray();
+		
+		Boolean fileTrue = true;
+		
+		if (CommuBoardList != null) {
+			for (CommuBoardDTO cbdto : CommuBoardList) {
+
+				JSONObject jsonObj = new JSONObject(); // {}
+				
+				if(fileSeqList != null) {
+					for(String file : fileSeqList) {
+						if(file.equals(cbdto.getCidx())) {
+							jsonObj.put("fileTrue", fileTrue);
+						}
+					}
+				}
+
+				jsonObj.put("category", cbdto.getCategory());
+				jsonObj.put("cidx", cbdto.getCidx());
+				jsonObj.put("title", cbdto.getTitle());
+				jsonObj.put("commentcount", cbdto.getCommentCount());
+				jsonObj.put("userid", cbdto.getUserid());
+				jsonObj.put("writeday", cbdto.getWriteday());
+				jsonObj.put("viewcnt", cbdto.getViewcnt());
+				jsonObj.put("totalPage", totalPage);
+				
+				jsonArr.put(jsonObj);
+			}	
+		}
+		return jsonArr.toString();
+	}
+
+	
+	// 자신이 작성한 댓글 보기 페이지로 가기
+	@GetMapping("mycomment.bibo")
+	public ModelAndView isLogin_myComment(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mycomment.info");
+		return mav;
+	}
+	
+	// 댓글 보여주기
+	
+	// 댓글(대댓글) 조회
+	@ResponseBody
+	@GetMapping(value = "commentlist.bibo", produces = "text/plain;charset=UTF-8")
+	public String commentList(HttpServletRequest request) {
+		
+		String word = request.getParameter("word");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		int sizePerPage = 10;// 한 페이지당 10개
+
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("word", word);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		List<CommuCommentDTO> commentList = null;
+		
+		commentList = service.getmycommentList(paraMap);
+		int totalCount = service.getmycmtTotalCount(paraMap); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
+		JSONArray jsonArr = new JSONArray();
+
+		if(commentList != null) {
+			for(CommuCommentDTO cmtdto : commentList) {
+				
+				JSONObject jsonObj = new JSONObject(); //{}
+	
+				jsonObj.put("cidx", cmtdto.getCidx()); 
+				jsonObj.put("cmidx", cmtdto.getCmidx()); 
+				jsonObj.put("content", cmtdto.getContent()); 
+				jsonObj.put("writeday", cmtdto.getWriteday()); 
+
+				
+				jsonObj.put("totalPage", totalPage);
+				jsonObj.put("sizePerPage", sizePerPage);
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		return jsonArr.toString(); 
+	}
+	
+	// 북마크 보기 페이지로 가기
+	@GetMapping("mybookmark.bibo")
+	public ModelAndView isLogin_myBookMark(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+		mav.setViewName("mypage/mybookmark.info");
+		return mav;
+	}
+	
+	//북마크한 글 목록 가져오기 
+	@ResponseBody
+	@GetMapping(value = "bookmarklist.bibo", produces = "text/plain;charset=UTF-8")
+	public String myBookMark(HttpServletRequest request){
+
+		String category = request.getParameter("category");
+		String type = request.getParameter("type");
+		String word = request.getParameter("word");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		int sizePerPage = 10;// 한 페이지당 10개
+
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+		
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("category", category);
+		paraMap.put("type", type);
+		paraMap.put("word", word);
+		paraMap.put("userid", loginuser.getUserid());
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+
+		List<CommuBoardDTO> CommuBoardList = null;
+		
+		System.out.println("userid" + paraMap.get("userid"));
+		
+		CommuBoardList = service.getmyBookmarkList(paraMap);
+        // 카테고리 텍스트 변환
+        for (CommuBoardDTO cbdto : CommuBoardList) {
+            cbdto.setCategory(commuController.getCategoryText(cbdto.getCategory()));
+        }
+		int totalCount = service.getBMListTotalCount(paraMap); // 전체개수
+		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
+		
+		List<String> fileSeqList = null;
+		fileSeqList = commuService.getfileSeqList();
+		JSONArray jsonArr = new JSONArray();
+		
+		Boolean fileTrue = true;
+		
+		if (CommuBoardList != null) {
+			for (CommuBoardDTO cbdto : CommuBoardList) {
+
+				JSONObject jsonObj = new JSONObject(); // {}
+				
+				if(fileSeqList != null) {
+					for(String file : fileSeqList) {
+						if(file.equals(cbdto.getCidx())) {
+							jsonObj.put("fileTrue", fileTrue);
+						}
+					}
+				}
+
+				jsonObj.put("category", cbdto.getCategory());
+				jsonObj.put("cidx", cbdto.getCidx());
+				jsonObj.put("title", cbdto.getTitle());
+				jsonObj.put("commentcount", cbdto.getCommentCount());
+				jsonObj.put("userid", cbdto.getUserid());
+				jsonObj.put("writeday", cbdto.getWriteday());
+				jsonObj.put("viewcnt", cbdto.getViewcnt());
+				jsonObj.put("totalPage", totalPage);
+				
+				jsonArr.put(jsonObj);
+			}	
+		}
+		return jsonArr.toString();
+	}
+	
+	// 커뮤니티 관련 마이페이지 end --
 	
 	
 }
