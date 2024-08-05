@@ -47,11 +47,11 @@ $(document).ready(function(){
 	
 	
 	
-	  // Ensure pageNo element exists
+// 페이지 번호가 있는 지 확인
     if (document.querySelector("input[name='pageNo']")) {
-        // Your existing code
+    
     } else {
-        console.error("pageNo input element not found.");
+        console.error("페이지 번호를 찾을 수 없습니다");
     }
 	
     $("button#btnSearch").click(function(){
@@ -212,10 +212,7 @@ $(document).ready(function() {
        	
        	console.log("확인용 userid"  + arr_userid );
        	
-       	
-       	
-       	
-       	const frm = document.memberListForm;
+      	const frm = document.memberListForm;
        
        	
         frm.method = "post"; 
@@ -252,25 +249,9 @@ $(document).ready(function() {
     <form name="excel_upload_frm" method="post" action="<%= ctxPath %>/mypage/downloadExcelFile.bibo" enctype="multipart/form-data">
     <button type="submit" class="btn btn-secondary btn-sm" id="btnExcel">엑셀파일 다운로드</button> 
 </form>
-    <form name="memberListForm">
+    <form name="memberListForm" method="post" action="<%= ctxPath %>/mypage/memberList.bibo">
     <input type="hidden" name="pageNo" value="${currentPageNo != null ? currentPageNo : 1}"/>
-    <c:if test="${not empty requestScope.mbrList}">
-        <span style="display: inline-block;">회원 구분 </span>
-        <c:forEach var="userid" items="${requestScope.mbrList}" varStatus="status">
-            <label for="${status.index}">
-                <c:if test="${userid == -9999}">
-                    회원 없음
-                </c:if>
-                <c:if test="${userid != -9999}">
-                    ${userid}
-                </c:if>
-            </label>
-            <input type="checkbox" id="${status.index}" name="userid" value="${userid}">&nbsp;&nbsp;
-        </c:forEach>
-    </c:if>
-	
-	<form>
-	 <fieldset>
+    <fieldset>
         <div class="namebar p-4 searchBar" align="center" style="background-color: var(--object-skyblue-color);">
             <span>
                 <select class="sclist search_ch sel_0 nanum-b" name="subject">
@@ -283,14 +264,11 @@ $(document).ready(function() {
                 <input class="inputsc search_ch sel_1 nanum-b" name="word" type="text" placeholder="성명이나 ID를 검색하세요" autocomplete="none" value="${requestScope.word}"/>
             </span>
             <span>
-                <button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()" style="margin: 1px;
-	width: 100px;" >검색</button>
+                <button class="jh_btn_design search nanum-eb size-s" type="button" onclick="searchList()" style="margin: 1px; width: 100px;" >검색</button>
             </span>
         </div>
     </fieldset>
-    </form>
 </form>
-
 
    <!--  <input type="hidden" name="userid" /> -->
     

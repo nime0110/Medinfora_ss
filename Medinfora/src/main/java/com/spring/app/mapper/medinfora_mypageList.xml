@@ -6,7 +6,7 @@
 
 	<!--  회원 목록 가져오기  -->
 <select id="getMemberList" parameterType="map" resultType="MemberDTO">
-    SELECT *
+  SELECT *
     FROM (
         SELECT 
             ROW_NUMBER() OVER (ORDER BY registerday DESC) AS rn,
@@ -44,7 +44,6 @@
     ) numbered_members
     WHERE rn BETWEEN #{start} AND #{end}
 </select>
-
 
 
 

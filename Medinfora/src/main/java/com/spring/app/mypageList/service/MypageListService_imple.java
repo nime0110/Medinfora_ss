@@ -189,7 +189,7 @@ public class MypageListService_imple implements MypageListService {
     	        sheet.setColumnWidth(2, 4000);
     	        sheet.setColumnWidth(3, 4000);
     	        sheet.setColumnWidth(4, 4000);
-    	        sheet.setColumnWidth(5, 4000);
+    	      
     			
     			// 행의 위치를 나타내는 변수
     			int rowLocation = 0;
@@ -203,7 +203,7 @@ public class MypageListService_imple implements MypageListService {
 
     	        // 헤더 행 생성
     	        Row headerRow = sheet.createRow(rowLocation++);
-    	        String[] headers = {"아이디", "회원 유형", "성명", "성별", "가입일자", "관리"};
+    	        String[] headers = {"아이디", "회원 유형", "성명", "성별", "가입일자"};
     	        
     	        for (int i = 0; i < headers.length; i++) {
     	            Cell headerCell = headerRow.createCell(i);
@@ -213,7 +213,7 @@ public class MypageListService_imple implements MypageListService {
 
     	        // 회원 목록 가져오기
     	        List<MemberDTO> getMemberList = getMemberList(paraMap);
-
+    	     
     	        // 회원 목록을 엑셀 파일에 추가
     	        for (int i = 0; i < getMemberList.size(); i++) {
     	            MemberDTO member = getMemberList.get(i);
@@ -234,8 +234,7 @@ public class MypageListService_imple implements MypageListService {
     	            bodyCell = bodyRow.createCell(4);
     	            bodyCell.setCellValue(member.getRegisterday());
     	            
-    	            bodyCell = bodyRow.createCell(5);
-    	            bodyCell.setCellValue("관리"); // 예: 관리 버튼 텍스트
+    	         
     	        }
 
     	        // 모델에 엑셀 워크북 추가
