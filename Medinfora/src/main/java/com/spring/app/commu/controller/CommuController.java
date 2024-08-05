@@ -70,6 +70,9 @@ public class CommuController {
 	                              @RequestParam(value="word", defaultValue = "") String word,
 	                              @RequestParam(value="currentPageNo", defaultValue = "1") String str_currentPageNo) {
 
+
+		String sort = request.getParameter("sort");
+		
 		Map<String, String> paraMap = new HashMap<>();
 		
 	    // 유효성 검사(사용자가 url 쿼리문 장난칠때)
@@ -89,6 +92,7 @@ public class CommuController {
 	    paraMap.put("category", category);
 	    paraMap.put("type", type);
 	    paraMap.put("word", word);
+	    paraMap.put("sort", sort);
 
 	    int totalCount = 0;        // 총 게시물 건수
 	    int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 건수 
@@ -191,6 +195,10 @@ public class CommuController {
 			,@RequestParam(value="word", defaultValue = "")String word
 			,@RequestParam(value="currentShowPageNo", defaultValue = "1")String currentShowPageNo){
 
+		String sort = request.getParameter("sort");
+		
+		System.out.println("sort:" + sort);
+		
 		int sizePerPage = 10;// 한 페이지당 10개
 
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
@@ -200,6 +208,7 @@ public class CommuController {
 		paraMap.put("category", category);
 		paraMap.put("type", type);
 		paraMap.put("word", word);
+		paraMap.put("sort", sort);
 		paraMap.put("startRno", String.valueOf(startRno));
 		paraMap.put("endRno", String.valueOf(endRno));
 
@@ -243,6 +252,11 @@ public class CommuController {
 		}
 		return jsonArr.toString();
 	}
+	
+	// 글 정렬하기
+	
+	
+	
 	
 	// 글 작성하기 페이지로 이동 
 	@GetMapping("/commu/commuWrite.bibo")

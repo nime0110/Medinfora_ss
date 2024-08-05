@@ -20,7 +20,7 @@ function cmtmove() {
         hashcmtId.addClass('highlight'); 
         $('html, body').animate({
           scrollTop: hashcmtId.offset().top
-        }, 1000); 
+        }, 500, 'linear'); 
         setTimeout(function() {
           hashcmtId.removeClass('highlight');
         }, 2000); 
