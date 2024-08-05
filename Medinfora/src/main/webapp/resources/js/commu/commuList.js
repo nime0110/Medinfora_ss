@@ -18,6 +18,19 @@ $(function() {
         $("input[name='word']").val(word);
     }
 
+    let categoryarr = ['임신·성고민', '다이어트·헬스', '마음 건강', '탈모 톡톡', '피부 고민', '뼈와 관절', '영양제', '질환 고민', '자유게시판']; // 카테고리 배열
+
+    $('.category-span').each(function() {
+        let categoryView = $(this).text().trim(); // 현재 요소의 텍스트를 가져옴
+        for (let i = 0; i < categoryarr.length; i++) {
+            if (categoryView === categoryarr[i]) { // 텍스트가 배열의 값과 일치하는지 확인
+                $(this).addClass('category' + i); // 일치하는 경우 클래스 추가
+            }
+        }
+    });
+    
+
+
 
     // URL 매개변수로부터 sort 값을 가져옴
     const urlParams = new URLSearchParams(window.location.search);

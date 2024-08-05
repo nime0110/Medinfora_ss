@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+p {
+	margin:0;
+}
+
 .b_red {
 	border: solid 1px red;
 }
@@ -116,6 +120,57 @@ input:focus, select {
 	border-top: 3px solid black;
 	border-bottom: 1px solid black;
 }
+
+.category-span {
+	border-radius: 4px;
+    padding: 7px;
+}
+
+.category0 {
+	color: #a40d0d;
+    background: #fff3fc;
+}
+
+.category1 {
+	color: var(--blue600);
+    background: var(--blue50);
+}
+
+.category2 {
+	color: #0da428;
+    background: #e9fae7;
+}
+
+.category3 {
+    color: #590da4;
+    background: #f3eafa;
+}
+
+.category4 {
+	color: #dc8142;
+    background: #ffe7da;
+}
+
+.category5 {
+    color: #565656;
+    background: #f2f2f2;
+}
+
+.category6 {
+	color: #0d84a4;
+    background: #eafafa;
+}
+
+.category7 {
+    color: #322b9b;
+    background: #ecedff;
+}
+
+.category8 {
+	color: #ce3d00;
+    background: #ffe4a8;
+}
+
 
 button.write {
 	width: 120px;

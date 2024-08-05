@@ -84,9 +84,11 @@
                     	 onclick="listOneClick('${cbdto.cidx}', '${requestScope.currentShowPageNo}','${paraMap.sort}','${paraMap.category}', '${paraMap.type}', '${paraMap.word}')">
                         <input type="hidden" value="${cbdto.cidx}" name="commuNo"/>
                         <input type="hidden" value="${totalPage}" id="totalPage"/>
-                        <span class="col-2">
-                            ${cbdto.category}
-                        </span>
+	                    <p class="col-2" >
+	                        <span class="category-span">
+	                            ${cbdto.category}
+	                        </span>
+                        </p>
                         <span class="col-5" align="left">
                             ${cbdto.title}
                             <c:if test="${cbdto.commentCount != 0}">                            
