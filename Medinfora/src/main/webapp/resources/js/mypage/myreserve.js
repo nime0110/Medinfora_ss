@@ -9,6 +9,24 @@ $(function() {
 
 })      // end of $(function() {---------------
 
+$(document).on('change','.sclist',(e) => {
+
+    const sclist = $(e.target).val();
+
+    if(sclist == "진료현황"){
+        $("input.inputsc").attr('placeholder','접수신청, 접수완료, 진료완료 중 하나를 입력하세요.');
+    }
+    else if(sclist == "병원명"){
+        $("input.inputsc").attr('placeholder','병원명을 입력해주세요.');
+    }
+    else{
+        $("input.inputsc").val("");
+        $("input.inputsc").attr('placeholder','검색어를 입력해주세요.');
+        RESearch();
+    }
+
+})  // end of $(document).on('change','.search_ch',(e) => {---------------
+
 ///////////////////////////////////////////////////////////////
 
 function RESearch(){
