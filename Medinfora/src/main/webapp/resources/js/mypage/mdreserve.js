@@ -18,7 +18,7 @@ $(document).on('change','.sclist',(e) => {
     const sclist = $(e.target).val();
 
     if(sclist == "진료현황"){
-        $("input.inputsc").attr('placeholder','접수신청, 접수완료, 진료완료 중 하나를 입력하세요.');
+        $("input.inputsc").attr('placeholder','접수신청, 접수완료, 진료완료, 접수취소 중 하나를 입력하세요.');
     }
     else if(sclist == "환자명"){
         $("input.inputsc").attr('placeholder','환자명을 입력해주세요.');
@@ -187,6 +187,7 @@ function Page(currentShowPageNo){
                 })  // end of $.each(json, function(index, item){---------
 
                 v_html += `</div></div>`
+                $("div.reserveBox").removeClass("noReserve");
                 $("div.reserveBox").html(v_html);
 
                 /* === 페이지바 === */
