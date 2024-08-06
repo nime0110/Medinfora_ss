@@ -77,7 +77,7 @@
 	</div>
 	
 	<%-- 비밀번호 변경 넘겨줄 값 --%>
-	<form name="changepwd" method="post" action="<%=ctxPath%>/login/changepwd.bibo">
+	<form id="changepwd" method="post" action="<%=ctxPath%>/login/changepwd.bibo">
 		<input type="hidden" name="userid" />
 	</form>
 

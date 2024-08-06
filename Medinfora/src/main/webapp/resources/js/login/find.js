@@ -199,7 +199,6 @@ $(document).ready(function(){
 
     
     $("button#find").click(function(){
-        const wf = $("input:hidden[name='wf']").val();
 
         if(iscorrect == 0){
             alert("인증완료 후 가능합니다.");
@@ -225,16 +224,30 @@ $(document).ready(function(){
                       "wf":wf},
                 dataType:"json",
                 success:function(json){
-                    $("input:hidden[name='userid']").val(json.userid);
 
-                    if(json.wf == "1"){
-                        $("span#result").html(json.userid);
-                        $("div#findresult").show();
+                    if(json.result.userid == null){
+                        alert("정보가 일치하지 않습니다.");
+                        in_name.attr("disabled", false);
+                        in_id.attr("disabled", false);
+                        in_email.attr("disabled", false);
+
+                        $("button#authcodebtn").attr("disabled", false);
+
+                        $("div#codeArea").hide();
+                        return;
                     }
-                    else if(json.wf == "2"){
-                        const frm = document.changepwd;
-                        frm.submit();
+                    else{
+                        if(json.result.wf == "1"){
+                            $("span#result").html(json.result.userid);
+                            $("div#findresult").show();
+                        }
+                        else if(json.result.wf == "2"){
+                            $("input:hidden[name='userid']").val(json.result.userid);
+                            const frm = document.getElementById('changepwd');
+                            frm.submit();
+                        }
                     }
+                    
                 },
                 error: function(request, status, error){
                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);

@@ -44,8 +44,8 @@ public class LoginController {
 	
 
 	// ==== #243. 빈으로 등록 되어진 GoogleMail 클래스 DI 하기
-		@Autowired
-		private GoogleMail mail;
+	@Autowired
+	private GoogleMail mail;
 	
 	// 회원가입 선택 페이지
 	@RequestMapping("/register/registerchoice.bibo")
@@ -708,8 +708,12 @@ public class LoginController {
 		paraMap.put("email", email);
 		paraMap.put("wf", wf);
 		
+		String userid = null;
 		MemberDTO mdto = service.finduserinfo(paraMap);
-		String userid = mdto.getUserid();
+		if(mdto != null) {
+			userid = mdto.getUserid();
+		}
+		
 		paraMap.put("userid", userid);
 		
 		JSONObject jsonObj = new JSONObject();
