@@ -317,7 +317,8 @@ function checkCapsLock(event)  {
   	
   	<%-- 로더  --%>
   	<div id="loaderArr">
-		<div class="loader"></div>
+		<!-- <div class="loader"></div> -->
+		<i class="fa-solid fa-spinner fa-spin fa-spin-reverse fa-5x" style="color: #0c5fed;"></i>
 	</div>
 
 </div>

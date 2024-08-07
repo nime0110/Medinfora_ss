@@ -445,8 +445,6 @@ public class QuestionController {
 				redirect = "redirect:/questionList.bibo";
 			}
 			else {
-				
-				
 				totalcontent.put("qdto", qdto);
 			}
 			

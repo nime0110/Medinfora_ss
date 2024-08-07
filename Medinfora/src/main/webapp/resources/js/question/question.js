@@ -84,7 +84,7 @@ function answercanle(){
 
 
 function answerupload(){
-    const content = $("textarea[name='content']").val();
+    let content = $("textarea[name='content']").val();
 
     if(content.trim() == ""){
         $("textarea[name='content']").css("border","solid 4px #ff9999");
@@ -93,13 +93,16 @@ function answerupload(){
         return;
     }
 
+    content = content.replace(/</g, '&lt;');
+    content = content.replace(/>/g, '&gt;');
+
 
     $.ajax({
         url:"answerWrite.bibo",
         type:"post",
         data:{"qidx":$("input:hidden[name='answer']").val()
              ,"userid":$("input:hidden[name='userid']").val()
-             ,"content":$("textarea[name='content']").val()
+             ,"content":content
 
             },
         dataType:"json",

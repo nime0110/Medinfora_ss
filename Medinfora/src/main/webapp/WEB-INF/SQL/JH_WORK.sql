@@ -655,7 +655,5 @@ WHERE rno between 1 and 3;
 
 select * from member;
 
-
-
-
+commit;
 
