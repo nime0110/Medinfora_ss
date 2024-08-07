@@ -31,25 +31,23 @@
 
   <section class="sim_promo_section">
     <div class="sim_promo_section_banner">
-      <div class="p-5">
       	<a href="https://github.com/jjoung-2j/Medinfora">
-      		<img src="<%=ctxPath %>/resources/img/BannerIcon.png" class="img-fluid linkgithub"/>
+      		<img src="<%=ctxPath %>/resources/img/BannerIcon.png" class="linkgithub"/>
       	</a>
-      </div>
     </div>
     <div class="sim_promo_section_services">
       <h3 class="nanum-b size-n">Quick Menu</h3>
       <div class="sim_promo_section_service_links">
         <a href="<%=ctxPath%>/hpsearch/hospitalSearch.bibo">
-          <div class="icon"><img src=""></div>
+          <div class="icon"><span>🏥</span></div>
           <span class="nanum-b size-s">병원찾기</span>
         </a>
         <a href="<%=ctxPath %>/reserve/choiceDr.bibo">
-          <div class="icon"><img src=""></div>
+          <div class="icon"><span>🖊️</span></div>
           <span class="nanum-b size-s">진료예약</span>
         </a>
         <a href="<%=ctxPath %>/commu/commuList.bibo">
-          <div class="icon"><img src=""></div>
+          <div class="icon"><span>👪</span></div>
           <span class="nanum-b size-s">커뮤니티</span>
         </a>
       </div>

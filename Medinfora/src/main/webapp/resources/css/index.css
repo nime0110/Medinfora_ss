@@ -79,25 +79,30 @@ a {
 /* 성심 promo_section Start  */
 
 .sim_promo_section {
+	    padding-top: 5rem;
+    padding-bottom: 5rem;
     display: flex;
-    justify-content: space-between;
-    padding: 4rem;
     max-width: 1680px;
     margin: 40px auto;
-    height: 70vh; 
+    align-items: center;
+    justify-content: space-around;
 }
 
 .sim_promo_section_banner {
     background-color: var(--primary-background-color);
     color: var(--text-white-color);
     border-radius: 20px;
-    padding: 40px;
-    height: 54vh;
-    flex: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    height: 47vh;
+}
+
+.sim_promo_section_banner img {
+	max-width: 100%;
+    height: 52vh;
+    border-radius: 11px;
 }
 
 .banner-text h2 {
@@ -116,10 +121,10 @@ a {
 }
 
 .sim_promo_section_services {
+	width: 35rem;
     background-color: var(--text-white-color);
     border-radius: 20px;
     padding: 20px;
-    flex: 1;
     margin-left: 20px;
     display: flex;
     flex-direction: column;
@@ -138,7 +143,7 @@ a {
     background-color: var(--object-clearblue-color);
     border-radius: 10px;
     padding: 20px;
-    height: 40vh;
+    height: 31vh;
     align-items: center;
 }
 
@@ -162,13 +167,18 @@ a {
 .sim_promo_section_service_links .icon {
     background-color: #e1e1e1;
     border-radius: 50%;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 6.5rem;
+    height: 6.5rem;
     padding: 10px;
     margin-bottom: 10px;
     transition: transform 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940), 
     box-shadow 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940);
 }
+
+.sim_promo_section_service_links .icon span {
+	font-size: 3.5rem;
+}
+
 
 
 .sim_promo_section_service_links .icon:hover {
