@@ -8,7 +8,6 @@ $(function() {
 });
 function cmtmove() {
   const hash = window.location.hash; 
-  console.log("Hash:", hash);
   if (hash) {
     const cmtId = hash.substring(1); 
     const cmidx = cmtId.substring(4); 
@@ -28,9 +27,7 @@ function cmtmove() {
         console.log("hashcmtId가 존재하지 않습니다.");
       }
     }, 500);
-  } else {
-    console.log("URL 오류가 발생했습니다.");
-  }
+  } 
 }
 
 function findPageByCmidx(cmidx) {
@@ -89,6 +86,9 @@ function suggestionPost(userid, cidx) {
       //console.log(JSON.stringify(json));
       if(json.alreadySuggestion == 1) {
         alert("이미 추천한 글입니다.");
+      } else {
+        alert("추천 되었습니다.");
+        location.reload();
       }
     },
     error: function(request, status, error){
@@ -157,6 +157,10 @@ function goAddWrite() {
   if(currentShowPageNo == "") {
     currentShowPageNo = 1;
   }
+  if(content.trim() == "") {
+    alert("댓글을 입력해주세요.");
+    return;
+  }
   if(content == "해당 댓글은 삭제되었습니다.") {
     alert("해당 내용으로 댓글 작성은 불가합니다.");
     $("textarea[name='content']").val("");
@@ -204,7 +208,7 @@ function goCommentPlusAdd(fk_userid, fk_cmidx, groupno, depthno) {
   //버튼 클릭시 대댓글 등록
   $(document).on("click", ".cmt-plus-end", function(e) {
     
-    if($(".recmt-content").val() == ""){
+    if($(".recmt-content").val().trim() == ""){
       alert("댓글을 입력해주세요.");
       return;
     }
@@ -334,9 +338,9 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
   if($(e.target).text() == "수정") { //수정버튼 클릭시
     
     const content = $(".cmt-con-" + cmidx); 
-    origin_comment_content = content.text(); //수정전 댓글내용
+    origin_comment_content = content.text().trim(); //수정전 댓글내용
 
-    content.html(`<textarea class="form-control" placeholder="댓글 내용을 입력하세요." id='comment_update${cmidx}' maxlength="150" ></textarea>`); //댓글내용을 수정할수 있도록 input태그를 만들어줌
+    content.html(`<textarea class="form-control" placeholder="댓글 내용을 입력하세요." id='comment_update${cmidx}' maxlength="150" style="margin-top: 10px;" ></textarea>`); //댓글내용을 수정할수 있도록 input태그를 만들어줌
     $("#comment_update"+cmidx).val(origin_comment_content); //수정전 댓글내용을 textarea에 넣어줌
 
     $(e.target).text("완료");
@@ -344,8 +348,15 @@ $(document).on("click", $(".cmt-updatebtn"), function(e) {
     
 
   } else if($(e.target).text()=="완료") {
+
+    
     const updatecontent = $("textarea#comment_update" + cmidx).val()//수정후 댓글내용
     
+    if(updatecontent.trim() == "") {
+      alert("댓글을 입력해주세요.");
+      return;
+    }
+
     let regex = /<[^>]*>/g;
 
     if (regex.test(updatecontent)) {

@@ -553,8 +553,8 @@ public class CommuController {
 	
 	// 글 삭제 (첨부파일 삭제)
 	@ResponseBody
-	@PostMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
-	public String questionDelete(HttpServletRequest request) {
+	@RequestMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
+	public String postDelete(HttpServletRequest request) {
 		String cidx = request.getParameter("cidx");
 		String commentCount = request.getParameter("commentCount");
 			
