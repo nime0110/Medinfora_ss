@@ -30,8 +30,8 @@
     <div class="idDayCnt_erea">
         <span class="commu-userid">${cbdto.userid}</span>
         <div class="idDayCnt_erea_right">
-	        <span class="commu-date">수정일자: ${cbdto.updateday}</span>
-	        <c:if test="${cbdto.writeday != cbdto.updateday}">
+	        <c:if test="${!cbdto.writeday.equals(cbdto.updateday)}">
+	        	<span class="commu-date">수정일자: ${cbdto.updateday}</span>
 	        </c:if>
 	        <span class="commu-viewcount">👁️‍🗨️${cbdto.viewcnt}</span>
         </div>
@@ -87,7 +87,7 @@
 		<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
 			<div id="commentArea">
 				<textarea class="form-control" name="content"
-					placeholder="댓글 내용을 입력하세요." maxlength="150"></textarea>
+					placeholder="댓글 내용을 입력하세요." maxlength="150" ></textarea>
 				<div style="text-align: right; margin-top: 10px;">
 					<button class="nanum-b commu-button" type="button" onclick="goAddWrite()">등록</button>
 					<button class="nanum-b commu-button" type="button" onclick="answercanle()">취소</button>

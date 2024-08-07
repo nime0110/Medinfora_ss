@@ -55,13 +55,14 @@
             <div class="row text-center py-3 nanum-eb size-s">
                 <span class="col-2">구분</span>
                 <span class="col-5">제목</span>
-                <span class="col-2">작성자</span>
-                <span class="col-2">작성일자</span>
+                <span class="col-1">작성자</span>
+                <span class="col-1">작성일자</span>
                 <span class="col-1">조회수</span>
+                <span class="col-2">수정/삭제</span>
             </div>
         </div>
         
-        <div class="mb-5 px-3" id="commuArea"></div>
+        <div class="mb-5 px-3" id="commuArea"></div>	
     
     <div class="pagination" style="text-align: center;" id="rpageNumber">
     </div>

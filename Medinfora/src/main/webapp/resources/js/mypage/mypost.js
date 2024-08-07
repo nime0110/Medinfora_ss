@@ -1,3 +1,4 @@
+
 let currentPage = 1; // 현재 페이지
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
@@ -34,21 +35,27 @@ function searchList(currentPage) {
             let v_html = ``;
             if (json.length > 0) {
                 json.forEach((item, index) => {
-                    v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item" onclick="listOneClick('${item.cidx}')">
+                    v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item">
                                    <input type="hidden" value="${item.cidx}" name="commuNo"/>
                                    <input type="hidden" value="${item.totalPage}" id="totalPage"/>
                                    <p class="col-2">
                                         <span class="category-span">${item.category}</span>
                                     </p>
-                                   <span class="col-5" align="left">${item.title}`;
+                                   <span class="col-5" align="left" onclick="listOneClick('${item.cidx}')">${item.title}`;
                     if (item.fileTrue) {
                         v_html += `<i class="fa-solid fa-paperclip" style="color: #535965;"></i>`;
                     }
                     v_html += `</span>
-                               <span class="col-2">${item.userid}</span>
-                               <span class="col-2">${item.writeday}</span>
+                               <span class="col-1">${item.userid}</span>
+                               <span class="col-1">${item.writeday}</span>
                                <span class="col-1">${item.viewcnt}</span>
-                               </div>`;
+                               <p class="col-2">
+                                    <button type="button" class="btn btn-secondary btn-sm mr-3" onclick="edit('${item.cidx}')">
+                                       글수정하기
+                                   </button>
+                                   <button type="button" class="btn btn-secondary btn-sm" onclick="del('${item.cidx}')">삭제하기</button>
+                              </p>
+                              </div>`;
                 });
                 displayPagination(json[0].totalPage, currentPage);
             } else {
@@ -112,7 +119,25 @@ function removedisplayPagination() {
     $('#rpageNumber').empty();
 }
 
-
 function listOneClick(cidx) {
     location.href = contextPath + "/commu/commuView.bibo?cidx=" + cidx;
+}
+
+//수정하기
+function del(cidx) {
+    if(confirm("글을 삭제하시겠습니까?")) {
+        $.ajax({
+            type: "post",
+            url: contextPath + "/commu/del.bibo?cidx=" + cidx,
+            data: {"cidx": cidx},
+            dataType: "json",
+            success: function (json) {
+                alert("글이 삭제되었습니다.");
+                location.reload();
+            }
+        });
+    }
+}
+function edit(cidx) {
+    location.href= contextPath + "/commu/commuEdit.bibo?cidx=" + cidx;
 }

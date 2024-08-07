@@ -27,12 +27,14 @@ function searchList(currentPage) {
             let v_html = ``;
             if (json.length > 0) {
                 json.forEach((item, index) => {
+                    if(item.content != '해당 댓글은 삭제되었습니다.') {
                     v_html += `<div class="row text-center py-3 nanum-n size-s b_border list--item" onclick="listOneClick('${item.cidx}', '${item.cmidx}')">
                                    <input type="hidden" value="${item.cidx}" name="commuNo"/>
                                    <input type="hidden" value="${item.totalPage}" id="totalPage"/>
                                    <span class="col-10">${item.content} </span>
                                <span class="col-2">${item.writeday}</span>
                                </div>`;
+                    }
                 });
                 displayPagination(json[0].totalPage, currentPage);
             } else {

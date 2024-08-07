@@ -420,10 +420,10 @@ function searchHospitals(pageNo) {
                     }
                 
                     // 각 위치에 대해 중복 마커 확인
-                    markerPositions.forEach((indices, position) => {
-                        if (indices.length > 1) { // 중복 마커가 있는 경우
+                    markerPositions.forEach((Duplicate, position) => {
+                        if (Duplicate.length > 1) { // 중복 마커가 있는 경우
                             let combinedContent = `<div class="cb-box">`;
-                            indices.forEach(index => {
+                            Duplicate.forEach(index => {
                                 combinedContent += `<div class="title cb-content" data-index="${index}"> ${positionArr[index].hpname} </div>`;
                             });
                             combinedContent += `</div>`;
@@ -431,7 +431,7 @@ function searchHospitals(pageNo) {
                             // 중복 마커에 대한 오버레이 생성
                             let customOverlay = new kakao.maps.CustomOverlay({
                                 content: `<div class="custom-overlay">${combinedContent}</div>`,
-                                position: markers[indices[0]].getPosition(),
+                                position: markers[Duplicate[0]].getPosition(),
                                 yAnchor: 1,
                                 clickable: true
                             });
@@ -439,7 +439,7 @@ function searchHospitals(pageNo) {
                             overlays.push(customOverlay);
                 
                             // 중복 마커에 대해 클릭 이벤트 추가
-                            indices.forEach(index => {
+                            Duplicate.forEach(index => {
                                 (function(marker, customOverlay) {
                                     kakao.maps.event.addListener(marker, 'click', function() {
                                         if (openOverlay) {
@@ -514,34 +514,9 @@ function searchHospitals(pageNo) {
     });   
 }
 
-/*
-function requestChartData(hospitalList) {
-    $.ajax({
-        url: contextPath + '/hpsearch/getChartPercentage.bibo',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(hospitalList),
-        dataType: 'json',
-        success: function(chartData) {
-            console.log(JSON.stringify(chartData));
-            //rawChart(chartData); // 차트 그리기
-        },
-        error: function(request, status, error) {
-            alert(`code: ${request.status}\nmessage: ${request.responseText}\nerror: ${error}`);
-        }
-    });
-}
-
-*/
-
-
-
-
-
 function removedisplayPagination() {
     $('#rpageNumber').empty();
 }
-
 
 function displayPagination(totalPage, currentPage) {
     clearAllwithmarker(); 
