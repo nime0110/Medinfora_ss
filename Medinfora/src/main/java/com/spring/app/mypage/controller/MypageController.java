@@ -301,6 +301,40 @@ public class MypageController {
 		return jsonObj.toString();
 	} // end of public String getRdto(HttpServletRequest request) {---------------
 	
+	
+	// === 진료현황 변경 === //
+	@ResponseBody
+	@PostMapping("ChangeRstatus.bibo")
+	public String ChangeRstatus(HttpServletRequest request) {
+		String rStatus = request.getParameter("rStatus");
+		String ridx = request.getParameter("ridx");
+		
+		// 선택한 진료현황의 예약코드 가져오기
+		String rcode = service.GetRcode(rStatus);
+		
+		Map<String,String> paraMap = new HashMap<>();
+		
+		paraMap.put("ridx", ridx);
+		paraMap.put("rcode", rcode);
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		// 진료현황 변경해주기
+		int n = service.ChangeRstatus(paraMap);
+		int send = 0;
+		if(n==1) {
+			if("2".equals(rcode) || "0".equals(rcode)) {
+				send = 1;
+			}
+		}
+		
+		jsonObj.put("n", n);
+		jsonObj.put("send", send);	// 문자전송할 사항
+
+		return jsonObj.toString();
+		
+	} // end of public String ChangeRstatus(HttpServletRequest request) {
+
 	// === (일반) 진료예약열람(페이징, 검색 처리) === //
 	@ResponseBody
 	@GetMapping(value="myreserveList.bibo", produces="text/plain;charset=UTF-8")

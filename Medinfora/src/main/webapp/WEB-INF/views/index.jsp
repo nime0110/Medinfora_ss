@@ -31,9 +31,10 @@
 
   <section class="sim_promo_section">
     <div class="sim_promo_section_banner">
-      <div class="sim_promo_section_banner_image">
-        <!-- <img src=""> -->
-        <h2 class="nanum-b size-n">사이트설명 이미지<br>홈페이지 소개글<br>1장</h2>
+      <div class="p-5">
+      	<a href="https://github.com/jjoung-2j/Medinfora">
+      		<img src="<%=ctxPath %>/resources/img/BannerIcon.png" class="img-fluid linkgithub"/>
+      	</a>
       </div>
     </div>
     <div class="sim_promo_section_services">
@@ -175,22 +176,24 @@
 	        </div>
       	</a>
       	
-      <a href="#" class="sh-card">
-        <div class="sh_card-front">
-          <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
-          <h4 class="nanum-n sh_font" style="font-weight: bold;">검진기관 찾기</h4>
-        </div>
-        <div class="sh_card-text">
-          <h4 class="sh_card-title">검진기관 찾기 <i class="bi bi-arrow-right"></i></h4>
-          <p class="sh_text">
-
-            주변 또는 찾고 싶은 지역으로 검진기관을 검색할 수 있습니다
-          </p>
-          <div class="img-content">
-            <img src="<%=ctxPath %>/resources/img/sh_findcl.png" alt="#">
-          </div>
-        </div>
-      </a>
+      <a href="<%=ctxPath %>/news/main.bibo" class="sh-card">
+        	<div class="sh_card-front">
+	          	<img src="<%=ctxPath %>/resources/img/sh_tongae.png" />
+	          	<h4 class="nanum-n sh_font" style="font-weight: bold;">의료뉴스</h4>
+        	</div>
+        	<div class="sh_card-text">
+          		<h4 class="sh_card-title">
+          			의료뉴스
+          			 <i class="bi bi-arrow-right"></i>
+          		</h4>
+          		<p class="sh_text">
+					전문적인 의료뉴스의 정보를 확인하실 수 있습니다.
+          		</p>
+          		<div class="img-content">
+            		<img src="<%=ctxPath %>/resources/img/sh_tongae.png" />
+          		</div>
+        	</div>
+      	</a>
     </div> 
 </div>
     

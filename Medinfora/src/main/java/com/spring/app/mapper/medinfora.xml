@@ -371,7 +371,7 @@
 		        (
 		            select min(checkin)
 		            from reserve
-		            where userid = 'hemint'
+		            where userid = #{userid}
 		                and to_date(checkin,'yyyy-mm-dd hh24:mi:ss') > sysdate
 		        )
 	</select>

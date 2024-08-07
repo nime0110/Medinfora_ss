@@ -84,7 +84,7 @@ public class MainController {
 				ReserveDTO rdto_p = service.getRdto_p(userid);
 				if(rdto_p != null) {
 					String hidx = rdto_p.getHidx();
-					
+
 					// 최신 예약된 병원 이름
 					String hpname = service.gethpname(hidx);
 					String checkin = rdto_p.getCheckin().substring(0,16);
