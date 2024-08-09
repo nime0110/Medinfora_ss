@@ -351,18 +351,35 @@ public class CommuController {
 	    	mav.setViewName("redirect:/commu/commuList.bibo");
 	        return mav;
 	    }
-
+	    
 	    // 글 select
 	    CommuBoardDTO cbdto = null;
 	    List<CommuFilesDTO> fileList = null;
-
-	    if (cidx != null) {
-	        // 조회수 증가랑 같이 글 하나 보기
+	    
+	    BookmarkDTO bdto = new BookmarkDTO();
+	    
+	    //세션에 로그인한 유저아이디 가져오기
+		HttpSession session = request.getSession();
+		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
+	    
+	    
+		int alreadyBookmark = 0;
+		
+		if(loginuser != null) {
+			//로그인유저아이디, cidx 를 bdto 에 넣어준다.
+			bdto.setUserid(loginuser.getUserid());
+			bdto.setCidx(cidx);
+			alreadyBookmark = service.alreadyMarking(bdto); //북마크 되어있는지 여부, cidx
+			// 안되어있다면 0, 되어있다면 1 
+		}
+	    if (cidx != null) {	
+	    	// 조회수 증가랑 같이 글 하나 보기
 	        cbdto = service.getCommuDetail(cidx);
 	        // 첨부파일 가져오기
 	        fileList = service.getAttachfiles(cidx);
 	    }
 
+	    mav.addObject("alreadyBookmark", alreadyBookmark);
 	    mav.addObject("cbdto", cbdto);
 	    mav.addObject("fileList", fileList);
 	    mav.addObject("currentShowPageNo", currentShowPageNo);
@@ -763,16 +780,17 @@ public class CommuController {
 		return jsonObj.toString();
 	}
 	
-	// 북마크	
+	// 북마크	하기
 	@ResponseBody
 	@GetMapping(value="/commu/bookMark.bibo", produces="text/plain;charset=UTF-8") 
 	public String bookMark(HttpServletRequest request) {
 		BookmarkDTO bdto = new BookmarkDTO();
 		
+		//ajax에서 보내준 userid, cidx 를 추가(userid는 현재 로그인된 유저아이디)
 		String userid = request.getParameter("userid");
 		String cidx = request.getParameter("cidx");
 		
-		bdto.setUserid(userid);
+		bdto.setUserid(userid); //객체에 할당
 		bdto.setCidx(cidx);
 		
 		JSONObject jsonObj = new JSONObject(); // {} 이런 형태가 됨
@@ -780,9 +798,9 @@ public class CommuController {
 		int n = 0;
 		int alreadyBookmark = 0;
 
-		alreadyBookmark = service.alreadyMarking(bdto);
+		alreadyBookmark = service.alreadyMarking(bdto); //이미 북마크 되어있다면 여부
 		
-		if(alreadyBookmark != 1) {
+		if(alreadyBookmark < 1) {
 			n = service.bookmarkPost(bdto);
 		}
 		

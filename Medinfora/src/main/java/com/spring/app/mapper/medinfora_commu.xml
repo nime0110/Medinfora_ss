@@ -106,16 +106,12 @@
 	
 	<!-- 게시글 상세  -->
 	<select id="getCommuDetail" parameterType="String" resultType="CommuBoardDTO" >
-		select *
-		from (select A.cidx,category, title, commentcount, A.userid, content,
-		             to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi')  as writeday,
-		             to_char(to_date(updateday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as updateday,
-		             viewcnt, suggestioncnt, bidx,
-		             ROW_NUMBER() OVER (ORDER BY bidx DESC) AS rno
-		      from commu A left join BOOKMARK B ON A.CIDX = B.CIDX
-		      where A.cidx = #{cidx}
-		)
-		where rno = 1		
+      select A.cidx,category, title, commentcount, A.userid, content,
+             to_char(to_date(writeday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi')  as writeday,
+             to_char(to_date(updateday, 'YYYY-MM-DD HH24:MI:SS'), 'yyyy.mm.dd hh24:mi') as updateday,
+             viewcnt, suggestioncnt
+      from commu A
+      where cidx = #{cidx}	
 	</select>
 	
 	<!-- 게시글 조회수 증가 -->
@@ -256,7 +252,7 @@
 		where USERID = #{userid} and CIDX = #{cidx}
 	</select>
 
-	<!-- 북마크 테이블에 삽입 -->
+	<!-- 북마크하기 -->
 	<insert id="bookmarkPost" parameterType="BookmarkDTO">
 		insert into BOOKMARK(bidx, cidx, userid)
 		values(seq_bidx.nextval, #{cidx}, #{userid})

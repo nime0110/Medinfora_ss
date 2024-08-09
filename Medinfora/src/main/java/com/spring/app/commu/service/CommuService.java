@@ -33,7 +33,7 @@ public interface CommuService {
 	//첨부파일 유무 알기 위해 DB select
 	List<String> getfileSeqList();
 
-	//조회수 증가 포함 글 상세 select 
+	//1개의 게시글 상세보기 
 	CommuBoardDTO getCommuDetail(String cidx);
 
 	//첨부파일 가져오기

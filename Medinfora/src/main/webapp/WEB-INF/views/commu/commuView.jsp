@@ -64,14 +64,14 @@
 		</button>
 		<button type="button" class="commu-button nanum-b" onclick="suggestionPost('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">🌟추천 ${requestScope.cbdto.suggestioncnt}</button>
 		<button type="button" class="commu-button nanum-b" onclick="bookMark('${sessionScope.loginuser.userid}', '${requestScope.cbdto.cidx}')">
-			<c:if test="${requestScope.cbdto.bidx != null && sessionScope.loginuser.userid != null}">
+			<c:if test="${requestScope.alreadyBookmark == 1 && sessionScope.loginuser.userid != null}">  
 			    ✅북마크 
 			</c:if>
-			<c:if test="${requestScope.cbdto.bidx == null || sessionScope.loginuser.userid == null}">
+			<c:if test="${requestScope.alreadyBookmark != 1 || sessionScope.loginuser.userid == null}">
 			    🔖북마크
 			</c:if>
 		 </button>
-		 <!-- BIDX 값 확인 -->
+
 	</div>
 
 	<div class="commentcount-display">
