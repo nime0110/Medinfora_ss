@@ -3,13 +3,10 @@ let file_arr = []; //첨부파일 업로드 배열
 
 $(function() {
 
-
 		//기존 값 넣어주기
 	let category_val = $("#category_val").val();
 	let title_val = $("#title_val").val();
 	let content_val = $("#content_val").text();
-
-	console.log("content_val : " + content_val);
 
 	$("select[name='category']").val(category_val);
 	$("input:text[name='title']").val(title_val);
@@ -97,7 +94,7 @@ $(function() {
 
 		let DelfileName = $("#fileName").val();
 		let cidx = $("#cidx").val();
-		console.log("DelfileName : " + DelfileName, "cidx : " + cidx);
+
 		deleteFile(DelfileName, cidx);
 		$(e.target).parent().remove(); // <div class='fileList'> 태그삭제   
 	});
@@ -111,18 +108,10 @@ $(function() {
 }); //end of $(function(){ ----------------------
 
 
+//파일 업로드 함수
 function fileUpload(files) {
 	if(files != null && files != undefined){
-		console.log("files.length 는 => " + files.length);     
-		/*
-		for(let i=0; i<files.length; i++){
-					const f = files[i];
-					const fileName = f.name;  // 파일명
-					const fileSize = f.size;  // 파일크기
-					console.log("파일명 : " + fileName);
-					console.log("파일크기 : " + fileSize);
-		} // end of for------------------------
-			*/
+
 		let html = "";
 		const f = files[0]; 
 		let fileSize = f.size/1024/1024;  /* 파일의 크기는 MB로 나타내기 위하여 /1024/1024 하였음 */

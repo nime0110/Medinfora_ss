@@ -33,16 +33,15 @@ public class HpsearchService_imple implements HpsearchService {
 		return hsdao.getHpDetail(hidx);
 	}
 
-	//시를 넣어서 도 불러오기
+	//시를 넣어서 도 불러오기>
 	@Override
 	public List<String> putSiGetdo(String local) {
 		return hsdao.putSiGetdo(local);
 	}
 
 	@Override
-	public int holidatCheck(LocalDate currentDate) {
-		// TODO Auto-generated method stub
-		return hsdao.holidatCheck(currentDate);
+	public int holidatCheck(String currentDate_str) {
+		return hsdao.holidatCheck(currentDate_str);
 	}
 
 	@Override

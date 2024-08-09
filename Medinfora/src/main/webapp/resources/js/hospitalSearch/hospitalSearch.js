@@ -3,44 +3,41 @@ let clusterer;
 let markers = [];
 let infowindows = [];
 let overlays = [];
-let positionArr = [];  
-let markerImageArr = []; 
-let openInfowindow = null;
-let openOverlay = null; 
+let positionArr = []; 
+let markerImageArr = [];  //위치 마커 이미지 배열
+let openInfowindow = null;// 열려있는 인포윈도우
+let openOverlay = null;  // 열려있는 오버레이
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
 // 폴리곤 관련 변수
-let detailMode = false;  
+let detailMode = false;   // level에 따라 다른 json 파일 사용
 let level = '';
 let polygons = [];
 let polygonOverlays = [];
 
 $(function() {
-    /* 비동기 처리 코드 
-    $.ajaxSetup({
-		async : false 
-	});
-    */
     // 로딩 이미지 숨기기
     $("div#loaderArr").hide();     
+    $("div#hp_chart").hide();     
 
     $('#closeModalButton').click(function(){
         $('#hospitalDetailModal').modal('hide');
     });
 
+    //반응형 관련 - 모바일 반응형에서의 클릭 이벤트(리스트)
     const tabButtons = $('.tab-button');
     const tabContents = $('.tab-content');
 
     $('#map_box').addClass('active');
 
     tabButtons.on('click', function() {
-        const tab = $(this).data('tab');
+        const tab = $(this).data('tab'); //현재 클릭한 버튼의 data-tab 속성값을 가져옴
 
         tabButtons.removeClass('active');
         $(this).addClass('active');
 
         tabContents.removeClass('active');
-        $(`#${tab}`).addClass('active');
+        $(`#${tab}`).addClass('active'); 
     });
 
     // 지도 컨테이너와 옵션 설정
@@ -56,37 +53,41 @@ $(function() {
    
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤 생성함.    
     let mapTypeControl = new kakao.maps.MapTypeControl();
+    // 지도 타입 컨트롤을 지도에 표시함.
     map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT); 
 
     let zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
-    kakao.maps.event.addListener(map, 'zoom_changed', function () {
-        level = map.getLevel();
-        if (!detailMode && level <= 10) {
+    //사용자가 지도의 확대/축소를 변경할 때 발생하는 이벤트
+    kakao.maps.event.addListener(map, 'zoom_changed', function () { 
+        level = map.getLevel(); // 지도의 현재 레벨을 얻어옴
+        if (!detailMode && level <= 10) {  // level 에 따라 다른 json 파일을 사용한다.
             detailMode = true;
             removePolygon();
-            init(contextPath + "/resources/json/sig.json");
-        } else if (detailMode && level > 10) {
+            init(contextPath + "/resources/json/sig.json"); //시/군구
+        } else if (detailMode && level > 10) {  // level 에 따라 다른 json 파일을 사용한다.
             detailMode = false;
             removePolygon();
-            init(contextPath + "/resources/json/sido.json");
+            init(contextPath + "/resources/json/sido.json"); //시도
         } else if (level <= 6) {
             removePolygon();
-        } else if (level > 6 && level <= 9) {
+        } else if (level > 6 && level <= 9) {  // level 에 따라 다른 json 파일을 사용한다.
             removePolygon();
-            init(contextPath + "/resources/json/sig.json");
+            init(contextPath + "/resources/json/sig.json"); //시군구
         }
     });    
     //폴리곤 생성
     init( contextPath + "/resources/json/sido.json") 
     
+    //클러스터러 생성
     clusterer = new kakao.maps.MarkerClusterer({
-        map: map, 
-        averageCenter: true, 
-        minLevel: 5, 
+        map: map,  // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+        averageCenter: true,  // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+        minLevel: 5, // 클러스터 할 최소 지도 레벨 
     });
 
+    // ======================== 시/도, 진료과목 데이터 가져오기 start ===========================
 	// 시/도 데이터 가져오기 ajax
 	$.ajax({
 		url:contextPath + "/getcityinfo.bibo",
@@ -121,8 +122,9 @@ $(function() {
 			alert("code : " + request.status);
 		}
 	}) 
+    // ======================== 시/도, 진료과목 데이터 가져오기 end ===========================
 
-    // 검색부분 작성
+    // 검색 버튼 엔터 클릭시 => 검색
     $('#searchHpName').on('keydown', function(e) {
         if (e.keyCode == 13) {
             searchHospitals(1);
@@ -142,6 +144,7 @@ $(function() {
     
 });
 
+//줌인 - 줌아웃시 맵 레벨이 달라지는 코드
 window.zoomIn = function() {
     map.setLevel(map.getLevel() - 1);
 }
@@ -177,7 +180,7 @@ function updateSigunGu() {
 
 // 시군구 선택시 동이 업데이트 되는 함수  start
 function updateDong() {
-    let city_val = $('#city').val();
+    let city_val = $('#city').val(); //시의 값
     let local_val = $('#local').val(); 
     const cityLocal = { "city": city_val, "local": local_val };
     $.ajax({
@@ -196,8 +199,8 @@ function updateDong() {
             
             $("select#country").off('change').on('change', function() {
                 searchHospitals(1);
-            });
-        },
+            }); // end of $.ajax({-------------
+        }, 
         error: function(request) {
             alert("code : " + request.status + "\nmessage : " + request.responseText);
         }
@@ -220,11 +223,11 @@ function updateCityFromLocal(local) {
                     v_html += `<option value="${json[i].sido}">${json[i].sido}</option>`;
                 }	
                 $("select#city").html(v_html);
-                
+                  //select city가 바뀌면 sigungu도 바뀌어야함
                 $('#city').on('change', function() {
                     $('#local').val(local);
                     searchHospitals(1);
-                });
+                }); //시가 변하면 검색
 
             }  else {
                 json.forEach(item => {  
@@ -246,8 +249,8 @@ let currentPage = 1; // 현재 페이지를 추적
 
 // 시/군/구를 기반으로 병원 검색하면 리스트가 보이는 함수
 function searchHospitals(pageNo) {
-    clearAllwithmarker(); 
-    clearClusterer(); 
+    clearAllwithmarker();  // 인포윈도우와 오버레이 초기화
+    clearClusterer();  // 클러스터러 초기화
 
     //진료중인 병원만 보기
     let checkbox = $('#check-status');
@@ -298,15 +301,15 @@ function searchHospitals(pageNo) {
         dataType: "json",
         success: function(json) {
             removeMarkers();
-            positionArr = []; 
-            overlays = []; 
+            positionArr = [];  // 기존 위치 배열 초기화
+            overlays = [];  // overlays 초기화 
 
             $('#hospitalList').empty(); 
 
 			let v_html = "";
 			if(json.length > 0) {
-	           json.forEach((item, index) => { 
-                    let position = {};
+	           json.forEach((item, index) => { // 병원의 위도, 경도를 위치 객체로 변환
+                    let position = {}; // 위도경도랑 content 담음 
 	                position.latlng = new kakao.maps.LatLng(item.wgs84lat, item.wgs84lon);
                     // 인포윈도우
 	                position.content = `<div class='mycontent' data-index="${index}">
@@ -563,6 +566,7 @@ function displayPagination(totalPage, currentPage) {
 
 
 function createChart(param) {
+    $("div#hp_chart").show();   
     // 차트를 표시할 DOM 요소를 가져옴
     var dom = document.getElementById('hp_chart');
 
