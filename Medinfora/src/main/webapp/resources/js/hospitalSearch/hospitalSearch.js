@@ -223,7 +223,7 @@ function updateCityFromLocal(local) {
                     v_html += `<option value="${json[i].sido}">${json[i].sido}</option>`;
                 }	
                 $("select#city").html(v_html);
-                  //select city가 바뀌면 sigungu도 바뀌어야함
+                  //select city가 바뀌면 sigungu도 바뀌어야 한다.
                 $('#city').on('change', function() {
                     $('#local').val(local);
                     searchHospitals(1);
@@ -322,10 +322,10 @@ function searchHospitals(pageNo) {
                                                 <button class="details-button" onclick="detailSearch(${index})">상세보기</button>
 									    	</div>		    	 
                     				    </div>`;
-                    position.hpname = item.hpname;
+                    position.hpname = item.hpname; //병원 이름 추가
                     positionArr.push(position);	
                     const alphabetIndex = String.fromCharCode(65 + index); 
-                    // 리스트 부분
+                    // 리스트 부분 - 리스트로 출력
                     v_html += `<div class="hospital-details" data-index="${index}">
                                 <input type="hidden" name="${item.hidx}"></input>
                                 <div class="index-name-flexbox">
@@ -343,32 +343,32 @@ function searchHospitals(pageNo) {
                     
 	            }); //end of forEach -----------------------------------
 
-                let imageArr = []; 
-                markerImageArr = [];
-                let bounds = new kakao.maps.LatLngBounds();
-                markers = []; 
-                overlays = []; 
-                let infowindows = [];
+                let imageArr = []; // 이미지 경로를 저장하는 배열
+                markerImageArr = []; //이미지 객체를 저장하는 배열 (이미지 사이즈 등)
+                let bounds = new kakao.maps.LatLngBounds();// 마커 범위 
+                markers = [];  // 마커를 저장하는 배열
+                overlays = []; // 커스텀 오버레이를 저장하는 배열
+                let infowindows = []; // 인포윈도우를 저장하는 배열
 
-                for (let i = 0; i < positionArr.length; i++) { 
+                for (let i = 0; i < positionArr.length; i++) { //마커를 표시할 위치와 내용을 가지고 있는 객체 배열 positionArr
                     
                     $('#hospitalList').children().eq(i).find('.hospital-label').removeClass('click-maker');
-                    let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; 
-                    imageArr.push(imageSrc);
+                    let imageSrc = contextPath + '/resources/img/marker/ico_marker' + (i + 1) + '_on.png'; // 마커 이미지 경로 설정
+                    imageArr.push(imageSrc);// 배열에 이미지 경로를 추가
 
-                    let imageSize = new kakao.maps.Size(24, 35);
-                    let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize); 
-                    markerImageArr.push(markerImage); 
+                    let imageSize = new kakao.maps.Size(24, 35);// 마커 이미지 크기 설정
+                    let markerImage = new kakao.maps.MarkerImage(imageArr[i], imageSize); // 마커 이미지 생성
+                    markerImageArr.push(markerImage);  // 마커이미지 배열에 넣기
 
                     // 마커 생성
                     let marker = new kakao.maps.Marker({
                         map: map,
-                        position: positionArr[i].latlng, 
+                        position: positionArr[i].latlng, // locPosition 좌표에 마커를 생성함.
                         image: markerImageArr[i]
                     });               
 
-                    clusterer.addMarkers(markers);
-                    markers.push(marker);
+                    clusterer.addMarkers(markers); //클러스터에 마커를 추가
+                    markers.push(marker); //마커를 배열에 추가
        
                     // 모든 마커가 한 번에 보이도록 지도의 중심과 확대레벨을 설정
                     bounds.extend(positionArr[i].latlng); 
@@ -379,33 +379,38 @@ function searchHospitals(pageNo) {
                         content: positionArr[i].content, 
                         removable: true
                     });
-
+                    // 인포윈도우를 생성해서 배열에 넣기
                     infowindows.push(infowindow);
-                    
+
+                    // 마커 위에 인포윈도우를 표시하는 클릭 이벤트 
                     kakao.maps.event.addListener(marker, 'click', function() { 
                         let level = map.getLevel() - 4;
                         map.setLevel(level, {anchor: this.getPosition()});
 
-                        if (openInfowindow) {
+                        if (openInfowindow) {  // 열려있는 인포윈도우가 있으면 닫기
                             openInfowindow.close();
                         }
 
                         infowindows[i].open(map, marker);
                         openInfowindow = infowindows[i];
 
-                        if (openOverlay) {
+                        if (openOverlay) {   // 열려있는 오버레이가 있으면 닫기
                             openOverlay.setMap(null);
                         }
                         
                         const hplist = $('#hplist');
                         let hospitalItem = $('#hospitalList').children().eq(i);
-
+                        
+                        // 마커 클릭시 해당 병원의 리스트로 이동하는 코드 추가
+                        // 병원 리스트의 스크롤 위치 계산
                         let scrollPosition = hospitalItem.offset().top - hplist.offset().top + hplist.scrollTop();
 
+                        // 병원 리스트의 스크롤 위치 설정
                         hplist.scrollTop(scrollPosition);
 
-                        $('#hospitalList').find('.hospital-label').removeClass('click-maker'); 
-                        hospitalItem.find('.hospital-label').addClass('click-maker'); 
+                          // 마커 클릭시 해당 병원 리스트 hospital-label에 css 클래스 추가
+                        $('#hospitalList').find('.hospital-label').removeClass('click-maker');  //모든 항목에서 click-maker 클래스 삭제
+                        hospitalItem.find('.hospital-label').addClass('click-maker');  // 클릭한 항목에 클래스 추가
 
                     });
                                   
@@ -426,7 +431,7 @@ function searchHospitals(pageNo) {
                     markerPositions.forEach((Duplicate, position) => {
                         if (Duplicate.length > 1) { // 중복 마커가 있는 경우
                             let combinedContent = `<div class="cb-box">`;
-                            Duplicate.forEach(index => {
+                            Duplicate.forEach(index => { //중복 마커의 인덱스를 이용해 병원 이름을 가져옴
                                 combinedContent += `<div class="title cb-content" data-index="${index}"> ${positionArr[index].hpname} </div>`;
                             });
                             combinedContent += `</div>`;
@@ -435,8 +440,8 @@ function searchHospitals(pageNo) {
                             let customOverlay = new kakao.maps.CustomOverlay({
                                 content: `<div class="custom-overlay">${combinedContent}</div>`,
                                 position: markers[Duplicate[0]].getPosition(),
-                                yAnchor: 1,
-                                clickable: true
+                                yAnchor: 1,     //우측 하단을 기준으로 위치 지정
+                                clickable: true //클릭 가능하도록 이 부분을 true 명시해줘야 한다
                             });
                 
                             overlays.push(customOverlay);
@@ -444,11 +449,11 @@ function searchHospitals(pageNo) {
                             // 중복 마커에 대해 클릭 이벤트 추가
                             Duplicate.forEach(index => {
                                 (function(marker, customOverlay) {
-                                    kakao.maps.event.addListener(marker, 'click', function() {
-                                        if (openOverlay) {
+                                    kakao.maps.event.addListener(marker, 'click', function() { //마커 클릭시
+                                        if (openOverlay) { // 열려있는 오버레이가 있으면 닫기
                                             openOverlay.setMap(null);
                                         }
-                                        customOverlay.setMap(map);
+                                        customOverlay.setMap(map); // 오버레이 설정
                                         openOverlay = customOverlay;
                                     });
                                 })(markers[index], customOverlay);
@@ -457,11 +462,13 @@ function searchHospitals(pageNo) {
                     });
                 }
 
+                // 커스텀오버레이 안의 병원 이름 클릭 이벤트 추가
                 $(document).on('click', '.cb-content', function(event) {
                     
                     let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
 
+                     // 마커 클릭 이벤트 트리거
                     kakao.maps.event.trigger(markers[index], 'click');
 
                     // 커스텀 오버레이 유지
@@ -477,39 +484,42 @@ function searchHospitals(pageNo) {
                     }
                 });
 
+                 // 지도를 클릭하면 인포윈도우/오버레이를 닫기
                 kakao.maps.event.addListener(map, 'click', function(event) {  
                     if (openInfowindow) {
                         openInfowindow.close();
-                        openInfowindow = null; 
+                        openInfowindow = null; // 열려있는 인포윈도우를 초기화
                     }
-                    $('#hospitalList').find('.hospital-label').removeClass('click-maker'); 
+                    $('#hospitalList').find('.hospital-label').removeClass('click-maker');  // 병원 리스트 선택클래스 제거
+                    // 모든 오버레이를 닫기
                     if (overlays) {  
                         overlays.forEach(function(overlay) {
                             overlay.setMap(null);
                         });
                     }
                 });
-                    
+                 // 병원 리스트 항목 클릭 이벤트 추가    
                 $('#hospitalList').on('click', '.hospital-details', function() {
                     let index = $(this).data('index');
                     map.setCenter(positionArr[index].latlng);
+                    // 마커 클릭 이벤트 트리거
                     kakao.maps.event.trigger(markers[index], 'click');
                 });
                 
-                createChart(param);
+                createChart(param); //차트 생성 - 검색이 완료된 후에 차트 생성
             } else {
                 v_html += `<div id="no_searchList">
                 <span>😥</span>
                 <p>검색된 의료기관이 없습니다.</p>
                 </div>`;
-                removedisplayPagination();
+                removedisplayPagination(); //검색된 의료기관이 없으므로 페이지네이션 remove
             } // end of if(json.length > 0) -------------------------------
             
-            $('#hospitalList').append(v_html);
+            $('#hospitalList').append(v_html); //생성된 병원 리스트를 추가
             if(json.length > 0) {
-                displayPagination(json[0].totalPage, pageNo);
+                displayPagination(json[0].totalPage, pageNo); //페이지네이션 
             }
-            removePolygon();
+            removePolygon(); //폴리곤 제거
         }, //end of  success: function(json)  ------------------
         error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -522,7 +532,7 @@ function removedisplayPagination() {
 }
 
 function displayPagination(totalPage, currentPage) {
-    clearAllwithmarker(); 
+    clearAllwithmarker(); /// 인포윈도우와 오버레이 초기화 => 페이지네이션 클릭시 이전에 열려있던 인포윈도우와 오버레이를 닫기 위함
     let paginationDiv = $('#rpageNumber');
     paginationDiv.empty();
 
@@ -563,8 +573,7 @@ function displayPagination(totalPage, currentPage) {
     }
 }
 
-
-
+// 병원 차트 생성
 function createChart(param) {
     $("div#hp_chart").show();   
     // 차트를 표시할 DOM 요소를 가져옴
@@ -584,19 +593,6 @@ function createChart(param) {
         data: param,
         dataType: "json",
         success: function(json) {
-            console.log(JSON.stringify(json));
-            console.log("param", param);
-            /*
-            const param = {
-                addr: addr, 
-                country: country,
-                classcode: classcode, 
-                agency: agency,
-                hpname: hpname,
-                checkStatus: checkbox_val,
-                currentShowPageNo: pageNo
-            }
-            */
             let chart_html = '<span class="nanum-b size-n" id="chart_addr">' +  param.addr;
             if(param.country != "") {
                 chart_html += param.country + "에 있는 "; //백석동 
@@ -610,52 +606,53 @@ function createChart(param) {
             }
             chart_html += `<span class="nanum-b" id="chart_classname">`
             $.each(json, function(index, item) {
-                chart_html += `${item.CLASSNAME} ${item.PERCNTAGE}%, `;
+                chart_html += `${item.CLASSNAME} ${item.PERCNTAGE}%, `; //진료과목명, 비율
                 //마지막 인덱스일 때 , 삭제
                 if(index == json.length - 1) {
                     chart_html = chart_html.substring(0, chart_html.length - 2);
                 }
-                hpdata.push({ value: `${item.PERCNTAGE}`, name: `${item.CLASSNAME}`});
+                hpdata.push({ value: `${item.PERCNTAGE}`, name: `${item.CLASSNAME}`}); //hpdata에 진료과목명, 비율 추가
             });
             chart_html += " </span>입니다.";
             
-            $('#hp_chart_description').html(chart_html);
+            $('#hp_chart_description').html(chart_html); //차트 설명 추가
             $('#wrap_container').css('padding-bottom', '112vh');
             // 차트 옵션 설정
             var option = {
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item' // 아이템에 마우스를 올릴 때 툴팁 표시
                 },
                 legend: {
-                    top: '5%',
-                    left: 'center'
+                    top: '5%',  // 범례의 위치
+                    left: 'center' // 범례를 가운데 정렬
                 },
                 series: [
                     {
-                        name: 'Access From',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: true,
+                        name: 'Access From',  // 시리즈 이름
+                        type: 'pie',// 파이 차트 유형
+                        radius: ['40%', '70%'], // 파이 차트 반지름
+                        avoidLabelOverlap: true, // 라벨 중첩 방지
                         itemStyle: {
-                            borderRadius: 10,
-                            borderColor: '#fff',
-                            borderWidth: 2,
+                            borderRadius: 10, // 아이템 테두리 둥글게
+                            borderColor: '#fff', // 아이템 테두리 색상
+                            borderWidth: 2,  // 아이템 테두리 두께
                         },
                         label: {
-                            show: false,
-                            position: 'center'
+                            show: false, // 라벨 숨김
+                            position: 'center' // 라벨 위치
                         },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 30,
-                                fontWeight: 'bold'
+                        emphasis: {  // 강조 상태 설정
+                            //disabled: true,  // 강조 상태 비활성화
+                            label: { // 강조 상태에서 레이블 표시
+                                show: true,   // 강조된 레이블 표시
+                                fontSize: 30, // 강조된 레이블 표시
+                                fontWeight: 'bold' // 강조된 레이블 폰트 굵기
                             }
                         },
                         labelLine: {
-                            show: false
+                            show: false // 라벨 라인 숨김
                         },
-                        data: hpdata
+                        data: hpdata //hpdata 값: 퍼센테이지(비율), 이름: 진료과목명
                     }
                 ]
             };
@@ -666,20 +663,22 @@ function createChart(param) {
             var clickedIndex;
 
             myChart.on('click', function(params) {
+                // 모든 데이터 항목의 강조 상태를 해제
                 myChart.dispatchAction({
                     type: 'downplay',
                     seriesIndex: 0
                 });
 
+	            // 클릭한 데이터 항목 강조
                 myChart.dispatchAction({
                     type: 'highlight',
                     seriesIndex: 0,
                     dataIndex: params.dataIndex
                 });
-
+                // 클릭한 데이터 항목 인덱스를 저장
                 clickedIndex = params.dataIndex;
             });
-
+            // 차트 마우스오버 이벤트 핸들러
             myChart.on('mouseover', function(params) {
                 if (clickedIndex !== undefined && params.dataIndex === clickedIndex) {
                     return;
@@ -690,9 +689,10 @@ function createChart(param) {
                     });
                 }
             });
-
+            // 차트 마우스아웃 이벤트 핸들러
             myChart.on('mouseout', function(params) {
                 if (clickedIndex !== undefined) {
+                     // 클릭된 항목의 레이블 다시 표시
                     myChart.dispatchAction({
                         type: 'highlight',
                         seriesIndex: 0,
@@ -750,22 +750,30 @@ function removePolygon() {
 }
 
 // 폴리곤 생성
-function init(path) {
-    $.getJSON(path, function (geojson) { 
-        let units = geojson.features;
-        areas = [];
-        $.each(units, function (index, unit) { 
-            let coordinates = []; 
-            let name = ''; 
-            let cd_location = '';
-            coordinates = unit.geometry.coordinates; // 1개 지역의 영역을 구성하는 다각형의 모든 좌표 배열
-            name = unit.properties.SIG_KOR_NM;
-            cd_location = unit.properties.SIG_CD; 
 
+/*
+울산광역시 울주군 의 경우에
+울주군을 클릭했을때 울산광역시 라는 값을 받아와야 함
+--> 해당 울산광역시로 값을 바꿔서 검색 ==> 검색시 변수로 해당값 들어가있는걸 넘겨서 사용
+*/
+
+function init(path) {
+    $.getJSON(path, function (geojson) {   //geojson 객체에 json 데이터 로드
+        let units = geojson.features; // json key값이 "features"인 것의 value를 통으로 가져온다.
+        areas = []; // 새로 불러올 때마다 초기화
+        $.each(units, function (index, unit) {   // 1개 지역씩 꺼내서 사용. val은 그 1개 지역에 대한 정보를 담는다
+            let coordinates = [];   //좌표 저장할 배열
+            let name = '';   // 지역 이름
+            let cd_location = ''; // 1개 지역의 영역을 구성하는 다각형의 모든 좌표 배열
+            coordinates = unit.geometry.coordinates; // 1개 지역의 영역을 구성하는 다각형의 모든 좌표 배열
+            name = unit.properties.SIG_KOR_NM; // 1개 지역의 이름
+            cd_location = unit.properties.SIG_CD;   //지역 코드 
+
+            //객체 생성->데이터저장
             let ob = new Object();
-            ob.name = name; 
+            ob.name = name;  //지역이름
             ob.path = []; 
-            ob.location = cd_location;
+            ob.location = cd_location;  //지역코드 (41 등)
             ob.parent = unit.properties.SIG_KOR_NM || "";
 
             $.each(coordinates[0], function (index, coordinate) { 
@@ -796,6 +804,7 @@ function displayArea(area) {
     // 폴리곤 중심 좌표
     let center = centroid(area.path);
 
+    // 중심에 텍스트 오버레이 추가
     let polygonOverlay = new kakao.maps.CustomOverlay({
         position: center,
         content: `<div class="label nanum-b size-s" style="background-color: white; border: 1px solid black; border-radius: 3px; font-size:0.8rem;">${area.name}</div>`,
@@ -813,31 +822,34 @@ function displayArea(area) {
     });
 
     kakao.maps.event.addListener(polygon, 'click', function () {
-
-        let optionValues = new Array;
+        
+        let optionValues = new Array; // 옵션 값들을 저장할 배열
         let localExist = false;
         let level = map.getLevel(); 
 
-        if (map.getLevel() > 10) {
+        if (map.getLevel() > 10) { //맵 레벨에 따라서 변화 - 현재 레벨이 10보다 크면
             $('#city').val(area.name); 
-            updateSigunGu();
+            updateSigunGu(); //시군구 업데이트
             level = 8;
-        } else if (map.getLevel() <= 10) {
-            let local = area.name;
-            $('#local option').each(function() {
+        } else if (map.getLevel() <= 10) { // 현재 레벨이 10보다 작으면
+            let local = area.name; // 지역 이름
+
+            // 모든 옵션을 순회하며 값 가져오기
+            $('#local option').each(function() { 
                 optionValues.push($(this).val());
             });
+
             optionValues.forEach(function(value) {
-                if (local == value) { 
-                    localExist = true;
+                if (local == value) {  //지역이 옵션값에 존재하면
+                    localExist = true; 
                 }
-            });
-            if (localExist) {
+            }); 
+            if (localExist) {  
                 $('#local').val(local);
                 $('#country').val('');
-                searchHospitals(1);
-            } else { 
-                updateCityFromLocal(local);
+                searchHospitals(1); //병원 검색
+            } else {  //존재하지 않으면 시도로 업데이트
+                updateCityFromLocal(local); 
             }
             level = 6;
         }
