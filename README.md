@@ -80,7 +80,7 @@
 - Temp : 임시저장
 
 
-# 💡Git 규칙 
+# 💡팀 문서 
 
 - 프로젝트 회의록을 매일 작성했습니다. >
 https://docs.google.com/spreadsheets/d/1aKaamEUOWpcSIg0V-KU1-_CoQxeMrlG9ZIY42jd4T6Q/edit?usp=sharing
