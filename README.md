@@ -41,13 +41,15 @@
 [https://docs.google.com/spreadsheets/d/1axXSmI3i59L1FeV5zb-KTXerfhzM0p9tZ3_9q1tXmjA/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1axXSmI3i59L1FeV5zb-KTXerfhzM0p9tZ3_9q1tXmjA/edit?usp=sharing)
 
 ### 기능 관련 Issue
-[Develop]오픈 API DB 접근방안 모색 #8
+[Develop]오픈 API DB 접근방안 모색 https://github.com/nime0110/Medinfora_ss/issues/8
 <br>
-[Develop] 병원찾기 기능 #7
+[Develop] 병원찾기 기능 https://github.com/nime0110/Medinfora_ss/issues/7
 <br>
-[Develop] 병원찾기 통계 기능 #9
-
-
+[Develop] 병원찾기 통계 기능 https://github.com/nime0110/Medinfora_ss/issues/9
+<br>
+[Develop] 커뮤니티 기능 https://github.com/nime0110/Medinfora_ss/issues/10
+<br>
+[Develop] 마이페이지 기능 https://github.com/nime0110/Medinfora_ss/issues/11
 
 ---
 
