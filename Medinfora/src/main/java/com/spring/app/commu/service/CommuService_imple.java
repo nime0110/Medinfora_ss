@@ -130,18 +130,16 @@ public class CommuService_imple implements CommuService {
 	public int addComment(CommuCommentDTO cmtdto) {
 	    int n1 = 0, n2 = 0, result = 0;
 	    
-	    //댓글이 댓글인지 답댓글인지 구분해야함, 원댓글쓰기의 경우
-	    if("".equals(cmtdto.getFk_cmidx())) {
-			int groupno = cmdao.getGroupnoMax()+1;
-			cmtdto.setGroupno(String.valueOf(groupno));
-			System.out.println("cmtdto.groupno:" + groupno); //22 
+	    //댓글이 댓글인지 답댓글인지 구분해야함, 원댓글쓰기의 경우(즉 fk_cmidx가 없을 경우)
+	    if("".equals(cmtdto.getFk_cmidx())) { 
+			int groupno = cmdao.getGroupnoMax()+1;  //그룹번호 세팅
+			cmtdto.setGroupno(String.valueOf(groupno)); 
 	    }
 	    
 	    
 	    n1 = cmdao.addComment(cmtdto); // 댓글쓰기
-	    //System.out.println("~~~ 확인용 n1: " + n1);
 	    
-	    if(n1 == 1) {
+	    if(n1 == 1) { //댓글쓴다음 
 	        n2 = cmdao.updateCommentCount(cmtdto.getCidx()); // commu 테이블에 commentCount 컬럼이 1증가(update) =>cidx = 원글번호
 	    }
 	    

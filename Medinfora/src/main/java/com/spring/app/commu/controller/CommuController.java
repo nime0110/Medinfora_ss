@@ -47,7 +47,7 @@ public class CommuController {
 	@Autowired
 	private FileManager fileManager;
 
-	//카테고리 
+	//카테고리 정해주는 메소드
 	public String getCategoryText(String category) {
 	    switch (category) {
 	        case "1": return "임신·성고민";
@@ -63,6 +63,7 @@ public class CommuController {
 	    }
 	}
 
+	//커뮤 게시판 글 리스트 가져오기 
 	@GetMapping(value="/commu/commuList.bibo")
 	public ModelAndView commuList(ModelAndView mav, HttpServletRequest request,
 	                              @RequestParam(value="category", defaultValue = "0") String category,
@@ -71,7 +72,7 @@ public class CommuController {
 	                              @RequestParam(value="currentPageNo", defaultValue = "1") String str_currentPageNo) {
 
 
-		String sort = request.getParameter("sort");
+		String sort = request.getParameter("sort"); //사용자가 선택한 sort 상태를 가져온다. 
 		
 		Map<String, String> paraMap = new HashMap<>();
 		
@@ -79,13 +80,13 @@ public class CommuController {
 	    List<String> categoryList = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 	    List<String> typeList = Arrays.asList("z", "title", "content", "userid");
 
-	    if (!categoryList.contains(category)) {
-	        category = "0";
-	        paraMap.put("category", category);
+	    if (!categoryList.contains(category)) { //만약 카테고리가 카테고리 리스트에 없는 숫자라면
+	        category = "0"; //카테고리를 0으로 설정 (선택)
+	        paraMap.put("category", category); 
 	    }
 
-	    if (!typeList.contains(type)) {
-	        type = "z";
+	    if (!typeList.contains(type)) { //타입이 타입리스트 안에 없다면
+	        type = "z"; //제일 기본 타입
 	        paraMap.put("type", type);
 	    }
 
@@ -104,13 +105,13 @@ public class CommuController {
 	        totalCount = service.getCBListTotalCount(paraMap);
 	        totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 
-	        // 현재 페이지 번호 설정 및 유효성 검사
+	        // 현재 페이지 번호 설정 및 유효성 검사 - 사용자 입력시 막기
 	        try {
 	            currentPageNo = Integer.parseInt(str_currentPageNo);
-	            if(currentPageNo < 1 || currentPageNo > totalPage) {
-	                currentPageNo = 1;
+	            if(currentPageNo < 1 || currentPageNo > totalPage) { //지금현재페이지가 1보다 작거나, 현재페이지가 전체페이지보다 크다면
+	                currentPageNo = 1; //현재페이지를 1로 
 	            } 
-	        } catch (NumberFormatException e) {
+	        } catch (NumberFormatException e) { 
 	            currentPageNo = 1;
 	        }
 
@@ -139,14 +140,15 @@ public class CommuController {
 	        int pageNo = ((currentPageNo - 1) / blockSize) * blockSize + 1;
 	        
 	        String pageBar = "<ul style='list-style:none; '>";
-	        String url = "commuList.bibo";
+	        String url = "commuList.bibo"; //이동 url 
 
-	        // [맨처음][이전]
+	        // [맨처음]
 	        if(pageNo != 1) {
 	            pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='" + url + 
 	                    "?category="+category+"&type="+type+"&word="+word+"&currentPageNo=1'>[맨처음]</a></li>";
 	        }
 
+	        //loop, 페이지번호가 증가하는데 loop가 blockSize보다 크지 않거나, 페이지번호가 전체페이지보다 크지 않을 경우 증가한다
 	        while (!(loop > blockSize || pageNo > totalPage)) {
 	            if(pageNo == currentPageNo) {
 	                pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px skyblue; color:white; background-color: skyblue; padding:1px 3px;'>"+pageNo+"</li>";
@@ -158,7 +160,7 @@ public class CommuController {
 	            pageNo++;
 	        }
 
-	        // [다음][마지막]
+	        // [마지막]
 	        if(pageNo <= totalPage) {
 	            pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='" + url + 
 	                    "?category="+category+"&type="+type+"&word="+word+"&currentPageNo="+totalPage+"'>[마지막]</a></li>";
@@ -195,10 +197,12 @@ public class CommuController {
 			,@RequestParam(value="word", defaultValue = "")String word
 			,@RequestParam(value="currentShowPageNo", defaultValue = "1")String currentShowPageNo){
 
-		String sort = request.getParameter("sort");
+		//파라미터로 카테고리/타입(글제목, 글내용 등)/검색어/ 현재 페이지를 받아온다.
 		
-		System.out.println("sort:" + sort);
+		String sort = request.getParameter("sort");//정렬 받아오기
 		
+		
+		//글 검색하고 난뒤 검색결과의 페이지 생성 
 		int sizePerPage = 10;// 한 페이지당 10개
 
 		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
@@ -214,30 +218,30 @@ public class CommuController {
 
 		List<CommuBoardDTO> CommuBoardList = null;
 		
-		CommuBoardList = service.getCommuBoardList(paraMap);
+		CommuBoardList = service.getCommuBoardList(paraMap); //검색 리스트를 가져와서 담는다.
 		
-		int totalCount = service.getCBListTotalCount(paraMap); // 전체개수
+		int totalCount = service.getCBListTotalCount(paraMap); // 검색된 결과의 전체개수(count(*))
 		int totalPage = (int) Math.ceil((double) totalCount / sizePerPage);
 		
 		List<String> fileSeqList = null;
-		fileSeqList = service.getfileSeqList();
+		fileSeqList = service.getfileSeqList(); //첨부파일 유무 알기 위해 DB select - 리스트 제목 옆에 표시하기 위함
 		JSONArray jsonArr = new JSONArray();
 		
 		Boolean fileTrue = true;
 		
-		if (CommuBoardList != null) {
-			for (CommuBoardDTO cbdto : CommuBoardList) {
+		if (CommuBoardList != null) { //게시판에 쓴 글이 하나라도 있다면
+			for (CommuBoardDTO cbdto : CommuBoardList) { //리스트 객체 for문 돌린다
 
-				JSONObject jsonObj = new JSONObject(); // {}
+				JSONObject jsonObj = new JSONObject(); 
 				
-				if(fileSeqList != null) {
-					for(String file : fileSeqList) {
-						if(file.equals(cbdto.getCidx())) {
-							jsonObj.put("fileTrue", fileTrue);
+				if(fileSeqList != null) { //파일이 있는 게시글이 있는 경우
+					for(String file : fileSeqList) { //파일 리스트 for문
+						if(file.equals(cbdto.getCidx())) { //파일있는 게시글 cidx == 불러온 게시글 cidx 라면
+							jsonObj.put("fileTrue", fileTrue); //파일이 있다는 표시를 해준다
 						}
 					}
 				}
-				cbdto.setCategory(getCategoryText(cbdto.getCategory()));
+				cbdto.setCategory(getCategoryText(cbdto.getCategory())); //가져온 카테고리 번호를 카테고리 이름으로 치환하는 메소드 사용
 				
 				jsonObj.put("category", cbdto.getCategory());
 				jsonObj.put("title", cbdto.getTitle());
@@ -247,30 +251,26 @@ public class CommuController {
 				jsonObj.put("viewcnt", cbdto.getViewcnt());
 				jsonObj.put("totalPage", totalPage);
 				
-				jsonArr.put(jsonObj);
+				jsonArr.put(jsonObj); //jsonObj를 배열에 담음
 			}	
 		}
 		return jsonArr.toString();
 	}
 	
-	// 글 정렬하기
-	
-	
-	
 	
 	// 글 작성하기 페이지로 이동 
 	@GetMapping("/commu/commuWrite.bibo")
 	public ModelAndView isLogin_commuWrite(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		
 		mav.setViewName("commu/commuWrite.tiles");
 		return mav;
 	}
 
-	// 글 작성 성공
+	// 글 작성 성공한 뒤 
 	@ResponseBody
 	@PostMapping(value="/commu/commuWriteEnd.bibo", produces="text/plain;charset=UTF-8")
 	public String isLogin_commuWriteEnd(MultipartHttpServletRequest mtp_request, HttpServletRequest request, HttpServletResponse response) {
-
+		//파일업로드 -MultipartHttpServletRequest 로 멀티파트와 관련된 것 처리 가능 - request 선언한 것은 isLogin_ AOP 양식에 의해
+		
 		String category = mtp_request.getParameter("category");
 		String title = mtp_request.getParameter("title");
 		String content = mtp_request.getParameter("content");
@@ -285,9 +285,9 @@ public class CommuController {
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO) session.getAttribute("loginuser");
 		
-		cbdto.setUserid(loginuser.getUserid());
+		cbdto.setUserid(loginuser.getUserid()); //로그인한 유저의 아이디를 set해준다.
 
-		List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
+		List<MultipartFile> fileList = mtp_request.getFiles("file_arr"); //파일들을 꺼내서 fileList에 담아준다.
 		
 		session = mtp_request.getSession();
 		String root = session.getServletContext().getRealPath("/");
@@ -306,20 +306,20 @@ public class CommuController {
 		// WAS(톰캣)의 디스크에 저장될 파일명
 		
 		int n = 0;
-		n = service.add(cbdto);
-		jsonObj.put("result", n);
+		n = service.add(cbdto); // 글 등록
+		jsonObj.put("result", n); //결과 
 		
 		if(fileList != null && fileList.size() > 0) { 
 			for(MultipartFile mfile : fileList) {
 				try {
 					bytes = mfile.getBytes();
 					originalFilename = mfile.getOriginalFilename();
-					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+					newFileName = fileManager.doFileUpload(bytes, originalFilename, path); //파일업로드
 					
 					fileSize = mfile.getSize();
-					String cseq = service.getSeqCommu();
+					String cseq = service.getSeqCommu(); //하나의 글에 대한 seq를 가져온다. (cidx)
 
-					cfdto.setCidx(cseq);
+					cfdto.setCidx(cseq); 
 					cfdto.setFileName(newFileName);
 					cfdto.setOrgname(originalFilename);
 					cfdto.setFileSize(String.valueOf(fileSize));
@@ -328,7 +328,7 @@ public class CommuController {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
-					jsonObj.put("result", 0);
+					jsonObj.put("result", 0); //실패했다는 뜻 - n=0 실패 1= 성공
 					break;
 				} 
 			}
@@ -362,7 +362,7 @@ public class CommuController {
 		HttpSession session = request.getSession();
 		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
 	    
-	    
+	    //로그인한 유저가 북마크를 했는지 안했는지
 		int alreadyBookmark = 0;
 		
 		if(loginuser != null) {
@@ -395,14 +395,14 @@ public class CommuController {
 	@GetMapping("/commu/download.bibo")
 	public ModelAndView download(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		
-		String filename = request.getParameter("filename");
+		String filename = request.getParameter("filename"); 
 		String originFilename = request.getParameter("originFilename");
 		String cidx = request.getParameter("cidx");
 		
 		try {
 			HttpSession session = request.getSession();
 			String root = session.getServletContext().getRealPath("/");
-			String path = root + "resources" + File.separator + "commu_attach_file";
+			String path = root + "resources" + File.separator + "commu_attach_file"; //resources에 commu_attach_file 폴더 안에 저장되어있음.
 	
 			boolean flag = fileManager.doFileDownload(filename, originFilename, path, response);
 	
@@ -483,11 +483,13 @@ public class CommuController {
 	@ResponseBody
 	@PostMapping(value="/commu/commuUpdateEnd.bibo", produces="text/plain;charset=UTF-8")
 	public String editEnd(CommuBoardDTO cbdto, MultipartHttpServletRequest mtp_request, HttpServletRequest request, HttpServletResponse response) {
-	    String cidx = cbdto.getCidx();
+	    
+		String cidx = cbdto.getCidx();
 	    
 	    HttpSession session = request.getSession();
 	    session = mtp_request.getSession();
 	    
+	    //파일 리스트에 담기
 	    List<MultipartFile> fileList = mtp_request.getFiles("file_arr");
 	    
 	    String root = session.getServletContext().getRealPath("/");
@@ -543,7 +545,7 @@ public class CommuController {
 		String fileName = request.getParameter("fileName");
 	
 		Map<String, String> paraMap = new HashMap<>();
-        List<CommuFilesDTO> existFileList = service.getAttachfiles(cidx);
+        List<CommuFilesDTO> existFileList = service.getAttachfiles(cidx); //첨부파일 가져오기
         
 	    HttpSession session = request.getSession();
 	    
@@ -559,7 +561,7 @@ public class CommuController {
         // 테이블 파일 삭제
         n = service.fileDel(paraMap);
         if(n == 1) {
-        	//폴더 내 파일삭제
+        	//폴더 내 파일삭제(로컬경로)
         	service.folderFileDel(paraMap);        	
         }
         JSONObject jsonObj = new JSONObject();
@@ -568,7 +570,7 @@ public class CommuController {
         return jsonObj.toString();
 	}
 	
-	// 글 삭제 (첨부파일 삭제)
+	// 글 삭제 (첨부파일 삭제까지 포함)
 	@ResponseBody
 	@RequestMapping(value = "/commu/del.bibo", produces = "text/plain;charset=UTF-8")
 	public String postDelete(HttpServletRequest request) {
@@ -620,19 +622,21 @@ public class CommuController {
 	public String addComment(HttpServletRequest request) {
 		
 		CommuCommentDTO cmtdto = new CommuCommentDTO();
+		//파라미터로 cidx(글번호), 유저아이디, 콘텐츠를 가져온다
 		String cidx = request.getParameter("cidx");
 		String userid = request.getParameter("userid");
 		String content = request.getParameter("content");
 				
+		//할당
 		cmtdto.setCidx(cidx);
 		cmtdto.setUserid(userid);
 		cmtdto.setContent(content);
 		
 		//답댓글 쓰기인 경우
 		String groupno = request.getParameter("groupno");
-		String depthno = request.getParameter("depthno");
-		String fk_cmidx = request.getParameter("fk_cmidx");
-		String fk_userid = request.getParameter("fk_userid"); //원 댓글
+		String depthno = request.getParameter("depthno"); //depth에 따라 댓글, 답댓글, 답댓글의 답댓글이 달라짐
+		String fk_cmidx = request.getParameter("fk_cmidx"); //원 댓글의 댓글 넘버
+		String fk_userid = request.getParameter("fk_userid"); //원 댓글의 유저아이디, @user1 이렇게 답변할 경우
 		
 		if(fk_cmidx == null) {
 			fk_cmidx = "";
@@ -651,7 +655,7 @@ public class CommuController {
 		
 		int n = 0;
 		try {
-			n = service.addComment(cmtdto);
+			n = service.addComment(cmtdto); //댓글 쓰기 - 서비스단에서 로직 처리.
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} 
@@ -756,7 +760,7 @@ public class CommuController {
 		
 		SuggestionDTO sdto = new SuggestionDTO();
 		
-		String userid = request.getParameter("userid");
+		String userid = request.getParameter("userid"); //로그인한 유저아이디를 넘겨받음
 		String cidx = request.getParameter("cidx");
 		
 		sdto.setUserid(userid);
@@ -770,13 +774,13 @@ public class CommuController {
         // 먼저 이미 추천한 기록이 있는지 확인
 		alreadySuggestion = service.checkSuggestion(sdto);
 		
-		if(alreadySuggestion != 1) {
-			n = service.suggestionPost(sdto);
-			n = service.postSuggestionUpdate(sdto);
+		if(alreadySuggestion != 1) {//추천 안했다면
+			n = service.suggestionPost(sdto); //추천, 
+			n = service.postSuggestionUpdate(sdto); //추천수 업데이트
 		}
 		
 		jsonObj.put("n", n);
-		jsonObj.put("alreadySuggestion", alreadySuggestion);
+		jsonObj.put("alreadySuggestion", alreadySuggestion); //이미 추천함
 		return jsonObj.toString();
 	}
 	
@@ -830,7 +834,7 @@ public class CommuController {
 		return jsonObj.toString();
 	}
 	
-	//댓글 위치관련
+	//댓글 페이지
 	@ResponseBody
 	@GetMapping(value="/commu/getCommentPage.bibo", produces="text/plain;charset=UTF-8") 
 	public String getCommentPage(HttpServletRequest request) {	
